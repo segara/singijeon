@@ -14,6 +14,8 @@ namespace Singijeon
 {
     public partial class tradingStrategyGridView : Form
     {
+        string currentAccount = string.Empty;
+
         int screenNum = 1000;
 #if TEST_CONSOLE
         double FEE_RATE = 1;
@@ -49,6 +51,17 @@ namespace Singijeon
             if(e.nErrCode == 0) 
             {
                 Console.WriteLine("로그인 성공");
+                string server = axKHOpenAPI1.GetLoginInfo("GetServerGubun");
+                if(server.Equals("1"))
+                {
+                    //모의투자 
+                    FEE_RATE = 1;
+                }
+                else
+                {
+                    FEE_RATE = 0.33;
+                }
+
                 string accountList = axKHOpenAPI1.GetLoginInfo("ACCLIST");
                 string[] accountArray = accountList.Split(';');
 
@@ -242,21 +255,51 @@ namespace Singijeon
                 profit_label.Text = string.Format("{0:n0}", l_profit);
 
                 profitRate_label.Text = d_profitRate.ToString();
-
+                string codeList = string.Empty;
                 int cnt = axKHOpenAPI1.GetRepeatCnt(e.sTrCode, e.sRQName); //조회내용중 멀티데이터의 갯수를 알아온다
                 for(int i = 0; i < cnt; ++i)
                 {
                     string itemCode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "종목코드").Trim();
+                    codeList += itemCode;
+                    if(i != cnt-1)
+                    {
+                        codeList += ";";
+                    }
                     string itemName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "종목명").Trim();
+                     
                     string balanceCnt = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "보유수량").Trim();
+                    long lBalanceCnt = long.Parse(balanceCnt);
+               
                     string buyingPrice = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "평균단가").Trim();
-                    string price = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "현재가").Trim();
-                    string value = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "평가금액").Trim();
-                    string profitAmount = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "손익금액").Trim();
-                    string buyingAmount = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "매입금액").Trim();
-                 
-                }
+                    double dBuyingPrice = double.Parse(buyingPrice);
 
+                    string price = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "현재가").Trim();
+                    int iPrice = Math.Abs(int.Parse(price));
+
+                    string estimatedAmount = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "평가금액").Trim();
+                    long lEstimatedAmount = long.Parse(estimatedAmount);
+
+                    string profitAmount = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "손익금액").Trim();
+                    long lProfitAmount = long.Parse(profitAmount);
+
+                    string buyingAmount = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "매입금액").Trim();
+                    long lBuyingAmount = long.Parse(buyingAmount);
+
+                    int rowIndex = balanceDataGrid.Rows.Add();
+
+                    double dProfitRate = 100*((iPrice - dBuyingPrice) / dBuyingPrice) - FEE_RATE;
+                    accountBalanceDataGrid["계좌잔고_종목코드", rowIndex].Value = itemCode;
+                    accountBalanceDataGrid["계좌잔고_종목명", rowIndex].Value = itemName;
+                    accountBalanceDataGrid["계좌잔고_보유수량", rowIndex].Value = lBalanceCnt;
+                    accountBalanceDataGrid["계좌잔고_평균단가", rowIndex].Value = dBuyingPrice;
+                    accountBalanceDataGrid["계좌잔고_평가금액", rowIndex].Value = lEstimatedAmount;
+                    accountBalanceDataGrid["계좌잔고_매입금액", rowIndex].Value = lBuyingAmount;
+                    accountBalanceDataGrid["계좌잔고_손익금액", rowIndex].Value = lProfitAmount;
+                    accountBalanceDataGrid["계좌잔고_손익률", rowIndex].Value = dProfitRate;
+
+                }
+                string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
+                axKHOpenAPI1.SetRealReg("9002", codeList, fidList, "1");
             }
         }
         private void API_OnReceiveRealData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealDataEvent e)
@@ -358,9 +401,27 @@ namespace Singijeon
                      
                     }
                 }
-                //현재가
 
-                //매입단가
+                foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
+                {
+                    if (row.Cells["계좌잔고_종목코드"].Value != null)
+                    {
+                        if (row.Cells["계좌잔고_종목코드"].Value.ToString().Contains(itemCode))
+                        {
+                            row.Cells["계좌잔고_현재가"].Value = c_lPrice;
+
+                            double buyingPrice = double.Parse(row.Cells["계좌잔고_평균단가"].Value.ToString());
+
+                            if (buyingPrice != 0)
+                            {
+                                double profitRate = 100 * (c_lPrice - buyingPrice) / buyingPrice - FEE_RATE;
+                                row.Cells["계좌잔고_손익률"].Value = profitRate;
+                             
+                            }
+
+                        }
+                    }
+                }
 
                 foreach (DataGridViewRow row in balanceDataGrid.Rows)
                 {
@@ -370,8 +431,7 @@ namespace Singijeon
                         {
                             row.Cells["잔고_현재가"].Value = c_lPrice;
                            
-                            double buyingPrice = double.Parse(row.Cells["잔고_현재가"].Value.ToString());
-                           
+                            double buyingPrice = double.Parse(row.Cells["잔고_매입단가"].Value.ToString());
 
                             if(buyingPrice != 0)
                             {
@@ -659,11 +719,17 @@ namespace Singijeon
           if(sender.Equals(accountComboBox))
             {
                 string account = accountComboBox.SelectedItem.ToString();
-                axKHOpenAPI1.SetInputValue("계좌번호", account);
-                axKHOpenAPI1.SetInputValue("비밀번호", "");
-                axKHOpenAPI1.SetInputValue("상장폐지조회구분", "0");
-                axKHOpenAPI1.SetInputValue("비밀번호입력매체구분", "00");
-                axKHOpenAPI1.CommRqData("계좌평가현황요청", "OPW00004", 0, GetScreenNum().ToString());
+                if (!account.Equals(currentAccount))
+                {
+                    axKHOpenAPI1.SetInputValue("계좌번호", account);
+                    axKHOpenAPI1.SetInputValue("비밀번호", "");
+                    axKHOpenAPI1.SetInputValue("상장폐지조회구분", "0");
+                    axKHOpenAPI1.SetInputValue("비밀번호입력매체구분", "00");
+                    axKHOpenAPI1.CommRqData("계좌평가현황요청", "OPW00004", 0, GetScreenNum().ToString());
+
+                    currentAccount = account;
+                }
+            
             }
         }
 

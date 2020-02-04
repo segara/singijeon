@@ -29,14 +29,16 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(tradingStrategyGridView));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             this.axKHOpenAPI1 = new AxKHOpenAPILib.AxKHOpenAPI();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.메뉴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -141,18 +143,28 @@
             this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
             this.asset_label = new System.Windows.Forms.Label();
             this.d2Asset_label = new System.Windows.Forms.Label();
             this.estimatedAsset_label = new System.Windows.Forms.Label();
             this.investment_label = new System.Windows.Forms.Label();
             this.profit_label = new System.Windows.Forms.Label();
             this.profitRate_label = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.accountBalanceDataGrid = new System.Windows.Forms.DataGridView();
+            this.계좌잔고_종목코드 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.계좌잔고_종목명 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.계좌잔고_보유수량 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.계좌잔고_평균단가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.계좌잔고_평가금액 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.계좌잔고_매입금액 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.계좌잔고_손익금액 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.계좌잔고_손익률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -180,6 +192,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.accountBalanceDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // axKHOpenAPI1
@@ -569,7 +583,7 @@
             this.groupBox2.Controls.Add(this.groupBox4);
             this.groupBox2.Location = new System.Drawing.Point(12, 416);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1028, 433);
+            this.groupBox2.Size = new System.Drawing.Size(1028, 444);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "매매전략";
@@ -579,7 +593,7 @@
             this.groupBox3.Controls.Add(this.autoTradingDataGrid);
             this.groupBox3.Location = new System.Drawing.Point(14, 310);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1008, 99);
+            this.groupBox3.Size = new System.Drawing.Size(1008, 110);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "매매진행상황";
@@ -589,14 +603,14 @@
             this.autoTradingDataGrid.AllowUserToAddRows = false;
             this.autoTradingDataGrid.AllowUserToDeleteRows = false;
             this.autoTradingDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.autoTradingDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.autoTradingDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.autoTradingDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.autoTradingDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.매매진행_종목코드,
@@ -650,45 +664,45 @@
             // 
             // 매매진행_손익률
             // 
-            dataGridViewCellStyle10.Format = "N2";
-            dataGridViewCellStyle10.NullValue = null;
-            this.매매진행_손익률.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Format = "N2";
+            dataGridViewCellStyle2.NullValue = null;
+            this.매매진행_손익률.DefaultCellStyle = dataGridViewCellStyle2;
             this.매매진행_손익률.HeaderText = "손익률";
             this.매매진행_손익률.Name = "매매진행_손익률";
             this.매매진행_손익률.ReadOnly = true;
             // 
             // 매매진행_매수금
             // 
-            dataGridViewCellStyle11.Format = "N0";
-            dataGridViewCellStyle11.NullValue = null;
-            this.매매진행_매수금.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle3.Format = "N0";
+            dataGridViewCellStyle3.NullValue = null;
+            this.매매진행_매수금.DefaultCellStyle = dataGridViewCellStyle3;
             this.매매진행_매수금.HeaderText = "매수금";
             this.매매진행_매수금.Name = "매매진행_매수금";
             this.매매진행_매수금.ReadOnly = true;
             // 
             // 매매진행_매수량
             // 
-            dataGridViewCellStyle12.Format = "N0";
-            dataGridViewCellStyle12.NullValue = null;
-            this.매매진행_매수량.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle4.Format = "N0";
+            dataGridViewCellStyle4.NullValue = null;
+            this.매매진행_매수량.DefaultCellStyle = dataGridViewCellStyle4;
             this.매매진행_매수량.HeaderText = "매수량";
             this.매매진행_매수량.Name = "매매진행_매수량";
             this.매매진행_매수량.ReadOnly = true;
             // 
             // 매매진행_매수가
             // 
-            dataGridViewCellStyle13.Format = "N0";
-            dataGridViewCellStyle13.NullValue = null;
-            this.매매진행_매수가.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle5.Format = "N0";
+            dataGridViewCellStyle5.NullValue = null;
+            this.매매진행_매수가.DefaultCellStyle = dataGridViewCellStyle5;
             this.매매진행_매수가.HeaderText = "매수가";
             this.매매진행_매수가.Name = "매매진행_매수가";
             this.매매진행_매수가.ReadOnly = true;
             // 
             // 매매진행_매도가
             // 
-            dataGridViewCellStyle14.Format = "N0";
-            dataGridViewCellStyle14.NullValue = null;
-            this.매매진행_매도가.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle6.Format = "N0";
+            dataGridViewCellStyle6.NullValue = null;
+            this.매매진행_매도가.DefaultCellStyle = dataGridViewCellStyle6;
             this.매매진행_매도가.HeaderText = "매도가";
             this.매매진행_매도가.Name = "매매진행_매도가";
             this.매매진행_매도가.ReadOnly = true;
@@ -724,10 +738,11 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Location = new System.Drawing.Point(6, 25);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(999, 116);
+            this.tabControl1.Size = new System.Drawing.Size(999, 115);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
@@ -736,7 +751,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(991, 87);
+            this.tabPage1.Size = new System.Drawing.Size(991, 86);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "주문";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -765,7 +780,7 @@
             this.orderDataGridView.RowHeadersVisible = false;
             this.orderDataGridView.RowHeadersWidth = 51;
             this.orderDataGridView.RowTemplate.Height = 27;
-            this.orderDataGridView.Size = new System.Drawing.Size(990, 86);
+            this.orderDataGridView.Size = new System.Drawing.Size(990, 85);
             this.orderDataGridView.TabIndex = 0;
             // 
             // 주문_주문번호
@@ -999,7 +1014,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(991, 87);
+            this.tabPage4.Size = new System.Drawing.Size(991, 86);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "잔고";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1030,7 +1045,7 @@
             this.balanceDataGrid.RowHeadersVisible = false;
             this.balanceDataGrid.RowHeadersWidth = 51;
             this.balanceDataGrid.RowTemplate.Height = 27;
-            this.balanceDataGrid.Size = new System.Drawing.Size(988, 81);
+            this.balanceDataGrid.Size = new System.Drawing.Size(988, 80);
             this.balanceDataGrid.TabIndex = 0;
             // 
             // 잔고_계좌번호
@@ -1077,9 +1092,9 @@
             // 
             // 잔고_총매입가
             // 
-            dataGridViewCellStyle15.Format = "N0";
-            dataGridViewCellStyle15.NullValue = null;
-            this.잔고_총매입가.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle7.Format = "N0";
+            dataGridViewCellStyle7.NullValue = null;
+            this.잔고_총매입가.DefaultCellStyle = dataGridViewCellStyle7;
             this.잔고_총매입가.HeaderText = "총매입가";
             this.잔고_총매입가.MinimumWidth = 6;
             this.잔고_총매입가.Name = "잔고_총매입가";
@@ -1087,9 +1102,9 @@
             // 
             // 잔고_손익률
             // 
-            dataGridViewCellStyle16.Format = "N2";
-            dataGridViewCellStyle16.NullValue = null;
-            this.잔고_손익률.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle8.Format = "N2";
+            dataGridViewCellStyle8.NullValue = null;
+            this.잔고_손익률.DefaultCellStyle = dataGridViewCellStyle8;
             this.잔고_손익률.HeaderText = "손익률";
             this.잔고_손익률.MinimumWidth = 6;
             this.잔고_손익률.Name = "잔고_손익률";
@@ -1253,84 +1268,6 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(381, 234);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // label10
-            // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label10.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.label10.Location = new System.Drawing.Point(3, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(184, 38);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "예수금";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label11
-            // 
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label11.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.label11.Location = new System.Drawing.Point(3, 38);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(184, 38);
-            this.label11.TabIndex = 1;
-            this.label11.Text = "D+2추정예수금";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label12
-            // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label12.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.label12.Location = new System.Drawing.Point(3, 76);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(184, 38);
-            this.label12.TabIndex = 2;
-            this.label12.Text = "예탁자산평가액";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label13
-            // 
-            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label13.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.label13.Location = new System.Drawing.Point(3, 114);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(184, 38);
-            this.label13.TabIndex = 3;
-            this.label13.Text = "당일투자원금";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label14
-            // 
-            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label14.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.label14.Location = new System.Drawing.Point(3, 152);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(184, 38);
-            this.label14.TabIndex = 4;
-            this.label14.Text = "당일투자손익";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label15
-            // 
-            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label15.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.label15.Location = new System.Drawing.Point(3, 190);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(184, 44);
-            this.label15.TabIndex = 5;
-            this.label15.Text = "당일손익률";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // asset_label
             // 
             this.asset_label.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1409,11 +1346,179 @@
             this.profitRate_label.Text = "당일손익률";
             this.profitRate_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label10.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.label10.Location = new System.Drawing.Point(3, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(184, 38);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "예수금";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.label11.Location = new System.Drawing.Point(3, 38);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(184, 38);
+            this.label11.TabIndex = 1;
+            this.label11.Text = "D+2추정예수금";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.label12.Location = new System.Drawing.Point(3, 76);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(184, 38);
+            this.label12.TabIndex = 2;
+            this.label12.Text = "예탁자산평가액";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.label13.Location = new System.Drawing.Point(3, 114);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(184, 38);
+            this.label13.TabIndex = 3;
+            this.label13.Text = "당일투자원금";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.label14.Location = new System.Drawing.Point(3, 152);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(184, 38);
+            this.label14.TabIndex = 4;
+            this.label14.Text = "당일투자손익";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label15
+            // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label15.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.label15.Location = new System.Drawing.Point(3, 190);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(184, 44);
+            this.label15.TabIndex = 5;
+            this.label15.Text = "당일손익률";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.accountBalanceDataGrid);
+            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(991, 86);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "기존잔고+매수잔고";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // accountBalanceDataGrid
+            // 
+            this.accountBalanceDataGrid.AllowUserToAddRows = false;
+            this.accountBalanceDataGrid.AllowUserToDeleteRows = false;
+            this.accountBalanceDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.accountBalanceDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.accountBalanceDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.accountBalanceDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.계좌잔고_종목코드,
+            this.계좌잔고_종목명,
+            this.계좌잔고_보유수량,
+            this.계좌잔고_평균단가,
+            this.계좌잔고_평가금액,
+            this.계좌잔고_매입금액,
+            this.계좌잔고_손익금액,
+            this.계좌잔고_손익률});
+            this.accountBalanceDataGrid.Location = new System.Drawing.Point(0, 2);
+            this.accountBalanceDataGrid.Name = "accountBalanceDataGrid";
+            this.accountBalanceDataGrid.RowHeadersVisible = false;
+            this.accountBalanceDataGrid.RowTemplate.Height = 27;
+            this.accountBalanceDataGrid.Size = new System.Drawing.Size(988, 86);
+            this.accountBalanceDataGrid.TabIndex = 0;
+            // 
+            // 계좌잔고_종목코드
+            // 
+            this.계좌잔고_종목코드.HeaderText = "종목코드";
+            this.계좌잔고_종목코드.Name = "계좌잔고_종목코드";
+            this.계좌잔고_종목코드.ReadOnly = true;
+            // 
+            // 계좌잔고_종목명
+            // 
+            this.계좌잔고_종목명.HeaderText = "종목명";
+            this.계좌잔고_종목명.Name = "계좌잔고_종목명";
+            this.계좌잔고_종목명.ReadOnly = true;
+            // 
+            // 계좌잔고_보유수량
+            // 
+            dataGridViewCellStyle9.Format = "N0";
+            dataGridViewCellStyle9.NullValue = null;
+            this.계좌잔고_보유수량.DefaultCellStyle = dataGridViewCellStyle9;
+            this.계좌잔고_보유수량.HeaderText = "보유수량";
+            this.계좌잔고_보유수량.Name = "계좌잔고_보유수량";
+            this.계좌잔고_보유수량.ReadOnly = true;
+            // 
+            // 계좌잔고_평균단가
+            // 
+            this.계좌잔고_평균단가.HeaderText = "평균단가";
+            this.계좌잔고_평균단가.Name = "계좌잔고_평균단가";
+            this.계좌잔고_평균단가.ReadOnly = true;
+            // 
+            // 계좌잔고_평가금액
+            // 
+            this.계좌잔고_평가금액.HeaderText = "평가금액";
+            this.계좌잔고_평가금액.Name = "계좌잔고_평가금액";
+            this.계좌잔고_평가금액.ReadOnly = true;
+            // 
+            // 계좌잔고_매입금액
+            // 
+            this.계좌잔고_매입금액.HeaderText = "매입금액";
+            this.계좌잔고_매입금액.Name = "계좌잔고_매입금액";
+            this.계좌잔고_매입금액.ReadOnly = true;
+            // 
+            // 계좌잔고_손익금액
+            // 
+            this.계좌잔고_손익금액.HeaderText = "손익금액";
+            this.계좌잔고_손익금액.Name = "계좌잔고_손익금액";
+            this.계좌잔고_손익금액.ReadOnly = true;
+            // 
+            // 계좌잔고_손익률
+            // 
+            dataGridViewCellStyle10.Format = "N2";
+            dataGridViewCellStyle10.NullValue = null;
+            this.계좌잔고_손익률.DefaultCellStyle = dataGridViewCellStyle10;
+            this.계좌잔고_손익률.HeaderText = "손익률";
+            this.계좌잔고_손익률.Name = "계좌잔고_손익률";
+            this.계좌잔고_손익률.ReadOnly = true;
+            // 
             // tradingStrategyGridView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1325, 867);
+            this.ClientSize = new System.Drawing.Size(1325, 953);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -1454,6 +1559,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.accountBalanceDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1577,6 +1684,16 @@
         private System.Windows.Forms.Label investment_label;
         private System.Windows.Forms.Label profit_label;
         private System.Windows.Forms.Label profitRate_label;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.DataGridView accountBalanceDataGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 계좌잔고_종목코드;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 계좌잔고_종목명;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 계좌잔고_보유수량;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 계좌잔고_평균단가;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 계좌잔고_평가금액;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 계좌잔고_매입금액;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 계좌잔고_손익금액;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 계좌잔고_손익률;
     }
 }
 
