@@ -37,11 +37,15 @@ namespace Singijeon
 
             LogInToolStripMenuItem.Click += ToolStripMenuItem_Click;
 
+            AddStratgyBtn.Click += AddStratgyBtn_Click;
+            balanceSellBtn.Click += BalanceSellBtn_Click;
+
             accountComboBox.SelectedIndexChanged += ComboBoxIndexChanged;
 
             accountBalanceDataGrid.CellClick += DataGridView_CellClick;
             autoTradingDataGrid.CellClick += BalanceDataGridView_CellClick;
 
+            accountBalanceDataGrid.SelectionChanged += AccountDataGridView_SelectionChanged;
 
             axKHOpenAPI1.OnEventConnect += API_OnEventConnect; //로그인
             axKHOpenAPI1.OnReceiveConditionVer += API_OnReceiveConditionVer; //검색 받기
@@ -838,7 +842,35 @@ namespace Singijeon
             
             }
         }
+        private void BalanceSellBtn_Click(object sender, EventArgs e)
+        {
+            string itemCode = balanceItemCodeTxt.Text;
+            long sellQnt = (long)balanceQntUpdown.Value;
+            string accountNum = accountComboBox.Text;
+            if (accountNum.Length > 0)
+            {
 
+                if (itemCode.Length > 0)
+                {
+                    if (sellQnt > 0)
+                    {
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("매도수량은 0보다 커야 합니다.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("매도종목을 선택해주세요");
+                }
+            }
+            else
+            {
+                MessageBox.Show("계좌를 선택해주세요");
+            }
+        }
         private void AddStratgyBtn_Click(object sender, EventArgs e)
         {
             string account = accountComboBox.Text;
@@ -887,7 +919,8 @@ namespace Singijeon
             
             totalInvestment = (long)allCostUpDown.Value;
             itemCount = (int)itemCountUpdown.Value;
-            //매도 전략
+           
+            //매매 전략
 
             bool usingProfitCheckBox = profitSellCheckBox.Checked; //익절사용
             double takeProfitRate = 0;
@@ -907,8 +940,6 @@ namespace Singijeon
                 stopLossRate = (double)minusSellUpdown.Value;
             }
 
-            //매수전략
-
             TradingStrategy ts = new TradingStrategy(
                 account, 
                 findCondition, 
@@ -925,12 +956,39 @@ namespace Singijeon
             tradingStrategyList.Add(ts);
             AddStrategyToDataGridView(ts);
 
-            //매수 조건식 감시 시작
             StartMonitoring(ts.buyCondition);
 
             Console.WriteLine("전략이 입력됬습니다");
         }
-#endregion
+
+        private void AccountDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            if(accountBalanceDataGrid.SelectedRows.Count>0)
+            {
+                int rowIndex = accountBalanceDataGrid.SelectedRows[0].Index;
+                
+                if(accountBalanceDataGrid["계좌잔고_종목코드", rowIndex].Value != null)
+                {
+                    string itemCode = accountBalanceDataGrid["계좌잔고_종목코드", rowIndex].Value.ToString();
+                    string itemName = accountBalanceDataGrid["계좌잔고_종목명", rowIndex].Value.ToString();
+                    long balanceQnt = long.Parse(accountBalanceDataGrid["계좌잔고_보유수량", rowIndex].Value.ToString());
+
+
+                    balanceItemCodeTxt.Text = itemCode;
+                    balanceNameTextBox.Text = itemName;
+                    balanceQntUpdown.Maximum = balanceQnt;
+                    balanceQntUpdown.Value = balanceQnt;
+
+                }
+                else
+                {
+                    accountBalanceDataGrid.ClearSelection();
+                }
+
+            }
+        }
+
+        #endregion
         private void StartMonitoring(Condition _condition)
         {
             int result = axKHOpenAPI1.SendCondition(GetScreenNum().ToString(), _condition.Name, _condition.Index, 1);
@@ -972,15 +1030,7 @@ namespace Singijeon
                 tsDataGridView["매매전략_손절률", rowIndex].Value = tradingStrategy.stoplossRate;
             }
         }
-
-        private void balanceDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        
+       
     }
 }
