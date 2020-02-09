@@ -27,6 +27,9 @@ namespace Singijeon
 
         List<TradingItem> tryingOrderList = new List<TradingItem>(); //주문접수시도
 
+        List<SettlementItem> settlementItemList = new List<SettlementItem>(); //청산 접수 시도(주문번호만 따기위한 리스트)
+        List<SettlementItem> settleItemList = new List<SettlementItem>(); //진행중인 청산 시도
+
 
         public tradingStrategyGridView()
         {
@@ -35,6 +38,10 @@ namespace Singijeon
             LogInToolStripMenuItem.Click += ToolStripMenuItem_Click;
 
             accountComboBox.SelectedIndexChanged += ComboBoxIndexChanged;
+
+            accountBalanceDataGrid.CellClick += DataGridView_CellClick;
+            autoTradingDataGrid.CellClick += BalanceDataGridView_CellClick;
+
 
             axKHOpenAPI1.OnEventConnect += API_OnEventConnect; //로그인
             axKHOpenAPI1.OnReceiveConditionVer += API_OnReceiveConditionVer; //검색 받기
@@ -45,14 +52,14 @@ namespace Singijeon
             axKHOpenAPI1.OnReceiveRealData += API_OnReceiveRealData; //실시간정보
         }
 
-#region EVENT_RECEIVE_FUNCTION
+        #region EVENT_RECEIVE_FUNCTION
         private void API_OnEventConnect(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnEventConnectEvent e)
         {
-            if(e.nErrCode == 0) 
+            if (e.nErrCode == 0)
             {
                 Console.WriteLine("로그인 성공");
                 string server = axKHOpenAPI1.GetLoginInfo("GetServerGubun");
-                if(server.Equals("1"))
+                if (server.Equals("1"))
                 {
                     //모의투자 
                     FEE_RATE = 1;
@@ -65,9 +72,9 @@ namespace Singijeon
                 string accountList = axKHOpenAPI1.GetLoginInfo("ACCLIST");
                 string[] accountArray = accountList.Split(';');
 
-                foreach(string accountItem in accountArray)
+                foreach (string accountItem in accountArray)
                 {
-                    if(accountItem.Length > 0)
+                    if (accountItem.Length > 0)
                     {
                         accountComboBox.Items.Add(accountItem);
                     }
@@ -90,11 +97,11 @@ namespace Singijeon
 
             foreach (string conditionItem in conditionArray)
             {
-                if(conditionItem.Length>0)
+                if (conditionItem.Length > 0)
                 {
                     string[] conditionInfo = conditionItem.Split('^');
 
-                    if(conditionInfo.Length == 2)
+                    if (conditionInfo.Length == 2)
                     {
                         string index = conditionInfo[0];
                         string name = conditionInfo[1];
@@ -105,7 +112,7 @@ namespace Singijeon
                 }
             }
 
-            foreach(Condition condition in listCondition)
+            foreach (Condition condition in listCondition)
             {
                 BuyConditionComboBox.Items.Add(condition.Name);
             }
@@ -131,7 +138,7 @@ namespace Singijeon
                     if (ts.remainItemCount > 0)
                     {
                         TradingItem tradeItem = ts.tradingItemList.Find(o => o.itemCode.Contains(itemCode)); //한 전략에서 구매하려했던 종목은 재편입하지 않음
-                        if(tradeItem == null)
+                        if (tradeItem == null)
                         {
                             ts.remainItemCount--; //남을 매수할 종목수-1
 
@@ -224,14 +231,14 @@ namespace Singijeon
             }
             else if (e.sRQName.Contains("계좌평가현황요청"))
             {
-               string accountName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "계좌명");
-               string bankName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "지점명");
-               string asset = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "예수금");
-               string d2Asset =  axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "D+2추정예수금");
-               string estimatedAsset = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "예탁자산평가액");
-               string investment = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "당일투자원금");
-               string profit = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "당일투자손익");
-               string profitRate = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "당일손익율");
+                string accountName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "계좌명");
+                string bankName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "지점명");
+                string asset = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "예수금");
+                string d2Asset = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "D+2추정예수금");
+                string estimatedAsset = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "예탁자산평가액");
+                string investment = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "당일투자원금");
+                string profit = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "당일투자손익");
+                string profitRate = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "당일손익율");
 
                 long l_asset = 0;
                 long l_d2asset = 0;
@@ -248,7 +255,7 @@ namespace Singijeon
 
                 double.TryParse(profitRate, out d_profitRate);
 
-                asset_label.Text = string.Format("{0:n0}",l_asset);
+                asset_label.Text = string.Format("{0:n0}", l_asset);
                 d2Asset_label.Text = string.Format("{0:n0}", l_d2asset);
                 estimatedAsset_label.Text = string.Format("{0:n0}", l_estimatedAsset);
                 investment_label.Text = string.Format("{0:n0}", l_investment);
@@ -257,19 +264,19 @@ namespace Singijeon
                 profitRate_label.Text = d_profitRate.ToString();
                 string codeList = string.Empty;
                 int cnt = axKHOpenAPI1.GetRepeatCnt(e.sTrCode, e.sRQName); //조회내용중 멀티데이터의 갯수를 알아온다
-                for(int i = 0; i < cnt; ++i)
+                for (int i = 0; i < cnt; ++i)
                 {
                     string itemCode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "종목코드").Trim();
                     codeList += itemCode;
-                    if(i != cnt-1)
+                    if (i != cnt - 1)
                     {
                         codeList += ";";
                     }
                     string itemName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "종목명").Trim();
-                     
+
                     string balanceCnt = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "보유수량").Trim();
                     long lBalanceCnt = long.Parse(balanceCnt);
-               
+
                     string buyingPrice = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "평균단가").Trim();
                     double dBuyingPrice = double.Parse(buyingPrice);
 
@@ -287,7 +294,7 @@ namespace Singijeon
 
                     int rowIndex = balanceDataGrid.Rows.Add();
 
-                    double dProfitRate = 100*((iPrice - dBuyingPrice) / dBuyingPrice) - FEE_RATE;
+                    double dProfitRate = 100 * ((iPrice - dBuyingPrice) / dBuyingPrice) - FEE_RATE;
                     accountBalanceDataGrid["계좌잔고_종목코드", rowIndex].Value = itemCode;
                     accountBalanceDataGrid["계좌잔고_종목명", rowIndex].Value = itemName;
                     accountBalanceDataGrid["계좌잔고_보유수량", rowIndex].Value = lBalanceCnt;
@@ -316,18 +323,18 @@ namespace Singijeon
 
                 //종목의 매매전략 얻어오기
                 //모든 매매전략내 전략에 포함된 종목을 찾고, 매매전략의 손익률 셋팅과 비교
-                
-                foreach(TradingStrategy ts in tradingStrategyList)
+
+                foreach (TradingStrategy ts in tradingStrategyList)
                 {
                     List<TradingItem> tradeItemList = ts.tradingItemList.FindAll(o => o.itemCode.Equals(itemCode));
-                     
-                    if(tradeItemList != null && tradeItemList.Count>0) //매매 진행 종목을 찾았을 경우
+
+                    if (tradeItemList != null && tradeItemList.Count > 0) //매매 진행 종목을 찾았을 경우
                     {
-                        foreach(TradingItem tradeItem in tradeItemList)
+                        foreach (TradingItem tradeItem in tradeItemList)
                         {
                             if (tradeItem.IsCompleteBuying && !tradeItem.IsSold) //매수 완료 되고 매도 진행안된것 
                             {
-                                if(tradeItem.buyingPrice != 0)
+                                if (tradeItem.buyingPrice != 0)
                                 {
                                     double realProfitRate = (100 * ((c_lPrice - tradeItem.buyingPrice) / (double)tradeItem.buyingPrice)) - FEE_RATE;
                                     if (ts.usingTakeProfit)
@@ -350,9 +357,9 @@ namespace Singijeon
                                                 this.tryingOrderList.Add(tradeItem);
                                                 tradeItem.IsSold = true;
 
-                                                foreach(DataGridViewRow row in autoTradingDataGrid.Rows)
+                                                foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
                                                 {
-                                                    if(row.Cells["매매진행_종목코드"].Value.ToString().Equals(itemCode) 
+                                                    if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(itemCode)
                                                         && row.Cells["매매진행_매수조건식"].Value.ToString().Equals(ts.buyCondition.Name))
                                                     {
                                                         row.Cells["매매진행_진행상황"].Value = "매도중";
@@ -395,10 +402,10 @@ namespace Singijeon
                                     }
                                 }
 
-                       
+
                             }
                         }
-                     
+
                     }
                 }
 
@@ -416,7 +423,7 @@ namespace Singijeon
                             {
                                 double profitRate = 100 * (c_lPrice - buyingPrice) / buyingPrice - FEE_RATE;
                                 row.Cells["계좌잔고_손익률"].Value = profitRate;
-                             
+
                             }
 
                         }
@@ -425,20 +432,20 @@ namespace Singijeon
 
                 foreach (DataGridViewRow row in balanceDataGrid.Rows)
                 {
-                    if(row.Cells["잔고_종목코드"].Value != null)
+                    if (row.Cells["잔고_종목코드"].Value != null)
                     {
-                        if(row.Cells["잔고_종목코드"].Value.ToString().Contains(itemCode))
+                        if (row.Cells["잔고_종목코드"].Value.ToString().Contains(itemCode))
                         {
                             row.Cells["잔고_현재가"].Value = c_lPrice;
-                           
+
                             double buyingPrice = double.Parse(row.Cells["잔고_매입단가"].Value.ToString());
 
-                            if(buyingPrice != 0)
+                            if (buyingPrice != 0)
                             {
                                 double profitRate = 100 * (c_lPrice - buyingPrice) / buyingPrice - FEE_RATE;
                                 row.Cells["잔고_손익률"].Value = profitRate;
                             }
-                      
+
                         }
                     }
                 }
@@ -469,7 +476,7 @@ namespace Singijeon
         {
             Console.WriteLine(e.sGubun);
 
-            if(e.sGubun.Equals("0"))
+            if (e.sGubun.Equals("0"))
             {
                 //접수 혹은 체결
 
@@ -501,14 +508,14 @@ namespace Singijeon
                 Console.WriteLine("단위체결량(체결당 체결량) :" + unitConclusionQuantity);
                 Console.WriteLine("________________________________");
 
-                if(orderState.Equals("접수"))
+                if (orderState.Equals("접수"))
                 {
 
                     //주문번호, 계좌, 시간, 종목코드 , 종목명, 주문수량, 주문가격, 매도/매수구분, 주문구분
 
                     //주문번호 따오기 위한 부분
                     TradingItem item = this.tryingOrderList.Find(o => itemCode.Contains(o.itemCode));
-                    if(item != null)
+                    if (item != null)
                     {
                         if (orderType.Contains("매수"))
                         {
@@ -521,6 +528,13 @@ namespace Singijeon
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
                         }
 
+                    }
+
+                    SettlementItem settleItem = this.settlementItemList.Find(o => itemCode.Contains(o.ItemCode));
+                    if (settleItem != null)
+                    {
+                        settleItem.sellOrderNum = ordernum;
+                        settlementItemList.Remove(settleItem);
                     }
 
                     int rowIndex = orderDataGridView.Rows.Add();
@@ -541,9 +555,9 @@ namespace Singijeon
                     balanceDataGrid["미체결_주문수량", index].Value = orderQuantity;
                     balanceDataGrid["미체결_미체결량", index].Value = orderQuantity;
                 }
-                else if(orderState.Equals("체결"))
+                else if (orderState.Equals("체결"))
                 {
-                    if(int.Parse(outstanding)==0)
+                    if (int.Parse(outstanding) == 0)
                     {
                         if (orderType.Contains("매수"))
                         {
@@ -553,7 +567,7 @@ namespace Singijeon
                                 if (tradeItem != null)
                                 {
                                     tradeItem.IsCompleteBuying = true;
-                                    
+
                                     foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
                                     {
                                         if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(tradeItem.itemName)
@@ -568,14 +582,15 @@ namespace Singijeon
                                 }
                             }
                         }
-                        else if(orderType.Contains("매도"))
+                        else if (orderType.Contains("매도"))
                         {
+                            //자동 매매매 진행중일때
                             foreach (TradingStrategy ts in tradingStrategyList)
                             {
                                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.sellOrderNum.Equals(ordernum));
                                 if (tradeItem != null)
                                 {
-                                   
+
                                     foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
                                     {
                                         if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(tradeItem.itemName)
@@ -593,6 +608,21 @@ namespace Singijeon
                                     break;
                                 }
                             }
+                            SettlementItem settlementItem =  settleItemList.Find(o => o.sellOrderNum.Equals(ordernum));
+                            if(settlementItem != null)
+                            {
+                                foreach(DataGridViewRow row in accountBalanceDataGrid.Rows)
+                                {
+                                    if(row.Cells["계좌잔고_종목코드"].Value != null)
+                                    {
+                                        if (row.Cells["계좌잔고_종목코드"].Value.ToString().Contains(settlementItem.ItemCode))
+                                        {
+                                            accountBalanceDataGrid.Rows.Remove(row);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     int rowIndex = conclusionDataGrid.Rows.Add();
@@ -606,25 +636,25 @@ namespace Singijeon
                     orderDataGridView["체결_체결가", rowIndex].Value = conclusionPrice;
                     orderDataGridView["체결_매매구분", rowIndex].Value = orderType;
 
-                   
+
                     foreach (DataGridViewRow row in outstandingDataGrid.Rows)
                     {
                         if (row.Cells["미체결_주문번호"].Value != null && row.Cells["미체결_주문번호"].Value.ToString().Equals(itemCode))
                         {
-                            
+
                             row.Cells["미체결_미체결량"].Value = outstanding;
-                            if(int.Parse(outstanding)==0)
+                            if (int.Parse(outstanding) == 0)
                             {
                                 outstandingDataGrid.Rows.Remove(row);
                             }
                             break;
                         }
                     }
-                
+
                 }
 
             }
-            else if(e.sGubun.Equals("1"))
+            else if (e.sGubun.Equals("1"))
             {
                 //잔고 전달
                 string account = axKHOpenAPI1.GetChejanData(9201);
@@ -648,13 +678,13 @@ namespace Singijeon
                 Console.WriteLine("________________________________");
 
                 bool hasItem = false;
-                foreach(DataGridViewRow row in balanceDataGrid.Rows)
+                foreach (DataGridViewRow row in balanceDataGrid.Rows)
                 {
-                    if(row.Cells["잔고_종목코드"].Value != null && row.Cells["잔고_종목코드"].Value.ToString().Equals(itemCode))
+                    if (row.Cells["잔고_종목코드"].Value != null && row.Cells["잔고_종목코드"].Value.ToString().Equals(itemCode))
                     {
                         hasItem = true;
 
-                        if(int.Parse(balanceQnt)>0)
+                        if (int.Parse(balanceQnt) > 0)
                         {
                             row.Cells["잔고_보유수량"].Value = balanceQnt;
                             row.Cells["잔고_주문가능수량"].Value = orderAvailableQnt;
@@ -667,12 +697,12 @@ namespace Singijeon
                         {
                             balanceDataGrid.Rows.Remove(row);
                         }
-                      
+
                         break;
                     }
                 }
 
-                if(!hasItem)
+                if (!hasItem)
                 {
                     int rowIndex = balanceDataGrid.Rows.Add();
                     balanceDataGrid["잔고_계좌번호", rowIndex].Value = account;
@@ -684,11 +714,11 @@ namespace Singijeon
                     balanceDataGrid["잔고_총매입가", rowIndex].Value = totalBuyingPrice;
                     balanceDataGrid["잔고_손익률", rowIndex].Value = profitRate;
                     balanceDataGrid["잔고_매매구분", rowIndex].Value = tradingType;
-                    balanceDataGrid["잔고_현재가",rowIndex].Value = price;
+                    balanceDataGrid["잔고_현재가", rowIndex].Value = price;
                 }
             }
         }
-         
+
         private void API_OnReceiveTrCondition(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrConditionEvent e)
         {
 
@@ -696,8 +726,8 @@ namespace Singijeon
             string conditionName = e.strConditionName;
             int conditionIndex = e.nIndex;
             int nIdx = 0;
-            string[] codeList = e.strCodeList.Split(';');   
-           foreach(string code in codeList)
+            string[] codeList = e.strCodeList.Split(';');
+            foreach (string code in codeList)
             {
                 if (code == ("")) continue;
                 strCodeName = axKHOpenAPI1.GetMasterCodeName(code); // 종목명을 가져온다.
@@ -706,9 +736,85 @@ namespace Singijeon
                 Console.WriteLine("strCodeName = " + strCodeName);
             }
         }
-#endregion
+        #endregion
 
-#region UI_EVENT_FUNCTION
+        #region UI_EVENT_FUNCTION
+        private void DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Console.WriteLine("e.ColumnIndex : " + e.ColumnIndex + " e.RowIndex : " + e.RowIndex);
+           if( accountBalanceDataGrid.Columns["계좌잔고_청산"].Index == e.ColumnIndex)
+            {
+                if (e.ColumnIndex >= 0 && accountBalanceDataGrid.Columns.Count >= e.ColumnIndex)
+                {
+                    if (accountBalanceDataGrid["계좌잔고_청산", e.RowIndex].Value == null) //최초 생성시는 null값이 들어가 있음
+                    {
+                        if (accountBalanceDataGrid["계좌잔고_종목코드", e.RowIndex].Value != null)
+                        {
+                            string itemCode = accountBalanceDataGrid["계좌잔고_종목코드", e.RowIndex].Value.ToString().Replace("A", "");
+                            int balanceCnt = int.Parse(accountBalanceDataGrid["계좌잔고_보유수량", e.RowIndex].Value.ToString());
+
+                            int orderResult = axKHOpenAPI1.SendOrder("청산매도주문", GetScreenNum().ToString(), currentAccount, 2, itemCode.Replace("A", ""), balanceCnt, 0, "03", ""); //2:신규매도
+
+                            if (orderResult == 0)
+                            {
+                                Console.WriteLine("접수 성공");
+                                accountBalanceDataGrid["계좌잔고_청산", e.RowIndex].Value = "청산주문접수";
+
+                                SettlementItem settlementItem = new SettlementItem(currentAccount, itemCode, balanceCnt);
+
+                                settlementItemList.Add(settlementItem);
+                                settleItemList.Add(settlementItem);
+
+                            }
+                        }
+                    }
+                }
+               
+            }
+        }
+        private void BalanceDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Console.WriteLine("e.ColumnIndex : " + e.ColumnIndex + " e.RowIndex : " + e.RowIndex);
+            if (autoTradingDataGrid.Columns["매매진행_청산"].Index == e.ColumnIndex)
+            {
+                if (e.ColumnIndex >= 0 && accountBalanceDataGrid.Columns.Count >= e.ColumnIndex)
+                {
+                    if (autoTradingDataGrid["매매진행_청산", e.RowIndex].Value == null) //최초 생성시는 null값이 들어가 있음
+                    {
+                        if (autoTradingDataGrid["매매진행_종목코드", e.RowIndex].Value != null)
+                        {
+                            string itemCode = autoTradingDataGrid["매매진행_종목코드", e.RowIndex].Value.ToString().Replace("A", "");
+                            int balanceCnt = int.Parse(autoTradingDataGrid["매매진행_매수량", e.RowIndex].Value.ToString());
+
+                            string conditionName = autoTradingDataGrid["매매진행_매수조건식", e.RowIndex].Value.ToString();
+
+                            TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition.Name.Equals(conditionName));
+                            if (ts != null)
+                            {
+                                TradingItem tradingItem = ts.tradingItemList.Find(o => o.itemCode.Equals(itemCode));
+                                if (tradingItem.IsCompleteBuying && tradingItem.IsSold == false)
+                                {
+                                    int orderResult = axKHOpenAPI1.SendOrder("청산매도주문", GetScreenNum().ToString(), ts.account, 2, itemCode, balanceCnt, 0, "03", ""); //2:신규매도
+
+                                    if (orderResult == 0)
+                                    {
+                                        Console.WriteLine("접수 성공");
+                                        tradingItem.IsSold = true;
+                                        tryingOrderList.Add(tradingItem);
+                                        autoTradingDataGrid["매매진행_진행상황", e.RowIndex].Value = "청산중";
+                                        autoTradingDataGrid["매매진행_청산", e.RowIndex].Value = "청산주문접수";
+
+
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        }
         private void ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             axKHOpenAPI1.CommConnect();
