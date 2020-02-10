@@ -848,14 +848,13 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.AutoSize = true;
             this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Controls.Add(this.groupBox5);
             this.groupBox2.Controls.Add(this.groupBox4);
             this.groupBox2.Location = new System.Drawing.Point(12, 416);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1028, 444);
+            this.groupBox2.Size = new System.Drawing.Size(1028, 500);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "매매전략";
@@ -863,9 +862,9 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.autoTradingDataGrid);
-            this.groupBox3.Location = new System.Drawing.Point(14, 310);
+            this.groupBox3.Location = new System.Drawing.Point(14, 335);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1008, 110);
+            this.groupBox3.Size = new System.Drawing.Size(1008, 144);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "매매진행상황";
@@ -897,11 +896,11 @@
             this.매매진행_매도가,
             this.매매진행_매수시간,
             this.매매진행_매도시간});
-            this.autoTradingDataGrid.Location = new System.Drawing.Point(8, 20);
+            this.autoTradingDataGrid.Location = new System.Drawing.Point(7, 24);
             this.autoTradingDataGrid.Name = "autoTradingDataGrid";
             this.autoTradingDataGrid.RowHeadersVisible = false;
             this.autoTradingDataGrid.RowTemplate.Height = 27;
-            this.autoTradingDataGrid.Size = new System.Drawing.Size(986, 76);
+            this.autoTradingDataGrid.Size = new System.Drawing.Size(986, 109);
             this.autoTradingDataGrid.TabIndex = 0;
             // 
             // 매매진행_종목코드
@@ -996,7 +995,7 @@
             this.groupBox5.Controls.Add(this.tabControl1);
             this.groupBox5.Location = new System.Drawing.Point(11, 158);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(1011, 146);
+            this.groupBox5.Size = new System.Drawing.Size(1011, 171);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "정보";
@@ -1014,7 +1013,7 @@
             this.tabControl1.Location = new System.Drawing.Point(6, 25);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(999, 115);
+            this.tabControl1.Size = new System.Drawing.Size(999, 140);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
@@ -1400,7 +1399,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 25);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(991, 86);
+            this.tabPage5.Size = new System.Drawing.Size(991, 111);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "기존잔고+매수잔고";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1430,7 +1429,7 @@
             this.accountBalanceDataGrid.RowHeadersVisible = false;
             this.accountBalanceDataGrid.RowTemplate.Height = 27;
             this.accountBalanceDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.accountBalanceDataGrid.Size = new System.Drawing.Size(988, 86);
+            this.accountBalanceDataGrid.Size = new System.Drawing.Size(988, 111);
             this.accountBalanceDataGrid.TabIndex = 0;
             // 
             // 계좌잔고_종목코드

@@ -57,6 +57,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettlementItem.cs" />
+    <Compile Include="BalanceSellStrategy.cs" />
     <Compile Include="TradingItem.cs" />
     <Compile Include="TradingStrategy.cs" />
     <EmbeddedResource Include="Form1.resx">
