@@ -18,5 +18,13 @@ namespace Singijeon
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO = "계좌평가현황요청";
 
         public const string RECEIVE_REAL_DATA_CONCLUSION = "주식체결";
+
+        public const string RECEIVE_CHEJAN_DATA_SUBMIT_OR_CONCLUSION = "0";
+        public const string RECEIVE_CHEJAN_DATA_BALANCE              = "1";
+        public const string RECEIVE_CHEJAN_DATA_SUBMIT = "접수";
+        public const string RECEIVE_CHEJAN_DATA_CONCLUSION = "체결";
+
+        public const string RECEIVE_CHEJAN_DATA_BUY = "매수";
+        public const string RECEIVE_CHEJAN_DATA_SELL = "매도";
     }
 }

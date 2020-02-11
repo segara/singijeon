@@ -556,7 +556,7 @@ namespace Singijeon
         {
             Console.WriteLine(e.sGubun);
 
-            if (e.sGubun.Equals("0"))
+            if (e.sGubun.Equals(ConstName.RECEIVE_CHEJAN_DATA_SUBMIT_OR_CONCLUSION))
             {
                 //접수 혹은 체결
 
@@ -588,7 +588,7 @@ namespace Singijeon
                 Console.WriteLine("단위체결량(체결당 체결량) :" + unitConclusionQuantity);
                 Console.WriteLine("________________________________");
 
-                if (orderState.Equals("접수"))
+                if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_SUBMIT))
                 {
 
                     //주문번호, 계좌, 시간, 종목코드 , 종목명, 주문수량, 주문가격, 매도/매수구분, 주문구분
@@ -597,12 +597,12 @@ namespace Singijeon
                     TradingItem item = this.tryingOrderList.Find(o => itemCode.Contains(o.itemCode));
                     if (item != null)
                     {
-                        if (orderType.Contains("매수"))
+                        if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                         {
                             item.buyOrderNum = ordernum;
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
                         }
-                        else if (orderType.Contains("매도"))
+                        else if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_SELL))
                         {
                             item.sellOrderNum = ordernum;
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
@@ -648,11 +648,11 @@ namespace Singijeon
                     outstandingDataGrid["미체결_주문수량", index].Value = orderQuantity;
                     outstandingDataGrid["미체결_미체결량", index].Value = orderQuantity;
                 }
-                else if (orderState.Equals("체결"))
+                else if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_CONCLUSION))
                 {
                     if (int.Parse(outstanding) == 0)
                     {
-                        if (orderType.Contains("매수"))
+                        if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                         {
                             foreach (TradingStrategy ts in tradingStrategyList)
                             {
@@ -675,7 +675,7 @@ namespace Singijeon
                                 }
                             }
                         }
-                        else if (orderType.Contains("매도"))
+                        else if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_SELL))
                         {
                             //자동 매매매 진행중일때
                             foreach (TradingStrategy ts in tradingStrategyList)
@@ -788,7 +788,7 @@ namespace Singijeon
                 }
 
             }
-            else if (e.sGubun.Equals("1"))
+            else if (e.sGubun.Equals(ConstName.RECEIVE_CHEJAN_DATA_BALANCE))
             {
                 //잔고 전달
                 string account = axKHOpenAPI1.GetChejanData(9201);
