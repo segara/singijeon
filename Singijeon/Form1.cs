@@ -979,7 +979,7 @@ namespace Singijeon
             long sellQnt = (long)balanceQntUpdown.Value;
 
             string accountNum = accountComboBox.Text;
-            int buyingPrice = int.Parse(b_averagePriceTxt.Text);
+            int buyingPrice = (int)double.Parse(b_averagePriceTxt.Text);
 
 
             if (accountNum.Length > 0)
