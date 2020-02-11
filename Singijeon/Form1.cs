@@ -41,7 +41,7 @@ namespace Singijeon
 
             LogInToolStripMenuItem.Click += ToolStripMenuItem_Click;
 
-            AddStratgyBtn.Click += AddStratgyBtn_Click;
+            AddStratgyBtn.Click += AddStratgyBtn_Click;  //전략생성 버튼
             balanceSellBtn.Click += BalanceSellBtn_Click;
 
             accountComboBox.SelectedIndexChanged += ComboBoxIndexChanged;
@@ -66,7 +66,7 @@ namespace Singijeon
             if (e.nErrCode == 0)
             {
                 Console.WriteLine("로그인 성공");
-                string server = axKHOpenAPI1.GetLoginInfo("GetServerGubun");
+                string server = axKHOpenAPI1.GetLoginInfo(ConstName.GET_SERVER_TYPE);
                 if (server.Equals("1"))
                 {
                     //모의투자 
@@ -77,7 +77,7 @@ namespace Singijeon
                     FEE_RATE = 0.33;
                 }
 
-                string accountList = axKHOpenAPI1.GetLoginInfo("ACCLIST");
+                string accountList = axKHOpenAPI1.GetLoginInfo(ConstName.GET_ACCOUNT_LIST);
                 string[] accountArray = accountList.Split(';');
 
                 foreach (string accountItem in accountArray)
@@ -135,7 +135,7 @@ namespace Singijeon
             Console.WriteLine("conditionName = " + conditionName);
             Console.WriteLine("itemCode = " + itemCode);
 
-            if (e.strType.Equals("I"))
+            if (e.strType.Equals(ConstName.RECEIVE_REAL_CONDITION_INSERTED))
             {
                 //종목 편입(어떤 전략(검색식)이었는지)
                 TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition.Name.Equals(conditionName));
@@ -157,14 +157,14 @@ namespace Singijeon
                 }
 
             }
-            else if (e.strType.Equals("D"))
+            else if (e.strType.Equals(ConstName.RECEIVE_REAL_CONDITION_DELETE))
             {
                 //종목 이탈
             }
         }
         private void API_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
-            if (e.sRQName.Contains("매수종목정보요청"))
+            if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_BUY_INFO))
             {
                 //검색 ->검색완료 -> 매수주문 -> 현재가격을 얻어오기위해 tr요청-> 이때 "매수종목정보요청:검색넘버" 로 요청
 
@@ -173,12 +173,15 @@ namespace Singijeon
                 {
                     int conditionIndex = int.Parse(rqNameArray[1]);
                     TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition.Index == conditionIndex);
+
                     if (ts != null)
                     {
                         string itemcode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "종목코드").Trim();
                         string price = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "현재가").Trim();
+                         
                         int i_price = 0;
                         int i_qnt = 0;
+
                         if (int.TryParse(price, out i_price))
                         {
                             i_price = Math.Abs(i_price);
@@ -237,7 +240,7 @@ namespace Singijeon
                     }
                 }
             }
-            else if (e.sRQName.Contains("계좌평가현황요청"))
+            else if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO))
             {
                 string accountName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "계좌명");
                 string bankName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "지점명");
@@ -272,6 +275,7 @@ namespace Singijeon
                 profitRate_label.Text = d_profitRate.ToString();
                 string codeList = string.Empty;
                 int cnt = axKHOpenAPI1.GetRepeatCnt(e.sTrCode, e.sRQName); //조회내용중 멀티데이터의 갯수를 알아온다
+
                 for (int i = 0; i < cnt; ++i)
                 {
                     string itemCode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "종목코드").Trim();
@@ -322,7 +326,7 @@ namespace Singijeon
         {
             string itemCode = e.sRealKey.Trim();
 
-            if (e.sRealType == "주식체결") //주식이 체결될 때 마다 실시간 데이터를 받음
+            if (e.sRealType == ConstName.RECEIVE_REAL_DATA_CONCLUSION) //주식이 체결될 때 마다 실시간 데이터를 받음
             {
                 string price = axKHOpenAPI1.GetCommRealData(itemCode, 10);    //현재가
                 string lowPrice = axKHOpenAPI1.GetCommRealData(itemCode, 18); //저가
@@ -546,7 +550,6 @@ namespace Singijeon
                         }
                     }
                 }
-
             }
         }
         private void API_OnReceiveChejanData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveChejanDataEvent e)
@@ -625,10 +628,7 @@ namespace Singijeon
                                 tryingSettlementItemList.Remove(settleItem);
                             }
                         }
-                      
                     }
-
-                   
 
                     int rowIndex = orderDataGridView.Rows.Add();
                     orderDataGridView["주문_주문번호", rowIndex].Value = ordernum;
@@ -642,11 +642,11 @@ namespace Singijeon
                     orderDataGridView["주문_주문가격", rowIndex].Value = orderPrice;
 
                     int index = outstandingDataGrid.Rows.Add();
-                    balanceDataGrid["미체결_주문번호", index].Value = ordernum;
-                    balanceDataGrid["미체결_종목코드", index].Value = itemCode;
-                    balanceDataGrid["미체결_종목명", index].Value = itemName;
-                    balanceDataGrid["미체결_주문수량", index].Value = orderQuantity;
-                    balanceDataGrid["미체결_미체결량", index].Value = orderQuantity;
+                    outstandingDataGrid["미체결_주문번호", index].Value = ordernum;
+                    outstandingDataGrid["미체결_종목코드", index].Value = itemCode;
+                    outstandingDataGrid["미체결_종목명", index].Value = itemName;
+                    outstandingDataGrid["미체결_주문수량", index].Value = orderQuantity;
+                    outstandingDataGrid["미체결_미체결량", index].Value = orderQuantity;
                 }
                 else if (orderState.Equals("체결"))
                 {
@@ -760,15 +760,15 @@ namespace Singijeon
                         }
                     }
                     int rowIndex = conclusionDataGrid.Rows.Add();
-                    orderDataGridView["체결_주문번호", rowIndex].Value = ordernum;
-                    orderDataGridView["체결_체결시간", rowIndex].Value = time;
-                    orderDataGridView["체결_종목코드", rowIndex].Value = itemCode;
-                    orderDataGridView["체결_종목명", rowIndex].Value = itemName;
-                    orderDataGridView["체결_주문량", rowIndex].Value = orderQuantity;
-                    orderDataGridView["체결_단위체결량", rowIndex].Value = unitConclusionQuantity;
-                    orderDataGridView["체결_누적체결량", rowIndex].Value = conclusionQuantity;
-                    orderDataGridView["체결_체결가", rowIndex].Value = conclusionPrice;
-                    orderDataGridView["체결_매매구분", rowIndex].Value = orderType;
+                    conclusionDataGrid["체결_주문번호", rowIndex].Value = ordernum;
+                    conclusionDataGrid["체결_체결시간", rowIndex].Value = time;
+                    conclusionDataGrid["체결_종목코드", rowIndex].Value = itemCode;
+                    conclusionDataGrid["체결_종목명", rowIndex].Value = itemName;
+                    conclusionDataGrid["체결_주문량", rowIndex].Value = orderQuantity;
+                    conclusionDataGrid["체결_단위체결량", rowIndex].Value = unitConclusionQuantity;
+                    conclusionDataGrid["체결_누적체결량", rowIndex].Value = conclusionQuantity;
+                    conclusionDataGrid["체결_체결가", rowIndex].Value = conclusionPrice;
+                    conclusionDataGrid["체결_매매구분", rowIndex].Value = orderType;
 
 
                     foreach (DataGridViewRow row in outstandingDataGrid.Rows)
