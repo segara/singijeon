@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Singijeon
 {
-    class StockItem
+    public class StockItem
     {
         public string Name { get; set; }
         public string Code { get; set; }

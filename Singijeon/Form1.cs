@@ -25,6 +25,8 @@ namespace Singijeon
         List<TradingStrategy> tradingStrategyList = new List<TradingStrategy>();
         List<BalanceSellStrategy> balanceSellStrategyList = new List<BalanceSellStrategy>();
 
+        List<StockItem> stockItemList = new List<StockItem>();//상장종목리스트
+
         List<TradingItem> tryingOrderList = new List<TradingItem>(); //주문접수시도
 
         //같은 종목에 대하여 주문이 여러개 들어가도 주문순서대로 응답이 오기 때문에 각각의 리스트로 들어가게됨
@@ -45,6 +47,8 @@ namespace Singijeon
             balanceSellBtn.Click += BalanceSellBtn_Click;
 
             accountComboBox.SelectedIndexChanged += ComboBoxIndexChanged;
+
+            interestConditionListBox.SelectedIndexChanged += InterestConditionListBox_SelectedIndexChanged;
 
             accountBalanceDataGrid.CellClick += DataGridView_CellClick;
             autoTradingDataGrid.CellClick += BalanceDataGridView_CellClick;
@@ -91,12 +95,19 @@ namespace Singijeon
                 string codeList = axKHOpenAPI1.GetCodeListByMarket(null);
                 string[] codeArray = codeList.Split(';');
 
-                foreach(string code in codeArray)
+                AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
+
+                foreach (string code in codeArray)
                 {
                     string name = axKHOpenAPI1.GetMasterCodeName(code);
                     StockItem stockItem = new StockItem() { Code = code, Name = name };
+                    stockItemList.Add(stockItem);
+                    collection.Add(name);
                 }
 
+                interestTextBox.AutoCompleteCustomSource = collection;
+
+                
                 //사용자 조건식 불러오기
                 axKHOpenAPI1.GetConditionLoad();
             }
@@ -1058,7 +1069,26 @@ namespace Singijeon
         {
             axKHOpenAPI1.CommConnect();
         }
+        private void InterestConditionListBox_SelectedIndexChanged(object sender, EventArgs s)
+        {
+            if (sender.Equals(interestConditionListBox))
+            {
+                if (interestConditionListBox.SelectedItem != null)
+                {
+                    string conditionName = interestConditionListBox.SelectedItem.ToString();
+                    Condition condition = listCondition.Find(o => o.Name.Equals(conditionName));
 
+                    if (condition != null)
+                    {
+                        interestListBox.Items.Clear();
+                        foreach (StockItem stockItem in condition.interestItemList)
+                        {
+                            interestListBox.Items.Add(stockItem.Name);
+                        }
+                    }
+                }
+            }
+        }
         private void ComboBoxIndexChanged (object sender, EventArgs e)
         {
            
@@ -1275,8 +1305,36 @@ namespace Singijeon
         {
             
         }
+        private void addInterestBtn_Click(object sender, EventArgs e)
+        {
+            if (interestConditionListBox.SelectedItem != null)
+            {
+                string conditionNameSelect = interestConditionListBox.SelectedItem.ToString();
 
-      
+                Condition condition = listCondition.Find(o => o.Name.Equals(conditionNameSelect));
+                if (condition != null)
+                {
+                    string itemName = interestTextBox.Text;
+                    StockItem stockItem = stockItemList.Find(o => o.Name.Equals(itemName));
+
+                    if (stockItem != null)
+                    {
+                        if (condition.interestItemList.Contains(stockItem) == false)
+                        {
+                            condition.interestItemList.Add(stockItem);
+                            interestConditionListBox.Items.Add(stockItem.Name);
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("조건식을 선택해주세요");
+            }
+
+        }
+
         #endregion
         private void StartMonitoring(Condition _condition)
         {
@@ -1352,5 +1410,7 @@ namespace Singijeon
                 Console.WriteLine(e.Message);
             }
         }
+
+        
     }
 }
