@@ -12,10 +12,10 @@ public class SettlementItem
     public int orderQnt;
     public string accountNum;
 
-    public SettlementItem(string accoutNum, string ItemCode, int orderQnt)
+    public SettlementItem(string _accoutNum, string _ItemCode, int _orderQnt)
     {
-        this.accountNum = accountNum;
-        this.ItemCode = ItemCode;
-        this.orderQnt = orderQnt;
+        this.accountNum = _accoutNum;
+        this.ItemCode = _ItemCode;
+        this.orderQnt = _orderQnt;
     }
 }

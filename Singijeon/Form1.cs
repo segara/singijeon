@@ -1,4 +1,4 @@
-﻿#define TEST_CONSOLE
+﻿//#define TEST_CONSOLE
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,11 +17,9 @@ namespace Singijeon
         string currentAccount = string.Empty;
 
         int screenNum = 1000;
-#if TEST_CONSOLE
+
         double FEE_RATE = 1;
-#else
-         double FEE_RATE = 0.33;
-#endif
+
         List<Condition> listCondition = new List<Condition>();
         List<TradingStrategy> tradingStrategyList = new List<TradingStrategy>();
         List<BalanceSellStrategy> balanceSellStrategyList = new List<BalanceSellStrategy>();
@@ -38,6 +36,7 @@ namespace Singijeon
         public tradingStrategyGridView()
         {
             InitializeComponent();
+            axKHOpenAPI1.CommConnect();
 
             LogInToolStripMenuItem.Click += ToolStripMenuItem_Click;
 
@@ -74,7 +73,7 @@ namespace Singijeon
                 }
                 else
                 {
-                    FEE_RATE = 0.33;
+                    FEE_RATE = 0.3;
                 }
 
                 string accountList = axKHOpenAPI1.GetLoginInfo(ConstName.GET_ACCOUNT_LIST);
@@ -242,6 +241,15 @@ namespace Singijeon
             }
             else if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO))
             {
+                if (accountBalanceDataGrid.DataSource != null)
+                {
+                    accountBalanceDataGrid.DataSource = null;
+                }
+                else
+                {
+                    accountBalanceDataGrid.Rows.Clear();
+                }
+
                 string accountName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "계좌명");
                 string bankName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "지점명");
                 string asset = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "예수금");
@@ -304,8 +312,8 @@ namespace Singijeon
                     string buyingAmount = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "매입금액").Trim();
                     long lBuyingAmount = long.Parse(buyingAmount);
 
-                    double dProfitRate = 100 * ((iPrice - dBuyingPrice) / dBuyingPrice) - FEE_RATE;
-
+                    //double dProfitRate = 100 * ((iPrice - dBuyingPrice) / dBuyingPrice) - FEE_RATE;
+                    double dProfitRate = GetProfitRate((double)iPrice, dBuyingPrice);
                     int rowIndex = accountBalanceDataGrid.Rows.Add();
 
                     accountBalanceDataGrid["계좌잔고_종목코드", rowIndex].Value = itemCode;
@@ -349,7 +357,8 @@ namespace Singijeon
                             {
                                 if (tradeItem.buyingPrice != 0)
                                 {
-                                    double realProfitRate = (100 * ((c_lPrice - tradeItem.buyingPrice) / (double)tradeItem.buyingPrice)) - FEE_RATE;
+                                    //double realProfitRate = (100 * ((c_lPrice - tradeItem.buyingPrice) / (double)tradeItem.buyingPrice)) - FEE_RATE;
+                                    double realProfitRate = GetProfitRate((double)c_lPrice, (double)tradeItem.buyingPrice);
                                     if (ts.usingTakeProfit)
                                     {
                                         if (realProfitRate >= ts.takeProfitRate)
@@ -425,7 +434,8 @@ namespace Singijeon
                     if(!bss.isSold && bss.buyingPrice!=0)
                     {
 
-                        double profitRate = (100 * (c_lPrice - bss.buyingPrice) / bss.buyingPrice) - FEE_RATE;
+                        //double profitRate = (100 * (c_lPrice - bss.buyingPrice) / bss.buyingPrice) - FEE_RATE;
+                        double profitRate = GetProfitRate((double)c_lPrice, (double)bss.buyingPrice);
                         if (bss.takeProfitRate <= profitRate) //익절
                         {
                             int orderResult = axKHOpenAPI1.SendOrder(
@@ -499,12 +509,24 @@ namespace Singijeon
                             row.Cells["계좌잔고_현재가"].Value = c_lPrice;
 
                             double buyingPrice = double.Parse(row.Cells["계좌잔고_평균단가"].Value.ToString());
+                            int balanceCount = int.Parse(row.Cells["계좌잔고_보유수량"].Value.ToString());
+
+                            double currentAllPrice = c_lPrice * balanceCount ;
 
                             if (buyingPrice != 0)
                             {
-                                double profitRate = 100 * (c_lPrice - buyingPrice) / buyingPrice - FEE_RATE;
-                                row.Cells["계좌잔고_손익률"].Value = profitRate;
+                                row.Cells["계좌잔고_평균단가"].Value = buyingPrice;
+                                row.Cells["계좌잔고_평가금액"].Value = currentAllPrice;
 
+                                double sellPrice = buyingPrice; // 평단가 
+                                double stockFee = ((double)c_lPrice * 0.01 * FEE_RATE) * (double)balanceCount + (double)c_lPrice * 0.0001 * (double)balanceCount;
+                                double allSellPrice = (sellPrice * (double)balanceCount) + stockFee;
+
+                                row.Cells["계좌잔고_손익금액"].Value = currentAllPrice - allSellPrice;
+                              
+
+                                double profitRate = GetProfitRate((double)c_lPrice, (double)sellPrice);
+                                row.Cells["계좌잔고_손익률"].Value = profitRate;
                             }
 
                         }
@@ -523,7 +545,8 @@ namespace Singijeon
 
                             if (buyingPrice != 0)
                             {
-                                double profitRate = 100 * (c_lPrice - buyingPrice) / buyingPrice - FEE_RATE;
+                                double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
+                             
                                 row.Cells["잔고_손익률"].Value = profitRate;
                             }
 
@@ -543,7 +566,7 @@ namespace Singijeon
                             {
                                 if (buyingPrice != 0)
                                 {
-                                    double profitRate = 100 * (c_lPrice - buyingPrice) / buyingPrice - FEE_RATE;
+                                   double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
                                     row.Cells["매매진행_손익률"].Value = profitRate;
                                 }
                             }
@@ -799,7 +822,7 @@ namespace Singijeon
                 string totalBuyingPrice = axKHOpenAPI1.GetChejanData(932);
                 string orderAvailableQnt = axKHOpenAPI1.GetChejanData(933);
                 string tradingType = axKHOpenAPI1.GetChejanData(946);
-                string profitRate = axKHOpenAPI1.GetChejanData(819);
+                string profitRate = axKHOpenAPI1.GetChejanData(8019);
                 string price = axKHOpenAPI1.GetChejanData(10);
 
                 Console.WriteLine("________________잔고_____________");
@@ -811,12 +834,13 @@ namespace Singijeon
                 Console.WriteLine("총매입가 :" + totalBuyingPrice);
                 Console.WriteLine("________________________________");
 
-                bool hasItem = false;
+                //잔고탭 업데이트
+                bool hasItem_balanceDataGrid = false;
                 foreach (DataGridViewRow row in balanceDataGrid.Rows)
                 {
                     if (row.Cells["잔고_종목코드"].Value != null && row.Cells["잔고_종목코드"].Value.ToString().Equals(itemCode))
                     {
-                        hasItem = true;
+                        hasItem_balanceDataGrid = true;
 
                         if (int.Parse(balanceQnt) > 0)
                         {
@@ -836,7 +860,7 @@ namespace Singijeon
                     }
                 }
 
-                if (!hasItem)
+                if (!hasItem_balanceDataGrid)
                 {
                     int rowIndex = balanceDataGrid.Rows.Add();
                     balanceDataGrid["잔고_계좌번호", rowIndex].Value = account;
@@ -849,6 +873,46 @@ namespace Singijeon
                     balanceDataGrid["잔고_손익률", rowIndex].Value = profitRate;
                     balanceDataGrid["잔고_매매구분", rowIndex].Value = tradingType;
                     balanceDataGrid["잔고_현재가", rowIndex].Value = price;
+                }
+
+                //기존잔고매수잔고탭 업데이트
+                bool hasItem_accountBalanceDataGrid = false;
+                foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
+                {
+                    if (row.Cells["계좌잔고_종목코드"].Value != null && row.Cells["계좌잔고_종목코드"].Value.ToString().Equals(itemCode))
+                    {
+                        hasItem_accountBalanceDataGrid = true;
+
+                        if (int.Parse(balanceQnt) > 0)
+                        {
+                            row.Cells["계좌잔고_보유수량"].Value = balanceQnt;
+                            row.Cells["계좌잔고_평균단가"].Value = buyingPrice;
+                            row.Cells["계좌잔고_손익률"].Value = profitRate;
+                            row.Cells["계좌잔고_현재가"].Value = price;
+                        }
+                        else
+                        {
+                            accountBalanceDataGrid.Rows.Remove(row);
+                        }
+
+                        break;
+                    }
+                }
+
+                if (!hasItem_accountBalanceDataGrid)
+                {
+                    int rowIndex = accountBalanceDataGrid.Rows.Add();
+                   
+                    accountBalanceDataGrid["계좌잔고_종목코드", rowIndex].Value = itemCode;
+                    accountBalanceDataGrid["계좌잔고_종목명", rowIndex].Value = itemName;
+                    accountBalanceDataGrid["계좌잔고_보유수량", rowIndex].Value = balanceQnt;
+                    accountBalanceDataGrid["계좌잔고_평균단가", rowIndex].Value = buyingPrice;
+                    accountBalanceDataGrid["계좌잔고_손익률", rowIndex].Value = profitRate;
+                    accountBalanceDataGrid["계좌잔고_현재가", rowIndex].Value = price;
+                    accountBalanceDataGrid["계좌잔고_매입금액", rowIndex].Value = totalBuyingPrice;
+
+                    accountBalanceDataGrid["계좌잔고_평가금액", rowIndex].Value = int.Parse(price) * int.Parse(balanceQnt);
+                    accountBalanceDataGrid["계좌잔고_손익금액", rowIndex].Value = (int.Parse(price) - int.Parse(buyingPrice)) * int.Parse(balanceQnt);
                 }
             }
         }
@@ -956,6 +1020,7 @@ namespace Singijeon
 
         private void ComboBoxIndexChanged (object sender, EventArgs e)
         {
+           
           if(sender.Equals(accountComboBox))
             {
                 string account = accountComboBox.SelectedItem.ToString();
@@ -965,7 +1030,7 @@ namespace Singijeon
                     axKHOpenAPI1.SetInputValue("비밀번호", "");
                     axKHOpenAPI1.SetInputValue("상장폐지조회구분", "0");
                     axKHOpenAPI1.SetInputValue("비밀번호입력매체구분", "00");
-                    axKHOpenAPI1.CommRqData("계좌평가현황요청", "OPW00004", 0, GetScreenNum().ToString());
+                    axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO, "OPW00004", 0, GetScreenNum().ToString());
 
                     currentAccount = account;
                 }
@@ -1165,7 +1230,17 @@ namespace Singijeon
 
             }
         }
+        private void Test_btn_Click(object sender, EventArgs e)
+        {
+            axKHOpenAPI1.SetInputValue("계좌번호", currentAccount);
+            axKHOpenAPI1.SetInputValue("비밀번호", "");
+            axKHOpenAPI1.SetInputValue("상장폐지조회구분", "0");
+            axKHOpenAPI1.SetInputValue("비밀번호입력매체구분", "00");
+            axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO, "OPW00004", 0, GetScreenNum().ToString());
 
+           
+
+        }
         #endregion
         private void StartMonitoring(Condition _condition)
         {
@@ -1190,6 +1265,12 @@ namespace Singijeon
             return screenNum;
         }
 
+        public double GetProfitRate(double curPrice , double buyPrice)
+        {
+            if (buyPrice <= 0)
+                return 0;
+            return (double)100 * ((curPrice - buyPrice) / buyPrice) - FEE_RATE;
+        }
         private void AddStrategyToDataGridView(TradingStrategy tradingStrategy)
         {
             if(tradingStrategy != null)
@@ -1208,7 +1289,7 @@ namespace Singijeon
                 tsDataGridView["매매전략_손절률", rowIndex].Value = tradingStrategy.stoplossRate;
             }
         }
-        
+
        
     }
 }
