@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +48,7 @@ namespace Singijeon
 
             accountBalanceDataGrid.CellClick += DataGridView_CellClick;
             autoTradingDataGrid.CellClick += BalanceDataGridView_CellClick;
+            tsDataGridView.CellClick += TradingStrategyGridView_CellClick;
 
             accountBalanceDataGrid.SelectionChanged += AccountDataGridView_SelectionChanged;
 
@@ -64,7 +66,7 @@ namespace Singijeon
         {
             if (e.nErrCode == 0)
             {
-                Console.WriteLine("로그인 성공");
+                WriteLog("로그인 성공");
                 string server = axKHOpenAPI1.GetLoginInfo(ConstName.GET_SERVER_TYPE);
                 if (server.Equals("1"))
                 {
@@ -86,12 +88,21 @@ namespace Singijeon
                         accountComboBox.Items.Add(accountItem);
                     }
                 }
+                string codeList = axKHOpenAPI1.GetCodeListByMarket(null);
+                string[] codeArray = codeList.Split(';');
+
+                foreach(string code in codeArray)
+                {
+                    string name = axKHOpenAPI1.GetMasterCodeName(code);
+                    StockItem stockItem = new StockItem() { Code = code, Name = name };
+                }
+
                 //사용자 조건식 불러오기
                 axKHOpenAPI1.GetConditionLoad();
             }
             else
             {
-                MessageBox.Show("로그인 실패 " + e.nErrCode.ToString());
+                WriteLog("로그인 실패 " + e.nErrCode.ToString());
             }
         }
         private void API_OnReceiveConditionVer(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveConditionVerEvent e)
@@ -122,6 +133,7 @@ namespace Singijeon
             foreach (Condition condition in listCondition)
             {
                 BuyConditionComboBox.Items.Add(condition.Name);
+                interestConditionListBox.Items.Add(condition.Name);
             }
         }
         //검색에 편입시 호출
@@ -228,6 +240,8 @@ namespace Singijeon
                                     autoTradingDataGrid["매매진행_매수량", addRow].Value = i_qnt;
                                     autoTradingDataGrid["매매진행_매수가", addRow].Value = i_price;
                                     autoTradingDataGrid["매매진행_매수시간", addRow].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                                    WriteLog("자동 매수 요청 - "+ "종목코드 : " + itemcode + " 주문가 : " + i_price + " 주문수량 : " + i_qnt + " 매수조건식 : " + ts.buyCondition.Name);
                                 }
                             }
                         }
@@ -388,6 +402,9 @@ namespace Singijeon
                                                         break;
                                                     }
                                                 }
+
+                                                WriteLog("자동 익절 요청 - " + "종목코드 : " + itemCode + " 주문가 : " + c_lPrice + " 주문수량 : " + tradeItem.buyingQnt + " 매수조건식 : " + ts.buyCondition.Name);
+
                                             }
                                         }
                                     }
@@ -419,6 +436,8 @@ namespace Singijeon
                                                         break;
                                                     }
                                                 }
+                                                WriteLog("자동 손절 요청 - " + "종목코드 : " + itemCode + " 주문가 : " + c_lPrice + " 주문수량 : " + tradeItem.buyingQnt + " 매수조건식 : " + ts.buyCondition.Name);
+
                                             }
                                         }
                                     }
@@ -624,11 +643,14 @@ namespace Singijeon
                         {
                             item.buyOrderNum = ordernum;
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
+
+                             WriteLog("자동 매수 요청 - "+ "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
                         }
                         else if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_SELL))
                         {
                             item.sellOrderNum = ordernum;
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
+                            WriteLog("자동 매도 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
                         }
 
                     }
@@ -970,6 +992,25 @@ namespace Singijeon
                
             }
         }
+        private void TradingStrategyGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.ColumnIndex == tsDataGridView.Columns["매매전략_취소"].Index)
+            {
+                string conditionName = tsDataGridView["매매전략_매수조건식", e.RowIndex].Value.ToString();
+
+                TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(conditionName));
+                   
+                if(ts != null)
+                {
+                    DialogResult result = MessageBox.Show(conditionName + "매매조건을 삭제하시겠습니까?", "매매전략 삭제", MessageBoxButtons.YesNo);
+                    if(result == DialogResult.Yes)
+                    {
+                        tradingStrategyList.Remove(ts);
+                        tsDataGridView.Rows.RemoveAt(e.RowIndex);
+                    }
+                }
+            }
+        }
         private void BalanceDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             Console.WriteLine("e.ColumnIndex : " + e.ColumnIndex + " e.RowIndex : " + e.RowIndex);
@@ -1200,7 +1241,7 @@ namespace Singijeon
 
             StartMonitoring(ts.buyCondition);
 
-            Console.WriteLine("전략이 입력됬습니다");
+           WriteLog("전략이 입력됬습니다 \n 매수조건식 : " + ts.buyCondition.Name + "\n"+ " 총투자금 : " + ts.totalInvestment + "\n" + " 종목수 : " + ts.buyItemCount);
         }
 
         private void AccountDataGridView_SelectionChanged(object sender, EventArgs e)
@@ -1232,15 +1273,10 @@ namespace Singijeon
         }
         private void Test_btn_Click(object sender, EventArgs e)
         {
-            axKHOpenAPI1.SetInputValue("계좌번호", currentAccount);
-            axKHOpenAPI1.SetInputValue("비밀번호", "");
-            axKHOpenAPI1.SetInputValue("상장폐지조회구분", "0");
-            axKHOpenAPI1.SetInputValue("비밀번호입력매체구분", "00");
-            axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO, "OPW00004", 0, GetScreenNum().ToString());
-
-           
-
+            
         }
+
+      
         #endregion
         private void StartMonitoring(Condition _condition)
         {
@@ -1271,6 +1307,7 @@ namespace Singijeon
                 return 0;
             return (double)100 * ((curPrice - buyPrice) / buyPrice) - FEE_RATE;
         }
+
         private void AddStrategyToDataGridView(TradingStrategy tradingStrategy)
         {
             if(tradingStrategy != null)
@@ -1289,7 +1326,31 @@ namespace Singijeon
                 tsDataGridView["매매전략_손절률", rowIndex].Value = tradingStrategy.stoplossRate;
             }
         }
+        private void WriteLog(string log)
+        {
+            string filePath =  DateTime.Now.ToString("yyyyMMdd") + "_log.txt";
+            FileInfo fi = new FileInfo(filePath);
 
-       
+            try
+            {
+                if(fi.Exists)
+                {
+                    using (StreamWriter sw = File.AppendText (filePath))
+                    {
+                        sw.WriteLine("[{0}] - {1} ", DateTime.Now.ToString("HH:mm:ss"), log);
+                    }
+                }
+                else
+                {
+                    using (StreamWriter sw = new StreamWriter(filePath))
+                    {
+                        sw.WriteLine("[{0}] - {1} ", DateTime.Now.ToString("HH:mm:ss"), log);
+                    }
+                }
+               
+            }catch(Exception e){
+                Console.WriteLine(e.Message);
+            }
+        }
     }
 }
