@@ -1165,6 +1165,16 @@ namespace Singijeon
                 {
                     if (sellQnt > 0)
                     {
+                        //잔고 매도 전략 추가시 기존 전략의 자동 매도는 전부 꺼준다
+
+                        List<TradingItem> tradeItemListAll = GetAllTradingItemData(itemCode);
+
+                        foreach (TradingItem tradeItem in tradeItemListAll)
+                        {
+                            tradeItem.ts.usingStoploss = false;
+                            tradeItem.ts.usingTakeProfit = false;
+                        }
+
                         //매매 전략
 
                         bool usingProfitCheckBox =  b_ProfitSellCheckBox.Checked; //익절사용
