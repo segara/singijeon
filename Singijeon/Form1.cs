@@ -15,6 +15,7 @@ namespace Singijeon
 {
     public partial class tradingStrategyGridView : Form
     {
+
         string currentAccount = string.Empty;
 
         int screenNum = 1000;
@@ -42,7 +43,7 @@ namespace Singijeon
             axKHOpenAPI1.CommConnect();
 
             LogInToolStripMenuItem.Click += ToolStripMenuItem_Click;
-
+         
             AddStratgyBtn.Click += AddStratgyBtn_Click;  //전략생성 버튼
             balanceSellBtn.Click += BalanceSellBtn_Click;
 
@@ -1354,6 +1355,11 @@ namespace Singijeon
             }
 
         }
+        private void PrintToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form2 printForm = new Form2(axKHOpenAPI1);
+            printForm.Show();
+        }
 
         #endregion
         private void StartMonitoring(Condition _condition)
@@ -1445,6 +1451,6 @@ namespace Singijeon
             }
         }
 
-        
+       
     }
 }
