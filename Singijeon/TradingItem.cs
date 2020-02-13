@@ -9,6 +9,7 @@ namespace Singijeon
     //
     public class TradingItem 
     {
+        public TradingStrategy ts;
         public string buyOrderNum;
         public string sellOrderNum;
         public string itemCode;
@@ -18,8 +19,9 @@ namespace Singijeon
         public bool IsSold; //매도주문 여부
         public bool IsCompleteBuying; //매수완료 여부
 
-        public TradingItem(string itemCode, long buyingPrice, int buyingQnt)
+        public TradingItem(TradingStrategy tsItem, string itemCode, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false)
         {
+            this.ts = tsItem;
             this.itemCode = itemCode;
             this.buyingPrice = buyingPrice;
             this.buyingQnt = buyingQnt;

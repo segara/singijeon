@@ -231,7 +231,7 @@ namespace Singijeon
                                 {
                                     Console.WriteLine("매수주문 성공");
 
-                                    TradingItem tradingItem = new TradingItem(itemcode, i_price, i_qnt);
+                                    TradingItem tradingItem = new TradingItem(ts, itemcode, i_price, i_qnt);
 
                                     ts.tradingItemList.Add(tradingItem); //매수전략 내에 매매진행 종목 추가
 
@@ -370,102 +370,82 @@ namespace Singijeon
 
                 //종목의 매매전략 얻어오기
                 //모든 매매전략내 전략에 포함된 종목을 찾고, 매매전략의 손익률 셋팅과 비교
+                //삭제 예정(잔고 매도로 통합)
+                List<TradingItem> tradeItemListAll =  GetAllTradingItemData(itemCode);
 
-                foreach (TradingStrategy ts in tradingStrategyList)
+                foreach (TradingItem tradeItem in tradeItemListAll)
                 {
-                    List<TradingItem> tradeItemList = ts.tradingItemList.FindAll(o => o.itemCode.Equals(itemCode));
-
-                    if (tradeItemList != null && tradeItemList.Count > 0) //매매 진행 종목을 찾았을 경우
+                    if (tradeItem.IsCompleteBuying && !tradeItem.IsSold && tradeItem.buyingPrice != 0) //매수 완료 되고 매도 진행안된것 
                     {
-                        foreach (TradingItem tradeItem in tradeItemList)
+                        double realProfitRate = GetProfitRate((double)c_lPrice, (double)tradeItem.buyingPrice);
+                        if (tradeItem.ts.usingTakeProfit)
                         {
-                            if (tradeItem.IsCompleteBuying && !tradeItem.IsSold) //매수 완료 되고 매도 진행안된것 
+                            if (realProfitRate >= tradeItem.ts.takeProfitRate)
                             {
-                                if (tradeItem.buyingPrice != 0)
+                                int orderResult = axKHOpenAPI1.SendOrder(
+                                    "종목익절매도",
+                                    GetScreenNum().ToString(),
+                                    tradeItem.ts.account,
+                                    2,
+                                    itemCode,
+                                    tradeItem.buyingQnt,
+                                    (int)c_lPrice,
+                                    "00",//지정가
+                                    "" //원주문번호없음
+                                );
+                                if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
                                 {
-                                    //double realProfitRate = (100 * ((c_lPrice - tradeItem.buyingPrice) / (double)tradeItem.buyingPrice)) - FEE_RATE;
-                                    double realProfitRate = GetProfitRate((double)c_lPrice, (double)tradeItem.buyingPrice);
-                                    if (ts.usingTakeProfit)
-                                    {
-                                        if (realProfitRate >= ts.takeProfitRate)
-                                        {
-                                            int orderResult = axKHOpenAPI1.SendOrder(
-                                                "종목익절매도",
-                                                GetScreenNum().ToString(),
-                                                ts.account,
-                                                2,
-                                                itemCode,
-                                                tradeItem.buyingQnt,
-                                                (int)c_lPrice,
-                                                "00",//지정가
-                                                "" //원주문번호없음
-                                            );
-                                            if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
-                                            {
-                                                this.tryingOrderList.Add(tradeItem);
-                                                tradeItem.IsSold = true;
+                                    this.tryingOrderList.Add(tradeItem);
+                                    tradeItem.IsSold = true;
 
-                                                foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
-                                                {
-                                                    if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(itemCode)
-                                                        && row.Cells["매매진행_매수조건식"].Value.ToString().Equals(ts.buyCondition.Name))
-                                                    {
-                                                        row.Cells["매매진행_진행상황"].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT;
-                                                        break;
-                                                    }
-                                                }
+                                    UpdateAutoTradingDataGridRow(itemCode, tradeItem, c_lPrice, ConstName.AUTO_TRADING_STATE_TAKE_PROFIT);
+                                    WriteLog("자동 익절 요청 - " + "종목코드 : " + itemCode + " 주문가 : " + c_lPrice + " 주문수량 : " + tradeItem.buyingQnt + " 매수조건식 : " + tradeItem.ts.buyCondition.Name);
 
-                                                WriteLog("자동 익절 요청 - " + "종목코드 : " + itemCode + " 주문가 : " + c_lPrice + " 주문수량 : " + tradeItem.buyingQnt + " 매수조건식 : " + ts.buyCondition.Name);
+                                }
+                                else
+                                {
+                                    WriteLog("자동 익절 요청 실패");
+                                }
+                            }
+                        }
+                        if (tradeItem.ts.usingStoploss)
+                        {
+                            if (realProfitRate <= tradeItem.ts.stoplossRate)
+                            {
+                                int orderResult = axKHOpenAPI1.SendOrder(
+                                        "종목손절매도",
+                                        GetScreenNum().ToString(),
+                                        tradeItem.ts.account,
+                                        2,
+                                        itemCode,
+                                        tradeItem.buyingQnt,
+                                        (int)c_lPrice,
+                                        "03",//시장가
+                                        "" //원주문번호없음
+                                    );
+                                if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
+                                {
+                                    this.tryingOrderList.Add(tradeItem);
+                                    tradeItem.IsSold = true;
+                                  
+                                    UpdateAutoTradingDataGridRow(itemCode, tradeItem, c_lPrice, ConstName.AUTO_TRADING_STATE_STOPLOSS);
+                                    WriteLog("자동 손절 요청 - " + "종목코드 : " + itemCode + " 주문가 : " + c_lPrice + " 주문수량 : " + tradeItem.buyingQnt + " 매수조건식 : " + tradeItem.ts.buyCondition.Name);
 
-                                            }
-                                        }
-                                    }
-                                    if (ts.usingStoploss)
-                                    {
-                                        if (realProfitRate <= ts.stoplossRate)
-                                        {
-                                            int orderResult = axKHOpenAPI1.SendOrder(
-                                                 "종목손절매도",
-                                                 GetScreenNum().ToString(),
-                                                 ts.account,
-                                                 2,
-                                                 itemCode,
-                                                 tradeItem.buyingQnt,
-                                                 (int)c_lPrice,
-                                                 "03",//시장가
-                                                 "" //원주문번호없음
-                                             );
-                                            if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
-                                            {
-                                                this.tryingOrderList.Add(tradeItem);
-                                                tradeItem.IsSold = true;
-                                                foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
-                                                {
-                                                    if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(itemCode)
-                                                        && row.Cells["매매진행_매수조건식"].Value.ToString().Equals(ts.buyCondition.Name))
-                                                    {
-                                                        row.Cells["매매진행_진행상황"].Value = ConstName.AUTO_TRADING_STATE_STOPLOSS;
-                                                        break;
-                                                    }
-                                                }
-                                                WriteLog("자동 손절 요청 - " + "종목코드 : " + itemCode + " 주문가 : " + c_lPrice + " 주문수량 : " + tradeItem.buyingQnt + " 매수조건식 : " + ts.buyCondition.Name);
-
-                                            }
-                                        }
-                                    }
+                                }
+                                else
+                                {
+                                    WriteLog("자동 손절 요청 실패");
                                 }
                             }
                         }
                     }
                 }
-
+               
                 BalanceSellStrategy bss = balanceSellStrategyList.Find(o => o.itemCode.Equals(itemCode));
                 if(bss!=null)
                 {
                     if(!bss.isSold && bss.buyingPrice!=0)
                     {
-
-                        //double profitRate = (100 * (c_lPrice - bss.buyingPrice) / bss.buyingPrice) - FEE_RATE;
                         double profitRate = GetProfitRate((double)c_lPrice, (double)bss.buyingPrice);
                         if (bss.takeProfitRate <= profitRate) //익절
                         {
@@ -485,17 +465,12 @@ namespace Singijeon
 
                                 bss.isSold = true;
                                 tryingSellList.Add(bss);
-                                foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
-                                {
-                                    if (row.Cells["매매진행_종목코드"].Value != null)
-                                    {
-                                        if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode)
-                                            && row.Cells["매매진행_진행상황"].Value.ToString().Equals(ConstName.AUTO_TRADING_STATE_SELL_MONITORING))
-                                        {
-                                            row.Cells["매매진행_진행상황"].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT;
-                                        }
-                                    }
-                                }
+
+                                UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_TAKE_PROFIT);
+                            }
+                            else
+                            {
+                                WriteLog("잔고 익절 요청 실패");
                             }
                         }
                         else if (bss.stoplossRate > profitRate) //손절
@@ -515,91 +490,143 @@ namespace Singijeon
                             {
                                 bss.isSold = true;
                                 tryingSellList.Add(bss);
-                                foreach (DataGridViewRow row in  autoTradingDataGrid.Rows)
-                                {
-                                    if (row.Cells["매매진행_종목코드"].Value != null)
-                                    {
-                                        if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode)
-                                            && row.Cells["매매진행_진행상황"].Value.ToString().Equals(ConstName.AUTO_TRADING_STATE_SELL_MONITORING))
-                                        {
-                                            row.Cells["매매진행_진행상황"].Value = ConstName.AUTO_TRADING_STATE_STOPLOSS;
-                                        }
-                                    }
-                                }
+                                UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_STOPLOSS);
+
+                            }
+                            else
+                            {
+                                WriteLog("잔고 손절 요청 실패");
                             }
                         }
                     } 
                 }
 
-                foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
+
+                UpdateAccountBalanceDataGridViewRow(itemCode, c_lPrice);
+
+                UpdateBalanceDataGridViewRow(itemCode, c_lPrice);
+
+                UpdateAutoTradingDataGridViewRow(itemCode, c_lPrice);
+            }
+        }
+        private List<TradingItem> GetAllTradingItemData(string itemCode)
+        {
+            List<TradingItem> returnList = new List<TradingItem>();
+
+            foreach (TradingStrategy ts in tradingStrategyList)
+            {
+                List<TradingItem> tradeItemList = ts.tradingItemList.FindAll(o => o.itemCode.Equals(itemCode));
+                if (tradeItemList != null && tradeItemList.Count > 0) //매매 진행 종목을 찾았을 경우
                 {
-                    if (row.Cells["계좌잔고_종목코드"].Value != null)
+                    foreach (TradingItem tradeItem in tradeItemList)
                     {
-                        if (row.Cells["계좌잔고_종목코드"].Value.ToString().Contains(itemCode))
-                        {
-                            row.Cells["계좌잔고_현재가"].Value = c_lPrice;
-
-                            double buyingPrice = double.Parse(row.Cells["계좌잔고_평균단가"].Value.ToString());
-                            int balanceCount = int.Parse(row.Cells["계좌잔고_보유수량"].Value.ToString());
-
-                            double currentAllPrice = c_lPrice * balanceCount ;
-
-                            if (buyingPrice != 0)
-                            {
-                                row.Cells["계좌잔고_평균단가"].Value = buyingPrice;
-                                row.Cells["계좌잔고_평가금액"].Value = currentAllPrice;
-
-                                double sellPrice = buyingPrice; // 평단가 
-                                double stockFee = ((double)c_lPrice * 0.01 * FEE_RATE) * (double)balanceCount; //+ ((double)c_lPrice * 0.01 * 0.015 * (double)balanceCount); //+ ((double)buyingPrice * 0.01 * 0.015 * (double)balanceCount);
-                                double allSellPrice = (sellPrice * (double)balanceCount) + stockFee;
-
-                                row.Cells["계좌잔고_손익금액"].Value = currentAllPrice - allSellPrice;
-                              
-
-                                double profitRate = GetProfitRate((double)c_lPrice, (double)sellPrice);
-                                row.Cells["계좌잔고_손익률"].Value = profitRate;
-                            }
-
-                        }
+                        returnList.Add(tradeItem);
                     }
                 }
-
-                foreach (DataGridViewRow row in balanceDataGrid.Rows)
+            }
+            return returnList;
+        }
+        private void UpdateAutoTradingDataGridRow(string itemCode, TradingItem tradeItem, long c_lPrice, string curState)
+        {
+            foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
+            {
+                if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(itemCode)
+                    && row.Cells["매매진행_매수조건식"].Value.ToString().Equals(tradeItem.ts.buyCondition.Name))
                 {
-                    if (row.Cells["잔고_종목코드"].Value != null)
+                    row.Cells["매매진행_진행상황"].Value = curState;
+                    break;
+                }
+            }
+        }
+
+        private void UpdateAutoTradingDataGridRowSellStrategy(string itemCode, string changeState)
+        {
+            foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
+            {
+                if (row.Cells["매매진행_종목코드"].Value != null)
+                {
+                    if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode)
+                        && row.Cells["매매진행_진행상황"].Value.ToString().Equals(ConstName.AUTO_TRADING_STATE_SELL_MONITORING))
                     {
-                        if (row.Cells["잔고_종목코드"].Value.ToString().Contains(itemCode))
+                        row.Cells["매매진행_진행상황"].Value = changeState;
+                    }
+                }
+            }
+        }
+        private void UpdateAccountBalanceDataGridViewRow(string itemCode, long c_lPrice)
+        {
+            foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
+            {
+                if (row.Cells["계좌잔고_종목코드"].Value != null)
+                {
+                    if (row.Cells["계좌잔고_종목코드"].Value.ToString().Contains(itemCode))
+                    {
+                        row.Cells["계좌잔고_현재가"].Value = c_lPrice;
+
+                        double buyingPrice = double.Parse(row.Cells["계좌잔고_평균단가"].Value.ToString());
+                        int balanceCount = int.Parse(row.Cells["계좌잔고_보유수량"].Value.ToString());
+
+                        double currentAllPrice = c_lPrice * balanceCount;
+
+                        if (buyingPrice != 0)
                         {
-                            row.Cells["잔고_현재가"].Value = c_lPrice;
+                            row.Cells["계좌잔고_평균단가"].Value = buyingPrice;
+                            row.Cells["계좌잔고_평가금액"].Value = currentAllPrice;
 
-                            double buyingPrice = double.Parse(row.Cells["잔고_매입단가"].Value.ToString());
+                            double sellPrice = buyingPrice; // 평단가 
+                            double stockFee = ((double)c_lPrice * 0.01 * FEE_RATE) * (double)balanceCount; //+ ((double)c_lPrice * 0.01 * 0.015 * (double)balanceCount); //+ ((double)buyingPrice * 0.01 * 0.015 * (double)balanceCount);
+                            double allSellPrice = (sellPrice * (double)balanceCount) + stockFee;
 
+                            row.Cells["계좌잔고_손익금액"].Value = currentAllPrice - allSellPrice;
+
+
+                            double profitRate = GetProfitRate((double)c_lPrice, (double)sellPrice);
+                            row.Cells["계좌잔고_손익률"].Value = profitRate;
+                        }
+
+                    }
+                }
+            }
+        }
+        private void UpdateBalanceDataGridViewRow(string itemCode, long c_lPrice)
+        {
+            foreach (DataGridViewRow row in balanceDataGrid.Rows)
+            {
+                if (row.Cells["잔고_종목코드"].Value != null)
+                {
+                    if (row.Cells["잔고_종목코드"].Value.ToString().Contains(itemCode))
+                    {
+                        row.Cells["잔고_현재가"].Value = c_lPrice;
+
+                        double buyingPrice = double.Parse(row.Cells["잔고_매입단가"].Value.ToString());
+
+                        if (buyingPrice != 0)
+                        {
+                            double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
+
+                            row.Cells["잔고_손익률"].Value = profitRate;
+                        }
+
+                    }
+                }
+            }
+        }
+        private void UpdateAutoTradingDataGridViewRow(string itemCode, long c_lPrice)
+        {
+            foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
+            {
+                if (row.Cells["매매진행_종목코드"].Value != null)
+                {
+                    if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode))
+                    {
+                        double buyingPrice = double.Parse(row.Cells["매매진행_매수가"].Value.ToString());
+                        row.Cells["매매진행_현재가"].Value = c_lPrice;
+                        if (row.Cells["매매진행_진행상황"].Value != null && !row.Cells["매매진행_진행상황"].Value.ToString().Equals(ConstName.AUTO_TRADING_STATE_BUY_COMPLETE))
+                        {
                             if (buyingPrice != 0)
                             {
                                 double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
-                             
-                                row.Cells["잔고_손익률"].Value = profitRate;
-                            }
-
-                        }
-                    }
-                }
-
-                foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
-                {
-                    if (row.Cells["매매진행_종목코드"].Value != null)
-                    {
-                        if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode))
-                        {
-                            double buyingPrice = double.Parse(row.Cells["매매진행_매수가"].Value.ToString());
-                            row.Cells["매매진행_현재가"].Value = c_lPrice;
-                            if (row.Cells["매매진행_진행상황"].Value != null && !row.Cells["매매진행_진행상황"].Value.ToString().Equals(ConstName.AUTO_TRADING_STATE_BUY_COMPLETE))
-                            {
-                                if (buyingPrice != 0)
-                                {
-                                   double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
-                                    row.Cells["매매진행_손익률"].Value = profitRate;
-                                }
+                                row.Cells["매매진행_손익률"].Value = profitRate;
                             }
                         }
                     }
