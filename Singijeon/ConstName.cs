@@ -26,5 +26,16 @@ namespace Singijeon
 
         public const string RECEIVE_CHEJAN_DATA_BUY = "매수";
         public const string RECEIVE_CHEJAN_DATA_SELL = "매도";
+
+        public const string AUTO_TRADING_STATE_BUY_NOT_COMPLETE = "매수중";
+        public const string AUTO_TRADING_STATE_SELL_NOT_COMPLETE = "매도중";
+        public const string AUTO_TRADING_STATE_BUY_COMPLETE = "매수완료";
+        public const string AUTO_TRADING_STATE_SELL_COMPLETE = "매도완료";
+        public const string AUTO_TRADING_STATE_TAKE_PROFIT = "익절매도중";
+        public const string AUTO_TRADING_STATE_STOPLOSS = "손절매도중";
+        public const string AUTO_TRADING_STATE_CLEAR_NOT_COMPLETE = "청산중";
+        public const string AUTO_TRADING_STATE_CLEAR_COMPLETE = "청산완료";
+        public const string AUTO_TRADING_STATE_SELL_MONITORING = "매도감시";
+        public const string AUTO_TRADING_STATE_CONCLUESION_COMPLETE = "매매완료";
     }
 }

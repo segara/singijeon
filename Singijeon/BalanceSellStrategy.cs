@@ -9,7 +9,7 @@ namespace Singijeon
     //
     public class BalanceSellStrategy
     {
-        public string orderNum;
+        public string orderNum = string.Empty;
 
         public string account;
         public string itemCode;

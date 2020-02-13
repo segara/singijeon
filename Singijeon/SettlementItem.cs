@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 public class SettlementItem 
 {
 
-    public string sellOrderNum;
+    public string sellOrderNum = string.Empty;
     public string ItemCode;
     public int orderQnt;
     public string accountNum;
