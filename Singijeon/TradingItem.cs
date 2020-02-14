@@ -16,6 +16,7 @@ namespace Singijeon
         public string itemName;
         public long buyingPrice;
         public int buyingQnt;
+
         public bool IsSold; //매도주문 여부
         public bool IsCompleteBuying; //매수완료 여부
 
