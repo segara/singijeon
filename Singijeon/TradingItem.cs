@@ -17,6 +17,10 @@ namespace Singijeon
         public long buyingPrice;
         public int buyingQnt;
 
+        public int trailingTickCnt;
+
+        public long curPrice;
+
         public bool IsSold; //매도주문 여부
         public bool IsCompleteBuying; //매수완료 여부
 
@@ -31,6 +35,10 @@ namespace Singijeon
 
             this.buyOrderNum = string.Empty;
             this.sellOrderNum = string.Empty;
+        }
+        public void UpdateCurrentPrice(long _price)
+        {
+            this.curPrice = _price;
         }
     }
 }
