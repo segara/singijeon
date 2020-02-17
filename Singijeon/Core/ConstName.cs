@@ -21,6 +21,7 @@ namespace Singijeon
 
         public const string RECEIVE_REAL_DATA_CONCLUSION = "주식체결";
         public const string RECEIVE_REAL_DATA_HOGA = "주식호가잔량";
+        public const string RECEIVE_REAL_DATA_USUN_HOGA = "주식우선호가";
         public const string RECEIVE_CHEJAN_DATA_SUBMIT_OR_CONCLUSION = "0";
         public const string RECEIVE_CHEJAN_DATA_BALANCE              = "1";
         public const string RECEIVE_CHEJAN_DATA_SUBMIT = "접수";
@@ -57,7 +58,16 @@ namespace Singijeon
         SIGAN_DANILGA = 62,
         JANGHUSIGAN_JONGA = 81
     }
-    public static class ErrorCode
+    public static class Martin_ErrorCode
+    {
+        public const int ERR_NONE = 1;
+        public const int ALREADY_STRATEGY = -2;
+        public const int NOT_VALID_PROFIT = -4;
+        public const int RESTART_ON = -8;
+        public const int BUY_ITEM_COUNT = -16;
+    
+    }
+        public static class ErrorCode
     {
         public const int 정상처리 = 0;
         public const int 실패 = -10;

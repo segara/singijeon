@@ -184,7 +184,7 @@ namespace Singijeon.Core
         {
             string itemCode = e.sRealKey.Trim();
 
-            if (e.sRealType.Contains(ConstName.RECEIVE_REAL_DATA_HOGA))
+            if (e.sRealType.Contains(ConstName.RECEIVE_REAL_DATA_HOGA) || e.sRealType.Contains(ConstName.RECEIVE_REAL_DATA_USUN_HOGA))
             {
                 StockWithBiddingEntity newObj = new StockWithBiddingEntity();
                 newObj.Code = itemCode;
@@ -221,6 +221,35 @@ namespace Singijeon.Core
 
                 StockWithBiddingManager.GetInstance().SetItem(newObj);
 
+            }
+        }
+
+        public void SaveLogMessage(string log)
+        {
+            string filePath = DateTime.Now.ToString("yyyyMMdd") + "_log.txt";
+            FileInfo fi = new FileInfo(filePath);
+
+            try
+            {
+                if (fi.Exists)
+                {
+                    using (StreamWriter sw = File.AppendText(filePath))
+                    {
+                        sw.WriteLine(log);
+                    }
+                }
+                else
+                {
+                    using (StreamWriter sw = new StreamWriter(filePath))
+                    {
+                        sw.WriteLine(log);
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                SendLogMessage(e.Message);
             }
         }
     }

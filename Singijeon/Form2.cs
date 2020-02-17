@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,6 +16,11 @@ namespace Singijeon
     {
         CoreEngine coreEngine;
         AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
+        List<string> logMessage = new List<string>();
+        int curLogIndex = 0;
+        Thread taskWorker;
+        delegate void CrossThreadSafetyUpdate(ListBox ctl);
+
         public Form2(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1)
         {
             InitializeComponent();
@@ -23,12 +29,67 @@ namespace Singijeon
 
             axKHOpenAPI1 = _axKHOpenAPI1;
             axKHOpenAPI1.OnReceiveTrData += AxKHOpenAPI_OnReceiveTrData;
+
+            Start();
+        }
+        private void Start()
+        {
+            taskWorker = new Thread(delegate ()
+            {
+                while (true)
+                {
+                    try
+                    {
+                        Update();
+                        Thread.Sleep(1000); //기본 실행 주기
+
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception.Message);
+                    }
+                }
+            });
+            taskWorker.Start();
+        }
+        void Update()
+        {
+            martin_curStep_txt.Text = MartinGailManager.GetInstance().StepInner.ToString();
+            martin_max_try_txt.Text = MartinGailManager.MARTIN_MAX_STEP.ToString();
+
+            martin_win_txt.Text = MartinGailManager.GetInstance().WinCnt.ToString();
+            martin_lose_txt.Text = MartinGailManager.GetInstance().LoseCnt.ToString();
+
+            martin_profit.Text = MartinGailManager.GetInstance().ProfitMoney.ToString();
         }
 
         private void OnReceiveLogMessage(object sender, OnReceivedLogMessageEventArgs e)
         {
-            LogListBox.Items.Add(e.Message);
-            LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
+            logMessage.Add(e.Message);
+            coreEngine.SaveLogMessage(e.Message);
+            if (LogListBox.InvokeRequired)
+            {
+                LogListBox.Invoke(new MethodInvoker(delegate ()
+                {
+                    while (curLogIndex < logMessage.Count)
+                    {
+                        LogListBox.Items.Add(logMessage[curLogIndex]);
+                        LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
+                        curLogIndex++;
+                    }
+                    //CheckLogLength();
+                }));
+            }
+            else
+            {
+                while (curLogIndex < logMessage.Count)
+                {
+                    LogListBox.Items.Add(logMessage[curLogIndex]);
+                    LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
+                    curLogIndex++;
+                }
+                //CheckLogLength();
+            }
         }
 
         
@@ -68,7 +129,29 @@ namespace Singijeon
 
                 profitRate_label.Text = d_profitRate.ToString();
             }
+        }
 
+        private void CheckLogLength()
+        {
+            if (logMessage.Count > 200)
+                logMessage.RemoveRange(0, 100);
+            if (LogListBox.Items.Count > 200)
+            {
+                for (int i = LogListBox.Items.Count - 1; i >= 100; i--)
+                {
+                    LogListBox.Items.RemoveAt(i);
+                }
+            }
+
+            curLogIndex = logMessage.Count;
+
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            logMessage.Clear();
+            LogListBox.Items.Clear();
+            curLogIndex = 0;
         }
     }
 }
