@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Singijeon
 {
@@ -15,13 +16,13 @@ namespace Singijeon
 
         public int lowestPrice = 0;
 
+        public DataGridViewRow ui_rowAutoTradingItem;
+
         public TrailingItem(string itemcode, int firstPrice, TradingStrategy inputStrategy)
         {
             itemCode = itemcode;
-            strategy = inputStrategy;
-
+            strategy = inputStrategy;  
             lowestPrice = firstPrice;
-
             settingTickCount = strategy.trailTickValue;
         }
     }

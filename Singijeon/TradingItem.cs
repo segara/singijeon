@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 namespace Singijeon
 {
-    //
+       
     public class TradingItem 
     {
         public TradingStrategy ts;
@@ -23,6 +23,9 @@ namespace Singijeon
 
         public bool IsSold; //매도주문 여부
         public bool IsCompleteBuying; //매수완료 여부
+        public DataGridViewRow ui_rowItem;
+
+        
 
         public TradingItem(TradingStrategy tsItem, string itemCode, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false)
         {
@@ -39,6 +42,10 @@ namespace Singijeon
         public void UpdateCurrentPrice(long _price)
         {
             this.curPrice = _price;
+        }
+        public void SetUiConnectRow(DataGridViewRow row)
+        {
+            this.ui_rowItem = row;
         }
     }
 }

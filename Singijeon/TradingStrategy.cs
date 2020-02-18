@@ -38,6 +38,12 @@ namespace Singijeon
         public List<TradingItem> tradingItemList = new List<TradingItem>();
         public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
 
+        public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveCondition; //종목 검색시
+        public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveBuyOrder; //종목 주문시
+        public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveBuyChejan; //종목 체결시
+        public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveSellOrder; //종목 주문시
+        public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveSellChejan; //종목 체결시
+
         public TradingStrategy(
             string _account,
             Condition _condition,
@@ -160,7 +166,27 @@ namespace Singijeon
                     item.CheckUpdate(trading_item, inputValue);
             }
         }
-      
+
+        public void StrategyConditionReceiveUpdate(string itemCode, int qnt)
+        {
+            OnReceiveCondition.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt));
+        }
+        public void StrategyBuyOrderUpdate(string itemCode, int qnt)
+        {
+            OnReceiveBuyOrder.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt));
+        }
+        public void StrategyOnReceiveBuyChejanUpdate(string itemCode, int qnt)
+        {
+            OnReceiveBuyChejan.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt));
+        }
+        public void StrategyOnReceiveSellOrderUpdate(string itemCode, int qnt)
+        {
+            OnReceiveSellOrder.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt));
+        }
+        public void StrategOnReceiveSellChejanUpdate(string itemCode, int qnt)
+        {
+            OnReceiveSellChejan.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt));
+        }
     }
     public class OnReceivedTrEventArgs : EventArgs
     {
@@ -250,6 +276,8 @@ namespace Singijeon
                 return true;
             return false;
         }
+
+    
     }
 
     public class TradingStrategyItemWithUpDownValue : TradingStrategyADDItem
@@ -277,6 +305,10 @@ namespace Singijeon
             strategyCheckTime = _checkTiming;
             checkType = _checkType;
             d_conditionValue = _conditionValue;
+            if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
+                d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
+            if (checkType == IS_TRUE_OR_FALE_TYPE.UPPER || checkType == IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME)
+                d_conditionValue = _conditionValue + tradingStrategyGridView.FEE_RATE;
         }
 
         public override void CheckUpdate(TradingItem item, double value)
@@ -321,6 +353,16 @@ namespace Singijeon
                     }
                     return;
             }
+        }
+    }
+    public class OnReceiveStrateyStateResultArgs : EventArgs
+    {
+        public string ItemCode { get; set; }
+        public int BuyQnt { get; set; }
+        public OnReceiveStrateyStateResultArgs(string itemcode, int buyQnt)
+        {
+            this.ItemCode = itemcode;
+            this.BuyQnt = buyQnt;
         }
     }
 }

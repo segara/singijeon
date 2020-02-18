@@ -29,22 +29,22 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(tradingStrategyGridView));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle61 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle62 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle63 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle64 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle81 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle88 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle89 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle90 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle91 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle92 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle93 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle94 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle95 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle96 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle82 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle83 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle84 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle85 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle86 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle87 = new System.Windows.Forms.DataGridViewCellStyle();
             this.axKHOpenAPI1 = new AxKHOpenAPILib.AxKHOpenAPI();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.메뉴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -137,25 +137,37 @@
             this.interestListBox = new System.Windows.Forms.ListBox();
             this.label23 = new System.Windows.Forms.Label();
             this.interestConditionListBox = new System.Windows.Forms.ListBox();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.M_AddStratgyBtn = new System.Windows.Forms.Button();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.M_trailingUpDown = new System.Windows.Forms.NumericUpDown();
+            this.M_usingTrailingBuyCheck = new System.Windows.Forms.CheckBox();
+            this.M_buyTickComboBox = new System.Windows.Forms.ComboBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.M_usingTickBuyCheck = new System.Windows.Forms.CheckBox();
+            this.label36 = new System.Windows.Forms.Label();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.label32 = new System.Windows.Forms.Label();
+            this.M_SellUpdown = new System.Windows.Forms.NumericUpDown();
+            this.label33 = new System.Windows.Forms.Label();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.M_PerCostText = new System.Windows.Forms.Label();
+            this.M_allCostUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
+            this.radioButton8 = new System.Windows.Forms.RadioButton();
+            this.M_BuyConditionComboBox = new System.Windows.Forms.ComboBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
             this.accountComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.autoTradingDataGrid = new System.Windows.Forms.DataGridView();
-            this.매매진행_종목코드 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_주문번호 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_종목명 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_매수조건식 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_현재가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_진행상황 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_손익률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_매수금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_매수량 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_매수가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_매도량 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_매도가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_매수시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매진행_매도시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -230,32 +242,29 @@
             this.매매전략_손절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.M_PerCostText = new System.Windows.Forms.Label();
-            this.M_allCostUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.radioButton7 = new System.Windows.Forms.RadioButton();
-            this.radioButton8 = new System.Windows.Forms.RadioButton();
-            this.M_BuyConditionComboBox = new System.Windows.Forms.ComboBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.panel9 = new System.Windows.Forms.Panel();
-            this.label32 = new System.Windows.Forms.Label();
-            this.M_SellUpdown = new System.Windows.Forms.NumericUpDown();
-            this.label33 = new System.Windows.Forms.Label();
-            this.panel10 = new System.Windows.Forms.Panel();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.M_trailingUpDown = new System.Windows.Forms.NumericUpDown();
-            this.M_usingTrailingBuyCheck = new System.Windows.Forms.CheckBox();
-            this.M_buyTickComboBox = new System.Windows.Forms.ComboBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.M_usingTickBuyCheck = new System.Windows.Forms.CheckBox();
-            this.label36 = new System.Windows.Forms.Label();
-            this.M_AddStratgyBtn = new System.Windows.Forms.Button();
+            this.매매진행_종목코드 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_주문번호 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_종목명 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_매수조건식 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_진행상황 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_매수가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_현재가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_손익률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_매수금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_매수량 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_매도량 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_매도가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_매수시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매진행_매도시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.M_orderCancelcheckBox = new System.Windows.Forms.CheckBox();
+            this.M_cancelValueUpdown = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.label38 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -283,6 +292,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.tabPage8.SuspendLayout();
+            this.tabPage9.SuspendLayout();
+            this.panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.M_trailingUpDown)).BeginInit();
+            this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.M_SellUpdown)).BeginInit();
+            this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.M_allCostUpDown)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.autoTradingDataGrid)).BeginInit();
@@ -300,13 +316,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.balanceDataGrid)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).BeginInit();
-            this.tabPage9.SuspendLayout();
-            this.panel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.M_allCostUpDown)).BeginInit();
-            this.panel9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.M_SellUpdown)).BeginInit();
-            this.panel10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.M_trailingUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.M_cancelValueUpdown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.SuspendLayout();
             // 
             // axKHOpenAPI1
@@ -398,7 +410,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 275F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 277F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -428,10 +440,10 @@
             this.panel7.Controls.Add(this.label11);
             this.panel7.Controls.Add(this.usingTickBuyCheck);
             this.panel7.Controls.Add(this.label12);
-            this.panel7.Location = new System.Drawing.Point(318, 3);
+            this.panel7.Location = new System.Drawing.Point(317, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(405, 205);
+            this.panel7.Size = new System.Drawing.Size(404, 205);
             this.panel7.TabIndex = 5;
             // 
             // label13
@@ -592,7 +604,7 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(307, 205);
+            this.panel1.Size = new System.Drawing.Size(306, 205);
             this.panel1.TabIndex = 0;
             // 
             // interestBuyCheckBox
@@ -764,10 +776,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(730, 3);
+            this.panel2.Location = new System.Drawing.Point(728, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(270, 205);
+            this.panel2.Size = new System.Drawing.Size(272, 205);
             this.panel2.TabIndex = 4;
             // 
             // label9
@@ -782,6 +794,11 @@
             // minusSellUpdown
             // 
             this.minusSellUpdown.DecimalPlaces = 2;
+            this.minusSellUpdown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.minusSellUpdown.Location = new System.Drawing.Point(114, 159);
             this.minusSellUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.minusSellUpdown.Maximum = new decimal(new int[] {
@@ -855,6 +872,11 @@
             // profitSellUpdown
             // 
             this.profitSellUpdown.DecimalPlaces = 2;
+            this.profitSellUpdown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.profitSellUpdown.Location = new System.Drawing.Point(114, 44);
             this.profitSellUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.profitSellUpdown.Name = "profitSellUpdown";
@@ -1390,6 +1412,337 @@
             this.interestConditionListBox.Size = new System.Drawing.Size(222, 160);
             this.interestConditionListBox.TabIndex = 0;
             // 
+            // tabPage9
+            // 
+            this.tabPage9.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPage9.Controls.Add(this.M_AddStratgyBtn);
+            this.tabPage9.Controls.Add(this.panel10);
+            this.tabPage9.Controls.Add(this.panel9);
+            this.tabPage9.Controls.Add(this.panel8);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(1024, 256);
+            this.tabPage9.TabIndex = 4;
+            this.tabPage9.Text = "마틴게일";
+            // 
+            // M_AddStratgyBtn
+            // 
+            this.M_AddStratgyBtn.Location = new System.Drawing.Point(933, 225);
+            this.M_AddStratgyBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_AddStratgyBtn.Name = "M_AddStratgyBtn";
+            this.M_AddStratgyBtn.Size = new System.Drawing.Size(68, 26);
+            this.M_AddStratgyBtn.TabIndex = 7;
+            this.M_AddStratgyBtn.Text = "전략생성";
+            this.M_AddStratgyBtn.UseVisualStyleBackColor = true;
+            this.M_AddStratgyBtn.Click += new System.EventHandler(this.M_AddStratgyBtn_Click);
+            // 
+            // panel10
+            // 
+            this.panel10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel10.Controls.Add(this.label38);
+            this.panel10.Controls.Add(this.numericUpDown4);
+            this.panel10.Controls.Add(this.checkBox4);
+            this.panel10.Controls.Add(this.label37);
+            this.panel10.Controls.Add(this.numericUpDown3);
+            this.panel10.Controls.Add(this.checkBox3);
+            this.panel10.Controls.Add(this.label14);
+            this.panel10.Controls.Add(this.M_cancelValueUpdown);
+            this.panel10.Controls.Add(this.M_orderCancelcheckBox);
+            this.panel10.Controls.Add(this.label28);
+            this.panel10.Controls.Add(this.label34);
+            this.panel10.Controls.Add(this.M_trailingUpDown);
+            this.panel10.Controls.Add(this.M_usingTrailingBuyCheck);
+            this.panel10.Controls.Add(this.M_buyTickComboBox);
+            this.panel10.Controls.Add(this.label35);
+            this.panel10.Controls.Add(this.M_usingTickBuyCheck);
+            this.panel10.Controls.Add(this.label36);
+            this.panel10.Location = new System.Drawing.Point(325, 16);
+            this.panel10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(405, 205);
+            this.panel10.TabIndex = 6;
+            // 
+            // label28
+            // 
+            this.label28.Location = new System.Drawing.Point(16, 88);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(309, 27);
+            this.label28.TabIndex = 18;
+            this.label28.Text = "트레일링 후 최저가보다 상승시/편입가보다 클시 매수합니다";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(112, 67);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(155, 12);
+            this.label34.TabIndex = 17;
+            this.label34.Text = "틱마다 체크(20틱이상 추천)";
+            // 
+            // M_trailingUpDown
+            // 
+            this.M_trailingUpDown.Location = new System.Drawing.Point(43, 62);
+            this.M_trailingUpDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_trailingUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.M_trailingUpDown.Name = "M_trailingUpDown";
+            this.M_trailingUpDown.Size = new System.Drawing.Size(63, 21);
+            this.M_trailingUpDown.TabIndex = 16;
+            this.M_trailingUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // M_usingTrailingBuyCheck
+            // 
+            this.M_usingTrailingBuyCheck.AutoSize = true;
+            this.M_usingTrailingBuyCheck.Location = new System.Drawing.Point(13, 49);
+            this.M_usingTrailingBuyCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_usingTrailingBuyCheck.Name = "M_usingTrailingBuyCheck";
+            this.M_usingTrailingBuyCheck.Size = new System.Drawing.Size(188, 16);
+            this.M_usingTrailingBuyCheck.TabIndex = 12;
+            this.M_usingTrailingBuyCheck.Text = "저가 트레일링 후 시장가 매수 ";
+            this.M_usingTrailingBuyCheck.UseVisualStyleBackColor = true;
+            // 
+            // M_buyTickComboBox
+            // 
+            this.M_buyTickComboBox.FormattingEnabled = true;
+            this.M_buyTickComboBox.Items.AddRange(new object[] {
+            "-1틱",
+            "-2틱",
+            "-3틱",
+            "-4틱",
+            "-5틱",
+            "-6틱",
+            "-7틱",
+            "-8틱",
+            "-9틱",
+            "-10틱"});
+            this.M_buyTickComboBox.Location = new System.Drawing.Point(145, 22);
+            this.M_buyTickComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_buyTickComboBox.Name = "M_buyTickComboBox";
+            this.M_buyTickComboBox.Size = new System.Drawing.Size(122, 20);
+            this.M_buyTickComboBox.TabIndex = 10;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(63, 27);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(77, 12);
+            this.label35.TabIndex = 3;
+            this.label35.Text = "조건가격에서";
+            // 
+            // M_usingTickBuyCheck
+            // 
+            this.M_usingTickBuyCheck.AutoSize = true;
+            this.M_usingTickBuyCheck.Location = new System.Drawing.Point(13, 25);
+            this.M_usingTickBuyCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_usingTickBuyCheck.Name = "M_usingTickBuyCheck";
+            this.M_usingTickBuyCheck.Size = new System.Drawing.Size(48, 16);
+            this.M_usingTickBuyCheck.TabIndex = 1;
+            this.M_usingTickBuyCheck.Text = "사용";
+            this.M_usingTickBuyCheck.UseVisualStyleBackColor = true;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(3, 0);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(77, 12);
+            this.label36.TabIndex = 0;
+            this.label36.Text = "추가매수전략";
+            // 
+            // panel9
+            // 
+            this.panel9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel9.Controls.Add(this.label32);
+            this.panel9.Controls.Add(this.M_SellUpdown);
+            this.panel9.Controls.Add(this.label33);
+            this.panel9.Location = new System.Drawing.Point(731, 16);
+            this.panel9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(270, 205);
+            this.panel9.TabIndex = 5;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(11, 33);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(77, 12);
+            this.label32.TabIndex = 3;
+            this.label32.Text = "매수단가대비";
+            // 
+            // M_SellUpdown
+            // 
+            this.M_SellUpdown.DecimalPlaces = 2;
+            this.M_SellUpdown.Increment = new decimal(new int[] {
+            3,
+            0,
+            0,
+            65536});
+            this.M_SellUpdown.Location = new System.Drawing.Point(94, 29);
+            this.M_SellUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_SellUpdown.Name = "M_SellUpdown";
+            this.M_SellUpdown.Size = new System.Drawing.Size(105, 21);
+            this.M_SellUpdown.TabIndex = 2;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(3, 0);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(77, 12);
+            this.label33.TabIndex = 0;
+            this.label33.Text = "기본매도전략";
+            // 
+            // panel8
+            // 
+            this.panel8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel8.Controls.Add(this.M_PerCostText);
+            this.panel8.Controls.Add(this.M_allCostUpDown);
+            this.panel8.Controls.Add(this.label15);
+            this.panel8.Controls.Add(this.label29);
+            this.panel8.Controls.Add(this.comboBox3);
+            this.panel8.Controls.Add(this.radioButton7);
+            this.panel8.Controls.Add(this.radioButton8);
+            this.panel8.Controls.Add(this.M_BuyConditionComboBox);
+            this.panel8.Controls.Add(this.label30);
+            this.panel8.Controls.Add(this.label31);
+            this.panel8.Location = new System.Drawing.Point(19, 16);
+            this.panel8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(307, 205);
+            this.panel8.TabIndex = 1;
+            // 
+            // M_PerCostText
+            // 
+            this.M_PerCostText.Location = new System.Drawing.Point(130, 175);
+            this.M_PerCostText.Name = "M_PerCostText";
+            this.M_PerCostText.Size = new System.Drawing.Size(100, 18);
+            this.M_PerCostText.TabIndex = 11;
+            this.M_PerCostText.Text = "0";
+            this.M_PerCostText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // M_allCostUpDown
+            // 
+            this.M_allCostUpDown.Location = new System.Drawing.Point(124, 118);
+            this.M_allCostUpDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_allCostUpDown.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.M_allCostUpDown.Name = "M_allCostUpDown";
+            this.M_allCostUpDown.Size = new System.Drawing.Size(105, 21);
+            this.M_allCostUpDown.TabIndex = 9;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(9, 175);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(97, 12);
+            this.label15.TabIndex = 8;
+            this.label15.Text = "종목 당 투자금액";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(11, 122);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(69, 12);
+            this.label29.TabIndex = 6;
+            this.label29.Text = "총 투자금액";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "지정가",
+            "시장가",
+            "조건부지정가",
+            "최유리지정가",
+            "최우선지정가",
+            "지정가IOC",
+            "시장가IOC",
+            "최유리IOC",
+            "지정가FOK",
+            "시장가FOK",
+            "최유리FOK",
+            "장전시간외종가",
+            "시간외단일가매매",
+            "장후시간외종가"});
+            this.comboBox3.Location = new System.Drawing.Point(11, 87);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(158, 20);
+            this.comboBox3.TabIndex = 5;
+            this.comboBox3.Text = "지정가";
+            // 
+            // radioButton7
+            // 
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Checked = true;
+            this.radioButton7.Location = new System.Drawing.Point(81, 62);
+            this.radioButton7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.radioButton7.Name = "radioButton7";
+            this.radioButton7.Size = new System.Drawing.Size(59, 16);
+            this.radioButton7.TabIndex = 4;
+            this.radioButton7.TabStop = true;
+            this.radioButton7.Text = "지정가";
+            this.radioButton7.UseVisualStyleBackColor = true;
+            // 
+            // radioButton8
+            // 
+            this.radioButton8.AutoSize = true;
+            this.radioButton8.Location = new System.Drawing.Point(11, 62);
+            this.radioButton8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.radioButton8.Name = "radioButton8";
+            this.radioButton8.Size = new System.Drawing.Size(59, 16);
+            this.radioButton8.TabIndex = 3;
+            this.radioButton8.Text = "시장가";
+            this.radioButton8.UseVisualStyleBackColor = true;
+            // 
+            // M_BuyConditionComboBox
+            // 
+            this.M_BuyConditionComboBox.FormattingEnabled = true;
+            this.M_BuyConditionComboBox.Location = new System.Drawing.Point(13, 33);
+            this.M_BuyConditionComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_BuyConditionComboBox.Name = "M_BuyConditionComboBox";
+            this.M_BuyConditionComboBox.Size = new System.Drawing.Size(158, 20);
+            this.M_BuyConditionComboBox.TabIndex = 2;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(9, 19);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(65, 12);
+            this.label30.TabIndex = 1;
+            this.label30.Text = "매수조건식";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(3, 0);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(53, 12);
+            this.label31.TabIndex = 0;
+            this.label31.Text = "매수전략";
+            // 
             // accountComboBox
             // 
             this.accountComboBox.FormattingEnabled = true;
@@ -1442,26 +1795,26 @@
             this.autoTradingDataGrid.AllowUserToAddRows = false;
             this.autoTradingDataGrid.AllowUserToDeleteRows = false;
             this.autoTradingDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle49.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle49.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle49.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle49.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle49.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle49.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle49.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.autoTradingDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle49;
+            dataGridViewCellStyle81.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle81.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle81.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle81.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle81.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle81.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle81.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.autoTradingDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle81;
             this.autoTradingDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.autoTradingDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.매매진행_종목코드,
             this.매매진행_주문번호,
             this.매매진행_종목명,
             this.매매진행_매수조건식,
-            this.매매진행_현재가,
             this.매매진행_진행상황,
+            this.매매진행_매수가,
+            this.매매진행_현재가,
             this.매매진행_손익률,
             this.매매진행_매수금,
             this.매매진행_매수량,
-            this.매매진행_매수가,
             this.매매진행_매도량,
             this.매매진행_매도가,
             this.매매진행_매수시간,
@@ -1473,108 +1826,6 @@
             this.autoTradingDataGrid.RowTemplate.Height = 27;
             this.autoTradingDataGrid.Size = new System.Drawing.Size(1011, 136);
             this.autoTradingDataGrid.TabIndex = 0;
-            // 
-            // 매매진행_종목코드
-            // 
-            this.매매진행_종목코드.HeaderText = "종목코드";
-            this.매매진행_종목코드.Name = "매매진행_종목코드";
-            this.매매진행_종목코드.ReadOnly = true;
-            // 
-            // 매매진행_주문번호
-            // 
-            this.매매진행_주문번호.HeaderText = "주문번호";
-            this.매매진행_주문번호.Name = "매매진행_주문번호";
-            this.매매진행_주문번호.ReadOnly = true;
-            // 
-            // 매매진행_종목명
-            // 
-            this.매매진행_종목명.HeaderText = "종목명";
-            this.매매진행_종목명.Name = "매매진행_종목명";
-            this.매매진행_종목명.ReadOnly = true;
-            // 
-            // 매매진행_매수조건식
-            // 
-            this.매매진행_매수조건식.HeaderText = "매수조건식";
-            this.매매진행_매수조건식.Name = "매매진행_매수조건식";
-            this.매매진행_매수조건식.ReadOnly = true;
-            // 
-            // 매매진행_현재가
-            // 
-            this.매매진행_현재가.HeaderText = "현재가";
-            this.매매진행_현재가.Name = "매매진행_현재가";
-            this.매매진행_현재가.ReadOnly = true;
-            // 
-            // 매매진행_진행상황
-            // 
-            this.매매진행_진행상황.HeaderText = "진행상황";
-            this.매매진행_진행상황.Name = "매매진행_진행상황";
-            this.매매진행_진행상황.ReadOnly = true;
-            // 
-            // 매매진행_손익률
-            // 
-            dataGridViewCellStyle50.Format = "N2";
-            dataGridViewCellStyle50.NullValue = null;
-            this.매매진행_손익률.DefaultCellStyle = dataGridViewCellStyle50;
-            this.매매진행_손익률.HeaderText = "손익률";
-            this.매매진행_손익률.Name = "매매진행_손익률";
-            this.매매진행_손익률.ReadOnly = true;
-            // 
-            // 매매진행_매수금
-            // 
-            dataGridViewCellStyle51.Format = "N0";
-            dataGridViewCellStyle51.NullValue = null;
-            this.매매진행_매수금.DefaultCellStyle = dataGridViewCellStyle51;
-            this.매매진행_매수금.HeaderText = "매수금";
-            this.매매진행_매수금.Name = "매매진행_매수금";
-            this.매매진행_매수금.ReadOnly = true;
-            // 
-            // 매매진행_매수량
-            // 
-            dataGridViewCellStyle52.Format = "N0";
-            dataGridViewCellStyle52.NullValue = null;
-            this.매매진행_매수량.DefaultCellStyle = dataGridViewCellStyle52;
-            this.매매진행_매수량.HeaderText = "매수량";
-            this.매매진행_매수량.Name = "매매진행_매수량";
-            this.매매진행_매수량.ReadOnly = true;
-            // 
-            // 매매진행_매수가
-            // 
-            dataGridViewCellStyle53.Format = "N0";
-            dataGridViewCellStyle53.NullValue = null;
-            this.매매진행_매수가.DefaultCellStyle = dataGridViewCellStyle53;
-            this.매매진행_매수가.HeaderText = "매수가";
-            this.매매진행_매수가.Name = "매매진행_매수가";
-            this.매매진행_매수가.ReadOnly = true;
-            // 
-            // 매매진행_매도량
-            // 
-            dataGridViewCellStyle54.Format = "N0";
-            dataGridViewCellStyle54.NullValue = null;
-            this.매매진행_매도량.DefaultCellStyle = dataGridViewCellStyle54;
-            this.매매진행_매도량.HeaderText = "매도량";
-            this.매매진행_매도량.Name = "매매진행_매도량";
-            this.매매진행_매도량.ReadOnly = true;
-            // 
-            // 매매진행_매도가
-            // 
-            dataGridViewCellStyle55.Format = "N0";
-            dataGridViewCellStyle55.NullValue = null;
-            this.매매진행_매도가.DefaultCellStyle = dataGridViewCellStyle55;
-            this.매매진행_매도가.HeaderText = "매도가";
-            this.매매진행_매도가.Name = "매매진행_매도가";
-            this.매매진행_매도가.ReadOnly = true;
-            // 
-            // 매매진행_매수시간
-            // 
-            this.매매진행_매수시간.HeaderText = "매수시간";
-            this.매매진행_매수시간.Name = "매매진행_매수시간";
-            this.매매진행_매수시간.ReadOnly = true;
-            // 
-            // 매매진행_매도시간
-            // 
-            this.매매진행_매도시간.HeaderText = "매도시간";
-            this.매매진행_매도시간.Name = "매매진행_매도시간";
-            this.매매진행_매도시간.ReadOnly = true;
             // 
             // groupBox5
             // 
@@ -1661,9 +1912,9 @@
             // 
             // 계좌잔고_보유수량
             // 
-            dataGridViewCellStyle56.Format = "N0";
-            dataGridViewCellStyle56.NullValue = null;
-            this.계좌잔고_보유수량.DefaultCellStyle = dataGridViewCellStyle56;
+            dataGridViewCellStyle88.Format = "N0";
+            dataGridViewCellStyle88.NullValue = null;
+            this.계좌잔고_보유수량.DefaultCellStyle = dataGridViewCellStyle88;
             this.계좌잔고_보유수량.HeaderText = "보유수량";
             this.계좌잔고_보유수량.Name = "계좌잔고_보유수량";
             this.계좌잔고_보유수량.ReadOnly = true;
@@ -1681,45 +1932,45 @@
             // 
             // 계좌잔고_평가금액
             // 
-            dataGridViewCellStyle57.Format = "N0";
-            dataGridViewCellStyle57.NullValue = null;
-            this.계좌잔고_평가금액.DefaultCellStyle = dataGridViewCellStyle57;
+            dataGridViewCellStyle89.Format = "N0";
+            dataGridViewCellStyle89.NullValue = null;
+            this.계좌잔고_평가금액.DefaultCellStyle = dataGridViewCellStyle89;
             this.계좌잔고_평가금액.HeaderText = "평가금액";
             this.계좌잔고_평가금액.Name = "계좌잔고_평가금액";
             this.계좌잔고_평가금액.ReadOnly = true;
             // 
             // 계좌잔고_매입금액
             // 
-            dataGridViewCellStyle58.Format = "N0";
-            dataGridViewCellStyle58.NullValue = null;
-            this.계좌잔고_매입금액.DefaultCellStyle = dataGridViewCellStyle58;
+            dataGridViewCellStyle90.Format = "N0";
+            dataGridViewCellStyle90.NullValue = null;
+            this.계좌잔고_매입금액.DefaultCellStyle = dataGridViewCellStyle90;
             this.계좌잔고_매입금액.HeaderText = "매입금액";
             this.계좌잔고_매입금액.Name = "계좌잔고_매입금액";
             this.계좌잔고_매입금액.ReadOnly = true;
             // 
             // 계좌잔고_손익금액
             // 
-            dataGridViewCellStyle59.Format = "N0";
-            dataGridViewCellStyle59.NullValue = null;
-            this.계좌잔고_손익금액.DefaultCellStyle = dataGridViewCellStyle59;
+            dataGridViewCellStyle91.Format = "N0";
+            dataGridViewCellStyle91.NullValue = null;
+            this.계좌잔고_손익금액.DefaultCellStyle = dataGridViewCellStyle91;
             this.계좌잔고_손익금액.HeaderText = "손익금액";
             this.계좌잔고_손익금액.Name = "계좌잔고_손익금액";
             this.계좌잔고_손익금액.ReadOnly = true;
             // 
             // 계좌잔고_손익률
             // 
-            dataGridViewCellStyle60.Format = "N2";
-            dataGridViewCellStyle60.NullValue = null;
-            this.계좌잔고_손익률.DefaultCellStyle = dataGridViewCellStyle60;
+            dataGridViewCellStyle92.Format = "N2";
+            dataGridViewCellStyle92.NullValue = null;
+            this.계좌잔고_손익률.DefaultCellStyle = dataGridViewCellStyle92;
             this.계좌잔고_손익률.HeaderText = "손익률";
             this.계좌잔고_손익률.Name = "계좌잔고_손익률";
             this.계좌잔고_손익률.ReadOnly = true;
             // 
             // 계좌잔고_청산
             // 
-            dataGridViewCellStyle61.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle61.NullValue = "청산";
-            this.계좌잔고_청산.DefaultCellStyle = dataGridViewCellStyle61;
+            dataGridViewCellStyle93.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle93.NullValue = "청산";
+            this.계좌잔고_청산.DefaultCellStyle = dataGridViewCellStyle93;
             this.계좌잔고_청산.HeaderText = "청산";
             this.계좌잔고_청산.Name = "계좌잔고_청산";
             // 
@@ -1730,7 +1981,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1015, 104);
+            this.tabPage1.Size = new System.Drawing.Size(1015, 126);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "주문";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1833,7 +2084,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1015, 104);
+            this.tabPage2.Size = new System.Drawing.Size(1015, 126);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "체결";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1934,7 +2185,7 @@
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage3.Size = new System.Drawing.Size(1015, 104);
+            this.tabPage3.Size = new System.Drawing.Size(1015, 126);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "미체결";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -2005,7 +2256,7 @@
             this.tabPage4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage4.Size = new System.Drawing.Size(1015, 104);
+            this.tabPage4.Size = new System.Drawing.Size(1015, 126);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "잔고";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -2084,9 +2335,9 @@
             // 
             // 잔고_총매입가
             // 
-            dataGridViewCellStyle62.Format = "N0";
-            dataGridViewCellStyle62.NullValue = null;
-            this.잔고_총매입가.DefaultCellStyle = dataGridViewCellStyle62;
+            dataGridViewCellStyle94.Format = "N0";
+            dataGridViewCellStyle94.NullValue = null;
+            this.잔고_총매입가.DefaultCellStyle = dataGridViewCellStyle94;
             this.잔고_총매입가.HeaderText = "총매입가";
             this.잔고_총매입가.MinimumWidth = 6;
             this.잔고_총매입가.Name = "잔고_총매입가";
@@ -2094,9 +2345,9 @@
             // 
             // 잔고_손익률
             // 
-            dataGridViewCellStyle63.Format = "N2";
-            dataGridViewCellStyle63.NullValue = null;
-            this.잔고_손익률.DefaultCellStyle = dataGridViewCellStyle63;
+            dataGridViewCellStyle95.Format = "N2";
+            dataGridViewCellStyle95.NullValue = null;
+            this.잔고_손익률.DefaultCellStyle = dataGridViewCellStyle95;
             this.잔고_손익률.HeaderText = "손익률";
             this.잔고_손익률.MinimumWidth = 6;
             this.잔고_손익률.Name = "잔고_손익률";
@@ -2270,336 +2521,230 @@
             // 
             // 매매전략_취소
             // 
-            dataGridViewCellStyle64.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle64.NullValue = "취소";
-            this.매매전략_취소.DefaultCellStyle = dataGridViewCellStyle64;
+            dataGridViewCellStyle96.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle96.NullValue = "취소";
+            this.매매전략_취소.DefaultCellStyle = dataGridViewCellStyle96;
             this.매매전략_취소.HeaderText = "취소";
             this.매매전략_취소.Name = "매매전략_취소";
             this.매매전략_취소.ReadOnly = true;
             this.매매전략_취소.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.매매전략_취소.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // tabPage9
+            // 매매진행_종목코드
             // 
-            this.tabPage9.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.tabPage9.Controls.Add(this.M_AddStratgyBtn);
-            this.tabPage9.Controls.Add(this.panel10);
-            this.tabPage9.Controls.Add(this.panel9);
-            this.tabPage9.Controls.Add(this.panel8);
-            this.tabPage9.Location = new System.Drawing.Point(4, 22);
-            this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(1024, 256);
-            this.tabPage9.TabIndex = 4;
-            this.tabPage9.Text = "마틴게일";
+            this.매매진행_종목코드.HeaderText = "종목코드";
+            this.매매진행_종목코드.Name = "매매진행_종목코드";
+            this.매매진행_종목코드.ReadOnly = true;
             // 
-            // panel8
+            // 매매진행_주문번호
             // 
-            this.panel8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel8.Controls.Add(this.M_PerCostText);
-            this.panel8.Controls.Add(this.M_allCostUpDown);
-            this.panel8.Controls.Add(this.label15);
-            this.panel8.Controls.Add(this.label29);
-            this.panel8.Controls.Add(this.comboBox3);
-            this.panel8.Controls.Add(this.radioButton7);
-            this.panel8.Controls.Add(this.radioButton8);
-            this.panel8.Controls.Add(this.M_BuyConditionComboBox);
-            this.panel8.Controls.Add(this.label30);
-            this.panel8.Controls.Add(this.label31);
-            this.panel8.Location = new System.Drawing.Point(19, 16);
-            this.panel8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(307, 205);
-            this.panel8.TabIndex = 1;
+            this.매매진행_주문번호.HeaderText = "주문번호";
+            this.매매진행_주문번호.Name = "매매진행_주문번호";
+            this.매매진행_주문번호.ReadOnly = true;
             // 
-            // M_PerCostText
+            // 매매진행_종목명
             // 
-            this.M_PerCostText.Location = new System.Drawing.Point(130, 175);
-            this.M_PerCostText.Name = "M_PerCostText";
-            this.M_PerCostText.Size = new System.Drawing.Size(100, 18);
-            this.M_PerCostText.TabIndex = 11;
-            this.M_PerCostText.Text = "0";
-            this.M_PerCostText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.매매진행_종목명.HeaderText = "종목명";
+            this.매매진행_종목명.Name = "매매진행_종목명";
+            this.매매진행_종목명.ReadOnly = true;
             // 
-            // M_allCostUpDown
+            // 매매진행_매수조건식
             // 
-            this.M_allCostUpDown.Location = new System.Drawing.Point(124, 118);
-            this.M_allCostUpDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.M_allCostUpDown.Maximum = new decimal(new int[] {
-            99999999,
-            0,
-            0,
-            0});
-            this.M_allCostUpDown.Name = "M_allCostUpDown";
-            this.M_allCostUpDown.Size = new System.Drawing.Size(105, 21);
-            this.M_allCostUpDown.TabIndex = 9;
+            this.매매진행_매수조건식.HeaderText = "매수조건식";
+            this.매매진행_매수조건식.Name = "매매진행_매수조건식";
+            this.매매진행_매수조건식.ReadOnly = true;
             // 
-            // label15
+            // 매매진행_진행상황
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(9, 175);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(97, 12);
-            this.label15.TabIndex = 8;
-            this.label15.Text = "종목 당 투자금액";
+            this.매매진행_진행상황.HeaderText = "진행상황";
+            this.매매진행_진행상황.Name = "매매진행_진행상황";
+            this.매매진행_진행상황.ReadOnly = true;
             // 
-            // label29
+            // 매매진행_매수가
             // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(11, 122);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(69, 12);
-            this.label29.TabIndex = 6;
-            this.label29.Text = "총 투자금액";
+            dataGridViewCellStyle82.Format = "N0";
+            dataGridViewCellStyle82.NullValue = null;
+            this.매매진행_매수가.DefaultCellStyle = dataGridViewCellStyle82;
+            this.매매진행_매수가.HeaderText = "매수가";
+            this.매매진행_매수가.Name = "매매진행_매수가";
+            this.매매진행_매수가.ReadOnly = true;
             // 
-            // comboBox3
+            // 매매진행_현재가
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
-            "지정가",
-            "시장가",
-            "조건부지정가",
-            "최유리지정가",
-            "최우선지정가",
-            "지정가IOC",
-            "시장가IOC",
-            "최유리IOC",
-            "지정가FOK",
-            "시장가FOK",
-            "최유리FOK",
-            "장전시간외종가",
-            "시간외단일가매매",
-            "장후시간외종가"});
-            this.comboBox3.Location = new System.Drawing.Point(11, 87);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(158, 20);
-            this.comboBox3.TabIndex = 5;
-            this.comboBox3.Text = "지정가";
+            this.매매진행_현재가.HeaderText = "현재가";
+            this.매매진행_현재가.Name = "매매진행_현재가";
+            this.매매진행_현재가.ReadOnly = true;
             // 
-            // radioButton7
+            // 매매진행_손익률
             // 
-            this.radioButton7.AutoSize = true;
-            this.radioButton7.Checked = true;
-            this.radioButton7.Location = new System.Drawing.Point(81, 62);
-            this.radioButton7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(59, 16);
-            this.radioButton7.TabIndex = 4;
-            this.radioButton7.TabStop = true;
-            this.radioButton7.Text = "지정가";
-            this.radioButton7.UseVisualStyleBackColor = true;
+            dataGridViewCellStyle83.Format = "N2";
+            dataGridViewCellStyle83.NullValue = null;
+            this.매매진행_손익률.DefaultCellStyle = dataGridViewCellStyle83;
+            this.매매진행_손익률.HeaderText = "손익률";
+            this.매매진행_손익률.Name = "매매진행_손익률";
+            this.매매진행_손익률.ReadOnly = true;
             // 
-            // radioButton8
+            // 매매진행_매수금
             // 
-            this.radioButton8.AutoSize = true;
-            this.radioButton8.Location = new System.Drawing.Point(11, 62);
-            this.radioButton8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.radioButton8.Name = "radioButton8";
-            this.radioButton8.Size = new System.Drawing.Size(59, 16);
-            this.radioButton8.TabIndex = 3;
-            this.radioButton8.Text = "시장가";
-            this.radioButton8.UseVisualStyleBackColor = true;
+            dataGridViewCellStyle84.Format = "N0";
+            dataGridViewCellStyle84.NullValue = null;
+            this.매매진행_매수금.DefaultCellStyle = dataGridViewCellStyle84;
+            this.매매진행_매수금.HeaderText = "매수금";
+            this.매매진행_매수금.Name = "매매진행_매수금";
+            this.매매진행_매수금.ReadOnly = true;
             // 
-            // M_BuyConditionComboBox
+            // 매매진행_매수량
             // 
-            this.M_BuyConditionComboBox.FormattingEnabled = true;
-            this.M_BuyConditionComboBox.Location = new System.Drawing.Point(13, 33);
-            this.M_BuyConditionComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.M_BuyConditionComboBox.Name = "M_BuyConditionComboBox";
-            this.M_BuyConditionComboBox.Size = new System.Drawing.Size(158, 20);
-            this.M_BuyConditionComboBox.TabIndex = 2;
+            dataGridViewCellStyle85.Format = "N0";
+            dataGridViewCellStyle85.NullValue = null;
+            this.매매진행_매수량.DefaultCellStyle = dataGridViewCellStyle85;
+            this.매매진행_매수량.HeaderText = "매수량";
+            this.매매진행_매수량.Name = "매매진행_매수량";
+            this.매매진행_매수량.ReadOnly = true;
             // 
-            // label30
+            // 매매진행_매도량
             // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(9, 19);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(65, 12);
-            this.label30.TabIndex = 1;
-            this.label30.Text = "매수조건식";
+            dataGridViewCellStyle86.Format = "N0";
+            dataGridViewCellStyle86.NullValue = null;
+            this.매매진행_매도량.DefaultCellStyle = dataGridViewCellStyle86;
+            this.매매진행_매도량.HeaderText = "매도량";
+            this.매매진행_매도량.Name = "매매진행_매도량";
+            this.매매진행_매도량.ReadOnly = true;
             // 
-            // label31
+            // 매매진행_매도가
             // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(3, 0);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(53, 12);
-            this.label31.TabIndex = 0;
-            this.label31.Text = "매수전략";
+            dataGridViewCellStyle87.Format = "N0";
+            dataGridViewCellStyle87.NullValue = null;
+            this.매매진행_매도가.DefaultCellStyle = dataGridViewCellStyle87;
+            this.매매진행_매도가.HeaderText = "매도가";
+            this.매매진행_매도가.Name = "매매진행_매도가";
+            this.매매진행_매도가.ReadOnly = true;
             // 
-            // panel9
+            // 매매진행_매수시간
             // 
-            this.panel9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel9.Controls.Add(this.label32);
-            this.panel9.Controls.Add(this.M_SellUpdown);
-            this.panel9.Controls.Add(this.label33);
-            this.panel9.Location = new System.Drawing.Point(731, 16);
-            this.panel9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(270, 205);
-            this.panel9.TabIndex = 5;
+            this.매매진행_매수시간.HeaderText = "매수시간";
+            this.매매진행_매수시간.Name = "매매진행_매수시간";
+            this.매매진행_매수시간.ReadOnly = true;
             // 
-            // label32
+            // 매매진행_매도시간
             // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(11, 33);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(77, 12);
-            this.label32.TabIndex = 3;
-            this.label32.Text = "매수단가대비";
+            this.매매진행_매도시간.HeaderText = "매도시간";
+            this.매매진행_매도시간.Name = "매매진행_매도시간";
+            this.매매진행_매도시간.ReadOnly = true;
             // 
-            // M_SellUpdown
+            // M_orderCancelcheckBox
             // 
-            this.M_SellUpdown.DecimalPlaces = 2;
-            this.M_SellUpdown.Increment = new decimal(new int[] {
-            3,
+            this.M_orderCancelcheckBox.AutoSize = true;
+            this.M_orderCancelcheckBox.Location = new System.Drawing.Point(13, 119);
+            this.M_orderCancelcheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_orderCancelcheckBox.Name = "M_orderCancelcheckBox";
+            this.M_orderCancelcheckBox.Size = new System.Drawing.Size(252, 16);
+            this.M_orderCancelcheckBox.TabIndex = 19;
+            this.M_orderCancelcheckBox.Text = "일부 체결 후 상승 이격발생 시 시장가매수";
+            this.M_orderCancelcheckBox.UseVisualStyleBackColor = true;
+            // 
+            // M_cancelValueUpdown
+            // 
+            this.M_cancelValueUpdown.Increment = new decimal(new int[] {
+            1,
             0,
             0,
             65536});
-            this.M_SellUpdown.Location = new System.Drawing.Point(94, 26);
-            this.M_SellUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.M_SellUpdown.Name = "M_SellUpdown";
-            this.M_SellUpdown.Size = new System.Drawing.Size(105, 21);
-            this.M_SellUpdown.TabIndex = 2;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(3, 0);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(77, 12);
-            this.label33.TabIndex = 0;
-            this.label33.Text = "기본매도전략";
-            // 
-            // panel10
-            // 
-            this.panel10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel10.Controls.Add(this.label28);
-            this.panel10.Controls.Add(this.label34);
-            this.panel10.Controls.Add(this.M_trailingUpDown);
-            this.panel10.Controls.Add(this.M_usingTrailingBuyCheck);
-            this.panel10.Controls.Add(this.M_buyTickComboBox);
-            this.panel10.Controls.Add(this.label35);
-            this.panel10.Controls.Add(this.M_usingTickBuyCheck);
-            this.panel10.Controls.Add(this.label36);
-            this.panel10.Location = new System.Drawing.Point(325, 16);
-            this.panel10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(405, 205);
-            this.panel10.TabIndex = 6;
-            // 
-            // label28
-            // 
-            this.label28.Location = new System.Drawing.Point(16, 88);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(309, 27);
-            this.label28.TabIndex = 18;
-            this.label28.Text = "트레일링 후 최저가보다 상승시/편입가보다 클시 매수합니다";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(112, 67);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(155, 12);
-            this.label34.TabIndex = 17;
-            this.label34.Text = "틱마다 체크(20틱이상 추천)";
-            // 
-            // M_trailingUpDown
-            // 
-            this.M_trailingUpDown.Location = new System.Drawing.Point(43, 65);
-            this.M_trailingUpDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.M_trailingUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.M_trailingUpDown.Name = "M_trailingUpDown";
-            this.M_trailingUpDown.Size = new System.Drawing.Size(63, 21);
-            this.M_trailingUpDown.TabIndex = 16;
-            this.M_trailingUpDown.Value = new decimal(new int[] {
-            1,
+            this.M_cancelValueUpdown.Location = new System.Drawing.Point(271, 117);
+            this.M_cancelValueUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.M_cancelValueUpdown.Name = "M_cancelValueUpdown";
+            this.M_cancelValueUpdown.Size = new System.Drawing.Size(63, 21);
+            this.M_cancelValueUpdown.TabIndex = 20;
+            this.M_cancelValueUpdown.Value = new decimal(new int[] {
+            2,
             0,
             0,
             0});
             // 
-            // M_usingTrailingBuyCheck
+            // label14
             // 
-            this.M_usingTrailingBuyCheck.AutoSize = true;
-            this.M_usingTrailingBuyCheck.Location = new System.Drawing.Point(13, 49);
-            this.M_usingTrailingBuyCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.M_usingTrailingBuyCheck.Name = "M_usingTrailingBuyCheck";
-            this.M_usingTrailingBuyCheck.Size = new System.Drawing.Size(188, 16);
-            this.M_usingTrailingBuyCheck.TabIndex = 12;
-            this.M_usingTrailingBuyCheck.Text = "저가 트레일링 후 시장가 매수 ";
-            this.M_usingTrailingBuyCheck.UseVisualStyleBackColor = true;
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(340, 121);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(15, 12);
+            this.label14.TabIndex = 21;
+            this.label14.Text = "%";
             // 
-            // M_buyTickComboBox
+            // checkBox3
             // 
-            this.M_buyTickComboBox.FormattingEnabled = true;
-            this.M_buyTickComboBox.Items.AddRange(new object[] {
-            "-1틱",
-            "-2틱",
-            "-3틱",
-            "-4틱",
-            "-5틱",
-            "-6틱",
-            "-7틱",
-            "-8틱",
-            "-9틱",
-            "-10틱"});
-            this.M_buyTickComboBox.Location = new System.Drawing.Point(145, 22);
-            this.M_buyTickComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.M_buyTickComboBox.Name = "M_buyTickComboBox";
-            this.M_buyTickComboBox.Size = new System.Drawing.Size(122, 20);
-            this.M_buyTickComboBox.TabIndex = 10;
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(13, 150);
+            this.checkBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(212, 16);
+            this.checkBox3.TabIndex = 22;
+            this.checkBox3.Text = "미체결 상승 이격발생 시 매수 취소";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
-            // label35
+            // label37
             // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(63, 27);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(77, 12);
-            this.label35.TabIndex = 3;
-            this.label35.Text = "조건가격에서";
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(340, 149);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(15, 12);
+            this.label37.TabIndex = 24;
+            this.label37.Text = "%";
             // 
-            // M_usingTickBuyCheck
+            // numericUpDown3
             // 
-            this.M_usingTickBuyCheck.AutoSize = true;
-            this.M_usingTickBuyCheck.Location = new System.Drawing.Point(13, 25);
-            this.M_usingTickBuyCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.M_usingTickBuyCheck.Name = "M_usingTickBuyCheck";
-            this.M_usingTickBuyCheck.Size = new System.Drawing.Size(48, 16);
-            this.M_usingTickBuyCheck.TabIndex = 1;
-            this.M_usingTickBuyCheck.Text = "사용";
-            this.M_usingTickBuyCheck.UseVisualStyleBackColor = true;
+            this.numericUpDown3.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDown3.Location = new System.Drawing.Point(271, 145);
+            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(63, 21);
+            this.numericUpDown3.TabIndex = 23;
+            this.numericUpDown3.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             // 
-            // label36
+            // checkBox4
             // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(3, 0);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(77, 12);
-            this.label36.TabIndex = 0;
-            this.label36.Text = "추가매수전략";
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(13, 177);
+            this.checkBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(96, 16);
+            this.checkBox4.TabIndex = 25;
+            this.checkBox4.Text = "매수대기시간";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
-            // M_AddStratgyBtn
+            // numericUpDown4
             // 
-            this.M_AddStratgyBtn.Location = new System.Drawing.Point(933, 225);
-            this.M_AddStratgyBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.M_AddStratgyBtn.Name = "M_AddStratgyBtn";
-            this.M_AddStratgyBtn.Size = new System.Drawing.Size(68, 26);
-            this.M_AddStratgyBtn.TabIndex = 7;
-            this.M_AddStratgyBtn.Text = "전략생성";
-            this.M_AddStratgyBtn.UseVisualStyleBackColor = true;
-            this.M_AddStratgyBtn.Click += new System.EventHandler(this.M_AddStratgyBtn_Click);
+            this.numericUpDown4.Location = new System.Drawing.Point(114, 174);
+            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.numericUpDown4.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(63, 21);
+            this.numericUpDown4.TabIndex = 26;
+            this.numericUpDown4.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(183, 176);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(85, 12);
+            this.label38.TabIndex = 27;
+            this.label38.Text = "분 후 매수취소";
             // 
             // tradingStrategyGridView
             // 
@@ -2651,6 +2796,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
+            this.panel10.ResumeLayout(false);
+            this.panel10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.M_trailingUpDown)).EndInit();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.M_SellUpdown)).EndInit();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.M_allCostUpDown)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.autoTradingDataGrid)).EndInit();
@@ -2668,16 +2823,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.balanceDataGrid)).EndInit();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).EndInit();
-            this.tabPage9.ResumeLayout(false);
-            this.panel8.ResumeLayout(false);
-            this.panel8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.M_allCostUpDown)).EndInit();
-            this.panel9.ResumeLayout(false);
-            this.panel9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.M_SellUpdown)).EndInit();
-            this.panel10.ResumeLayout(false);
-            this.panel10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.M_trailingUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.M_cancelValueUpdown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2814,20 +2962,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_종목코드;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_주문번호;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_종목명;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수조건식;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_현재가;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_진행상황;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_손익률;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수금;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수량;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수가;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매도량;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매도가;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수시간;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매도시간;
         private System.Windows.Forms.CheckBox interestBuyCheckBox;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label9;
@@ -2896,6 +3030,29 @@
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Button M_AddStratgyBtn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_종목코드;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_주문번호;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_종목명;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수조건식;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_진행상황;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수가;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_현재가;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_손익률;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수금;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수량;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매도량;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매도가;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매수시간;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_매도시간;
+        private System.Windows.Forms.CheckBox M_orderCancelcheckBox;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.NumericUpDown M_cancelValueUpdown;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
     }
 }
 

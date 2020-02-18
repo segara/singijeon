@@ -91,14 +91,14 @@ namespace Singijeon
         {
             if (index < buyBiddingEntityArray.Length)
             {
-                while(buyBiddingEntityArray[index].Hoga == 0 && index < buyBiddingEntityArray.Length-1)
+                while(buyBiddingEntityArray[index].Qnt == 0 && index < buyBiddingEntityArray.Length-1)
                 {
                     Console.WriteLine("호가찾기 진행중 : " + index);
                     index++;
                     if(buyBiddingEntityArray[index].Hoga > 0)
                         return buyBiddingEntityArray[index].Hoga;
                 }
-                return buyBiddingEntityArray[index].Hoga;
+                return Math.Abs(buyBiddingEntityArray[index].Hoga);
             }
             return 0;
         }

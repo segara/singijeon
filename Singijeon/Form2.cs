@@ -10,13 +10,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Singijeon
-{
+namespace Singijeon { 
+ 
     public partial class Form2 : Form
     {
         CoreEngine coreEngine;
         AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
-        List<string> logMessage = new List<string>();
+        List<LogItem> logMessage = new List<LogItem>();
         int curLogIndex = 0;
         Thread taskWorker;
         delegate void CrossThreadSafetyUpdate(ListBox ctl);
@@ -54,18 +54,37 @@ namespace Singijeon
         }
         void Update()
         {
-            martin_curStep_txt.Text = MartinGailManager.GetInstance().StepInner.ToString();
-            martin_max_try_txt.Text = MartinGailManager.MARTIN_MAX_STEP.ToString();
 
-            martin_win_txt.Text = MartinGailManager.GetInstance().WinCnt.ToString();
-            martin_lose_txt.Text = MartinGailManager.GetInstance().LoseCnt.ToString();
+          
+            if (martin_curStep_txt.InvokeRequired)
+            {
+                martin_curStep_txt.Invoke(new MethodInvoker(delegate ()
+                {
+                    martin_curStep_txt.Text = MartinGailManager.GetInstance().StepInner.ToString();
+                    martin_max_try_txt.Text = MartinGailManager.MARTIN_MAX_STEP.ToString();
 
-            martin_profit.Text = MartinGailManager.GetInstance().ProfitMoney.ToString();
+                    martin_win_txt.Text = MartinGailManager.GetInstance().WinCnt.ToString();
+                    martin_lose_txt.Text = MartinGailManager.GetInstance().LoseCnt.ToString();
+
+                    martin_profit.Text = MartinGailManager.GetInstance().ProfitMoney.ToString();
+                }));
+            }
+            else
+            {
+                martin_curStep_txt.Text = MartinGailManager.GetInstance().StepInner.ToString();
+                martin_max_try_txt.Text = MartinGailManager.MARTIN_MAX_STEP.ToString();
+
+                martin_win_txt.Text = MartinGailManager.GetInstance().WinCnt.ToString();
+                martin_lose_txt.Text = MartinGailManager.GetInstance().LoseCnt.ToString();
+
+                martin_profit.Text = MartinGailManager.GetInstance().ProfitMoney.ToString();
+            }
+              
         }
 
         private void OnReceiveLogMessage(object sender, OnReceivedLogMessageEventArgs e)
         {
-            logMessage.Add(e.Message);
+            logMessage.Add(new LogItem(e.Message));
             coreEngine.SaveLogMessage(e.Message);
             if (LogListBox.InvokeRequired)
             {
@@ -73,8 +92,8 @@ namespace Singijeon
                 {
                     while (curLogIndex < logMessage.Count)
                     {
-                        LogListBox.Items.Add(logMessage[curLogIndex]);
-                        LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
+                        LogListBox.Items.Add(logMessage[curLogIndex].logTxt);
+                        //LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
                         curLogIndex++;
                     }
                     //CheckLogLength();
@@ -84,8 +103,8 @@ namespace Singijeon
             {
                 while (curLogIndex < logMessage.Count)
                 {
-                    LogListBox.Items.Add(logMessage[curLogIndex]);
-                    LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
+                    LogListBox.Items.Add(logMessage[curLogIndex].logTxt);
+                    //LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
                     curLogIndex++;
                 }
                 //CheckLogLength();
@@ -152,6 +171,22 @@ namespace Singijeon
             logMessage.Clear();
             LogListBox.Items.Clear();
             curLogIndex = 0;
+        }
+    }
+    public enum LOG_TYPE
+    {
+        NORMAL,
+        WARNING,
+        ERROR
+    }
+    public class LogItem
+    {
+        public LOG_TYPE logType;
+        public string logTxt;
+        public LogItem(string msg, LOG_TYPE type = LOG_TYPE.NORMAL)
+        {
+            logTxt = msg;
+            logType = type;
         }
     }
 }
