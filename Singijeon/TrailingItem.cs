@@ -15,6 +15,8 @@ namespace Singijeon
         public int curTickCount = 0;
 
         public int lowestPrice = 0;
+        public int averagePrice = 0;
+        public int sumPriceAllTick = 0; //평균가 계산을 위한 변수
 
         public DataGridViewRow ui_rowAutoTradingItem;
 

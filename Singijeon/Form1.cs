@@ -1698,36 +1698,36 @@ namespace Singijeon
                 {
                     if (trailingItem.strategy != null && itemCode.Contains(trailingItem.itemCode) && trailingItem.strategy.usingTrailing) //하락 트레일링 체크
                     {
-                        string itemcode = itemCode;
-
-                        //틱단위 스킵
-                        //coreEngine.SendLogMessage("틱제한 " + axKHOpenAPI1.GetMasterCodeName(itemcode) + " :  현재 " + trailingItem.curTickCount.ToString() + " / 셋팅 " + trailingItem.settingTickCount.ToString());
-
-                        if (trailingItem.curTickCount < trailingItem.settingTickCount)
-                        {
-                            trailingItem.curTickCount++;
-                            continue;
-                        }
-                        else
-                        {
-                            trailingItem.curTickCount = 0;
-                        }
-
-                        int price = 0;
-                        int i_qnt = 0;
-
-                        StockWithBiddingEntity stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemcode);
+                        StockWithBiddingEntity stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
+                  
                         if (stockInfo != null)
                         {
-                            price = (int)stockInfo.GetBuyHoga(0); //최우선 매수 호가를 얻어옴
-                            coreEngine.SendLogMessage("트레일링 " + axKHOpenAPI1.GetMasterCodeName(itemcode) + " 스킵체크 :  매수호가 " + price.ToString() + " / 최저가 " + trailingItem.lowestPrice.ToString());
+                            string itemcode = itemCode;
+                            int price = (int)stockInfo.GetBuyHoga(0);
+                            int i_qnt = 0;
+
+                            //틱단위 스킵
+                            coreEngine.SendLogMessage("틱제한 " + axKHOpenAPI1.GetMasterCodeName(itemcode) + " :  현재 " + trailingItem.curTickCount.ToString() + " / 셋팅 " + trailingItem.settingTickCount.ToString());
+
+                            if (trailingItem.curTickCount < trailingItem.settingTickCount)
+                            {
+                                trailingItem.curTickCount++;
+                                trailingItem.sumPriceAllTick += price;
+                                continue;
+                            }
+                            if (trailingItem.curTickCount > 0) 
+                                trailingItem.lowestPrice = trailingItem.sumPriceAllTick / trailingItem.curTickCount;
+
+                            coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 스킵체크 :  매수호가 " + price.ToString() + " / 최저가 " + trailingItem.lowestPrice.ToString());
 
                             if (price <= trailingItem.lowestPrice)
                             {
                                 trailingItem.curTickCount = 0;
+                                trailingItem.sumPriceAllTick = 0; 
                                 trailingItem.lowestPrice = price;
                                 continue;
                             }
+
                             coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 최저값: " + price);
                             i_qnt = (int)(trailingItem.strategy.itemInvestment / price);
                             price = (int)stockInfo.GetBuyHoga(trailingItem.strategy.tickBuyValue); //전략에 의한 매수틱 조정(없으면 최우선매수호가)
