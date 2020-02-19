@@ -49,6 +49,7 @@ namespace Singijeon
         }
         public void Run()
         {
+            taskWorker.IsBackground = true;
             taskWorker.Start();
         }
         public void RequestTrData(Task task)

@@ -11,7 +11,7 @@ namespace Singijeon
     {
         public const string GET_SERVER_TYPE = "GetServerGubun";
         public const string GET_ACCOUNT_LIST = "ACCLIST";
-
+        public const string TEST_SERVER = "1";
         public const string RECEIVE_REAL_CONDITION_INSERTED = "I";
         public const string RECEIVE_REAL_CONDITION_DELETE = "D";
 

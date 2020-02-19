@@ -30,8 +30,8 @@ namespace Singijeon
     {
         NONE,
         HAVE_ITEM,
-        PROFIT_TAKE,
-        STOP_LOSS,
+        WIN,
+        LOSE,
     }
       
     public class MartinGailItem
@@ -65,6 +65,11 @@ namespace Singijeon
         AxKHOpenAPI axKHOpenAPI1;
         tradingStrategyGridView form1;
 
+        
+        DateTime startOrderTime = DateTime.Now;
+
+        TimeSpan timeSpanBuy;
+
         private int  step = 0;
         private int  maxStep = 0;
         private long startMoney = 0;
@@ -94,7 +99,7 @@ namespace Singijeon
                     try
                     {
                         Update();
-                        Thread.Sleep(100); //기본 실행 주기
+                        Thread.Sleep(1000); //기본 실행 주기
 
                     }
                     catch (Exception exception)
@@ -103,6 +108,8 @@ namespace Singijeon
                     }
                 }
             });
+            taskWorker.IsBackground = true;
+            taskWorker.Start();
         }
 
         public static MartinGailManager GetInstance()
@@ -128,17 +135,54 @@ namespace Singijeon
             startMoney = strategy.itemInvestment;
             tradingStrategy = strategy;
             strategy.OnReceiveCondition += OnReceiveConditionResult;
-
+            strategy.OnReceiveBuyOrder += OnReceiveOrderTryResult;
+            strategy.OnReceiveBuyChejan += OnReceiveChejanResult;
         }
 
         private void OnReceiveConditionResult(object sender, OnReceiveStrateyStateResultArgs e)
         {
             item = new MartinGailItem();
-            item.itemState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH;
+            item.itemState = e.State;
             item.itemCode = e.ItemCode;
             item.buyQnt = e.BuyQnt;
+            CoreEngine.GetInstance().SendLogMessage("!!!!! 마틴게일 아이템 :" + e.State.ToString());
         }
-
+        private void OnReceiveOrderTryResult(object sender, OnReceiveStrateyStateResultArgs e)
+        {
+            if(item != null)
+            {
+                CoreEngine.GetInstance().SendLogMessage("!!!!! 마틴게일 아이템 :" + e.State.ToString());
+                item.itemState = e.State;
+                if (item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER)
+                {
+                    //주문접수 시도 완료
+                    startOrderTime = DateTime.Now;
+                }
+                else if (item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE)
+                {
+                    //주문접수 완료
+                    startOrderTime = DateTime.Now;
+                }
+            }
+           
+        }
+        public void OnReceiveChejanResult(object sender, OnReceiveStrateyStateResultArgs e)
+        {
+            if (item != null)
+            {
+                CoreEngine.GetInstance().SendLogMessage("!!!!! 마틴게일 아이템 :" + e.State.ToString());
+                item.itemState = e.State;
+                if(item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
+                {
+                    //일부 매수일때
+                }
+                else if(item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
+                {
+                    //매수완료
+                    startOrderTime = DateTime.Now;
+                }
+            }
+        }
         public int CheckMartinValid(TradingStrategy strategy)
         {
             if (tradingStrategy != null)
@@ -161,6 +205,10 @@ namespace Singijeon
             return Martin_ErrorCode.ERR_NONE;
         }
 
+        public List<MartinGailItem> TodayAllList()
+        {
+            return todayAllItems;
+        }
         public void PushMartinGailItem(string itemCode)
         {
             CoreEngine.GetInstance().SendLogMessage("Push Martin GailItem");
@@ -189,7 +237,7 @@ namespace Singijeon
             {
                 if(item != null)
                 {
-                   item.martinState = MARTIN_RESULT.PROFIT_TAKE;
+                   item.martinState = MARTIN_RESULT.WIN;
                     winCount++;
                     Restart();
                 }
@@ -199,7 +247,7 @@ namespace Singijeon
                 loseCount++;
                 if (item != null)
                 {
-                    item.martinState = MARTIN_RESULT.STOP_LOSS;
+                    item.martinState = MARTIN_RESULT.LOSE;
 
                     if (item.step >= MARTIN_MAX_STEP)
                     {
@@ -273,8 +321,6 @@ namespace Singijeon
         }
         private void API_OnReceiveChejanData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveChejanDataEvent e)
         {
-            CoreEngine.GetInstance().SendLogMessage("Martin API_OnReceiveChejanData");
-
             if (e.sGubun.Equals(ConstName.RECEIVE_CHEJAN_DATA_SUBMIT_OR_CONCLUSION))
             {
                 string orderState = axKHOpenAPI1.GetChejanData(913);
@@ -352,6 +398,12 @@ namespace Singijeon
         }
         void Update()
         {
+            if (item != null)
+            {
+                if(item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE  ||
+                    item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
+                    Console.WriteLine((startOrderTime - DateTime.Now));
+            }
           
         }
     }
