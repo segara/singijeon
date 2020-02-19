@@ -59,6 +59,7 @@ namespace Singijeon
         Stack<MartinGailItem> martinGailStack = new Stack<MartinGailItem>();
 
         TradingStrategy tradingStrategy;   //적용된 전략
+        public TradingStrategy CurStrategy { get { return tradingStrategy; } }
 
         MartinGailItem item;
 

@@ -11,13 +11,18 @@ namespace Singijeon
     {
         public const string GET_SERVER_TYPE = "GetServerGubun";
         public const string GET_ACCOUNT_LIST = "ACCLIST";
+
         public const string TEST_SERVER = "1";
+
         public const string RECEIVE_REAL_CONDITION_INSERTED = "I";
         public const string RECEIVE_REAL_CONDITION_DELETE = "D";
 
         public const string RECEIVE_TR_DATA_HOGA = "주식호가요청"; 
         public const string RECEIVE_TR_DATA_BUY_INFO = "매수종목정보요청";
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO = "계좌평가현황요청";
+
+        public const string ORDER_JIJUNGGA = "00";
+        public const string ORDER_SIJANGGA = "03";
 
         public const string RECEIVE_REAL_DATA_CONCLUSION = "주식체결";
         public const string RECEIVE_REAL_DATA_HOGA = "주식호가잔량";
@@ -52,6 +57,17 @@ namespace Singijeon
 
         public const string AUTO_TRADING_STATE_SELL_MONITORING = "매도감시";
         public const string AUTO_TRADING_STATE_CONCLUESION_COMPLETE = "매매완료";
+    }
+    public class CONST_NUMBER
+    {
+        public const int SEND_ORDER_BUY = 1;
+        public const int SEND_ORDER_SELL = 2;
+
+        public const int SEND_ORDER_CANCEL_BUY = 3;
+        public const int SEND_ORDER_CANCEL_SELL = 4;
+
+        public const int SEND_ORDER_MODIFY_BUY = 5;
+        public const int SEND_ORDER_MODIFY_SELL = 6;
     }
     public enum ORDER_TYPE :int
     {
