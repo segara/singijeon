@@ -167,30 +167,30 @@ namespace Singijeon
             }
         }
 
-        public void StrategyConditionReceiveUpdate(string itemCode, int qnt, TRADING_ITEM_STATE state)
+        public void StrategyConditionReceiveUpdate(string itemCode, int price, int qnt, TRADING_ITEM_STATE state)
         {
             if(OnReceiveCondition != null)
-                OnReceiveCondition.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, state));
+                OnReceiveCondition.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, price, state));
         }
-        public void StrategyBuyOrderUpdate(string itemCode, int qnt, TRADING_ITEM_STATE state)
+        public void StrategyBuyOrderUpdate(string itemCode, int price, int qnt, TRADING_ITEM_STATE state)
         {
             if (OnReceiveBuyOrder != null)
-                OnReceiveBuyOrder.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, state));
+                OnReceiveBuyOrder.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, price, state));
         }
-        public void StrategyOnReceiveBuyChejanUpdate(string itemCode, int qnt, TRADING_ITEM_STATE state)
+        public void StrategyOnReceiveBuyChejanUpdate(string itemCode, int price, int qnt, TRADING_ITEM_STATE state)
         {
             if (OnReceiveBuyChejan != null)
-                OnReceiveBuyChejan.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, state));
+                OnReceiveBuyChejan.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, price, state));
         }
-        public void StrategyOnReceiveSellOrderUpdate(string itemCode, int qnt, TRADING_ITEM_STATE state)
+        public void StrategyOnReceiveSellOrderUpdate(string itemCode, int price, int qnt, TRADING_ITEM_STATE state)
         {
             if (OnReceiveSellOrder != null)
-                OnReceiveSellOrder.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, state));
+                OnReceiveSellOrder.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, price, state));
         }
-        public void StrategOnReceiveSellChejanUpdate(string itemCode, int qnt, TRADING_ITEM_STATE state)
+        public void StrategOnReceiveSellChejanUpdate(string itemCode, int price, int qnt, TRADING_ITEM_STATE state)
         {
             if (OnReceiveSellChejan != null)
-                OnReceiveSellChejan.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, state));
+                OnReceiveSellChejan.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, price, state));
         }
     }
     public class OnReceivedTrEventArgs : EventArgs
@@ -367,11 +367,13 @@ namespace Singijeon
     public class OnReceiveStrateyStateResultArgs : EventArgs
     {
         public string ItemCode { get; set; }
+        public int BuyPrice { get; set; }
         public int BuyQnt { get; set; }
         public TRADING_ITEM_STATE State { get; set; }
-        public OnReceiveStrateyStateResultArgs(string itemcode, int buyQnt, TRADING_ITEM_STATE state)
+        public OnReceiveStrateyStateResultArgs(string itemcode, int buyQnt, int buyPrice, TRADING_ITEM_STATE state)
         {
             this.ItemCode = itemcode;
+            this.BuyPrice = buyPrice;
             this.BuyQnt = buyQnt;
             this.State = state;
         }

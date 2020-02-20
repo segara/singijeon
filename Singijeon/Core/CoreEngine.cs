@@ -126,7 +126,7 @@ namespace Singijeon.Core
                 string[] rqNameArray = e.sRQName.Split(':');
                 if (rqNameArray.Length == 3)
                 {
-                    string itemCode = rqNameArray[2];
+                    string itemCode = rqNameArray[1];
                     newObj.Code = itemCode;
                 }
                 for (int i = 0; i < 10; i++)

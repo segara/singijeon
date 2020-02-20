@@ -31,9 +31,12 @@ namespace Singijeon
         public const string RECEIVE_CHEJAN_DATA_BALANCE              = "1";
         public const string RECEIVE_CHEJAN_DATA_SUBMIT = "접수";
         public const string RECEIVE_CHEJAN_DATA_CONCLUSION = "체결";
+        public const string RECEIVE_CHEJAN_DATA_OK = "확인";
 
         public const string RECEIVE_CHEJAN_DATA_BUY = "매수";
         public const string RECEIVE_CHEJAN_DATA_SELL = "매도";
+        public const string RECEIVE_CHEJAN_CANCEL_BUY_ORDER = "매수취소";
+        public const string RECEIVE_CHEJAN_CANCEL_SELL_ORDER = "매도취소";
 
         public const string AUTO_TRADING_STATE_SEARCH_AND_CATCH = "종목포착";
 
@@ -43,12 +46,15 @@ namespace Singijeon
         public const string AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT = "일부매수";
         public const string AUTO_TRADING_STATE_BUY_COMPLETE = "매수완료";
 
+        public const string AUTO_TRADING_STATE_BUY_CANCEL_ALL = "매수취소완료";
+
         public const string AUTO_TRADING_STATE_SELL_BEFORE_ORDER = "매도주문접수시도";
         //public const string AUTO_TRADING_STATE_SELL_ORDER_COMPLETE = "매도주문접수완료";
         public const string AUTO_TRADING_STATE_SELL_NOT_COMPLETE = "매도주문완료";
         public const string AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT = "일부매도";
         public const string AUTO_TRADING_STATE_SELL_COMPLETE = "매도완료";
 
+        public const string AUTO_TRADING_STATE_SELL_CANCEL_ALL = "매도취소완료";
         //public const string AUTO_TRADING_STATE_TAKE_PROFIT = "익절매도중";
         //public const string AUTO_TRADING_STATE_STOPLOSS = "손절매도중";
 

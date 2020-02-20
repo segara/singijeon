@@ -67,14 +67,15 @@ namespace Singijeon {
                     martin_lose_txt.Text = MartinGailManager.GetInstance().LoseCnt.ToString();
 
                     martin_profit.Text = MartinGailManager.GetInstance().ProfitMoney.ToString();
-
-                    while(curMartinIndex < MartinGailManager.GetInstance().TodayAllList().Count)
+                    M_resultListBox.Items.Clear();
+                    int index = 0;
+                    while(index < MartinGailManager.GetInstance().TodayAllList().Count)
                     {
-                        int todayIndex = MartinGailManager.GetInstance().TodayAllList()[curMartinIndex].TodayIndex;
-                        int curStep = MartinGailManager.GetInstance().TodayAllList()[curMartinIndex].step;
-                        MARTIN_RESULT result = MartinGailManager.GetInstance().TodayAllList()[curMartinIndex].martinState;
+                        int todayIndex = MartinGailManager.GetInstance().TodayAllList()[index].TodayIndex;
+                        int curStep = MartinGailManager.GetInstance().TodayAllList()[index].step;
+                        MARTIN_RESULT result = MartinGailManager.GetInstance().TodayAllList()[index].martinState;
                         M_resultListBox.Items.Add(string.Format(" {0} | {1} | {2} ", todayIndex, curStep, result.ToString()));
-                        curMartinIndex++;
+                        index++;
                     }
 
                 }));
@@ -88,14 +89,15 @@ namespace Singijeon {
                 martin_lose_txt.Text = MartinGailManager.GetInstance().LoseCnt.ToString();
 
                 martin_profit.Text = MartinGailManager.GetInstance().ProfitMoney.ToString();
-
+                M_resultListBox.Items.Clear();
+                int index = 0;
                 while (curMartinIndex < MartinGailManager.GetInstance().TodayAllList().Count)
                 {
-                    int todayIndex = MartinGailManager.GetInstance().TodayAllList()[curMartinIndex].TodayIndex;
-                    int curStep = MartinGailManager.GetInstance().TodayAllList()[curMartinIndex].step;
-                    MARTIN_RESULT result = MartinGailManager.GetInstance().TodayAllList()[curMartinIndex].martinState;
+                    int todayIndex = MartinGailManager.GetInstance().TodayAllList()[index].TodayIndex;
+                    int curStep = MartinGailManager.GetInstance().TodayAllList()[index].step;
+                    MARTIN_RESULT result = MartinGailManager.GetInstance().TodayAllList()[index].martinState;
                     M_resultListBox.Items.Add(string.Format(" {0} | {1} | {2} ", todayIndex, curStep, result.ToString()));
-                    curMartinIndex++;
+                    index++;
                 }
 
             }
