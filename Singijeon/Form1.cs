@@ -1093,7 +1093,7 @@ namespace Singijeon
                                 if (curState.Equals(ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE) || curState.Equals(ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT))
                                 {
                                     //취소주문
-                                    int orderResult = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, itemCode, tradeItem.outStandingQnt, tradeItem.sellPrice, tradeItem.orderType, tradeItem.sellOrderNum);
+                                    int orderResult = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, itemCode, tradeItem.outStandingQnt, (int)tradeItem.sellPrice, tradeItem.orderType, tradeItem.sellOrderNum);
 
                                     if (orderResult == 0)
                                     {
