@@ -34,7 +34,7 @@ namespace Singijeon
         LOSE,
         DRAW
     }
-      
+
     public class MartinGailItem
     {
         public int step;
@@ -44,13 +44,13 @@ namespace Singijeon
         public string sellOrderNum;
 
         public TRADING_ITEM_STATE itemState = TRADING_ITEM_STATE.NONE;
-        public  MARTIN_RESULT martinState = MARTIN_RESULT.NONE;
+        public MARTIN_RESULT martinState = MARTIN_RESULT.NONE;
 
         public long buyPrice = 0;
         public long curPrice = 0;
         public long buyQnt = 0;
         public long curQnt = 0;
-        public long profitAmount       = 0;      //손익금액
+        public long profitAmount = 0;      //손익금액
         public double profitPercentage = 0;      //손익률
 
     }
@@ -59,7 +59,7 @@ namespace Singijeon
     {
         private static MartinGailManager martinInstance;
 
-       public const int MARTIN_MAX_STEP = 3;
+        public const int MARTIN_MAX_STEP = 3;
 
         List<string> todayAllCode = new List<string>();
         List<MartinGailItem> todayAllItems = new List<MartinGailItem>();
@@ -70,6 +70,24 @@ namespace Singijeon
         public TradingStrategy CurStrategy { get { return tradingStrategy; } }
 
         MartinGailItem item;
+        MartinGailItem Item {
+            get {
+                if(item != null)
+                {
+                    return item;
+                }
+                else
+                {
+                    CoreEngine.GetInstance().SaveLogMessage("null error");
+                    return null;
+                }
+            }
+            set
+            {
+                item = value;
+            }
+
+        }
 
         AxKHOpenAPI axKHOpenAPI1;
         tradingStrategyGridView form1;
@@ -96,6 +114,13 @@ namespace Singijeon
         public int DrawCnt { get { return drawCount; } }
         public int LoseCnt { get { return loseCount; } }
         public int WinCnt { get { return winCount; } }
+
+        public bool using_Up_And_Cancel = false;
+        public double Up_And_CancelValue = 0;
+        public bool using_Outstand_UpAndCancel = false;
+        public double OutStand_And_CancelValue = 0;
+        public bool using_WaitAndCancel = false;
+        public int Wait_And_CancelValue = 0;
 
         Thread taskWorker;
 
@@ -151,30 +176,30 @@ namespace Singijeon
 
         private void OnReceiveConditionResult(object sender, OnReceiveStrateyStateResultArgs e)
         {
-            item = new MartinGailItem();
+            Item = new MartinGailItem();
 
-            item.itemState = e.State;
-            item.itemCode = e.ItemCode;
-            item.buyQnt = e.BuyQnt;
-            item.curQnt = 0;
-            item.buyPrice = e.BuyPrice;
+            Item.itemState = e.State;
+            Item.itemCode = e.ItemCode;
+            Item.buyQnt = e.BuyQnt;
+            Item.curQnt = 0;
+            Item.buyPrice = e.BuyPrice;
 
             CoreEngine.GetInstance().SendLogMessage("!!!!! 마틴게일 아이템 :" + e.State.ToString());
         }
         private void OnReceiveOrderTryResult(object sender, OnReceiveStrateyStateResultArgs e)
         {
-            if(item != null)
+            if(Item != null)
             {
                 CoreEngine.GetInstance().SendLogMessage("!!!!! 마틴게일 아이템 :" + e.State.ToString());
 
-                item.itemState = e.State;
+                Item.itemState = e.State;
 
-                if (item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER)
+                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER)
                 {
                     //주문접수 시도 완료
                     startOrderTime = DateTime.Now;
                 }
-                else if (item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE )
+                else if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE )
                 {
                     //주문접수 완료
                     startOrderTime = DateTime.Now;
@@ -185,19 +210,19 @@ namespace Singijeon
         }
         public void OnReceiveChejanResult(object sender, OnReceiveStrateyStateResultArgs e)
         {
-            if (item != null)
+            if (Item != null)
             {
                 CoreEngine.GetInstance().SendLogMessage("!!!!! 마틴게일 아이템 :" + e.State.ToString());
 
-                item.itemState = e.State;
+                Item.itemState = e.State;
                 
 
-                if (item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
+                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
                 {
                     //일부 매수일때
                     startOrderTime = DateTime.Now;
                 }
-                else if(item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
+                else if(Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 {
                     //매수완료
                     startOrderTime = DateTime.Now;
@@ -235,15 +260,15 @@ namespace Singijeon
             CoreEngine.GetInstance().SendLogMessage("Push Martin GailItem");
             step++;
 
-            if (item != null && item.itemCode == itemCode)
+            if (Item != null && item.itemCode == itemCode)
             {
-                item.martinState = MARTIN_RESULT.HAVE_ITEM;
-                item.step = step;
-                item.TodayIndex = todayAllItems.Count;
+                Item.martinState = MARTIN_RESULT.HAVE_ITEM;
+                Item.step = step;
+                Item.TodayIndex = todayAllItems.Count;
 
                 todayAllCode.Add(itemCode);
-                martinGailStack.Push(item);
-                todayAllItems.Add(item);
+                martinGailStack.Push(Item);
+                todayAllItems.Add(Item);
             }
 
         }
@@ -251,7 +276,7 @@ namespace Singijeon
         public void PopMartinGailItem(long profit)
         {
             CoreEngine.GetInstance().SendLogMessage("Pop MartinGail Item");
-            item = null;
+            Item = null;
             MartinGailItem itempop = martinGailStack.Pop();
             TodayAllTry++;
 
@@ -259,7 +284,7 @@ namespace Singijeon
             {
                 if(itempop != null)
                 {
-                   item.martinState = MARTIN_RESULT.WIN;
+                   Item.martinState = MARTIN_RESULT.WIN;
                     winCount++;
                     Restart();
                 }
@@ -268,7 +293,7 @@ namespace Singijeon
                 drawCount++;
                 if (itempop != null)
                 {
-                    item.martinState = MARTIN_RESULT.DRAW;
+                    Item.martinState = MARTIN_RESULT.DRAW;
                     RestartSameStep();
                 }
             }
@@ -325,7 +350,7 @@ namespace Singijeon
             martinGailStack.Clear();
 
             tradingStrategy = null;
-            item = null;
+            Item = null;
             step = 0;
             maxStep = 0;
             startMoney = 0;
@@ -373,9 +398,9 @@ namespace Singijeon
 
                 long c_lPrice = Math.Abs(long.Parse(price));
 
-                if(item != null && item.itemCode == itemCode)
+                if(Item != null && Item.itemCode == itemCode)
                 {
-                    item.curPrice = c_lPrice;
+                    Item.curPrice = c_lPrice;
                 }
             }
         }
@@ -422,12 +447,12 @@ namespace Singijeon
                             if (tradeItem != null)
                             {
                               
-                                if (item != null)
+                                if (Item != null)
                                 {
-                                    item.curQnt = long.Parse(conclusionQuantity); 
-                                    item.buyPrice = tradeItem.buyingPrice;
-                                    item.buyOrderNum = tradeItem.buyOrderNum;
-                                    if(item.curQnt == item.buyQnt)
+                                    Item.curQnt = long.Parse(conclusionQuantity); 
+                                    Item.buyPrice = tradeItem.buyingPrice;
+                                    Item.buyOrderNum = tradeItem.buyOrderNum;
+                                    if(Item.curQnt == Item.buyQnt)
                                          PushMartinGailItem(itemCode);
                                 }
                             }
@@ -459,7 +484,7 @@ namespace Singijeon
                     {
                         if (int.Parse(outstanding) == 0)
                         {
-                            if(item !=  null && item.buyOrderNum == ordernum)
+                            if(Item !=  null && Item.buyOrderNum == ordernum)
                                 PopMartinGailItem(0);
                         }
                     }
@@ -467,7 +492,7 @@ namespace Singijeon
                     {
                         if (int.Parse(outstanding) == 0)
                         {
-                            if (item != null && item.sellOrderNum == ordernum)
+                            if (Item != null && Item.sellOrderNum == ordernum)
                                 PopMartinGailItem(0);
                         }
                     }
@@ -479,11 +504,11 @@ namespace Singijeon
         }
         private void CancelBuyOrderAll()
         {
-            if (item == null)
+            if (Item == null)
                 return;
 
-            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! cancel quantity : " + (item.buyQnt - item.curQnt).ToString());
-            int orderResult = axKHOpenAPI1.SendOrder("종목주문정정", form1.GetScreenNum().ToString(), tradingStrategy.account, CONST_NUMBER.SEND_ORDER_CANCEL_BUY, item.itemCode, (int)(item.buyQnt - item.curQnt), (int)item.buyPrice, ConstName.ORDER_JIJUNGGA, item.buyOrderNum);
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! cancel quantity : " + (Item.buyQnt - Item.curQnt).ToString());
+            int orderResult = axKHOpenAPI1.SendOrder("종목주문정정", form1.GetScreenNum().ToString(), tradingStrategy.account, CONST_NUMBER.SEND_ORDER_CANCEL_BUY, Item.itemCode, (int)(Item.buyQnt - Item.curQnt), (int)Item.buyPrice, ConstName.ORDER_JIJUNGGA, Item.buyOrderNum);
 
             if (orderResult == 0)
             {
@@ -493,17 +518,32 @@ namespace Singijeon
                                          
         void Update()
         {
-            if (item != null)
+            if (Item != null)
             {
-                if(item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE  ||
-                    item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
+                if(Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE  ||
+                    Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
                 {
                     CoreEngine.GetInstance().SendLogMessage((startOrderTime - DateTime.Now).ToString());
+                    CoreEngine.GetInstance().SendLogMessage(tradingStrategyGridView.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice).ToString());
 
-                    if(item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
-                         CoreEngine.GetInstance().SendLogMessage(tradingStrategyGridView.GetProfitRate((double)item.curPrice, (double)item.buyPrice).ToString());
-
-                    if ((startOrderTime - DateTime.Now).TotalSeconds > 120)
+                    if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
+                    {
+                        if (using_Outstand_UpAndCancel && tradingStrategyGridView.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice) > OutStand_And_CancelValue)
+                        {
+                            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!!Pop MartinGail Item!!!!!!!!!!!!!!");
+                            CancelBuyOrderAll();
+                        }
+                    }
+                    else
+                    {
+                        if (using_Up_And_Cancel && tradingStrategyGridView.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice) > Up_And_CancelValue)
+                        {
+                            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!!Pop MartinGail Item!!!!!!!!!!!!!!");
+                            CancelBuyOrderAll();
+                        }
+                    }
+      
+                    if (using_WaitAndCancel && (startOrderTime - DateTime.Now).TotalSeconds > Wait_And_CancelValue)
                     {
                         CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!!Pop MartinGail Item!!!!!!!!!!!!!!");
                         CancelBuyOrderAll();

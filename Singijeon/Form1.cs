@@ -69,23 +69,22 @@ namespace Singijeon
             interestConditionListBox.SelectedIndexChanged += InterestConditionListBox_SelectedIndexChanged;
 
             accountBalanceDataGrid.CellClick += DataGridView_CellClick;
-            autoTradingDataGrid.CellClick += AutoTradingDataGridView_CellClick;
-            tsDataGridView.CellClick += TradingStrategyGridView_CellClick;
+            autoTradingDataGrid.CellClick    += AutoTradingDataGridView_CellClick;
+            tsDataGridView.CellClick         += TradingStrategyGridView_CellClick;
 
             accountBalanceDataGrid.SelectionChanged += AccountDataGridView_SelectionChanged;
 
-            axKHOpenAPI1.OnEventConnect += API_OnEventConnect; //로그인
-            axKHOpenAPI1.OnReceiveConditionVer += API_OnReceiveConditionVer; //검색 받기
+            axKHOpenAPI1.OnEventConnect         += API_OnEventConnect; //로그인
+            axKHOpenAPI1.OnReceiveConditionVer  += API_OnReceiveConditionVer; //검색 받기
             axKHOpenAPI1.OnReceiveRealCondition += API_OnReceiveRealCondition; //실시간 검색
-            axKHOpenAPI1.OnReceiveTrCondition += API_OnReceiveTrCondition; //검색
+            axKHOpenAPI1.OnReceiveTrCondition   += API_OnReceiveTrCondition; //검색
 
-            axKHOpenAPI1.OnReceiveTrData += API_OnReceiveTrData; //정보요청
-            axKHOpenAPI1.OnReceiveTrData += API_OnReceiveTrDataHoga; //정보요청(호가)
+            axKHOpenAPI1.OnReceiveTrData     += API_OnReceiveTrData; //정보요청
+            axKHOpenAPI1.OnReceiveTrData     += API_OnReceiveTrDataHoga; //정보요청(호가)
             axKHOpenAPI1.OnReceiveChejanData += API_OnReceiveChejanData; //체결잔고
-            axKHOpenAPI1.OnReceiveRealData += API_OnReceiveRealData; //실시간정보
-            axKHOpenAPI1.OnReceiveRealData += API_OnReceiveRealDataHoga; //실시간정보
-
-            axKHOpenAPI1.OnReceiveRealData += API_OnReceiveRealDataHoga; //실시간정보
+            axKHOpenAPI1.OnReceiveRealData   += API_OnReceiveRealData; //실시간정보
+            axKHOpenAPI1.OnReceiveRealData   += API_OnReceiveRealDataHoga; //실시간정보
+            axKHOpenAPI1.OnReceiveRealData   += API_OnReceiveRealDataHoga; //실시간정보
 
             MartinGailManager.GetInstance().Init(axKHOpenAPI1, this);
         }
@@ -660,7 +659,9 @@ namespace Singijeon
               
                 string itemName = axKHOpenAPI1.GetChejanData(302).Trim();
                 string orderQuantity = axKHOpenAPI1.GetChejanData(900).Trim();
+                int i_orderQuantity = int.Parse(orderQuantity);
                 string orderPrice = axKHOpenAPI1.GetChejanData(901).Trim();
+                int i_orderPrice = int.Parse(orderPrice);
                 string outstanding = axKHOpenAPI1.GetChejanData(902).Trim();
               
                 string tradingType = axKHOpenAPI1.GetChejanData(906);
@@ -685,10 +686,9 @@ namespace Singijeon
 
                 if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_SUBMIT))
                 {
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!주문리스트에 같은 아이디가 있는지 체크할것!!!!!!!!!!!!!!!
-
+           
                     //주문번호 따오기 위한 부분 
-                    TradingItem item = this.tryingOrderList.Find(o => itemCode.Contains(o.itemCode));
+                    TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)&&(i_orderPrice==o.buyingPrice)&&(i_orderQuantity==o.buyingQnt)));
                     if (item != null)
                     {
                         if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_BUY))
@@ -1696,12 +1696,12 @@ namespace Singijeon
             coreEngine.SaveLogMessage("ScreenNum : " + e.sScrNo + ",사용자구분명 : " + e.sRQName + ", Tr이름: " + e.sTrCode + ", MSG : " + e.sMsg);
             coreEngine.SaveLogMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
+
         public void API_OnReceiveRealDataHoga(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealDataEvent e)
         {
             string itemCode = e.sRealKey.Trim();
 
             //coreEngine.SendLogMessage(e.sRealType +":"+axKHOpenAPI1.GetMasterCodeName(itemCode));
-
 
             if (e.sRealType.Contains(ConstName.RECEIVE_REAL_DATA_HOGA) || e.sRealType.Contains(ConstName.RECEIVE_REAL_DATA_USUN_HOGA))
             {
@@ -1939,6 +1939,35 @@ namespace Singijeon
                 ts.tickBuyValue = index;
             }
 
+            bool usingUpCheckAndCancel = M_UpAndCancelCheck.Checked; //미체결 상승 이격발생
+
+            if (usingUpCheckAndCancel)
+            {
+                double index = (double)M_UpAndCancelUpdown.Value;
+
+                MartinGailManager.GetInstance().Up_And_CancelValue = index;
+
+            }
+            bool usingOutStandAndCancel = M_orderCancelcheckBox.Checked; //미체결 상승 이격발생
+
+            if (usingOutStandAndCancel)
+            {
+                double index = (double)M_cancelValueUpdown.Value;
+
+                MartinGailManager.GetInstance().OutStand_And_CancelValue = index;
+
+            }
+
+            bool usingTimeCancelCheckBox = M_timeCancelCheckBox.Checked; //미체결 상승 이격발생
+
+            if (usingTimeCancelCheckBox)
+            {
+                int index = (int)M_waitTimeUpdown.Value;
+
+                MartinGailManager.GetInstance().Wait_And_CancelValue = index;
+
+            }
+
             bool usingTrailBuy = M_usingTrailingBuyCheck.Checked; //트레일링 매수 적용
 
             if (usingTrailBuy)
@@ -1993,7 +2022,6 @@ namespace Singijeon
             tradingStrategyList.Add(ts);
             AddStrategyToDataGridView(ts);
             StartMonitoring(ts.buyCondition);
-
 
             MartinGailManager.GetInstance().SetMartinStrategy(ts, MartinGailManager.MARTIN_MAX_STEP);
 
