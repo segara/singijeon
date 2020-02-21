@@ -209,6 +209,8 @@ namespace Singijeon
                                 {
                                     ts.remainItemCount--; //남을 매수할 종목수-1
 
+                                    ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+
                                     if (ts.usingTickBuy || ts.usingTrailing)
                                     {
                                         coreEngine.SendLogMessage("호가 체크 후 매수 ");
@@ -686,13 +688,15 @@ namespace Singijeon
 
                 if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_SUBMIT))
                 {
-           
+                    TradingItem CheckItmeExist = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)));
                     //주문번호 따오기 위한 부분 
-                    TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)&&(i_orderPrice==o.buyingPrice)&&(i_orderQuantity==o.buyingQnt)));
-                    if (item != null)
-                    {
+                    if (CheckItmeExist != null) { 
                         if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                         {
+                            TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode) && (i_orderQuantity == o.buyingQnt)));
+                            if (item == null)
+                                return;
+                            item.buyingPrice = long.Parse(orderPrice);
                             item.buyOrderNum = ordernum;
                             item.buyingQnt = int.Parse(orderQuantity);
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
@@ -702,22 +706,34 @@ namespace Singijeon
                         }
                         else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL))
                         {
+                            TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)));
+                            if (item == null)
+                                return;
+
                             item.sellPrice = long.Parse(orderPrice);
                             item.sellOrderNum = ordernum;
                             item.sellQnt = int.Parse(orderQuantity);
+
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
+
                             UpdateAutoTradingDataGridStateOnly(ordernum, ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
                             item.ts.StrategyOnReceiveSellOrderUpdate(item.itemCode, (int)item.buyingPrice, item.buyingQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
                             coreEngine.SendLogMessage("자동 매도 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
                         }
                         else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_CANCEL_BUY_ORDER))
                         {
+                            TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)));
+                            if (item == null)
+                                return;
                             item.buyCancelOrderNum = ordernum;
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
                             coreEngine.SendLogMessage("매수 취소 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
                         }
                         else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_CANCEL_SELL_ORDER))
                         {
+                            TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)));
+                            if (item == null)
+                                return;
                             item.sellCancelOrderNum = ordernum;
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
                             coreEngine.SendLogMessage("매도 취소 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
@@ -1064,11 +1080,16 @@ namespace Singijeon
                         string curConditon = autoTradingDataGrid["매매진행_매수조건식", e.RowIndex].Value.ToString();
 
                         if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_COMPLETE) || curState.Equals(ConstName.AUTO_TRADING_STATE_SELL_COMPLETE))
+                        {
                             MessageBox.Show("취소할수있는 상태가 아닙니다.");
+                            return;
+                        }
 
                         if (MartinGailManager.GetInstance().CurStrategy != null && MartinGailManager.GetInstance().CurStrategy.buyCondition.Name.Equals(curConditon))
+                        {
                             MessageBox.Show("마틴게일 아이템입니다.");
-                            
+                            return;
+                        }
                         DataGridViewRow rowItem = autoTradingDataGrid.Rows[e.RowIndex];
 
                         List<TradingItem> tradeItemListAll = GetAllTradingItemData(itemCode);
@@ -1289,7 +1310,8 @@ namespace Singijeon
             if (conditionName.Length > 0)
             {
                 findCondition = listCondition.Find(o => o.Name.Equals(conditionName));
-                if (findCondition != null)
+                TradingStrategy inStrategyCondition = tradingStrategyList.Find(o => o.buyCondition.Name.Equals(conditionName));
+                if (findCondition != null && inStrategyCondition != null)
                 {
                     MessageBox.Show("현재 등록되있는 전략 검색식입니다");
                     return;
@@ -1608,9 +1630,7 @@ namespace Singijeon
                     if (ts != null) {
                         string itemcode = rqNameArray[1];
                         StockWithBiddingEntity stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemcode);
-
-                        ts.StrategyConditionReceiveUpdate(itemcode, (int)stockInfo.GetBuyHoga(0), (int)(ts.itemInvestment / (int)stockInfo.GetBuyHoga(0)), TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
-
+                       
                         if (ts.usingTrailing)
                         {
 
@@ -1720,7 +1740,7 @@ namespace Singijeon
                             int i_qnt = 0;
 
                             //틱단위 스킵
-                            coreEngine.SendLogMessage("틱제한 " + axKHOpenAPI1.GetMasterCodeName(itemcode) + " :  현재 " + trailingItem.curTickCount.ToString() + " / 셋팅 " + trailingItem.settingTickCount.ToString());
+                            //coreEngine.SendLogMessage("틱제한 " + axKHOpenAPI1.GetMasterCodeName(itemcode) + " :  현재 " + trailingItem.curTickCount.ToString() + " / 셋팅 " + trailingItem.settingTickCount.ToString());
 
                             if (trailingItem.curTickCount < trailingItem.settingTickCount)
                             {
@@ -1731,7 +1751,7 @@ namespace Singijeon
                             if (trailingItem.curTickCount > 0) 
                                 trailingItem.lowestPrice = trailingItem.sumPriceAllTick / trailingItem.curTickCount;
 
-                            coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 스킵체크 :  매수호가 " + price.ToString() + " / 최저가 " + trailingItem.lowestPrice.ToString());
+                            coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 스킵체크 :  현재가 " + price.ToString() + " / 지난 최저가 " + trailingItem.lowestPrice.ToString());
 
                             if (price <= trailingItem.lowestPrice)
                             {
@@ -1741,9 +1761,9 @@ namespace Singijeon
                                 continue;
                             }
 
-                            coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 최저값: " + price);
                             i_qnt = (int)(trailingItem.strategy.itemInvestment / price);
                             price = (int)stockInfo.GetBuyHoga(trailingItem.strategy.tickBuyValue); //전략에 의한 매수틱 조정(없으면 최우선매수호가)
+
                             coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 사용자 정의호가 (" + trailingItem.strategy.tickBuyValue + " 틱) / 값 :" + price);
 
                             if (price > 0)
@@ -1789,6 +1809,7 @@ namespace Singijeon
                                         addRow = autoTradingDataGrid.Rows.Add();
                                     }
                                     tradingItem.SetUiConnectRow(autoTradingDataGrid.Rows[addRow]);
+
                                     UpdateAutoTradingDataGridRowAll(addRow, ConstName.AUTO_TRADING_STATE_BUY_BEFORE_ORDER, itemcode, trailingItem.strategy.buyCondition.Name, i_qnt, price);
 
                                     autoTradingDataGrid["매매진행_현재가", addRow].Value = stockInfo.GetBuyHoga(0);
@@ -1940,16 +1961,16 @@ namespace Singijeon
             }
 
             bool usingUpCheckAndCancel = M_UpAndCancelCheck.Checked; //미체결 상승 이격발생
-
+            MartinGailManager.GetInstance().using_Up_And_Cancel = true;
             if (usingUpCheckAndCancel)
             {
                 double index = (double)M_UpAndCancelUpdown.Value;
-
+              
                 MartinGailManager.GetInstance().Up_And_CancelValue = index;
 
             }
             bool usingOutStandAndCancel = M_orderCancelcheckBox.Checked; //미체결 상승 이격발생
-
+            MartinGailManager.GetInstance().using_Outstand_UpAndCancel = usingOutStandAndCancel;
             if (usingOutStandAndCancel)
             {
                 double index = (double)M_cancelValueUpdown.Value;
@@ -1959,7 +1980,7 @@ namespace Singijeon
             }
 
             bool usingTimeCancelCheckBox = M_timeCancelCheckBox.Checked; //미체결 상승 이격발생
-
+            MartinGailManager.GetInstance().using_WaitAndCancel = usingTimeCancelCheckBox;
             if (usingTimeCancelCheckBox)
             {
                 int index = (int)M_waitTimeUpdown.Value;

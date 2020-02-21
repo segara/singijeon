@@ -9,14 +9,14 @@ namespace Singijeon
        
     public class TradingItem 
     {
-        public TradingStrategy ts;
-        public string buyOrderNum;
-        public string sellOrderNum;
-        public string buyCancelOrderNum;
-        public string sellCancelOrderNum;
-        public string orderType;
-        public string itemCode;
-        public string itemName;
+        public TradingStrategy ts = null;
+        public string buyOrderNum = string.Empty;
+        public string sellOrderNum = string.Empty;
+        public string buyCancelOrderNum = string.Empty;
+        public string sellCancelOrderNum = string.Empty;
+        public string orderType = string.Empty;
+        public string itemCode = string.Empty;
+        public string itemName = string.Empty;
         public long buyingPrice;
         public long sellPrice;
         public int buyingQnt;
@@ -32,7 +32,7 @@ namespace Singijeon
         public bool IsCompleteBuying; //매수완료 여부
 
         public DataGridViewRow ui_rowItem;
-        public string conditionUid;
+        public string conditionUid = string.Empty;
         public string Uid { get; set; } 
         public TradingItem(TradingStrategy tsItem, string itemCode, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string orderType = "")
         {

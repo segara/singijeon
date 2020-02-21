@@ -367,14 +367,14 @@ namespace Singijeon
     public class OnReceiveStrateyStateResultArgs : EventArgs
     {
         public string ItemCode { get; set; }
-        public int BuyPrice { get; set; }
-        public int BuyQnt { get; set; }
+        public int Price { get; set; }
+        public int Qnt { get; set; }
         public TRADING_ITEM_STATE State { get; set; }
         public OnReceiveStrateyStateResultArgs(string itemcode, int buyQnt, int buyPrice, TRADING_ITEM_STATE state)
         {
             this.ItemCode = itemcode;
-            this.BuyPrice = buyPrice;
-            this.BuyQnt = buyQnt;
+            this.Price = buyPrice;
+            this.Qnt = buyQnt;
             this.State = state;
         }
     }
