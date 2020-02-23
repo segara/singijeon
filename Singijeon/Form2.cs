@@ -17,7 +17,9 @@ namespace Singijeon {
         CoreEngine coreEngine;
         AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
         List<LogItem> logMessage = new List<LogItem>();
+      
         int curLogIndex = 0;
+        int curWarningIndex = 0;
         int curMartinIndex = 0;
         Thread taskWorker;
         delegate void CrossThreadSafetyUpdate(ListBox ctl);
@@ -25,9 +27,12 @@ namespace Singijeon {
         public Form2(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1)
         {
             InitializeComponent();
+            LogListBox.DrawItem += LogListBox_DrawItem;
+            warningLogListBox.DrawItem += WarningLogListBox_DrawItem;
             coreEngine = CoreEngine.GetInstance();
             coreEngine.OnReceivedLogMessage += OnReceiveLogMessage;
-
+            coreEngine.OnReceivedLogWarningMessage += OnReceiveLogWarningMessage;
+            coreEngine.OnReceivedLogErrorMessage += OnReceiveLogErrorMessage;
             axKHOpenAPI1 = _axKHOpenAPI1;
             axKHOpenAPI1.OnReceiveTrData += AxKHOpenAPI_OnReceiveTrData;
 
@@ -114,7 +119,7 @@ namespace Singijeon {
                 {
                     while (curLogIndex < logMessage.Count)
                     {
-                        LogListBox.Items.Add(logMessage[curLogIndex].logTxt);
+                        LogListBox.Items.Add(logMessage[curLogIndex]);
                         //LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
                         curLogIndex++;
                     }
@@ -125,7 +130,85 @@ namespace Singijeon {
             {
                 while (curLogIndex < logMessage.Count)
                 {
-                    LogListBox.Items.Add(logMessage[curLogIndex].logTxt);
+                    LogListBox.Items.Add(logMessage[curLogIndex]);
+                    //LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
+                    curLogIndex++;
+                }
+                //CheckLogLength();
+            }
+        }
+        private void OnReceiveLogWarningMessage(object sender, OnReceivedLogMessageEventArgs e)
+        {
+            logMessage.Add(new LogItem(e.Message, LOG_TYPE.WARNING));
+            coreEngine.SaveLogMessage(e.Message);
+
+            List<LogItem> warningItem = logMessage.FindAll(o => o.logType == LOG_TYPE.WARNING);
+
+            if (LogListBox.InvokeRequired)
+            {
+                LogListBox.Invoke(new MethodInvoker(delegate ()
+                {
+                    while (curLogIndex < logMessage.Count)
+                    {
+
+                        LogListBox.Items.Add(logMessage[curLogIndex]);
+                        curLogIndex++;
+                    }
+                 
+                }));
+
+                warningLogListBox.Invoke(new MethodInvoker(delegate ()
+                {
+                    while (curWarningIndex < warningItem.Count)
+                    {
+
+                        warningLogListBox.Items.Add(warningItem[curWarningIndex].logTxt);
+                        curWarningIndex++;
+                    }
+
+                }));
+            }
+            else
+            {
+                while (curLogIndex < logMessage.Count)
+                {
+                    LogListBox.Items.Add(logMessage[curLogIndex]);
+                    curLogIndex++;
+                }
+             
+                while (curWarningIndex < warningItem.Count)
+                {
+
+                    warningLogListBox.Items.Add(warningItem[curWarningIndex].logTxt);
+                    curWarningIndex++;
+                }
+
+            }
+        }
+
+        private void OnReceiveLogErrorMessage(object sender, OnReceivedLogMessageEventArgs e)
+        {
+            logMessage.Add(new LogItem(e.Message, LOG_TYPE.ERROR));
+            coreEngine.SaveLogMessage(e.Message);
+            if (LogListBox.InvokeRequired)
+            {
+                LogListBox.Invoke(new MethodInvoker(delegate ()
+                {
+                    while (curLogIndex < logMessage.Count)
+                    {
+                       
+                        LogListBox.Items.Add(logMessage[curLogIndex]);
+                        //LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
+                        curLogIndex++;
+                    }
+                    //CheckLogLength();
+                }));
+            }
+            else
+            {
+                while (curLogIndex < logMessage.Count)
+                {
+                    LogListBox.Items.Add(logMessage[curLogIndex]);
                     //LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
                     curLogIndex++;
                 }
@@ -133,7 +216,6 @@ namespace Singijeon {
             }
         }
 
-        
         private void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
             if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO))
@@ -192,8 +274,65 @@ namespace Singijeon {
         {
             logMessage.Clear();
             LogListBox.Items.Clear();
+            warningLogListBox.Items.Clear();
             curLogIndex = 0;
+            curWarningIndex = 0;
         }
+
+        private void WarningLogBtn_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void LogListBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+                return;
+            var item = LogListBox.Items[e.Index] as LogItem;
+            Color logColor = Color.Black;
+            if (item.logType == LOG_TYPE.ERROR)
+            {
+                logColor = Color.Red;
+            }
+            else if (item.logType == LOG_TYPE.WARNING)
+            {
+                logColor = Color.Blue;
+            }
+
+            if (item != null)
+            {
+                e.Graphics.DrawString(
+                    item.logTxt,
+                    e.Font,
+                    new SolidBrush(logColor),
+                    e.Bounds);
+            }
+        }
+        private void WarningLogListBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0)
+                return;
+            var item = warningLogListBox.Items[e.Index] as LogItem;
+            Color logColor = Color.Black;
+            if (item.logType == LOG_TYPE.ERROR)
+            {
+                logColor = Color.Red;
+            }
+            else if (item.logType == LOG_TYPE.WARNING)
+            {
+                logColor = Color.Blue;
+            }
+
+            if (item != null)
+            {
+                e.Graphics.DrawString(
+                    item.logTxt,
+                    e.Font,
+                    new SolidBrush(logColor),
+                    e.Bounds);
+            }
+        }
+
     }
     public enum LOG_TYPE
     {

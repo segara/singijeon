@@ -187,7 +187,7 @@ namespace Singijeon
             if (OnReceiveSellOrder != null)
                 OnReceiveSellOrder.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, price, state));
         }
-        public void StrategOnReceiveSellChejanUpdate(string itemCode, int price, int qnt, TRADING_ITEM_STATE state)
+        public void StrategyOnReceiveSellChejanUpdate(string itemCode, int price, int qnt, TRADING_ITEM_STATE state)
         {
             if (OnReceiveSellChejan != null)
                 OnReceiveSellChejan.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, price, state));
@@ -281,8 +281,6 @@ namespace Singijeon
                 return true;
             return false;
         }
-
-    
     }
 
     public class TradingStrategyItemWithUpDownValue : TradingStrategyADDItem
@@ -310,6 +308,7 @@ namespace Singijeon
             strategyCheckTime = _checkTiming;
             checkType = _checkType;
             d_conditionValue = _conditionValue;
+
             if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
             {
                d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
@@ -324,6 +323,8 @@ namespace Singijeon
         {
             if (!usingStrategy)
                 return;
+
+         
             switch(checkType)
             {
                 case IS_TRUE_OR_FALE_TYPE.DOWN:

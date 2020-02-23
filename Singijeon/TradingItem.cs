@@ -6,10 +6,33 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace Singijeon
 {
-       
+    public enum TRADING_ITEM_STATE :int
+    {
+        NONE,
+        AUTO_TRADING_STATE_SEARCH_AND_CATCH,//종목포착
+        AUTO_TRADING_STATE_BUY_BEFORE_ORDER,//매수주문접수시도중
+        AUTO_TRADING_STATE_BUY_NOT_COMPLETE,//매수주문완료_체결대기
+        AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT,//매수중_일부매수완료
+
+        AUTO_TRADING_STATE_BUY_CANCEL_NOT_COMPLETE, //매수취소
+        AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE, //매수취소
+
+        AUTO_TRADING_STATE_BUY_COMPLETE, //매수완료
+
+        AUTO_TRADING_STATE_SELL_BEFORE_ORDER,//매도주문접수시도
+        AUTO_TRADING_STATE_SELL_NOT_COMPLETE, //매도주문완료
+        AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT, //일부매도
+
+        AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE,
+        AUTO_TRADING_STATE_SELL_CANCEL_COMPLETE,
+
+        AUTO_TRADING_STATE_SELL_COMPLETE, //매도완료
+
+    }
     public class TradingItem 
     {
         public TradingStrategy ts = null;
+        public TRADING_ITEM_STATE state = TRADING_ITEM_STATE.NONE;
         public string buyOrderNum = string.Empty;
         public string sellOrderNum = string.Empty;
         public string buyCancelOrderNum = string.Empty;
@@ -19,38 +42,47 @@ namespace Singijeon
         public string itemName = string.Empty;
         public long buyingPrice;
         public long sellPrice;
+
         public int buyingQnt;
         public int sellQnt;
         public int trailingTickCnt;
         public int outStandingQnt;
 
         public long curPrice;
-
-        public bool IsSold; //매도주문 여부
-        public bool IsBuyCancel; //매도주문 여부
-        public bool IsSellCancel; //매도주문 여부
-        public bool IsCompleteBuying; //매수완료 여부
+        protected bool isProfitSell; //매수주문 여부
+        protected bool isBuy; //매수주문 여부
+        protected bool isSold; //매도주문 여부
+        
+        protected bool isBuyCancel; //매수취소 여부
+        protected bool isSellCancel; //매도취소 여부
+        protected bool isCompleteBuying; //매수완료 여부
+        protected bool isCompleteSold; //매수완료 여부
 
         public DataGridViewRow ui_rowItem;
         public string conditionUid = string.Empty;
         public string Uid { get; set; } 
-        public TradingItem(TradingStrategy tsItem, string itemCode, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string orderType = "")
+
+        public TradingItem(TradingStrategy tsItem, string itemCode, string itemName, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string orderType = "")
         {
             this.ts = tsItem;
             this.itemCode = itemCode;
+            this.itemName = itemName;
             this.buyingPrice = buyingPrice;
             this.buyingQnt = buyingQnt;
             this.outStandingQnt = buyingQnt;
-            this.IsCompleteBuying = false;
-            this.IsSold = false;
-            this.IsBuyCancel = false;
-            this.IsSellCancel = false;
+            this.isCompleteBuying = false;
+            this.isBuy = false;
+            this.isSold = false;
+            this.isBuyCancel = false;
+            this.isSellCancel = false;
+            this.isCompleteSold = false;
             this.buyOrderNum = string.Empty;
             this.sellOrderNum = string.Empty;
 
             this.orderType = orderType;
 
             this.Uid = System.Guid.NewGuid().ToString();
+            state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }
         public void UpdateCurrentPrice(long _price)
         {
@@ -60,6 +92,10 @@ namespace Singijeon
         {
             this.ui_rowItem = row;
         }
+        public DataGridViewRow GetUiConnectRow()
+        {
+            return this.ui_rowItem;
+        }
         public void SetConditonUid(string uid)
         {
             this.conditionUid = uid;
@@ -67,6 +103,76 @@ namespace Singijeon
         public void SetOutStanding(int qnt)
         {
             this.outStandingQnt = qnt;
+        }
+        public void SetState(TRADING_ITEM_STATE _state)
+        {
+            state = _state;
+        }
+        public bool IsSold()
+        {
+            return this.isSold;
+        }
+        public void SetSold(bool sold, bool isProfitSell = true)
+        {
+            this.isSold = sold;
+            this.isProfitSell = isProfitSell;
+            if(sold)
+                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER;
+        }
+        public bool IsProfitSell()
+        {
+            return isProfitSell;
+        }
+        public bool IsSellCancel()
+        {
+            return this.isSellCancel;
+        }
+
+        public void SetSellCancel(bool cancel)
+        {
+            this.isSellCancel = cancel;
+            if (cancel)
+                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE; //매도 취소 성공 -> 매수 완료 상태
+        }
+        public bool IsCompleteSold()
+        {
+            return this.isCompleteSold;
+        }
+        public void SetCompleteSold(bool sold)
+        {
+            this.isCompleteSold = sold;
+            if (sold)
+                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE; 
+        }
+        public bool IsCompleteBuying()
+        {
+            return this.isCompleteBuying;
+        }
+        public void SetCompleteBuying(bool buying)
+        {
+            this.isCompleteBuying = buying;
+            if (buying)
+                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE;
+        }
+        public bool IsBuyCancel()
+        {
+            return this.isBuyCancel;
+        }
+        public void SetBuyCancel(bool buying)
+        {
+            this.isBuyCancel = buying;
+            if (buying)
+                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE;
+        }
+        public bool IsBuy()
+        {
+            return this.isBuy;
+        }
+        public void SetBuy(bool buying)
+        {
+            this.isBuy = buying;
+            if (buying)
+                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }
     }
 }

@@ -19,6 +19,8 @@ namespace Singijeon.Core
 
         //Events
         public event EventHandler<OnReceivedLogMessageEventArgs> OnReceivedLogMessage; //로그 수신 시
+        public event EventHandler<OnReceivedLogMessageEventArgs> OnReceivedLogWarningMessage; //로그 수신 시
+        public event EventHandler<OnReceivedLogMessageEventArgs> OnReceivedLogErrorMessage; //로그 수신 시
         public event EventHandler<OnReceivedUserInfoEventArgs> OnReceivedUserInfo; //사용자 정보 수신 시
        
 
@@ -74,13 +76,33 @@ namespace Singijeon.Core
             //함수들의 인자(object sender, OnReceivedLogMessageEventArgs e)
             //SendLogMessage메세지가 실행되면 OnReceivedLogMessage에 등록되있던 함수들이 같이 실행됨
         }
+        public void SendLogWarningMessage(string logMessage) //Event를 이용해 로그 메세지 전달
+        {
+
+            StackFrame callStack = new StackFrame(1, true);
+            logMessage = DateTime.Now.ToString("[HH:mm:ss] ") + logMessage + " (" + Path.GetFileName(callStack.GetFileName()) + ") line : " + callStack.GetFileLineNumber();
+            OnReceivedLogWarningMessage?.Invoke(this, new OnReceivedLogMessageEventArgs(logMessage));
+
+            //함수들의 인자(object sender, OnReceivedLogMessageEventArgs e)
+            //SendLogMessage메세지가 실행되면 OnReceivedLogMessage에 등록되있던 함수들이 같이 실행됨
+        }
+        public void SendLogErrorMessage(string logMessage) //Event를 이용해 로그 메세지 전달
+        {
+
+            StackFrame callStack = new StackFrame(1, true);
+            logMessage = DateTime.Now.ToString("[HH:mm:ss] ") + logMessage + " (" + Path.GetFileName(callStack.GetFileName()) + ") line : " + callStack.GetFileLineNumber();
+            OnReceivedLogErrorMessage?.Invoke(this, new OnReceivedLogMessageEventArgs(logMessage));
+
+            //함수들의 인자(object sender, OnReceivedLogMessageEventArgs e)
+            //SendLogMessage메세지가 실행되면 OnReceivedLogMessage에 등록되있던 함수들이 같이 실행됨
+        }
 
         private void AxKHOpenAPI_OnEventConnect(object sender, _DKHOpenAPIEvents_OnEventConnectEvent e)
         {
             if (e.nErrCode == ErrorCode.정상처리)
             {
                 GetUserInfo();
-                SendLogMessage("로그인 성공");
+                SendLogWarningMessage("로그인 성공");
             }
             else if (e.nErrCode == ErrorCode.사용자정보교환실패)
                 SendLogMessage("로그인 실패 : 사용자 정보교환 실패");

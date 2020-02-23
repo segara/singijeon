@@ -11,26 +11,7 @@ using System.Threading.Tasks;
 
 namespace Singijeon
 {
-    public enum TRADING_ITEM_STATE
-    {
-        NONE,
-        AUTO_TRADING_STATE_SEARCH_AND_CATCH,//종목포착
-        AUTO_TRADING_STATE_BUY_BEFORE_ORDER,//매수주문접수시도중
-        AUTO_TRADING_STATE_BUY_NOT_COMPLETE,//매수주문완료_체결대기
-        AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT,//매수중_일부매수완료
-        AUTO_TRADING_STATE_BUY_COMPLETE, //매수완료
 
-        AUTO_TRADING_STATE_SELL_BEFORE_ORDER,//매도주문접수시도
-        AUTO_TRADING_STATE_SELL_NOT_COMPLETE, //매도주문완료
-        AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT, //일부매도
-        AUTO_TRADING_STATE_SELL_COMPLETE, //매도완료
-
-        AUTO_TRADING_STATE_BUY_CANCEL_NOT_COMPLETE, //매수취소
-        AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE, //매수취소
-
-        AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE, 
-        AUTO_TRADING_STATE_SELL_CANCEL_COMPLETE,
-    }
 
     public enum MARTIN_RESULT
     {
@@ -177,7 +158,8 @@ namespace Singijeon
             startMoney = strategy.itemInvestment;
             tradingStrategy = strategy;
             strategy.OnReceiveCondition += OnReceiveConditionResult;
-            strategy.OnReceiveBuyOrder += OnReceiveOrderTryResult;
+
+            strategy.OnReceiveBuyOrder += OnReceiveBuyOrderTryResult;
             strategy.OnReceiveBuyChejan += OnReceiveChejanResult;
 
             strategy.OnReceiveSellOrder += OnReceiveSellOrderTryResult;
@@ -193,7 +175,7 @@ namespace Singijeon
 
             CoreEngine.GetInstance().SendLogMessage("!!!!! 마틴게일 아이템 :" + e.State.ToString());
         }
-        private void OnReceiveOrderTryResult(object sender, OnReceiveStrateyStateResultArgs e)
+        private void OnReceiveBuyOrderTryResult(object sender, OnReceiveStrateyStateResultArgs e)
         {
             if(Item != null)
             {
@@ -524,9 +506,10 @@ namespace Singijeon
 
                                 if (long.Parse(outstanding) == 0)
                                 {
+                                    CoreEngine.GetInstance().SendLogMessage("Outstanding 0 : Profit : " + (sellPrice - buyingPrice) * tradeItem.buyingQnt);
                                     TodayAllProfitAmount += (sellPrice - buyingPrice) * tradeItem.buyingQnt;
-                                    PopMartinGailItem((sellPrice - buyingPrice));
-                                }
+                                        PopMartinGailItem((sellPrice - buyingPrice));
+                                    }
                                 else
                                 {
                                     if (Item != null)
