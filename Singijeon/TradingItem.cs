@@ -45,6 +45,7 @@ namespace Singijeon
 
         public int buyingQnt;
         public int sellQnt;
+        public int curQnt;
         public int trailingTickCnt;
         public int outStandingQnt;
 
@@ -158,7 +159,7 @@ namespace Singijeon
         {
             return this.isBuyCancel;
         }
-        public void SetBuyCancel(bool buying)
+        public void SetBuyCancel (bool buying)
         {
             this.isBuyCancel = buying;
             if (buying)
@@ -174,5 +175,6 @@ namespace Singijeon
             if (buying)
                 state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }
+        
     }
 }

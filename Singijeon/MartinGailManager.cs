@@ -57,12 +57,12 @@ namespace Singijeon
         TradingStrategy tradingStrategy;   //적용된 전략
         public TradingStrategy CurStrategy { get { return tradingStrategy; } }
 
-        MartinGailItem item;
+        MartinGailItem martin_item;
         MartinGailItem Item {
             get {
-                if(item != null)
+                if(martin_item != null)
                 {
-                    return item;
+                    return martin_item;
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace Singijeon
             }
             set
             {
-                item = value;
+                martin_item = value;
             }
 
         }
@@ -287,11 +287,12 @@ namespace Singijeon
         }
         public void PushMartinGailItem(string itemCode)
         {
-            CoreEngine.GetInstance().SendLogMessage("Push Martin GailItem");
+            CoreEngine.GetInstance().SendLogMessage("Push Martin GailItem Try");
             step++;
 
             if (Item != null && Item.itemCode == itemCode)
             {
+                CoreEngine.GetInstance().SendLogWarningMessage("Push Martin GailItem");
                 Item.martinState = MARTIN_RESULT.HAVE_ITEM;
                 Item.step = step;
                 Item.TodayIndex = todayAllItems.Count;
@@ -305,9 +306,16 @@ namespace Singijeon
 
         public void PopMartinGailItem(long profit)
         {
-            CoreEngine.GetInstance().SendLogMessage("Pop MartinGail Item");
+            CoreEngine.GetInstance().SendLogMessage("");
             Item = null;
+            if(martinGailStack.Count == 0)
+            {
+                CoreEngine.GetInstance().SendLogWarningMessage("!!!!!!!!!!empty stack!!!!!!");
+                Restart();
+                return;
+            }
             MartinGailItem itempop = martinGailStack.Pop();
+
             TodayAllTry++;
 
             if (profit > 0)
@@ -454,7 +462,18 @@ namespace Singijeon
                     CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_DATA_SUBMIT");
                     if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                     {
-                        CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_DATA_BUY");
+                        CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_DATA_BUY : "+ ordernum);
+                        if (tradingStrategy == null || string.IsNullOrEmpty(conclusionQuantity))
+                            return;
+
+                        TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.itemCode.Equals(itemCode));
+                        if (tradeItem != null)
+                        {
+                            if (Item != null)
+                            {
+                                Item.buyOrderNum = tradeItem.buyOrderNum;
+                            }
+                        }
                     }
                     else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL))
                     {
@@ -479,12 +498,13 @@ namespace Singijeon
                                     return;
 
                             TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.buyOrderNum.Equals(ordernum));
-                            if (tradeItem != null)
+                            if (tradeItem != null && string.IsNullOrEmpty(conclusionQuantity) == false)
                             {
                               
                                 if (Item != null)
                                 {
-                                    CoreEngine.GetInstance().SendLogMessage("PushMartinGailItem Try");
+                                    CoreEngine.GetInstance().SendLogMessage(Item.curQnt + "/" + Item.buyQnt);
+
                                     Item.curQnt = long.Parse(conclusionQuantity); 
                                     Item.buyPrice = tradeItem.buyingPrice;
                                     Item.buyOrderNum = tradeItem.buyOrderNum;
@@ -499,7 +519,7 @@ namespace Singijeon
                                 return;
 
                             TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.sellOrderNum.Equals(ordernum));
-                            if (tradeItem != null)
+                            if (tradeItem != null  && string.IsNullOrEmpty(outstanding) == false)
                             {
                                 long buyingPrice = tradeItem.buyingPrice;
                                 long sellPrice = long.Parse(conclusionPrice.Replace("+", ""));
@@ -508,8 +528,8 @@ namespace Singijeon
                                 {
                                     CoreEngine.GetInstance().SendLogMessage("Outstanding 0 : Profit : " + (sellPrice - buyingPrice) * tradeItem.buyingQnt);
                                     TodayAllProfitAmount += (sellPrice - buyingPrice) * tradeItem.buyingQnt;
-                                        PopMartinGailItem((sellPrice - buyingPrice));
-                                    }
+                                    PopMartinGailItem((sellPrice - buyingPrice));
+                                }
                                 else
                                 {
                                     if (Item != null)
@@ -531,7 +551,7 @@ namespace Singijeon
                         CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_CANCEL_BUY_ORDER");
                         if (int.Parse(outstanding) == 0)
                         {
-                            if(Item !=  null && Item.buyOrderNum == ordernum)
+                            if(Item !=  null)
                                 PopMartinGailItem(0);
                         }
                     }
@@ -540,7 +560,7 @@ namespace Singijeon
                         CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_CANCEL_SELL_ORDER");
                         if (int.Parse(outstanding) == 0)
                         {
-                            if (Item != null && Item.sellOrderNum == ordernum)
+                            if (Item != null)
                                 PopMartinGailItem(0);
                         }
                     }
@@ -554,15 +574,10 @@ namespace Singijeon
         {
             if (Item == null)
                 return;
-
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! cancel code : " + Item.itemCode);
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! cancel orderNum : " + Item.buyOrderNum);
             CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! cancel quantity : " + (Item.buyQnt - Item.curQnt).ToString());
-            int orderResult = axKHOpenAPI1.SendOrder("종목주문정정", form1.GetScreenNum().ToString(), tradingStrategy.account, CONST_NUMBER.SEND_ORDER_CANCEL_BUY, Item.itemCode, (int)(Item.buyQnt - Item.curQnt), (int)Item.buyPrice, ConstName.ORDER_JIJUNGGA, Item.buyOrderNum);
-
-            if (orderResult == 0)
-            {
-                CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! try cancel MartinGail Item !!!!!!!!!!!!!!");
-                Item.itemState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_NOT_COMPLETE;
-            }
+            form1.CancelBuyOrder(Item.itemCode, Item.buyOrderNum);
         }
                                          
         void Update()
