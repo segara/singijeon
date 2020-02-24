@@ -55,8 +55,14 @@ namespace Singijeon
         public const string AUTO_TRADING_STATE_SELL_COMPLETE = "매도완료";
 
         public const string AUTO_TRADING_STATE_SELL_CANCEL_ALL = "매도취소완료";
-        //public const string AUTO_TRADING_STATE_TAKE_PROFIT = "익절매도중";
-        //public const string AUTO_TRADING_STATE_STOPLOSS = "손절매도중";
+
+        public const string AUTO_TRADING_STATE_CANCEL_ORDER = "주문취소시도";
+
+        public const string AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL = "익절취소";
+        public const string AUTO_TRADING_STATE_STOPLOSS_CANCEL = "손절취소";
+
+        public const string AUTO_TRADING_STATE_TAKE_PROFIT = "익절매도중";
+        public const string AUTO_TRADING_STATE_STOPLOSS = "손절매도중";
 
         public const string AUTO_TRADING_STATE_CLEAR_NOT_COMPLETE = "청산중";
         public const string AUTO_TRADING_STATE_CLEAR_COMPLETE = "청산완료";

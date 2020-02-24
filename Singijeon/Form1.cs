@@ -544,8 +544,7 @@ namespace Singijeon
         {
             foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
             {
-                if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(itemCode)
-                    && row.Cells["매매진행_매수조건식"].Value.ToString().Equals(tradeItem.ts.buyCondition.Name))
+                if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(itemCode))
                 {
                     row.Cells["매매진행_진행상황"].Value = curState;
                     break;
@@ -559,8 +558,7 @@ namespace Singijeon
             {
                 if (row.Cells["매매진행_종목코드"].Value != null)
                 {
-                    if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode)
-                        && row.Cells["매매진행_진행상황"].Value.ToString().Equals(ConstName.AUTO_TRADING_STATE_SELL_MONITORING))
+                    if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode))
                     {
                         row.Cells["매매진행_진행상황"].Value = changeState;
                     }
@@ -634,16 +632,12 @@ namespace Singijeon
                     {
                         double buyingPrice = double.Parse(row.Cells["매매진행_매수가"].Value.ToString());
                         row.Cells["매매진행_현재가"].Value = c_lPrice;
-
-                        if (row.Cells["매매진행_진행상황"].Value != null
-                            && !row.Cells["매매진행_진행상황"].Value.ToString().Equals(ConstName.AUTO_TRADING_STATE_BUY_COMPLETE))
+                        if (buyingPrice != 0)
                         {
-                            if (buyingPrice != 0)
-                            {
-                                double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
-                                row.Cells["매매진행_손익률"].Value = profitRate;
-                            }
+                            double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
+                            row.Cells["매매진행_손익률"].Value = profitRate;
                         }
+                        
                     }
                 }
             }
@@ -1165,7 +1159,7 @@ namespace Singijeon
                     {
                         AddOrderList(tradeItem);
                         coreEngine.SendLogMessage("취소 접수 성공");
-                        autoTradingDataGrid["매매진행_진행상황", tradeItem.GetUiConnectRow().Index].Value = "취소접수시도";
+                        autoTradingDataGrid["매매진행_진행상황", tradeItem.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_CANCEL_ORDER;
                     }
                 }
             }
@@ -1642,7 +1636,7 @@ namespace Singijeon
                         {
                             AddOrderList(item);
                             coreEngine.SendLogMessage("취소 접수 성공");
-                            autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = "손절주문취소";
+                            autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_STOPLOSS_CANCEL;
                             return;
                         }
                     });
@@ -1938,7 +1932,7 @@ namespace Singijeon
                         {
                             AddOrderList(item);
                             coreEngine.SendLogMessage("취소 접수 성공");
-                            autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = "익절주문취소";
+                            autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
                             return;
                         }
                     });
