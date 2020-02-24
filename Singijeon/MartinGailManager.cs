@@ -491,57 +491,55 @@ namespace Singijeon
                 else if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_CONCLUSION))
                 {
                     CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_DATA_CONCLUSION");
-                        if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_BUY))
-                        {
-                            CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_DATA_BUY");
-                            if (tradingStrategy == null)
-                                    return;
-
-                            TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.buyOrderNum.Equals(ordernum));
-                            if (tradeItem != null && string.IsNullOrEmpty(conclusionQuantity) == false)
-                            {
-                              
-                                if (Item != null)
-                                {
-                                    CoreEngine.GetInstance().SendLogMessage(Item.curQnt + "/" + Item.buyQnt);
-
-                                    Item.curQnt = long.Parse(conclusionQuantity); 
-                                    Item.buyPrice = tradeItem.buyingPrice;
-                                    Item.buyOrderNum = tradeItem.buyOrderNum;
-                                    if(Item.curQnt == Item.buyQnt)
-                                         PushMartinGailItem(itemCode);
-                                }
-                            }
-                        }
-                        else if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_SELL))
-                        {
-                            if (tradingStrategy == null)
+                    if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_BUY))
+                    {
+                        CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_DATA_BUY");
+                        if (tradingStrategy == null)
                                 return;
 
-                            TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.sellOrderNum.Equals(ordernum));
-                            if (tradeItem != null  && string.IsNullOrEmpty(outstanding) == false)
+                        TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.buyOrderNum.Equals(ordernum));
+                        if (tradeItem != null && string.IsNullOrEmpty(conclusionQuantity) == false)
+                        {
+                              
+                            if (Item != null)
                             {
-                                long buyingPrice = tradeItem.buyingPrice;
-                                long sellPrice = long.Parse(conclusionPrice.Replace("+", ""));
+                                CoreEngine.GetInstance().SendLogMessage(Item.curQnt + "/" + Item.buyQnt);
 
-                                if (long.Parse(outstanding) == 0)
-                                {
-                                    CoreEngine.GetInstance().SendLogMessage("Outstanding 0 : Profit : " + (sellPrice - buyingPrice) * tradeItem.buyingQnt);
-                                    TodayAllProfitAmount += (sellPrice - buyingPrice) * tradeItem.buyingQnt;
-                                    PopMartinGailItem((sellPrice - buyingPrice));
-                                }
-                                else
-                                {
-                                    if (Item != null)
-                                    {
-                                        Item.curQnt = long.Parse(outstanding);
-                                        Item.sellOrderNum = tradeItem.sellOrderNum;
-                                    }
-                                 }
-                               
+                                Item.curQnt = long.Parse(conclusionQuantity); 
+                                Item.buyPrice = tradeItem.buyingPrice;
+                                Item.buyOrderNum = tradeItem.buyOrderNum;
+                                if(Item.curQnt == Item.buyQnt)
+                                        PushMartinGailItem(itemCode);
                             }
                         }
-                    
+                    }
+                    else if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_SELL))
+                    {
+                        if (tradingStrategy == null)
+                            return;
+
+                        TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.sellOrderNum.Equals(ordernum));
+                        if (tradeItem != null  && string.IsNullOrEmpty(outstanding) == false)
+                        {
+                            long buyingPrice = tradeItem.buyingPrice;
+                            long sellPrice = long.Parse(conclusionPrice.Replace("+", ""));
+
+                            if (long.Parse(outstanding) == 0)
+                            {
+                                CoreEngine.GetInstance().SendLogMessage("Outstanding 0 : Profit : " + (sellPrice - buyingPrice) * tradeItem.buyingQnt);
+                                TodayAllProfitAmount += (sellPrice - buyingPrice) * tradeItem.buyingQnt;
+                                PopMartinGailItem((sellPrice - buyingPrice));
+                            }
+                            else
+                            {
+                                if (Item != null)
+                                {
+                                    Item.curQnt = long.Parse(outstanding);
+                                    Item.sellOrderNum = tradeItem.sellOrderNum;
+                                }
+                                }
+                        }
+                    }
                 }
                 else if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_OK))
                 {
