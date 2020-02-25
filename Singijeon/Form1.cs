@@ -415,6 +415,7 @@ namespace Singijeon
             }
             else if (e.sRQName == "실시간미체결요청")
             {
+               
                 int count = axKHOpenAPI1.GetRepeatCnt(e.sTrCode, e.sRQName);
               
                 for (int i = 0; i < count; i++)
@@ -427,7 +428,8 @@ namespace Singijeon
                     int outstandingNumber = int.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "미체결수량"));
                     int currentPrice = int.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "현재가").Replace("-", ""));
                     string orderGubun = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "주문구분").Trim();
-                    string orderTime = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "시간").Trim(); 
+                    string orderTime = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "시간").Trim();
+                    coreEngine.SendLogWarningMessage("실시간미체결요청 orderNum :" + orderCode);
                 }
             }
         }
