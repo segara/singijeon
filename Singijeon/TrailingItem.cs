@@ -13,7 +13,7 @@ namespace Singijeon
         public TradingStrategy strategy;
         public int settingTickCount = 0;
         public int curTickCount = 0;
-
+        public bool isTrailing = true;
         public int lowestPrice = 0;
         public int averagePrice = 0;
         public int sumPriceAllTick = 0; //평균가 계산을 위한 변수

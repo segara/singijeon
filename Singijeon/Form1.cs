@@ -172,6 +172,20 @@ namespace Singijeon
             }
         }
 
+        public bool CheckCanBuyItem(TradingStrategy ts, string itemCode)
+        {
+            //한 전략에서 매도 완료됬거나 매수취소된것
+            bool returnBuy = true;
+           List<TradingItem> tradeItemArray = ts.tradingItemList.FindAll(o => o.itemCode.Contains(itemCode)); 
+           foreach(var item in tradeItemArray)
+            {
+                bool canBuy =  item.IsCompleteSold() || item.IsBuyCancel();
+                if (!canBuy)
+                    returnBuy = canBuy;
+            }
+            return returnBuy;
+        }
+
         //검색에 편입시 호출
         private void API_OnReceiveRealCondition(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealConditionEvent e)
         {
@@ -183,8 +197,8 @@ namespace Singijeon
             {
                 coreEngine.SendLogMessage("________실시간 검색 종목_________");
                 coreEngine.SendLogMessage("검색명 = " + conditionName);
-                coreEngine.SendLogMessage("itemCode = " + itemCode);
-                coreEngine.SendLogMessage("검색 종류 = " + e.strType);
+                //coreEngine.SendLogMessage("itemCode = " + itemCode);
+                //coreEngine.SendLogMessage("검색 종류 = " + e.strType);
                 coreEngine.SendLogMessage("종목명 = " + axKHOpenAPI1.GetMasterCodeName(itemCode));
                 coreEngine.SendLogMessage("_________________________________");
 
@@ -200,12 +214,13 @@ namespace Singijeon
                         if (stockItem != null) //시장 종목 리스트 있는것
                         {
                    
-                            if (ts.CheckBuyPossibleStrategyAddedItem() && MartinGailManager.GetInstance().HaveMartinGailStrategyItemCode(itemCode) == false) //모든 구매조건을 체크
+                            if (ts.CheckBuyPossibleStrategyAddedItem()) //모든 구매조건을 체크
                             {
                                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.itemCode.Contains(itemCode)); //한 전략에서 구매하려했던 종목은 재편입하지 않음
                                 TrailingItem trailingItem = trailingList.Find(o => o.itemCode.Contains(itemCode));
 
-                                if (tradeItem == null && trailingItem == null)
+
+                                if (CheckCanBuyItem(ts, itemCode) && trailingItem == null)
                                 {
                                     ts.remainItemCount--; //남을 매수할 종목수-1
 
@@ -282,6 +297,8 @@ namespace Singijeon
 
                     if (ts != null)
                     {
+                        coreEngine.SendLogMessage("요청 매수검색식 : " + ts.buyCondition.Name);
+
                         string itemcode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "종목코드").Trim();
                         string price = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "현재가").Trim();
 
@@ -323,6 +340,7 @@ namespace Singijeon
                                     TradingItem tradingItem = new TradingItem(ts, itemcode, axKHOpenAPI1.GetMasterCodeName(itemcode), i_price, i_qnt, false, false, ConstName.ORDER_JIJUNGGA);
                                     tradingItem.SetBuy(true);
                                     tradingItem.SetConditonUid(conditionUid);
+
                                     ts.tradingItemList.Add(tradingItem); //매수전략 내에 매매진행 종목 추가
 
                                     this.tryingOrderList.Add(tradingItem);
@@ -690,15 +708,24 @@ namespace Singijeon
                     if (CheckItmeExist != null) { 
                         if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                         {
-                            TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode) && (i_orderQuantity == o.buyingQnt)));
+                            coreEngine.SendLogWarningMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + "주문접수완료");
+                            coreEngine.SendLogWarningMessage("수량 : "+ i_orderQuantity);
+                            TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)));
+
                             if (item == null)
                                 return;
+
+                            coreEngine.SendLogWarningMessage("찾아낸 종목명 : " + axKHOpenAPI1.GetMasterCodeName(itemCode) + "orderNum : " + ordernum);
+                            coreEngine.SendLogWarningMessage("찾아낸 종목 주문 수량 : " + item.buyingQnt);
                             item.buyingPrice = long.Parse(orderPrice);
                             item.buyOrderNum = ordernum;
                             item.buyingQnt = int.Parse(orderQuantity);
                             item.SetState(TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE);
+
                             this.tryingOrderList.Remove(item); //접수리스트에서만 지움
+
                             UpdateAutoTradingDataGridStateOnly(ordernum, ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE);
+
                             item.ts.StrategyBuyOrderUpdate(item.itemCode, (int)item.buyingPrice, item.buyingQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE);
                             coreEngine.SendLogMessage("자동 매수 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
                         }
@@ -1646,7 +1673,7 @@ namespace Singijeon
             }
             Task requestItemInfoTask = new Task(() =>
             {
-                if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER)
+                if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                     return;
                 int orderResult = axKHOpenAPI1.SendOrder(
                     "종목익절매도",
@@ -1665,7 +1692,6 @@ namespace Singijeon
                     item.SetSold(true, true);
 
                     UpdateAutoTradingDataGridRow(item.itemCode, item, item.curPrice, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
-
                 }
                 else
                 {
@@ -1677,8 +1703,7 @@ namespace Singijeon
 
         private void API_OnReceiveTrDataHoga(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
-            coreEngine.SendLogMessage(ConstName.RECEIVE_TR_DATA_HOGA);
-            coreEngine.SendLogMessage(e.sRQName);
+              coreEngine.SendLogMessage(e.sRQName);
 
             if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_HOGA))
             {
@@ -1832,12 +1857,13 @@ namespace Singijeon
                             i_qnt = (int)(trailingItem.strategy.itemInvestment / price);
                             price = (int)stockInfo.GetBuyHoga(trailingItem.strategy.tickBuyValue); //전략에 의한 매수틱 조정(없으면 최우선매수호가)
 
+                            
                             coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 사용자 정의호가 (" + trailingItem.strategy.tickBuyValue + " 틱) / 값 :" + price);
 
-                            if (price > 0)
+                            if (price > 0 && trailingItem.isTrailing)
                             {
                                 coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 종목 매수 시도  : " + axKHOpenAPI1.GetMasterCodeName(itemcode));
-
+                                trailingItem.isTrailing = false;
                                 Task requestBuyTask = new Task(() =>
                                 {
                                     int orderResult =
@@ -1948,7 +1974,7 @@ namespace Singijeon
 
             Task requestItemInfoTask = new Task(() =>
             {
-                if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER)
+                if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                     return;
                 int orderResult = axKHOpenAPI1.SendOrder(
                     "종목손절매도",
@@ -2188,7 +2214,10 @@ namespace Singijeon
                     tradeItem.curQnt = allQnt;
                     tradeItem.SetCompleteSold(sellComplete);
                     if (sellComplete)
+                    {
                         tradeItem.ts.StrategyOnReceiveSellChejanUpdate(tradeItem.itemCode, (int)tradeItem.sellPrice, tradeItem.sellQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE);
+                        //ts.tradingItemList.Remove(tradeItem);
+                    }  
                     else
                         tradeItem.ts.StrategyOnReceiveSellChejanUpdate(tradeItem.itemCode, (int)tradeItem.sellPrice, tradeItem.sellQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT);
 

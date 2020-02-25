@@ -311,7 +311,7 @@ namespace Singijeon
             if(martinGailStack.Count == 0)
             {
                 CoreEngine.GetInstance().SendLogWarningMessage("!!!!!!!!!!empty stack!!!!!!");
-                Restart();
+                RestartSameStep();
                 return;
             }
             MartinGailItem itempop = martinGailStack.Pop();
@@ -463,15 +463,19 @@ namespace Singijeon
                     if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                     {
                         CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_DATA_BUY : "+ ordernum);
-                        if (tradingStrategy == null || string.IsNullOrEmpty(conclusionQuantity))
+                        CoreEngine.GetInstance().SendLogWarningMessage("conclusionQuantity : " + conclusionQuantity);
+                        if (tradingStrategy == null)
                             return;
 
-                        TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.itemCode.Equals(itemCode));
-                        if (tradeItem != null)
+                        List<TradingItem> tradeItemArray = tradingStrategy.tradingItemList.FindAll(o => o.itemCode.Equals(itemCode));
+                        if (tradeItemArray.Count > 0)
                         {
-                            if (Item != null)
+                            foreach(var item in tradeItemArray)
                             {
-                                Item.buyOrderNum = tradeItem.buyOrderNum;
+                                if (Item != null && Item.itemCode == itemCode && string.IsNullOrEmpty(item.buyOrderNum) == false)
+                                {
+                                    Item.buyOrderNum = item.buyOrderNum;
+                                }
                             }
                         }
                     }
@@ -496,11 +500,13 @@ namespace Singijeon
                         CoreEngine.GetInstance().SendLogMessage("RECEIVE_CHEJAN_DATA_BUY");
                         if (tradingStrategy == null)
                                 return;
+                        CoreEngine.GetInstance().SendLogWarningMessage("RECEIVE_CHEJAN_DATA_BUY ORDER NUM : " + ordernum);
+                        CoreEngine.GetInstance().SendLogWarningMessage("conclusionQuantity : " + conclusionQuantity);
 
                         TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.buyOrderNum.Equals(ordernum));
+
                         if (tradeItem != null && string.IsNullOrEmpty(conclusionQuantity) == false)
                         {
-                              
                             if (Item != null)
                             {
                                 CoreEngine.GetInstance().SendLogMessage(Item.curQnt + "/" + Item.buyQnt);
@@ -509,8 +515,12 @@ namespace Singijeon
                                 Item.buyPrice = tradeItem.buyingPrice;
                                 Item.buyOrderNum = tradeItem.buyOrderNum;
                                 if(Item.curQnt == Item.buyQnt)
-                                        PushMartinGailItem(itemCode);
+                                  PushMartinGailItem(itemCode);
                             }
+                        }
+                        else
+                        {
+                            CoreEngine.GetInstance().SendLogWarningMessage("tradeItem is null ");
                         }
                     }
                     else if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_SELL))
@@ -537,7 +547,7 @@ namespace Singijeon
                                     Item.curQnt = long.Parse(outstanding);
                                     Item.sellOrderNum = tradeItem.sellOrderNum;
                                 }
-                                }
+                            }
                         }
                     }
                 }

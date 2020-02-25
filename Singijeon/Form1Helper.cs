@@ -181,15 +181,7 @@ namespace Singijeon
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.buyOrderNum.Equals(orderNum));
                 if (tradeItem != null)
                 {
-                    foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
-                    {
-                        if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(tradeItem.itemCode)
-                            && row.Cells["매매진행_매수조건식"].Value.ToString().Equals(ts.buyCondition.Name))
-                        {
-                            row.Cells["매매진행_진행상황"].Value = state;
-                            break;
-                        }
-                    }
+                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
                     break;
                 }
             }
@@ -225,17 +217,15 @@ namespace Singijeon
             foreach (TradingStrategy ts in tradingStrategyList)
             {
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.buyOrderNum.Equals(orderNum));
+                foreach(var item in ts.tradingItemList)
+                {
+                    coreEngine.SendLogWarningMessage("종목명 : " + axKHOpenAPI1.GetMasterCodeName(item.itemCode) + "orderNum : " + item.buyOrderNum);
+                }
                 if (tradeItem != null)
                 {
-                    foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
-                    {
-                        if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(tradeItem.itemCode)
-                            && row.Cells["매매진행_매수조건식"].Value.ToString().Equals(ts.buyCondition.Name))
-                        {
-                            row.Cells["매매진행_진행상황"].Value = state;
-                            break;
-                        }
-                    }
+                    tradeItem.GetUiConnectRow().Cells["매매진행_주문번호"].Value = orderNum;
+                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
+                  
                     break;
                 }
             }
