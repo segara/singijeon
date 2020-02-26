@@ -587,12 +587,38 @@ namespace Singijeon
             CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! cancel quantity : " + (Item.buyQnt - Item.curQnt).ToString());
             form1.CancelBuyOrder(Item.itemCode, Item.buyOrderNum);
         }
-                                         
+
+        private void CancelBeforeBuyOrder()
+        {
+            if (Item == null)
+                return;
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! CancelBeforeBuyOrder cancel code : " + Item.itemCode);
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! CancelBeforeBuyOrder cancel orderNum : " + Item.buyOrderNum);
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! CancelBeforeBuyOrder cancel quantity : " + (Item.buyQnt - Item.curQnt).ToString());
+            //form1.CancelBuyOrder(Item.itemCode, Item.buyOrderNum);
+            if (tradingStrategy != null)
+            {
+                List<TradingItem> tradeItemListAll = tradingStrategy.tradingItemList.FindAll(o=>(o.itemCode == Item.itemCode));
+
+                foreach (TradingItem tradeItem in tradeItemListAll)
+                {
+                    if(tradeItem.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER)
+                    {
+                        tradeItem.SetBuyCancel(true);
+                        PopMartinGailItem(0);
+                        return;
+
+                    }    
+                }
+            }
+           
+        }
+
         void Update()
         {
             if (Item != null)
             {
-                if(Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE  ||
+                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE ||
                     Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
                 {
                     Console.WriteLine((DateTime.Now - startOrderTime).ToString());
@@ -614,11 +640,20 @@ namespace Singijeon
                             CancelBuyOrderAll();
                         }
                     }
-      
+
                     if (using_WaitAndCancel && (DateTime.Now - startOrderTime).TotalSeconds > Wait_And_CancelValue)
                     {
                         CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!!using_WaitAndCancel Pop MartinGail Item!!!!!!!!!!!!!!");
                         CancelBuyOrderAll();
+                    }
+                }
+
+                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER )
+                {
+                    Console.WriteLine("주문접수성공 대기 : " + (DateTime.Now - startOrderTime).ToString());
+                    if ((DateTime.Now - startOrderTime).TotalSeconds > Wait_And_CancelValue)
+                    {
+                        CancelBeforeBuyOrder();
                     }
                 }
             }

@@ -174,7 +174,7 @@ namespace Singijeon
             autoTradingDataGrid["매매진행_매수시간", index].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
-        private void UpdateAutoTradingDataGridState(string orderNum, string state, bool buyComplete = false)
+        private void UpdateBuyAutoTradingDataGridState(string orderNum, string state, bool buyComplete = false)
         {
             foreach (TradingStrategy ts in tradingStrategyList)
             {
@@ -187,7 +187,7 @@ namespace Singijeon
             }
         }
 
-        private void UpdateAutoTradingDataGridStatePrice(string orderNum, string state, string conclusionPrice)
+        private void UpdateSellAutoTradingDataGridStatePrice(string orderNum, string state, string conclusionPrice)
         {
             foreach (TradingStrategy ts in tradingStrategyList)
             {
@@ -212,7 +212,7 @@ namespace Singijeon
         }
       
 
-        private void UpdateAutoTradingDataGridStateOnly(string orderNum, string state)
+        private void UpdateBuyAutoTradingDataGridStateOnly(string orderNum, string state)
         {
             foreach (TradingStrategy ts in tradingStrategyList)
             {
@@ -221,11 +221,30 @@ namespace Singijeon
                 {
                     coreEngine.SendLogWarningMessage("종목명 : " + axKHOpenAPI1.GetMasterCodeName(item.itemCode) + "orderNum : " + item.buyOrderNum);
                 }
-                if (tradeItem != null)
+                if (tradeItem != null && tradeItem.GetUiConnectRow() != null)
                 {
                     tradeItem.GetUiConnectRow().Cells["매매진행_주문번호"].Value = orderNum;
                     tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
                   
+                    break;
+                }
+            }
+        }
+
+        private void UpdateSellAutoTradingDataGridStateOnly(string orderNum, string state)
+        {
+            foreach (TradingStrategy ts in tradingStrategyList)
+            {
+                TradingItem tradeItem = ts.tradingItemList.Find(o => o.sellOrderNum.Equals(orderNum));
+                foreach (var item in ts.tradingItemList)
+                {
+                    coreEngine.SendLogWarningMessage("종목명 : " + axKHOpenAPI1.GetMasterCodeName(item.itemCode) + "orderNum : " + item.buyOrderNum);
+                }
+                if (tradeItem != null && tradeItem.GetUiConnectRow() != null)
+                {
+                    tradeItem.GetUiConnectRow().Cells["매매진행_주문번호"].Value = orderNum;
+                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
+
                     break;
                 }
             }
