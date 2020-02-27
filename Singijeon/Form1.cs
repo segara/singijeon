@@ -567,14 +567,11 @@ namespace Singijeon
         }
         private void UpdateAutoTradingDataGridRow(string itemCode, TradingItem tradeItem, long c_lPrice, string curState)
         {
-            foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
+            if (tradeItem != null && tradeItem.GetUiConnectRow() != null)
             {
-                if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(itemCode))
-                {
-                    row.Cells["매매진행_진행상황"].Value = curState;
-                    break;
-                }
+                tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = curState;
             }
+           
         }
 
         private void UpdateAutoTradingDataGridRowSellStrategy(string itemCode, string changeState)
