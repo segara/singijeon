@@ -463,8 +463,7 @@ namespace Singijeon
                     {
                         double realProfitRate = GetProfitRate((double)c_lPrice, (double)tradeItem.buyingPrice);
 
-                        //coreEngine.SendLogWarningMessage("자동감시 주문 체크 : " + tradeItem.itemName);
-                       
+                    
                         //자동 감시 주문 체크
                         if(tradeItem.state >= TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE
                             && tradeItem.state < TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE)
@@ -1067,26 +1066,7 @@ namespace Singijeon
         #endregion
 
         #region UI_EVENT_FUNCTION
-        private void Form_FormClosing(object sender, EventArgs e)
-        {
-            using (StreamWriter streamWriter = new StreamWriter("setting.txt", false))
-            {
-                //false : 덮어쓰기
-               streamWriter.WriteLine("M_allCostUpDown" +";"+ M_allCostUpDown.Value);
-
-               streamWriter.WriteLine("M_usingTickBuyCheck" + ";" + M_usingTickBuyCheck.Checked);
-               streamWriter.WriteLine("M_buyTickComboBox" + ";" + M_buyTickComboBox.SelectedIndex);
-
-               streamWriter.WriteLine("M_usingTrailingBuyCheck" + ";" + M_usingTrailingBuyCheck.Checked);
-               streamWriter.WriteLine("M_trailingUpDown" + ";" + (int)M_trailingUpDown.Value);
-
-               streamWriter.WriteLine("M_timeCancelCheckBox" + ";" + M_timeCancelCheckBox.Checked);
-               streamWriter.WriteLine("M_trailingUpDown" + ";" + (int)M_waitTimeUpdown.Value);
-
-               streamWriter.WriteLine("M_SellUpdown" + ";" + (double)M_SellUpdown.Value);
-
-            }
-        }
+       
 
         private void DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -2321,17 +2301,74 @@ namespace Singijeon
             tryingOrderList.Add(item);
         }
 
+        private void Form_FormClosing(object sender, EventArgs e)
+        {
+            SaveSetting();
+        }
+        public void SaveSetting()
+        {
+            using (StreamWriter streamWriter = new StreamWriter("setting.txt", false))
+            {
+                //false : 덮어쓰기
+                streamWriter.WriteLine("M_allCostUpDown" + ";" + M_allCostUpDown.Value);
+
+                streamWriter.WriteLine("M_usingTickBuyCheck" + ";" + M_usingTickBuyCheck.Checked);
+                streamWriter.WriteLine("M_buyTickComboBox" + ";" + M_buyTickComboBox.SelectedIndex);
+
+                streamWriter.WriteLine("M_usingTrailingBuyCheck" + ";" + M_usingTrailingBuyCheck.Checked);
+                streamWriter.WriteLine("M_trailingUpDown" + ";" + (int)M_trailingUpDown.Value);
+
+                streamWriter.WriteLine("M_timeCancelCheckBox" + ";" + M_timeCancelCheckBox.Checked);
+                streamWriter.WriteLine("M_waitTimeUpdown" + ";" + (int)M_waitTimeUpdown.Value);
+
+                streamWriter.WriteLine("M_SellUpdown" + ";" + (double)M_SellUpdown.Value);
+
+            }
+        }
         public void LoadSetting()
         {
             try
             {
                 using (StreamReader streamReader = new StreamReader("setting.txt"))
                 {
-                    int firstSettingBuyValue = 0;
-                    string line = streamReader.ReadLine();
-                    int.TryParse(line, out firstSettingBuyValue);
+                  
+                    while (streamReader.EndOfStream == false)
+                    {
+                        string line = streamReader.ReadLine();
+                        string[] strringArray = line.Split(';');
 
-                    M_allCostUpDown.Value = firstSettingBuyValue;
+                        switch(strringArray[0])
+                        {
+                            case "M_allCostUpDown" :
+                                M_allCostUpDown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "M_usingTickBuyCheck":
+                                M_usingTickBuyCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "M_buyTickComboBox":
+                                M_buyTickComboBox.SelectedIndex = int.Parse(strringArray[1]);
+                                break;
+                            case "M_usingTrailingBuyCheck":
+                                M_usingTrailingBuyCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "M_trailingUpDown":
+                                M_trailingUpDown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "M_timeCancelCheckBox":
+                                M_timeCancelCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "M_waitTimeUpdown":
+                                M_waitTimeUpdown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "M_SellUpdown":
+                                M_SellUpdown.Value =  (decimal)(double.Parse(strringArray[1]));
+                                break;
+
+                        }
+                        
+                    }
+                  
+
 
                 }
             }
