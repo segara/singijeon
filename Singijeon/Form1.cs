@@ -503,6 +503,7 @@ namespace Singijeon
 
                                     bss.isSold = true;
                                     tryingSellList.Add(bss);
+                                    coreEngine.SendLogMessage("ui -> 매도주문접수시도");
                                     UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                                 }
                                 else
@@ -527,6 +528,7 @@ namespace Singijeon
                                 {
                                     bss.isSold = true;
                                     tryingSellList.Add(bss);
+                                    coreEngine.SendLogMessage("ui -> 매도주문접수시도");
                                     UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                                 }
                                 else
@@ -1070,7 +1072,19 @@ namespace Singijeon
             using (StreamWriter streamWriter = new StreamWriter("setting.txt", false))
             {
                 //false : 덮어쓰기
-               streamWriter.WriteLine(M_allCostUpDown.Value);
+               streamWriter.WriteLine("M_allCostUpDown" +";"+ M_allCostUpDown.Value);
+
+               streamWriter.WriteLine("M_usingTickBuyCheck" + ";" + M_usingTickBuyCheck.Checked);
+               streamWriter.WriteLine("M_buyTickComboBox" + ";" + M_buyTickComboBox.SelectedIndex);
+
+               streamWriter.WriteLine("M_usingTrailingBuyCheck" + ";" + M_usingTrailingBuyCheck.Checked);
+               streamWriter.WriteLine("M_trailingUpDown" + ";" + (int)M_trailingUpDown.Value);
+
+               streamWriter.WriteLine("M_timeCancelCheckBox" + ";" + M_timeCancelCheckBox.Checked);
+               streamWriter.WriteLine("M_trailingUpDown" + ";" + (int)M_waitTimeUpdown.Value);
+
+               streamWriter.WriteLine("M_SellUpdown" + ";" + (double)M_SellUpdown.Value);
+
             }
         }
 
@@ -1707,7 +1721,7 @@ namespace Singijeon
                 {
                     AddOrderList(item);
                     item.SetSold(true, true);
-
+                    coreEngine.SendLogMessage("ui -> 매도주문접수시도");
                     UpdateAutoTradingDataGridRow(item.itemCode, item, item.curPrice, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                 }
                 else
@@ -2008,7 +2022,7 @@ namespace Singijeon
                 {
                     AddOrderList(item);
                     item.SetSold(true, false);
-
+                    coreEngine.SendLogMessage("ui -> 매도주문접수시도");
                     UpdateAutoTradingDataGridRow(item.itemCode, item, item.curPrice, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
 
                 }
@@ -2309,15 +2323,22 @@ namespace Singijeon
 
         public void LoadSetting()
         {
-            using (StreamReader streamReader = new StreamReader("setting.txt"))
+            try
             {
-                int firstSettingBuyValue = 0;
-                string line = streamReader.ReadLine();
-                int.TryParse(line, out firstSettingBuyValue);
-                M_allCostUpDown.Value = firstSettingBuyValue;
+                using (StreamReader streamReader = new StreamReader("setting.txt"))
+                {
+                    int firstSettingBuyValue = 0;
+                    string line = streamReader.ReadLine();
+                    int.TryParse(line, out firstSettingBuyValue);
+
+                    M_allCostUpDown.Value = firstSettingBuyValue;
+
+                }
+            }
+            catch(Exception e)
+            {
 
             }
         }
-
     }
 }

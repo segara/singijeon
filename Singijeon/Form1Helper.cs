@@ -189,7 +189,7 @@ namespace Singijeon
 
         private void UpdateSellAutoTradingDataGridStatePrice(string orderNum, string state, string conclusionPrice)
         {
-            coreEngine.SendLogWarningMessage("요청 주문 넘버 : " + orderNum);
+            coreEngine.SendLogWarningMessage("요청 주문 넘버 : " + orderNum + " 상태값 : " + state);
             foreach (TradingStrategy ts in tradingStrategyList)
             {
                 foreach (var item in ts.tradingItemList)
@@ -236,14 +236,16 @@ namespace Singijeon
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.sellOrderNum.Equals(orderNum));
                 foreach (var item in ts.tradingItemList)
                 {
-                    coreEngine.SendLogWarningMessage("종목명 : " + axKHOpenAPI1.GetMasterCodeName(item.itemCode) + "orderNum : " + item.buyOrderNum);
+                    coreEngine.SendLogWarningMessage("종목명 : " + axKHOpenAPI1.GetMasterCodeName(item.itemCode) + "orderNum : " + item.sellOrderNum);
                 }
                 if (tradeItem != null && tradeItem.GetUiConnectRow() != null)
                 {
-                    tradeItem.GetUiConnectRow().Cells["매매진행_주문번호"].Value = orderNum;
-                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
+                    coreEngine.SendLogWarningMessage("종목찾기 성공 : " + state);
 
-                    break;
+                   tradeItem.GetUiConnectRow().Cells["매매진행_주문번호"].Value = orderNum;
+                   tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
+
+                   break;
                 }
             }
         }
