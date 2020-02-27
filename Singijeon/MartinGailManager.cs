@@ -607,11 +607,9 @@ namespace Singijeon
                         tradeItem.SetBuyCancel(true);
                         PopMartinGailItem(0);
                         return;
-
                     }    
                 }
             }
-           
         }
 
         void Update()
@@ -651,8 +649,9 @@ namespace Singijeon
                 if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER )
                 {
                     Console.WriteLine("주문접수성공 대기 : " + (DateTime.Now - startOrderTime).ToString());
-                    if ((DateTime.Now - startOrderTime).TotalSeconds > Wait_And_CancelValue)
+                    if ((DateTime.Now - startOrderTime).TotalSeconds > 60)
                     {
+                        CoreEngine.GetInstance().SendLogMessage("주문접수성공 실패");
                         CancelBeforeBuyOrder();
                     }
                 }

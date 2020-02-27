@@ -189,23 +189,21 @@ namespace Singijeon
 
         private void UpdateSellAutoTradingDataGridStatePrice(string orderNum, string state, string conclusionPrice)
         {
+            coreEngine.SendLogWarningMessage("요청 주문 넘버 : " + orderNum);
             foreach (TradingStrategy ts in tradingStrategyList)
             {
+                foreach (var item in ts.tradingItemList)
+                {
+                    coreEngine.SendLogWarningMessage("검색식 : " + ts.buyCondition.Name + " 종목명 : " + axKHOpenAPI1.GetMasterCodeName(item.itemCode) + "orderNum : " + item.sellOrderNum);
+                }
+
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.sellOrderNum.Equals(orderNum));
                 if (tradeItem != null)
                 {
-                    foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
-                    {
-                        if (row.Cells["매매진행_종목코드"].Value.ToString().Equals(tradeItem.itemCode)
-                            && row.Cells["매매진행_매수조건식"].Value.ToString().Equals(ts.buyCondition.Name))
-                        {
-                            row.Cells["매매진행_진행상황"].Value = state;
-                            row.Cells["매매진행_매도가"].Value = conclusionPrice;
-                            row.Cells["매매진행_매도시간"].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
+                    tradeItem.GetUiConnectRow().Cells["매매진행_매도가"].Value = conclusionPrice;
+                    tradeItem.GetUiConnectRow().Cells["매매진행_매도시간"].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-                            break;
-                        }
-                    }
                     break;
                 }
             }

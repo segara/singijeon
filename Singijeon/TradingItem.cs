@@ -164,6 +164,10 @@ namespace Singijeon
             this.isBuyCancel = buying;
             if (buying)
                 state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE;
+            if(GetUiConnectRow() != null)
+            {
+                GetUiConnectRow().Cells["매매진행_진행상황"].Value = ConstName.AUTO_TRADING_STATE_BUY_CANCEL_ALL;
+            }
         }
         public bool IsBuy()
         {

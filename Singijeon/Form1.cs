@@ -59,8 +59,10 @@ namespace Singijeon
             endTimePicker.CustomFormat = "HH:mm"; // Only use hours and minutes
             endTimePicker.ShowUpDown = true;
 
-            LogInToolStripMenuItem.Click += ToolStripMenuItem_Click;
+            this.FormClosing += Form_FormClosing;
 
+            LogInToolStripMenuItem.Click += ToolStripMenuItem_Click;
+            
             AddStratgyBtn.Click += AddStratgyBtn_Click;  //전략생성 버튼
             balanceSellBtn.Click += BalanceSellBtn_Click;
 
@@ -87,6 +89,8 @@ namespace Singijeon
             axKHOpenAPI1.OnReceiveRealData   += API_OnReceiveRealDataHoga; //실시간정보
 
             MartinGailManager.GetInstance().Init(axKHOpenAPI1, this);
+
+            LoadSetting();
         }
 
         #region EVENT_RECEIVE_FUNCTION
@@ -1061,6 +1065,15 @@ namespace Singijeon
         #endregion
 
         #region UI_EVENT_FUNCTION
+        private void Form_FormClosing(object sender, EventArgs e)
+        {
+            using (StreamWriter streamWriter = new StreamWriter("setting.txt", false))
+            {
+                //false : 덮어쓰기
+               streamWriter.WriteLine(M_allCostUpDown.Value);
+            }
+        }
+
         private void DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             coreEngine.SendLogMessage("e.ColumnIndex : " + e.ColumnIndex + " e.RowIndex : " + e.RowIndex);
@@ -2292,6 +2305,18 @@ namespace Singijeon
         public void AddOrderList(TradingItem item)
         {
             tryingOrderList.Add(item);
+        }
+
+        public void LoadSetting()
+        {
+            using (StreamReader streamReader = new StreamReader("setting.txt"))
+            {
+                int firstSettingBuyValue = 0;
+                string line = streamReader.ReadLine();
+                int.TryParse(line, out firstSettingBuyValue);
+                M_allCostUpDown.Value = firstSettingBuyValue;
+
+            }
         }
 
     }
