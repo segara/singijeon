@@ -203,12 +203,9 @@ namespace Singijeon
                     tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
                     tradeItem.GetUiConnectRow().Cells["매매진행_매도가"].Value = conclusionPrice;
                     tradeItem.GetUiConnectRow().Cells["매매진행_매도시간"].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-
-                    break;
                 }
             }
         }
-      
 
         private void UpdateBuyAutoTradingDataGridStateOnly(string orderNum, string state)
         {
