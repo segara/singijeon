@@ -387,24 +387,30 @@ namespace Singijeon
                         codeList += ";";
                     }
                     string itemName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "종목명").Trim();
-
+                    long lBalanceCnt;
                     string balanceCnt = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "보유수량").Trim();
-                    long lBalanceCnt = long.Parse(balanceCnt);
+                    long.TryParse(balanceCnt,out lBalanceCnt);
 
+                    double dBuyingPrice;
                     string buyingPrice = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "평균단가").Trim();
-                    double dBuyingPrice = double.Parse(buyingPrice);
+                    double.TryParse(buyingPrice, out dBuyingPrice);
 
+                    int iPrice;
                     string price = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "현재가").Trim();
-                    int iPrice = Math.Abs(int.Parse(price));
+                    int.TryParse(price, out iPrice);
+                    iPrice = Math.Abs(iPrice);
 
+                    long lEstimatedAmount;
                     string estimatedAmount = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "평가금액").Trim();
-                    long lEstimatedAmount = long.Parse(estimatedAmount);
+                    long.TryParse(estimatedAmount, out lEstimatedAmount);
 
+                    long lProfitAmount;
                     string profitAmount = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "손익금액").Trim();
-                    long lProfitAmount = long.Parse(profitAmount);
+                    long.TryParse(profitAmount, out lProfitAmount);
 
+                    long lBuyingAmount;
                     string buyingAmount = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "매입금액").Trim();
-                    long lBuyingAmount = long.Parse(buyingAmount);
+                    long.TryParse(buyingAmount, out lBuyingAmount);
 
                     //double dProfitRate = 100 * ((iPrice - dBuyingPrice) / dBuyingPrice) - FEE_RATE;
                     double dProfitRate = GetProfitRate((double)iPrice, dBuyingPrice);
