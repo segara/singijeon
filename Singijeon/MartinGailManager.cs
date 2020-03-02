@@ -587,7 +587,15 @@ namespace Singijeon
             CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! cancel quantity : " + (Item.buyQnt - Item.curQnt).ToString());
             form1.CancelBuyOrder(Item.itemCode, Item.buyOrderNum);
         }
-
+        private void SellAllClear()
+        {
+            if (Item == null)
+                return;
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! SellAllClear code : " + Item.itemCode);
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! SellAllClear orderNum : " + Item.buyOrderNum);
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! SellAllClear quantity : " + Item.curQnt.ToString());
+            form1.SellAllClear(Item.itemCode, (int)Item.curQnt, form1.ReceiveSellAllClear);
+        }
         private void CancelBeforeBuyOrder()
         {
             if (Item == null)
@@ -626,8 +634,9 @@ namespace Singijeon
                     {
                         if (using_Outstand_UpAndCancel && tradingStrategyGridView.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice) > OutStand_And_CancelValue)
                         {
-                            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!!using_Outstand_UpAndCancel Pop MartinGail Item!!!!!!!!!!!!!!");
+                            CoreEngine.GetInstance().SendLogWarningMessage("!!!!!!!!!!!!using_Outstand_UpAndCancel!!!!!!!!!!!!!!");
                             CancelBuyOrderAll();
+                            SellAllClear();
                         }
                     }
                     else

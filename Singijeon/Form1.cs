@@ -19,7 +19,7 @@ namespace Singijeon
     {
         CoreEngine coreEngine;
         string currentAccount = string.Empty;
-
+        string account = string.Empty;
         int screenNum = 1000;
         string server = "0";
         public static double FEE_RATE = 1;
@@ -326,14 +326,14 @@ namespace Singijeon
                                 int orderResult =
 
                                 axKHOpenAPI1.SendOrder(
-                                    "편입종목매수",
+                                    ConstName.SEND_ORDER_BUY,
                                     GetScreenNum().ToString(),
                                     ts.account,
                                     CONST_NUMBER.SEND_ORDER_BUY,//1:신규매수
                                     itemcode,
                                     (int)(ts.itemInvestment / i_price),
                                     i_price,
-                                    ConstName.ORDER_JIJUNGGA,//지정가
+                                    ts.buyOrderOption,//지정가
                                     "" //원주문번호없음
                                 );
 
@@ -374,10 +374,11 @@ namespace Singijeon
             }
             else if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO))
             {
+                currentAccount = account;
 
                 string codeList = string.Empty;
                 int cnt = axKHOpenAPI1.GetRepeatCnt(e.sTrCode, e.sRQName); //조회내용중 멀티데이터의 갯수를 알아온다
-
+             
                 for (int i = 0; i < cnt; ++i)
                 {
                     string itemCode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "종목코드").Trim();
@@ -440,6 +441,18 @@ namespace Singijeon
                     string orderGubun = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "주문구분").Trim();
                     string orderTime = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "시간").Trim();
                     coreEngine.SendLogWarningMessage("실시간미체결요청 orderNum :" + orderCode);
+                }
+            }
+            else
+            {
+                DialogResult result = MessageBox.Show(e.sRQName + "요청 처리 실패", "확인", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+
+                }
+                else
+                {
+
                 }
             }
         }
@@ -1087,24 +1100,36 @@ namespace Singijeon
                             string itemCode = accountBalanceDataGrid["계좌잔고_종목코드", e.RowIndex].Value.ToString().Replace("A", "");
                             int balanceCnt = int.Parse(accountBalanceDataGrid["계좌잔고_보유수량", e.RowIndex].Value.ToString());
 
-                            int orderResult = axKHOpenAPI1.SendOrder("청산매도주문", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_SELL, itemCode.Replace("A", ""), balanceCnt, 0, "03", ""); //2:신규매도
-
-                            if (orderResult == 0)
-                            {
-                                coreEngine.SendLogMessage("접수 성공");
-                                accountBalanceDataGrid["계좌잔고_청산", e.RowIndex].Value = "청산주문접수";
-
-                                SettlementItem settlementItem = new SettlementItem(currentAccount, itemCode, balanceCnt);
-
-                                tryingSettlementItemList.Add(settlementItem);
-                                settleItemList.Add(settlementItem);
-
-                            }
+                            SellAllClear(itemCode, balanceCnt, ReceiveSellAllClear,e.RowIndex);
                         }
                     }
                 }
-
             }
+        }
+        public delegate void SendFinish(string itemCode, int balanceCnt, int rowIndex);
+        public void SellAllClear(string itemCode, int balanceCnt, SendFinish delFunc, int rowIndex = -1)
+        {
+            Task requestCancelTask = new Task(() =>
+            {
+                int orderResult = axKHOpenAPI1.SendOrder("청산매도주문", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_SELL, itemCode.Replace("A", ""), balanceCnt, 0, ConstName.ORDER_SIJANGGA, ""); //2:신규매도
+
+                if (orderResult == 0)
+                {
+                    delFunc(itemCode, balanceCnt, rowIndex);
+                }
+            });
+            coreEngine.requestTrDataManager.RequestTrData(requestCancelTask);
+        }
+        public void ReceiveSellAllClear(string itemCode, int balanceCnt, int rowIndex)
+        {
+            coreEngine.SendLogMessage("접수 성공");
+            if(rowIndex > -1)
+                accountBalanceDataGrid["계좌잔고_청산", rowIndex].Value = "청산주문접수";
+
+            SettlementItem settlementItem = new SettlementItem(currentAccount, itemCode, balanceCnt);
+
+            tryingSettlementItemList.Add(settlementItem);
+            settleItemList.Add(settlementItem);
         }
         private void AutoTradingDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -1183,25 +1208,29 @@ namespace Singijeon
             {
                 if(tradeItem.buyOrderNum == buyOrderNum)
                 {
-                     //취소주문
-                    int orderResult = axKHOpenAPI1.SendOrder(
-                        "종목주문정정", 
-                        GetScreenNum().ToString(), 
-                        currentAccount, 
-                        CONST_NUMBER.SEND_ORDER_CANCEL_BUY, 
-                        itemCode, 
-                        tradeItem.outStandingQnt, 
+                    //취소주문
+                    Task requestCancelTask = new Task(() =>
+                    {
+                        int orderResult = axKHOpenAPI1.SendOrder(
+                        "종목주문정정",
+                        GetScreenNum().ToString(),
+                        currentAccount,
+                        CONST_NUMBER.SEND_ORDER_CANCEL_BUY,
+                        itemCode,
+                        tradeItem.outStandingQnt,
                         (int)tradeItem.buyingPrice,
-                        tradeItem.orderType, 
+                        tradeItem.orderType,
                         tradeItem.buyOrderNum
                         );
 
-                    if (orderResult == 0)
-                    {
-                        AddOrderList(tradeItem);
-                        coreEngine.SendLogMessage("취소 접수 성공");
-                        autoTradingDataGrid["매매진행_진행상황", tradeItem.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_CANCEL_ORDER;
-                    }
+                        if (orderResult == 0)
+                        {
+                            AddOrderList(tradeItem);
+                            coreEngine.SendLogMessage("취소 접수 성공");
+                            autoTradingDataGrid["매매진행_진행상황", tradeItem.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_CANCEL_ORDER;
+                        }
+                    });
+                    coreEngine.requestTrDataManager.RequestTrData(requestCancelTask);
                 }
             }
         }
@@ -1262,7 +1291,7 @@ namespace Singijeon
             {
                 if (accountComboBox.SelectedItem == null)
                     return;
-                string account = accountComboBox.SelectedItem.ToString();
+                account = accountComboBox.SelectedItem.ToString();
                 if (!account.Equals(currentAccount))
                 {
                     axKHOpenAPI1.SetInputValue("계좌번호", account);
@@ -1270,8 +1299,6 @@ namespace Singijeon
                     axKHOpenAPI1.SetInputValue("상장폐지조회구분", "0");
                     axKHOpenAPI1.SetInputValue("비밀번호입력매체구분", "00");
                     axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO, "OPW00004", 0, GetScreenNum().ToString());
-
-                    currentAccount = account;
                 }
 
             }
@@ -1408,12 +1435,12 @@ namespace Singijeon
             long totalInvestment = 0;
             int itemCount = 0;
 
-            if (marketPriceRadio.Checked)
+            if (marketPriceRadioBtn.Checked)
             {
-                buyOrderOpt = "시장가";
+                buyOrderOpt = ConstName.ORDER_SIJANGGA;
             } else
             {
-                buyOrderOpt = buyOrderOptionCombo.Text;
+                buyOrderOpt = ConstName.ORDER_JIJUNGGA;
             }
 
             if (allCostUpDown.Value == 0)
@@ -1670,7 +1697,7 @@ namespace Singijeon
                 {
                     Task requestCancelTask = new Task(() =>
                     {
-                        //취소주문
+                        //익절상태에서 손절상태로 변환시 : 먼저 취소주문
                         int orderResultCancel = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.outStandingQnt, (int)item.sellPrice, item.orderType, item.sellOrderNum);
 
                         if (orderResultCancel == 0)
@@ -1773,14 +1800,14 @@ namespace Singijeon
                                     int orderResult =
 
                                     axKHOpenAPI1.SendOrder(
-                                        "편입종목매수",
+                                        ConstName.SEND_ORDER_BUY,
                                         GetScreenNum().ToString(),
                                         ts.account,
                                         CONST_NUMBER.SEND_ORDER_BUY,//1:신규매수
                                         itemcode,
                                         (int)(ts.itemInvestment / price),
                                         price,
-                                         ConstName.ORDER_JIJUNGGA,//지정가
+                                        ts.buyOrderOption,//지정가
                                         "" //원주문번호없음
                                     );
 
@@ -1883,14 +1910,14 @@ namespace Singijeon
                                     int orderResult =
 
                                     axKHOpenAPI1.SendOrder(
-                                        "편입종목매수",
+                                       ConstName.SEND_ORDER_BUY,
                                         GetScreenNum().ToString(),
                                         trailingItem.strategy.account,
                                         CONST_NUMBER.SEND_ORDER_BUY,//1:신규매수
                                         itemcode,
                                         (int)(trailingItem.strategy.itemInvestment / price),
                                         price,
-                                         ConstName.ORDER_JIJUNGGA,
+                                         trailingItem.strategy.buyOrderOption,
                                         "" //원주문번호없음
                                     );
 
@@ -2059,14 +2086,14 @@ namespace Singijeon
             string buyOrderOpt = "지정가";
             long totalInvestment = 0;
 
-            //if (marketPriceRadio.Checked)
-            //{
-            //    buyOrderOpt = "시장가";
-            //}
-            //else
-            //{
-            //    buyOrderOpt = buyOrderOptionCombo.Text;
-            //}
+            if (m_marketPriceRadioBtn.Checked)
+            {
+                buyOrderOpt = ConstName.ORDER_SIJANGGA;
+            }
+            else
+            {
+                buyOrderOpt = ConstName.ORDER_JIJUNGGA;
+            }
 
             if (M_allCostUpDown.Value == 0)
             {
