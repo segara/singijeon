@@ -17,6 +17,9 @@ namespace Singijeon
 
         public bool usingTakeProfit = false; //익절사용여부
         public bool usingStoploss = false;   //손절사용여부
+
+        
+
         public double takeProfitRate = 0; //익절률
         public double stoplossRate = 0; //손절률
 
@@ -26,6 +29,13 @@ namespace Singijeon
         public bool usingTrailing = false;
         public int trailTickValue = 0;
 
+        public bool usingPercentageBuy = false;
+        public float percentageBuyValue = 0;
+
+        public bool usingGapTrailBuy = false;   //갭상승시 매수
+        public float gapTrailCostPercentageValue = 0;
+        public float gapTrailBuyPercentageValue = 0;
+        public int gapTrailBuyTimeValue = 0;
         public bool usingRestart = false;
 
         public bool usingTimeLimit = false;
@@ -197,6 +207,7 @@ namespace Singijeon
     {
         public TradingItem tradingItem { get; set; }
         public double checkNum { get; set; }
+        public double checkNum2 { get; set; }
         public OnReceivedTrEventArgs(TradingItem item , double checkValue)
         {
             this.tradingItem = item;
@@ -324,7 +335,6 @@ namespace Singijeon
             if (!usingStrategy)
                 return;
 
-         
             switch(checkType)
             {
                 case IS_TRUE_OR_FALE_TYPE.DOWN:
@@ -363,6 +373,47 @@ namespace Singijeon
                     }
                     return;
             }
+        }
+    }
+
+    public class TradingStrategyItemWithUpDownPercentValue : TradingStrategyADDItem
+    {
+        private double d_conditionValue = 0;
+        public double checkConditionValue { get { return d_conditionValue; } set { d_conditionValue = value; } }
+
+        public event EventHandler<OnReceivedTrEventArgs> OnReceivedTrData;
+
+        public TradingStrategyItemWithUpDownPercentValue(string _strategyItemName, CHECK_TIMING _checkTiming, string _valueName, double _conditionValue)
+        {
+            usingStrategy = true;
+            strategyItemName = _strategyItemName;
+            strategyCheckTime = _checkTiming;
+
+            d_conditionValue = _conditionValue;
+        }
+
+        public override void CheckUpdate(TradingItem item, double value)
+        {
+            if (!usingStrategy)
+                return;
+
+            if (value > d_conditionValue)
+            {
+                if (OnReceivedTrData != null)
+                    OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
+
+                usingStrategy = false;
+            }
+
+        }
+
+        public override bool CheckCondition()
+        {
+            Console.WriteLine("check condition : " + usingStrategy);
+            if (!usingStrategy)
+                return false;
+
+            return true;
         }
     }
     public class OnReceiveStrateyStateResultArgs : EventArgs

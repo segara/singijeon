@@ -66,7 +66,9 @@ namespace Singijeon
                 }
                 else
                 {
-                    CoreEngine.GetInstance().SaveLogMessage("null error");
+                   //Console.WriteLine("null error");
+                   // System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
+                   // Console.WriteLine(t.ToString());
                     return null;
                 }
             }
@@ -168,6 +170,7 @@ namespace Singijeon
 
         private void OnReceiveConditionResult(object sender, OnReceiveStrateyStateResultArgs e)
         {
+
             Item = new MartinGailItem();
            
             Item.itemState = e.State;
@@ -204,12 +207,12 @@ namespace Singijeon
 
                 Item.itemState = e.State;
                 Item.sellQnt = e.Qnt;
-                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER)
+                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER)
                 {
                     //주문접수 시도 완료
                     startOrderTime = DateTime.Now;
                 }
-                else if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE)
+                else if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE)
                 {
                     //주문접수 완료
                     startOrderTime = DateTime.Now;
@@ -306,7 +309,7 @@ namespace Singijeon
 
         public void PopMartinGailItem(long profit)
         {
-            CoreEngine.GetInstance().SendLogMessage("");
+            CoreEngine.GetInstance().SendLogMessage("PopMartinGailItem");
             Item = null;
             if(martinGailStack.Count == 0)
             {

@@ -20,6 +20,7 @@ namespace Singijeon {
       
         int curLogIndex = 0;
         int curWarningIndex = 0;
+        int curErrorIndex   = 0;
         int curMartinIndex = 0;
         Thread taskWorker;
         delegate void CrossThreadSafetyUpdate(ListBox ctl);
@@ -190,6 +191,7 @@ namespace Singijeon {
         {
             logMessage.Add(new LogItem(e.Message, LOG_TYPE.ERROR));
             coreEngine.SaveLogMessage(e.Message);
+            List<LogItem> errorItem = logMessage.FindAll(o => o.logType == LOG_TYPE.ERROR);
             if (LogListBox.InvokeRequired)
             {
                 LogListBox.Invoke(new MethodInvoker(delegate ()
@@ -203,16 +205,29 @@ namespace Singijeon {
                     }
                     //CheckLogLength();
                 }));
+                errorListBox.Invoke(new MethodInvoker(delegate ()
+                {
+                    while (curErrorIndex < errorItem.Count)
+                    {
+                        errorListBox.Items.Add(errorItem[curErrorIndex].logTxt);
+                        curErrorIndex++;
+                    }
+
+                }));
             }
             else
             {
                 while (curLogIndex < logMessage.Count)
                 {
                     LogListBox.Items.Add(logMessage[curLogIndex]);
-                    //LogListBox.SelectedIndex = LogListBox.Items.Count - 1;
                     curLogIndex++;
                 }
-                //CheckLogLength();
+                while (curErrorIndex < errorItem.Count)
+                {
+
+                    errorListBox.Items.Add(errorItem[curErrorIndex].logTxt);
+                    curErrorIndex++;
+                }
             }
         }
 

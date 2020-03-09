@@ -13,7 +13,7 @@ namespace Singijeon.Core
     {
         AxKHOpenAPI axKHOpenAPI;
         public UserInfo userInfo;
-
+        private string Uid;
         private static CoreEngine coreInstance;
         public RequestTrDataManager requestTrDataManager;
 
@@ -28,7 +28,7 @@ namespace Singijeon.Core
         {
             requestTrDataManager = RequestTrDataManager.GetInstance();
             requestTrDataManager.Run();
-
+            Uid = System.Guid.NewGuid().ToString();
         }
         public static CoreEngine GetInstance() //싱글톤으로 jost 객체관리
         {
@@ -78,7 +78,6 @@ namespace Singijeon.Core
         }
         public void SendLogWarningMessage(string logMessage) //Event를 이용해 로그 메세지 전달
         {
-
             StackFrame callStack = new StackFrame(1, true);
             logMessage = DateTime.Now.ToString("[HH:mm:ss] ") + logMessage + " (" + Path.GetFileName(callStack.GetFileName()) + ") line : " + callStack.GetFileLineNumber();
             OnReceivedLogWarningMessage?.Invoke(this, new OnReceivedLogMessageEventArgs(logMessage));
@@ -248,7 +247,7 @@ namespace Singijeon.Core
 
         public void SaveLogMessage(string log)
         {
-            string filePath = DateTime.Now.ToString("yyyyMMdd") + "_log.txt";
+            string filePath = DateTime.Now.ToString("yyyyMMdd")+ Uid + "_log.txt";
             FileInfo fi = new FileInfo(filePath);
 
             try

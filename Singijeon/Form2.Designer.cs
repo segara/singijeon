@@ -59,9 +59,11 @@
             this.M_resultListBox = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.LogListBox = new System.Windows.Forms.ListBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.warningLogListBox = new System.Windows.Forms.ListBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.errorListBox = new System.Windows.Forms.ListBox();
             this.groupBox6.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -70,6 +72,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox6
@@ -440,10 +443,11 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 242);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(666, 333);
+            this.tabControl1.Size = new System.Drawing.Size(881, 333);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage1
@@ -452,21 +456,10 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(658, 307);
+            this.tabPage1.Size = new System.Drawing.Size(873, 307);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Log";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.warningLogListBox);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(658, 307);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Warning";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // LogListBox
             // 
@@ -479,8 +472,19 @@
             this.LogListBox.ItemHeight = 12;
             this.LogListBox.Location = new System.Drawing.Point(-4, 0);
             this.LogListBox.Name = "LogListBox";
-            this.LogListBox.Size = new System.Drawing.Size(662, 304);
+            this.LogListBox.Size = new System.Drawing.Size(877, 304);
             this.LogListBox.TabIndex = 1;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.warningLogListBox);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(873, 307);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Warning";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // warningLogListBox
             // 
@@ -491,14 +495,37 @@
             this.warningLogListBox.ItemHeight = 12;
             this.warningLogListBox.Location = new System.Drawing.Point(3, 0);
             this.warningLogListBox.Name = "warningLogListBox";
-            this.warningLogListBox.Size = new System.Drawing.Size(652, 304);
+            this.warningLogListBox.Size = new System.Drawing.Size(867, 304);
             this.warningLogListBox.TabIndex = 0;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.errorListBox);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(873, 307);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Error";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // errorListBox
+            // 
+            this.errorListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.errorListBox.FormattingEnabled = true;
+            this.errorListBox.ItemHeight = 12;
+            this.errorListBox.Location = new System.Drawing.Point(3, 1);
+            this.errorListBox.Name = "errorListBox";
+            this.errorListBox.Size = new System.Drawing.Size(867, 304);
+            this.errorListBox.TabIndex = 1;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(690, 624);
+            this.ClientSize = new System.Drawing.Size(905, 624);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -514,6 +541,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -553,5 +581,7 @@
         private System.Windows.Forms.ListBox LogListBox;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListBox warningLogListBox;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.ListBox errorListBox;
     }
 }
