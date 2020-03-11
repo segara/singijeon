@@ -19,7 +19,7 @@ namespace Singijeon
         public int sumPriceAllTick = 0; //평균가 계산을 위한 변수
         public int percentageCheckPrice = 0;
         public int gapTrailBuyCheckPrice = 0;
-
+        public long itemInvestment = 0;
         public bool isPercentageCheckBuy = false;   //갭상승시 매수
         public bool isGapTrailBuy = false;   //갭상승시 매수
         public DateTime gapTrailBuyCheckDateTime = DateTime.Now;
@@ -35,10 +35,10 @@ namespace Singijeon
             lowestPrice = firstPrice;
             settingTickCount = strategy.trailTickValue;
             buyOrderOption = inputStrategy.buyOrderOption;
-
+            itemInvestment = inputStrategy.itemInvestment;
             if (inputStrategy.usingPercentageBuy)
             {
-                percentageCheckPrice = (int)((float)firstPrice * (100.0f + inputStrategy.percentageBuyValue) * 0.01f);
+                percentageCheckPrice = (int)((float)firstPrice * (100.0f - inputStrategy.percentageBuyValue) * 0.01f);
                 isPercentageCheckBuy = true;
             }
             if (inputStrategy.usingGapTrailBuy)

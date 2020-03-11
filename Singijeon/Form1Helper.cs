@@ -178,7 +178,12 @@ namespace Singijeon
         {
             foreach (TradingStrategy ts in tradingStrategyList)
             {
+                coreEngine.SendLogWarningMessage(ts.buyCondition.Name);
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.buyOrderNum.Equals(orderNum));
+                foreach(var item in ts.tradingItemList)
+                {
+                    coreEngine.SendLogWarningMessage(item.itemName + " 요청 주문 넘버 : " + orderNum + " 상태값 : " + state);
+                }
                 if (tradeItem != null)
                 {
                     tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;

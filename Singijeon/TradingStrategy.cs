@@ -28,13 +28,13 @@ namespace Singijeon
 
         public bool usingTrailing = false;
         public int trailTickValue = 0;
-
+        public float trailMinusValue = 0;
         public bool usingPercentageBuy = false;
         public float percentageBuyValue = 0;
 
         public bool usingGapTrailBuy = false;   //갭상승시 매수
         public float gapTrailCostPercentageValue = 0;
-        public float gapTrailBuyPercentageValue = 0;
+        public float gapTrailBuyPercentageValue = 0.5f;
         public int gapTrailBuyTimeValue = 0;
         public bool usingRestart = false;
 

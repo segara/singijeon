@@ -272,6 +272,9 @@
             this.매매전략_손절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.tickMinusValue = new System.Windows.Forms.NumericUpDown();
+            this.label39 = new System.Windows.Forms.Label();
+            this.매매진행_손절익절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -329,6 +332,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.balanceDataGrid)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tickMinusValue)).BeginInit();
             this.SuspendLayout();
             // 
             // axKHOpenAPI1
@@ -420,7 +424,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 299F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 303F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -438,6 +442,8 @@
             this.panel7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel7.Controls.Add(this.label39);
+            this.panel7.Controls.Add(this.tickMinusValue);
             this.panel7.Controls.Add(this.label40);
             this.panel7.Controls.Add(this.gapTrailTimeUpdown);
             this.panel7.Controls.Add(this.label13);
@@ -456,10 +462,10 @@
             this.panel7.Controls.Add(this.label11);
             this.panel7.Controls.Add(this.usingTickBuyCheck);
             this.panel7.Controls.Add(this.label12);
-            this.panel7.Location = new System.Drawing.Point(412, 3);
+            this.panel7.Location = new System.Drawing.Point(410, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(528, 205);
+            this.panel7.Size = new System.Drawing.Size(526, 205);
             this.panel7.TabIndex = 5;
             // 
             // label40
@@ -520,11 +526,6 @@
             131072});
             this.gapTrailCostUpdown.Location = new System.Drawing.Point(283, 178);
             this.gapTrailCostUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gapTrailCostUpdown.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.gapTrailCostUpdown.Name = "gapTrailCostUpdown";
             this.gapTrailCostUpdown.Size = new System.Drawing.Size(62, 21);
             this.gapTrailCostUpdown.TabIndex = 20;
@@ -550,11 +551,6 @@
             131072});
             this.orderPercentageUpdown.Location = new System.Drawing.Point(145, 152);
             this.orderPercentageUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.orderPercentageUpdown.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.orderPercentageUpdown.Name = "orderPercentageUpdown";
             this.orderPercentageUpdown.Size = new System.Drawing.Size(105, 21);
             this.orderPercentageUpdown.TabIndex = 18;
@@ -719,7 +715,7 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(401, 205);
+            this.panel1.Size = new System.Drawing.Size(399, 205);
             this.panel1.TabIndex = 0;
             // 
             // PerCostText
@@ -848,6 +844,7 @@
             this.BuyConditionComboBox.Name = "BuyConditionComboBox";
             this.BuyConditionComboBox.Size = new System.Drawing.Size(158, 20);
             this.BuyConditionComboBox.TabIndex = 2;
+            this.BuyConditionComboBox.SelectedIndexChanged += new System.EventHandler(this.BuyConditionComboBox_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -882,10 +879,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(947, 3);
+            this.panel2.Location = new System.Drawing.Point(943, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(294, 205);
+            this.panel2.Size = new System.Drawing.Size(298, 205);
             this.panel2.TabIndex = 4;
             // 
             // label9
@@ -2035,7 +2032,8 @@
             this.매매진행_매도가,
             this.매매진행_매수시간,
             this.매매진행_매도시간,
-            this.매매진행_취소});
+            this.매매진행_취소,
+            this.매매진행_손절익절});
             this.autoTradingDataGrid.Location = new System.Drawing.Point(6, 19);
             this.autoTradingDataGrid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.autoTradingDataGrid.Name = "autoTradingDataGrid";
@@ -2861,6 +2859,36 @@
             this.매매전략_취소.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.매매전략_취소.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
+            // tickMinusValue
+            // 
+            this.tickMinusValue.DecimalPlaces = 2;
+            this.tickMinusValue.Increment = new decimal(new int[] {
+            25,
+            0,
+            0,
+            131072});
+            this.tickMinusValue.Location = new System.Drawing.Point(284, 122);
+            this.tickMinusValue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tickMinusValue.Name = "tickMinusValue";
+            this.tickMinusValue.Size = new System.Drawing.Size(105, 21);
+            this.tickMinusValue.TabIndex = 24;
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(395, 125);
+            this.label39.Name = "label39";
+            this.label39.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label39.Size = new System.Drawing.Size(65, 12);
+            this.label39.TabIndex = 25;
+            this.label39.Text = "매수보정값";
+            // 
+            // 매매진행_손절익절
+            // 
+            this.매매진행_손절익절.HeaderText = "결과";
+            this.매매진행_손절익절.Name = "매매진행_손절익절";
+            this.매매진행_손절익절.ReadOnly = true;
+            // 
             // tradingStrategyGridView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -2944,6 +2972,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.balanceDataGrid)).EndInit();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tickMinusValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3177,6 +3206,9 @@
         private System.Windows.Forms.NumericUpDown gapTrailCostUpdown;
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.NumericUpDown gapTrailTimeUpdown;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.NumericUpDown tickMinusValue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_손절익절;
     }
 }
 
