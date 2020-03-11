@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace Singijeon
 {
-    public enum TRADING_ITEM_STATE :int
+    public enum TRADING_ITEM_STATE : int
     {
         NONE,
         AUTO_TRADING_STATE_SEARCH_AND_CATCH,//종목포착
@@ -22,22 +22,24 @@ namespace Singijeon
         AUTO_TRADING_STATE_SELL_BEFORE_ORDER,//매도주문접수시도
         AUTO_TRADING_STATE_SELL_NOT_COMPLETE, //매도주문완료
 
-        AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE,
-        AUTO_TRADING_STATE_SELL_CANCEL_COMPLETE,
+        AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE, //매도취소 접수시도
+        //AUTO_TRADING_STATE_SELL_CANCEL_COMPLETE, //매도 취소는 주문완료로 대체
 
         AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT, //일부매도
         AUTO_TRADING_STATE_SELL_COMPLETE, //매도완료
 
     }
-    public class TradingItem 
+    public class TradingItem
     {
         public TradingStrategy ts = null;
-        public TRADING_ITEM_STATE state = TRADING_ITEM_STATE.NONE;
+        public TRADING_ITEM_STATE state {get{return curState;}}
+        private TRADING_ITEM_STATE curState = TRADING_ITEM_STATE.NONE;
         public string buyOrderNum = string.Empty;
         public string sellOrderNum = string.Empty;
         public string buyCancelOrderNum = string.Empty;
         public string sellCancelOrderNum = string.Empty;
-        public string orderType = string.Empty;
+        public string buyOrderType = string.Empty;
+        public string sellOrderType = string.Empty;
         public string itemCode = string.Empty;
         public string itemName = string.Empty;
         public long buyingPrice;
@@ -61,9 +63,10 @@ namespace Singijeon
 
         public DataGridViewRow ui_rowItem;
         public string conditionUid = string.Empty;
+
         public string Uid { get; set; } 
 
-        public TradingItem(TradingStrategy tsItem, string itemCode, string itemName, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string orderType = "")
+        public TradingItem(TradingStrategy tsItem, string itemCode, string itemName, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string buyOrderType = "", string sellOrderType = "")
         {
             this.ts = tsItem;
             this.itemCode = itemCode;
@@ -80,10 +83,11 @@ namespace Singijeon
             this.buyOrderNum = string.Empty;
             this.sellOrderNum = string.Empty;
 
-            this.orderType = orderType;
+            this.buyOrderType = buyOrderType;
+            this.sellOrderType = sellOrderType;
 
             this.Uid = System.Guid.NewGuid().ToString();
-            state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
+            curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }
         public void UpdateCurrentPrice(long _price)
         {
@@ -107,18 +111,17 @@ namespace Singijeon
         }
         public void SetState(TRADING_ITEM_STATE _state)
         {
-            state = _state;
+            curState = _state;
         }
         public bool IsSold()
         {
             return this.isSold;
         }
-        public void SetSold(bool sold, bool isProfitSell = true)
+        public void SetSold(bool isProfitSell = true)
         {
-            this.isSold = sold;
+            this.isSold = true;
             this.isProfitSell = isProfitSell;
-            if(sold)
-                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER;
+            curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER;
         }
         public bool IsProfitSell()
         {
@@ -128,13 +131,17 @@ namespace Singijeon
         {
             return this.isSellCancel;
         }
-
-        public void SetSellCancel(bool cancel)
+        public void SetSellCancelOrder()
         {
-            this.isSellCancel = cancel;
-            if (cancel)
-                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE; //매도 취소 성공 -> 매수 완료 상태
+          curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE; 
         }
+
+        public void SetSellCancelOrderComplete()
+        {
+            curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE; //매도 취소 성공 -> 매수 완료 상태
+        }
+
+       
         public bool IsCompleteSold()
         {
             return this.isCompleteSold;
@@ -143,7 +150,7 @@ namespace Singijeon
         {
             this.isCompleteSold = sold;
             if (sold)
-                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE; 
+                curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE; 
         }
         public bool IsCompleteBuying()
         {
@@ -153,21 +160,15 @@ namespace Singijeon
         {
             this.isCompleteBuying = buying;
             if (buying)
-                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE;
+                curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE;
         }
         public bool IsBuyCancel()
         {
             return this.isBuyCancel;
         }
-        public void SetBuyCancel (bool buying)
+        public void SetBuyCancelComplete ()
         {
-            this.isBuyCancel = buying;
-            if (buying)
-                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE;
-            if(GetUiConnectRow() != null)
-            {
-                GetUiConnectRow().Cells["매매진행_진행상황"].Value = ConstName.AUTO_TRADING_STATE_BUY_CANCEL_ALL;
-            }
+             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE;
         }
         public bool IsBuy()
         {
@@ -177,7 +178,7 @@ namespace Singijeon
         {
             this.isBuy = buying;
             if (buying)
-                state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
+                curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }
         
     }

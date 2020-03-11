@@ -68,6 +68,7 @@ namespace Singijeon
             this.account = _account;
             this.buyCondition = _condition;
             this.buyOrderOption = _buyOrderOption;
+            this.sellOrderOption = _sellOrderOption;
             this.totalInvestment = _totalInvestment;
             this.buyItemCount = _buyItemCount;
             this.remainItemCount = _buyItemCount;

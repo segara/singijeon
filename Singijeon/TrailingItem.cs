@@ -9,6 +9,8 @@ namespace Singijeon
 {
     public class TrailingItem
     {
+        public Stack<TickBongInfo> tickBongInfo = new Stack<TickBongInfo>();
+        public TickBongInfo curTickBong = null;
         public string itemCode;
         public TradingStrategy strategy;
         public int settingTickCount = 0;
@@ -16,7 +18,7 @@ namespace Singijeon
         public bool isTrailing = true;
         public int lowestPrice = 0;
         public int averagePrice = 0;
-        public int sumPriceAllTick = 0; //평균가 계산을 위한 변수
+        //public int sumPriceAllTick = 0; //평균가 계산을 위한 변수
         public int percentageCheckPrice = 0;
         public int gapTrailBuyCheckPrice = 0;
         public long itemInvestment = 0;
@@ -25,7 +27,7 @@ namespace Singijeon
         public DateTime gapTrailBuyCheckDateTime = DateTime.Now;
         public long gapTrailBuyCheckTimeSecond = 0;
         public string buyOrderOption; //주문 호가 옵션
-
+        public string sellOrderOption; //주문 호가 옵션
         public DataGridViewRow ui_rowAutoTradingItem;
 
         public TrailingItem(string itemcode, int firstPrice, TradingStrategy inputStrategy)
@@ -35,6 +37,7 @@ namespace Singijeon
             lowestPrice = firstPrice;
             settingTickCount = strategy.trailTickValue;
             buyOrderOption = inputStrategy.buyOrderOption;
+            sellOrderOption = inputStrategy.sellOrderOption;
             itemInvestment = inputStrategy.itemInvestment;
             if (inputStrategy.usingPercentageBuy)
             {
@@ -49,6 +52,20 @@ namespace Singijeon
                 gapTrailBuyCheckTimeSecond = inputStrategy.gapTrailBuyTimeValue;
             }
            
+        }
+
+        public TickBongInfo GetLastTickBong()
+        {
+            TickBongInfo bong = null;
+            foreach (var bongItem in tickBongInfo)
+            {
+                if (bongItem.IsComplete())
+                {
+                    bong = bongItem;
+                    break;
+                }
+            }
+            return bong;
         }
     }
 }

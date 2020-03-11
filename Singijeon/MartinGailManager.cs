@@ -615,7 +615,7 @@ namespace Singijeon
                 {
                     if(tradeItem.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER)
                     {
-                        tradeItem.SetBuyCancel(true);
+                        tradeItem.SetBuyCancelComplete();
                         PopMartinGailItem(0);
                         return;
                     }    

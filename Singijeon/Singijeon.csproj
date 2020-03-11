@@ -74,6 +74,7 @@
     <Compile Include="SettlementItem.cs" />
     <Compile Include="BalanceSellStrategy.cs" />
     <Compile Include="StockItem.cs" />
+    <Compile Include="TickBongInfo.cs" />
     <Compile Include="TradingItem.cs" />
     <Compile Include="TradingStrategy.cs" />
     <Compile Include="TrailingItem.cs" />
