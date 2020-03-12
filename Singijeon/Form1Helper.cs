@@ -216,17 +216,18 @@ namespace Singijeon
         {
             foreach (TradingStrategy ts in tradingStrategyList)
             {
-                TradingItem tradeItem = ts.tradingItemList.Find(o => o.buyOrderNum.Equals(orderNum));
-                foreach(var item in ts.tradingItemList)
+                foreach (var item in ts.tradingItemList)
                 {
                     coreEngine.SendLogWarningMessage("종목명 : " + axKHOpenAPI1.GetMasterCodeName(item.itemCode) + "orderNum : " + item.buyOrderNum);
                 }
+
+                TradingItem tradeItem = ts.tradingItemList.Find(o => o.buyOrderNum.Equals(orderNum));
+               
                 if (tradeItem != null && tradeItem.GetUiConnectRow() != null)
                 {
                     tradeItem.GetUiConnectRow().Cells["매매진행_주문번호"].Value = orderNum;
                     tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
                   
-                    break;
                 }
             }
         }

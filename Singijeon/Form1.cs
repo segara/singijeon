@@ -39,7 +39,7 @@ namespace Singijeon
 
         List<BalanceSellStrategy> tryingSellList = new List<BalanceSellStrategy>(); //잔고 매도 접수 시도(주문번호 따는 리스트)
 
-        
+        Dictionary<string, NotConclusionItem> nonConclusionList = new Dictionary<string, NotConclusionItem>();
 
         public tradingStrategyGridView()
         {
@@ -50,6 +50,7 @@ namespace Singijeon
             coreEngine.Start();
 
             OpenSecondWindow();
+            OpenThirdWindow();
 
             startTimePicker.Value = DateTime.Now;
             startTimePicker.Format = DateTimePickerFormat.Custom;
@@ -429,21 +430,25 @@ namespace Singijeon
 
                 for (int i = 0; i < count; i++)
                 {
-                    string orderCode = int.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "주문번호")).ToString();
+                    string orderNum = int.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "주문번호")).ToString();
                     string stockCode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "종목코드").Trim();
                     string stockName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "종목명").Trim();
-                    int orderNumber = int.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "주문수량"));
+                    int orderQnt = int.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "주문수량"));
                     int orderPrice = int.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "주문가격"));
                     int outstandingNumber = int.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "미체결수량"));
                     int currentPrice = int.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "현재가").Replace("-", ""));
                     string orderGubun = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "주문구분").Trim();
                     string orderTime = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "시간").Trim();
-                    coreEngine.SendLogWarningMessage("실시간미체결요청 orderNum :" + orderCode);
+                    
+                    int index = outstandingDataGrid.Rows.Add();
+                    nonConclusionList.Add(orderNum, new NotConclusionItem(orderNum, stockCode, orderGubun, stockName, orderQnt,orderPrice, outstandingNumber));
+                    Hashtable outstandingTable = new Hashtable { { "미체결_주문번호", orderNum }, { "미체결_종목코드", stockCode }, { "미체결_종목명", stockName }, { "미체결_주문수량", orderQnt }, { "미체결_미체결량", outstandingNumber } };
+                    Update_OutStandingDataGrid_UI(outstandingTable, index);
                 }
             }
             else
             {
-                coreEngine.SendLogWarningMessage(e.sRQName + " 처리 실패 : " + e.sErrorCode + " : " + e.sMessage + e.sTrCode);
+                coreEngine.SendLogWarningMessage(e.sRQName + " 처리 : " + e.sErrorCode + " : " + e.sMessage + " : " + e.sTrCode);
             }
         }
 
@@ -741,22 +746,34 @@ namespace Singijeon
                         {
                             coreEngine.SendLogWarningMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + "주문접수완료");
                             coreEngine.SendLogWarningMessage("수량 : " + i_orderQuantity);
-                            TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)));
-                            
-                            coreEngine.SendLogWarningMessage("찾아낸 종목명 : " + axKHOpenAPI1.GetMasterCodeName(itemCode) + "orderNum : " + ordernum);
-                            coreEngine.SendLogWarningMessage("찾아낸 종목 주문 수량 : " + item.buyingQnt);
-                            coreEngine.SendLogWarningMessage("찾아낸 종목 가격 : " + orderPrice);
-                            //item.buyingPrice = long.Parse(orderPrice);
-                            item.buyOrderNum = ordernum;
-                            item.buyingQnt = int.Parse(orderQuantity);
-                            item.SetState(TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE);
+                            List<TradingItem> items = this.tryingOrderList.FindAll(o => (itemCode.Contains(o.itemCode)));
 
-                            //접수리스트에서만 지움
-                            RemoveOrderList(item);
-                            UpdateBuyAutoTradingDataGridStateOnly(ordernum, ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE);
+                            if(items.Count > 1)
+                            {
+                                coreEngine.SendLogErrorMessage("주문리스트에 중복된 종목이 있습니다");
+                            }
+                            foreach (var item in items)
+                            {
+                                coreEngine.SendLogWarningMessage("찾아낸 종목명 : " + axKHOpenAPI1.GetMasterCodeName(itemCode) + "orderNum : " + ordernum);
+                                coreEngine.SendLogWarningMessage("찾아낸 종목 주문 수량 : " + item.buyingQnt);
+                                coreEngine.SendLogWarningMessage("찾아낸 종목 가격 : " + orderPrice);
 
-                            item.ts.StrategyBuyOrderUpdate(item.itemCode, (int)item.buyingPrice, item.buyingQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE);
-                            coreEngine.SendLogMessage("접수 완료 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
+                                if (!string.IsNullOrEmpty(orderQuantity) 
+                                    && int.Parse(orderQuantity) > 0 )
+                                {
+                                    item.buyOrderNum = ordernum;
+                                    item.buyingQnt = int.Parse(orderQuantity);
+                                    item.SetState(TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE);
+
+                                    //접수리스트에서만 지움
+                                    RemoveOrderList(item);
+                                    UpdateBuyAutoTradingDataGridStateOnly(ordernum, ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE);
+
+                                    item.ts.StrategyBuyOrderUpdate(item.itemCode, (int)item.buyingPrice, item.buyingQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE);
+                                    coreEngine.SendLogMessage("접수 완료 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
+                                }
+                            }
+
                         }
                         else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL))
                         {
@@ -1314,6 +1331,11 @@ namespace Singijeon
                     axKHOpenAPI1.SetInputValue("상장폐지조회구분", "0");
                     axKHOpenAPI1.SetInputValue("비밀번호입력매체구분", "00");
                     axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO, "OPW00004", 0, GetScreenNum().ToString());
+
+                    axKHOpenAPI1.SetInputValue("계좌번호", account);
+                    axKHOpenAPI1.SetInputValue("체결구분", "1");
+                    axKHOpenAPI1.SetInputValue("매매구분", "2");
+                    axKHOpenAPI1.CommRqData("실시간미체결요청", "opt10075", 0, "5700");
                 }
 
             }
@@ -1693,6 +1715,12 @@ namespace Singijeon
         private void OpenSecondWindow()
         {
             Form2 printForm = new Form2(axKHOpenAPI1);
+            printForm.Show();
+        }
+
+        private void OpenThirdWindow()
+        {
+            Form3 printForm = new Form3(axKHOpenAPI1);
             printForm.Show();
         }
         #endregion
@@ -2713,6 +2741,29 @@ namespace Singijeon
                     LoadSetting(conditionName);
                 }
 
+            }
+        }
+
+        private void outstandingDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+            if (e.ColumnIndex == outstandingDataGrid.Columns["미체결_취소"].Index)
+            {
+                string orderNum = (string)outstandingDataGrid["미체결_주문번호", e.RowIndex].Value;
+                if(string.IsNullOrEmpty(orderNum) == false && nonConclusionList.ContainsKey(orderNum))
+                {
+                    NotConclusionItem item = nonConclusionList[orderNum];
+                    int orderResult = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, 
+                        CONST_NUMBER.SEND_ORDER_CANCEL_BUY,
+                        item.itemCode, item.outstandingNumber, (int)item.orderPrice, item.orderGubun, item.orderNum);
+
+                    if (orderResult == 0)
+                    {
+                        outstandingDataGrid["미체결_취소", e.RowIndex].Value = "취소접수시도";
+                    }
+                }
+               
             }
         }
     }
