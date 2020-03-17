@@ -47,8 +47,6 @@ namespace Singijeon
             this.sellOrderOption = _sellOrderOption;
             this.usingStoploss = _usingStoploss;
             this.stoplossRate = _stoplossRate;
-
-         
         }
     }
 

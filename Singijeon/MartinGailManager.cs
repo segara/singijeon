@@ -532,7 +532,7 @@ namespace Singijeon
                             return;
 
                         TradingItem tradeItem = tradingStrategy.tradingItemList.Find(o => o.sellOrderNum.Equals(ordernum));
-                        if (tradeItem != null  && string.IsNullOrEmpty(outstanding) == false)
+                        if (tradeItem != null  && string.IsNullOrEmpty(outstanding) == false && string.IsNullOrEmpty(conclusionPrice) == false)
                         {
                             long buyingPrice = tradeItem.buyingPrice;
                             long sellPrice = long.Parse(conclusionPrice.Replace("+", ""));

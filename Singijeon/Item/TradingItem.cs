@@ -64,6 +64,8 @@ namespace Singijeon
         public DataGridViewRow ui_rowItem;
         public string conditionUid = string.Empty;
 
+        public int BuyOrSellTryCnt = 0;
+
         public string Uid { get; set; } 
 
         public TradingItem(TradingStrategy tsItem, string itemCode, string itemName, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string buyOrderType = "", string sellOrderType = "")
@@ -84,7 +86,7 @@ namespace Singijeon
             this.sellOrderNum = string.Empty;
 
             this.buyOrderType = buyOrderType;
-            this.sellOrderType = sellOrderType;
+            //this.sellOrderType = sellOrderType;
 
             this.Uid = System.Guid.NewGuid().ToString();
             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
@@ -112,6 +114,13 @@ namespace Singijeon
         public void SetState(TRADING_ITEM_STATE _state)
         {
             curState = _state;
+        }
+        public void SetSellOrderType(bool profitSell)
+        {
+            if(profitSell)
+                sellOrderType = ts.sellProfitOrderOption;
+            else
+                sellOrderType = ts.sellStopLossOrderOption;
         }
         public bool IsSold()
         {

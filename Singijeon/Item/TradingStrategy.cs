@@ -13,7 +13,8 @@ namespace Singijeon
         public int remainItemCount;         //
         public long itemInvestment;        //종목별 투자금
 
-        public string sellOrderOption; //현재가 or 시장가 등
+        public string sellProfitOrderOption; //현재가 or 시장가 등
+        public string sellStopLossOrderOption; //현재가 or 시장가 등
 
         public bool usingTakeProfit = false; //익절사용여부
         public bool usingStoploss = false;   //손절사용여부
@@ -33,6 +34,7 @@ namespace Singijeon
         public float percentageBuyValue = 0;
 
         public bool usingGapTrailBuy = false;   //갭상승시 매수
+        public bool usingVwma = false;   //갭상승시 매수
         public float gapTrailCostPercentageValue = 0;
         public float gapTrailBuyPercentageValue = 0.5f;
         public int gapTrailBuyTimeValue = 0;
@@ -60,7 +62,8 @@ namespace Singijeon
             string _buyOrderOption,
             long _totalInvestment,
             int _buyItemCount,
-            string _sellOrderOption,
+            string _sellProfitOrderOption,
+            string _sellStopLossOrderOption,
             bool _buyOnlyInterest,
             bool _buyRestart
             )
@@ -68,7 +71,9 @@ namespace Singijeon
             this.account = _account;
             this.buyCondition = _condition;
             this.buyOrderOption = _buyOrderOption;
-            this.sellOrderOption = _sellOrderOption;
+            this.sellProfitOrderOption = _sellProfitOrderOption;
+            this.sellStopLossOrderOption = _sellStopLossOrderOption;
+
             this.totalInvestment = _totalInvestment;
             this.buyItemCount = _buyItemCount;
             this.remainItemCount = _buyItemCount;
