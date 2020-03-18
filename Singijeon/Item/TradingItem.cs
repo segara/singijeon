@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace Singijeon
 {
+    [Serializable]
     public enum TRADING_ITEM_STATE : int
     {
         NONE,
@@ -29,6 +30,7 @@ namespace Singijeon
         AUTO_TRADING_STATE_SELL_COMPLETE, //매도완료
 
     }
+    [Serializable]
     public class TradingItem
     {
         public TradingStrategy ts = null;
@@ -60,13 +62,14 @@ namespace Singijeon
         protected bool isSellCancel; //매도취소 여부
         protected bool isCompleteBuying; //매수완료 여부
         protected bool isCompleteSold; //매수완료 여부
-
-        public DataGridViewRow ui_rowItem;
         public string conditionUid = string.Empty;
 
         public int BuyOrSellTryCnt = 0;
 
-        public string Uid { get; set; } 
+        public string Uid { get; set; }
+        [NonSerialized]
+        public DataGridViewRow ui_rowItem;
+      
 
         public TradingItem(TradingStrategy tsItem, string itemCode, string itemName, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string buyOrderType = "", string sellOrderType = "")
         {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Singijeon
 {
+    [Serializable]
     public class StockItem
     {
         public string Name { get; set; }

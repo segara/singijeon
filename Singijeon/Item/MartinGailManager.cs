@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace Singijeon
 {
-
-
+    [Serializable]
     public enum MARTIN_RESULT
     {
         NONE,
@@ -21,7 +20,7 @@ namespace Singijeon
         LOSE,
         DRAW
     }
-
+    [Serializable]
     public class MartinGailItem
     {
         public int step;

@@ -21,8 +21,8 @@ namespace Singijeon
         public bool usingStoploss = false;   //손절사용여부
         public double takeProfitRate = 0; //익절률
         public double stoplossRate = 0; //손절률
-        public string sellOrderOption; //현재가 or 시장가 등
-
+        public string profitOrderOption; //현재가 or 시장가 등
+        public string stoplossOrderOption; //현재가 or 시장가 등
         //매매 진행 종목 리스트
         public List<TradingItem> tradingItemList = new List<TradingItem>();
 
@@ -31,7 +31,8 @@ namespace Singijeon
             string _itemCode,
             int _buyingPrice,
             long _sellQnt,
-             string _sellOrderOption,
+             string _sellProfitOrderOption,
+             string _sellStopLossOrderOption,
             bool _usingTakeProfit,
             double _takeProfitRate,
             bool _usingStoploss,
@@ -44,7 +45,8 @@ namespace Singijeon
             this.buyingPrice = _buyingPrice;
             this.usingTakeProfit = _usingTakeProfit;
             this.takeProfitRate = _takeProfitRate;
-            this.sellOrderOption = _sellOrderOption;
+            this.profitOrderOption = _sellProfitOrderOption;
+            this.stoplossOrderOption = _sellStopLossOrderOption;
             this.usingStoploss = _usingStoploss;
             this.stoplossRate = _stoplossRate;
         }

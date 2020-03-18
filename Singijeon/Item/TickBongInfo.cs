@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Singijeon.Core;
 namespace Singijeon
 {
+    [Serializable]
     public class TickBongInfo
     {
         int saveCount = 0; //봉당 저장갯수 예)5틱봉 => 5개 30틱봉 =>30개

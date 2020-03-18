@@ -28,11 +28,11 @@ namespace Singijeon
         Series maSeries;
         Series maSeriesShort;
         Series vwmaSeriesShort;
-
+        string itemcode;
         const int MA_PERIOD_SHORT = 5;
         const int MA_PERIOD = 20;
         const int MAX_CANDLE = 200;
-
+        //public VWMA_CHART_STATE vwma_state_old = VWMA_CHART_STATE.NONE;
         public VWMA_CHART_STATE vwma_state = VWMA_CHART_STATE.NONE;
         public double VPCI = 0;
 
@@ -53,8 +53,15 @@ namespace Singijeon
 
             axKHOpenAPI1.OnReceiveTrData += AxKHOpenAPI_OnReceiveTrData;
             candleChart.AxisViewChanged += Chart_AxisViewChanged;
+
+            this.FormClosing += Form_FormClosing;
         }
-       
+
+        private void Form_FormClosing(object sender, EventArgs e)
+        {
+            axKHOpenAPI1.OnReceiveTrData -= AxKHOpenAPI_OnReceiveTrData;
+        }
+
         private void Chart_AxisViewChanged(object sender, ViewEventArgs e)
         {
             int startPosition = (int)e.Axis.ScaleView.ViewMinimum;
@@ -107,6 +114,14 @@ namespace Singijeon
         {
             if(e.sRQName.Equals("틱차트조회"))
             {
+                if (candleChart.Series == null)
+                    return;
+
+                itemcode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "종목코드").Replace("A","").Trim();
+
+                if (chartItemCodeTextBox.Text != itemcode)
+                    return;
+
                 candleChart.Series["StockCandle"].Points.Clear();
                 candleChart.Series["Volume"].Points.Clear();
 
@@ -117,6 +132,7 @@ namespace Singijeon
                 count = Math.Min(count, MAX_CANDLE);
                 for(int i = 0; i < count; ++i)
                 {
+                   
                     long curPrice = Math.Abs(long.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "현재가")));
                     long openPrice = Math.Abs(long.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "시가")));
                     long highPrice = Math.Abs(long.Parse(axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "고가")));
@@ -165,12 +181,14 @@ namespace Singijeon
                 MessageBox.Show("로그인해주세요");
         }
 
-        Action afterEventFunction = null;
-        public void RequestItem(string ItemCode, Action delFunc)
+        ReceiveAfter afterEventFunction = null;
+        public delegate void ReceiveAfter(string itemCode); 
+        public void RequestItem(string ItemCode, ReceiveAfter delFunc)
         {
             if (!string.IsNullOrEmpty(ItemCode))
             {
                 afterEventFunction = delFunc;
+                chartItemCodeTextBox.Text = ItemCode;
                 ItemName.Text = axKHOpenAPI1.GetMasterCodeName(ItemCode);
                 Task requestItemInfoTask = new Task(() =>
                 {
@@ -236,6 +254,7 @@ namespace Singijeon
             vwmaSeriesShort.Points.Clear();
 
             double lastValue = 0;
+            double lastValueShort = 0;
             double minValue = double.MaxValue;
             double maxValue = double.MinValue;
             for (int i = 0; i < priceSeries.Points.Count; ++i)
@@ -261,8 +280,8 @@ namespace Singijeon
                   
                     vwmaSeries.Points[i].YValues[0]  = vwma;
                    
-                    maxValue = Math.Max(maxValue, vwma);
-                    minValue = Math.Min(minValue, vwma);
+                    //maxValue = Math.Max(maxValue, vwma);
+                    //minValue = Math.Min(minValue, vwma);
                     lastValue = vwma;
                 }
                 else
@@ -289,6 +308,7 @@ namespace Singijeon
                     }
 
                     vwmaSeriesShort.Points.AddXY(priceSeries.Points[i].XValue, vwma);
+                    lastValueShort = vwma;
 
                     if (vwmaSeriesShort.Points.Count > 1)
                     {
@@ -317,13 +337,19 @@ namespace Singijeon
 
                         }
                         StateLabel.Text = vwma_state.ToString();
-                      
+
                     }
+                   
 
                     maxValue = Math.Max(maxValue, vwma);
                     minValue = Math.Min(minValue, vwma);
                 }
-              
+                else
+                {
+                    
+                    //vwmaSeriesShort.Points[i].YValues[0] = lastValueShort;
+                }
+
 
             }
             candleChart.ChartAreas["VwmaChartArea"].AxisY.Maximum = maxValue;
@@ -407,7 +433,7 @@ namespace Singijeon
             candleChart.ChartAreas["VpciChartArea"].AxisY.Minimum = minValue;
 
             if(afterEventFunction != null)
-                afterEventFunction.Invoke();
+                afterEventFunction.Invoke(itemcode);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 namespace Singijeon
 {
+    [Serializable]
     public class TradingStrategy
     {
         public string account;
@@ -18,8 +19,6 @@ namespace Singijeon
 
         public bool usingTakeProfit = false; //익절사용여부
         public bool usingStoploss = false;   //손절사용여부
-
-        
 
         public double takeProfitRate = 0; //익절률
         public double stoplossRate = 0; //손절률
@@ -49,7 +48,7 @@ namespace Singijeon
         //매매 진행 종목 리스트
         public List<TradingItem> tradingItemList = new List<TradingItem>();
         public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
-
+        
         public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveCondition; //종목 검색시
         public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveBuyOrder; //종목 주문시
         public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveBuyChejan; //종목 체결시
@@ -209,6 +208,7 @@ namespace Singijeon
                 OnReceiveSellChejan.Invoke(this, new OnReceiveStrateyStateResultArgs(itemCode, qnt, price, state));
         }
     }
+    [Serializable]
     public class OnReceivedTrEventArgs : EventArgs
     {
         public TradingItem tradingItem { get; set; }
@@ -220,13 +220,13 @@ namespace Singijeon
             this.checkNum = checkValue;
         }
     }
-
+    [Serializable]
     public enum CHECK_TIMING
     {
         BUY_TIME,
         SELL_TIME,
     }
-
+    [Serializable]
     public class TradingStrategyADDItem
     {
         public string valueName = string.Empty;
@@ -253,7 +253,7 @@ namespace Singijeon
             return false;
         }
     }
-    
+    [Serializable]
     public class TradingStrategyItemChangeValue : TradingStrategyADDItem
     {
         private double d_changeValue = 0;
@@ -273,7 +273,7 @@ namespace Singijeon
 
         }
     }
-
+    [Serializable]
     public class TradingStrategyItemBuyTimeCheck : TradingStrategyADDItem
     {
        
@@ -299,7 +299,7 @@ namespace Singijeon
             return false;
         }
     }
-
+    [Serializable]
     public class TradingStrategyItemWithUpDownValue : TradingStrategyADDItem
     {
         public enum IS_TRUE_OR_FALE_TYPE
@@ -381,7 +381,7 @@ namespace Singijeon
             }
         }
     }
-
+    [Serializable]
     public class TradingStrategyItemWithUpDownPercentValue : TradingStrategyADDItem
     {
         private double d_conditionValue = 0;
@@ -422,6 +422,7 @@ namespace Singijeon
             return true;
         }
     }
+    
     public class OnReceiveStrateyStateResultArgs : EventArgs
     {
         public string ItemCode { get; set; }

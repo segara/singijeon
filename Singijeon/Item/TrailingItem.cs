@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace Singijeon
 {
+    [Serializable]
     public class TrailingItem
     {
         public Stack<TickBongInfo> tickBongInfo = new Stack<TickBongInfo>();
@@ -29,8 +30,10 @@ namespace Singijeon
         public long gapTrailBuyCheckTimeSecond = 0;
         public string buyOrderOption; //주문 호가 옵션
         //public string sellOrderOption; //주문 호가 옵션
+        //public CheckMaUp ma_data_info = null;
+        [NonSerialized]
         public DataGridViewRow ui_rowAutoTradingItem;
-        public CheckMaUp ma_data_info = null;
+       
 
         public TrailingItem(string itemcode, int firstPrice, TradingStrategy inputStrategy)
         {
@@ -56,6 +59,7 @@ namespace Singijeon
                 gapTrailBuyCheckTimeSecond = inputStrategy.gapTrailBuyTimeValue;
             }
             isVwmaCheck = inputStrategy.usingVwma; 
+         
         }
 
         public TickBongInfo GetTickBong(int index)

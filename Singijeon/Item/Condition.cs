@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Singijeon
 {
+    [Serializable]
     public class Condition
     {
         public int Index { get; set; }
