@@ -20,7 +20,18 @@ namespace Singijeon
         public double takeProfitRate = 0; //익절률
         public double stoplossRate = 0; //손절률
         
-        public List<TradingItem> tradingItemList = new List<TradingItem>();
+        public List<TradingItemForSave> tradingSaveItemList = new List<TradingItemForSave>();
+
+        public TradingStrategyForSave(BalanceSellStrategy strategy)
+        {
+            sellProfitOrderOption = strategy.profitOrderOption;
+            sellStopLossOrderOption = strategy.stoplossOrderOption;
+
+            account = strategy.account;
+            takeProfitRate = strategy.takeProfitRate;
+            stoplossRate = strategy.stoplossRate;
+            tradingSaveItemList.Add(new TradingItemForSave(strategy));
+        }
 
         public TradingStrategyForSave(TradingStrategy strategy)
         {
@@ -33,7 +44,11 @@ namespace Singijeon
             takeProfitRate = strategy.takeProfitRate;
             stoplossRate = strategy.stoplossRate;
 
-            tradingItemList = strategy.tradingItemList;
+            foreach(var item in strategy.tradingItemList)
+            {
+                tradingSaveItemList.Add(new TradingItemForSave(item));
+            }
+          
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Singijeon
         public string account;
         public string itemCode;
         public int buyingPrice;
+        public long curQnt;
         public long sellQnt;
         public bool isSold = false;
 
@@ -30,6 +31,7 @@ namespace Singijeon
             string _account,
             string _itemCode,
             int _buyingPrice,
+            long _curQnt,
             long _sellQnt,
              string _sellProfitOrderOption,
              string _sellStopLossOrderOption,
@@ -41,6 +43,7 @@ namespace Singijeon
         {
             this.account = _account;
             this.itemCode = _itemCode;
+            this.curQnt = _curQnt;
             this.sellQnt = _sellQnt;
             this.buyingPrice = _buyingPrice;
             this.usingTakeProfit = _usingTakeProfit;

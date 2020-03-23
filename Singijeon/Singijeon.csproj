@@ -77,8 +77,10 @@
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Item\TradingItemForSave.cs" />
     <Compile Include="Item\TradingStrategyForSave.cs" />
     <Compile Include="Item\TradingStrategyMgr.cs" />
+    <Compile Include="Item\TrailingPercentageItemForSave.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\RequestTrDataManager.cs" />

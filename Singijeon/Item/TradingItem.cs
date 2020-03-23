@@ -55,22 +55,17 @@ namespace Singijeon
 
         public long curPrice;
         protected bool isProfitSell; //매수주문 여부
-        protected bool isBuy; //매수주문 여부
-        protected bool isSold; //매도주문 여부
-        
+       
         protected bool isBuyCancel; //매수취소 여부
         protected bool isSellCancel; //매도취소 여부
         protected bool isCompleteBuying; //매수완료 여부
         protected bool isCompleteSold; //매수완료 여부
         public string conditionUid = string.Empty;
-
-        public int BuyOrSellTryCnt = 0;
-
+        
         public string Uid { get; set; }
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
       
-
         public TradingItem(TradingStrategy tsItem, string itemCode, string itemName, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string buyOrderType = "", string sellOrderType = "")
         {
             this.ts = tsItem;
@@ -80,11 +75,10 @@ namespace Singijeon
             this.buyingQnt = buyingQnt;
             this.outStandingQnt = buyingQnt;
             this.isCompleteBuying = false;
-            this.isBuy = false;
-            this.isSold = false;
+         
             this.isBuyCancel = false;
-            this.isSellCancel = false;
             this.isCompleteSold = false;
+
             this.buyOrderNum = string.Empty;
             this.sellOrderNum = string.Empty;
 
@@ -125,13 +119,10 @@ namespace Singijeon
             else
                 sellOrderType = ts.sellStopLossOrderOption;
         }
-        public bool IsSold()
-        {
-            return this.isSold;
-        }
+       
         public void SetSold(bool isProfitSell = true)
         {
-            this.isSold = true;
+          
             this.isProfitSell = isProfitSell;
             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER;
         }
@@ -139,10 +130,7 @@ namespace Singijeon
         {
             return isProfitSell;
         }
-        public bool IsSellCancel()
-        {
-            return this.isSellCancel;
-        }
+      
         public void SetSellCancelOrder()
         {
           curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE; 
@@ -182,13 +170,9 @@ namespace Singijeon
         {
              curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE;
         }
-        public bool IsBuy()
-        {
-            return this.isBuy;
-        }
+       
         public void SetBuy(bool buying)
         {
-            this.isBuy = buying;
             if (buying)
                 curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }

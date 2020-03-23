@@ -122,6 +122,7 @@ namespace Singijeon
         {
             if (tradingStrategy != null)
             {
+                TsListBox.Items.Add(tradingStrategy.buyCondition.Name);
                 int rowIndex = tsDataGridView.Rows.Add();
                 tsDataGridView["매매전략_계좌번호", rowIndex].Value = tradingStrategy.account;
                 tsDataGridView["매매전략_재실행", rowIndex].Value = tradingStrategy.usingRestart;
@@ -250,6 +251,234 @@ namespace Singijeon
 
                    break;
                 }
+            }
+        }
+        public void SaveSetting(string name)
+        {
+            using (StreamWriter streamWriter = new StreamWriter(name + ".txt", false))
+            {
+                streamWriter.WriteLine("allCostUpDown" + ";" + allCostUpDown.Value);
+
+                streamWriter.WriteLine("usingTickBuyCheck" + ";" + usingTickBuyCheck.Checked);
+                streamWriter.WriteLine("buyTickComboBox" + ";" + buyTickComboBox.SelectedIndex);
+
+                streamWriter.WriteLine("usingTrailingBuyCheck" + ";" + usingTrailingBuyCheck.Checked);
+                streamWriter.WriteLine("trailingUpDown" + ";" + (int)trailingUpDown.Value);
+
+                streamWriter.WriteLine("itemCountUpdown" + ";" + (int)itemCountUpdown.Value);
+
+                streamWriter.WriteLine("orderPecentageCheckBox" + ";" + orderPecentageCheckBox.Checked);
+                streamWriter.WriteLine("orderPercentageUpdown" + ";" + (double)orderPercentageUpdown.Value);
+
+                streamWriter.WriteLine("profitSellCheckBox" + ";" + profitSellCheckBox.Checked);
+                streamWriter.WriteLine("profitSellUpdown" + ";" + (double)profitSellUpdown.Value);
+
+                streamWriter.WriteLine("minusSellCheckBox" + ";" + minusSellCheckBox.Checked);
+                streamWriter.WriteLine("minusSellUpdown" + ";" + (double)minusSellUpdown.Value);
+
+                streamWriter.WriteLine("useGapTrailBuyCheck" + ";" + useGapTrailBuyCheck.Checked);
+                streamWriter.WriteLine("gapTrailTimeUpdown" + ";" + (int)gapTrailTimeUpdown.Value);
+                streamWriter.WriteLine("gapTrailCostUpdown" + ";" + (double)gapTrailCostUpdown.Value);
+
+                streamWriter.WriteLine("TimeUseCheck" + ";" + TimeUseCheck.Checked);
+                streamWriter.WriteLine("startTimePicker" + ";" + startTimePicker.Value);
+                streamWriter.WriteLine("endTimePicker" + ";" + endTimePicker.Value);
+
+                streamWriter.WriteLine("useVwmaCheckBox" + ";" + useVwmaCheckBox.Checked);
+
+                streamWriter.WriteLine("tickMinusValue" + ";" + (double)tickMinusValue.Value);
+
+                streamWriter.WriteLine("sellProfitSijangRadio" + ";" + sellProfitSijangRadio.Checked);
+                streamWriter.WriteLine("sellProfitJijungRadio" + ";" + sellProfitJijungRadio.Checked);
+
+                streamWriter.WriteLine("stopLossSijangRadio" + ";" + stopLossSijangRadio.Checked);
+                streamWriter.WriteLine("stopLossJijungRadio" + ";" + stopLossJijungRadio.Checked);
+                //false : 덮어쓰기
+                streamWriter.WriteLine("M_allCostUpDown" + ";" + M_allCostUpDown.Value);
+
+                streamWriter.WriteLine("M_usingTickBuyCheck" + ";" + M_usingTickBuyCheck.Checked);
+                streamWriter.WriteLine("M_buyTickComboBox" + ";" + M_buyTickComboBox.SelectedIndex);
+
+                streamWriter.WriteLine("M_usingTrailingBuyCheck" + ";" + M_usingTrailingBuyCheck.Checked);
+                streamWriter.WriteLine("M_trailingUpDown" + ";" + (int)M_trailingUpDown.Value);
+
+                streamWriter.WriteLine("M_timeCancelCheckBox" + ";" + M_timeCancelCheckBox.Checked);
+                streamWriter.WriteLine("M_waitTimeUpdown" + ";" + (int)M_waitTimeUpdown.Value);
+
+                streamWriter.WriteLine("M_SellUpdown" + ";" + (double)M_SellUpdown.Value);
+
+                streamWriter.WriteLine("m_useVwmaCheckBox" + ";" + m_useVwmaCheckBox.Checked);
+                streamWriter.WriteLine("marketPriceRadioBtn" + ";" + marketPriceRadioBtn.Checked);
+                streamWriter.WriteLine("curPriceRadio" + ";" + curPriceRadio.Checked);
+
+            }
+        }
+        public void ClearSetting()
+        {
+            allCostUpDown.Value = 0;
+
+            usingTickBuyCheck.Checked = false;
+            buyTickComboBox.SelectedIndex = 0;
+
+            usingTrailingBuyCheck.Checked = false;
+            trailingUpDown.Value = trailingUpDown.Minimum;
+
+            itemCountUpdown.Value = itemCountUpdown.Minimum;
+
+            orderPecentageCheckBox.Checked = false;
+            orderPercentageUpdown.Value = orderPercentageUpdown.Minimum;
+
+            profitSellCheckBox.Checked = false;
+            profitSellUpdown.Value = profitSellUpdown.Minimum;
+
+            minusSellCheckBox.Checked = false;
+            minusSellUpdown.Value = minusSellUpdown.Maximum;
+
+            useGapTrailBuyCheck.Checked = false;
+            gapTrailTimeUpdown.Value = gapTrailTimeUpdown.Minimum;
+            gapTrailCostUpdown.Value = gapTrailCostUpdown.Minimum;
+
+            TimeUseCheck.Checked = false;
+            startTimePicker.Value = DateTime.Now;
+            endTimePicker.Value = DateTime.Now;
+
+            sellProfitJijungRadio.Checked = true;
+            stopLossSijangRadio.Checked = true;
+
+            marketPriceRadioBtn.Checked = false;
+            curPriceRadio.Checked = true;
+
+            useVwmaCheckBox.Checked = false;
+            tickMinusValue.Value = tickMinusValue.Minimum;
+        }
+        public void LoadSetting(string settingCondition)
+        {
+            ClearSetting();
+            try
+            {
+                using (StreamReader streamReader = new StreamReader(settingCondition + ".txt"))
+                {
+
+                    while (streamReader.EndOfStream == false)
+                    {
+                        string line = streamReader.ReadLine();
+                        string[] strringArray = line.Split(';');
+
+                        switch (strringArray[0])
+                        {
+                            case "M_allCostUpDown":
+                                M_allCostUpDown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "M_usingTickBuyCheck":
+                                M_usingTickBuyCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "M_buyTickComboBox":
+                                M_buyTickComboBox.SelectedIndex = int.Parse(strringArray[1]);
+                                break;
+                            case "M_usingTrailingBuyCheck":
+                                M_usingTrailingBuyCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "M_trailingUpDown":
+                                M_trailingUpDown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "M_timeCancelCheckBox":
+                                M_timeCancelCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "M_waitTimeUpdown":
+                                M_waitTimeUpdown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "M_SellUpdown":
+                                M_SellUpdown.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "m_useVwmaCheckBox":
+                                m_useVwmaCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "allCostUpDown":
+                                allCostUpDown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "usingTickBuyCheck":
+                                usingTickBuyCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "buyTickComboBox":
+                                buyTickComboBox.SelectedIndex = int.Parse(strringArray[1]);
+                                break;
+                            case "usingTrailingBuyCheck":
+                                usingTrailingBuyCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "trailingUpDown":
+                                trailingUpDown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "orderPecentageCheckBox":
+                                orderPecentageCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "orderPercentageUpdown":
+                                orderPercentageUpdown.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "itemCountUpdown":
+                                itemCountUpdown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "profitSellCheckBox":
+                                profitSellCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "profitSellUpdown":
+                                profitSellUpdown.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "minusSellCheckBox":
+                                minusSellCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "minusSellUpdown":
+                                minusSellUpdown.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "useGapTrailBuyCheck":
+                                useGapTrailBuyCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "gapTrailTimeUpdown":
+                                gapTrailTimeUpdown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "gapTrailCostUpdown":
+                                gapTrailCostUpdown.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "TimeUseCheck":
+                                TimeUseCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "startTimePicker":
+                                startTimePicker.Value = DateTime.Parse(strringArray[1]);
+                                break;
+                            case "endTimePicker":
+                                endTimePicker.Value = DateTime.Parse(strringArray[1]);
+                                break;
+                            case "tickMinusValue":
+                                tickMinusValue.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "sellProfitSijangRadio":
+                                sellProfitSijangRadio.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "sellProfitJijungRadio":
+                                sellProfitJijungRadio.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "stopLossSijangRadio":
+                                stopLossSijangRadio.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "stopLossJijungRadio":
+                                stopLossJijungRadio.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "useVwmaCheckBox":
+                                useVwmaCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "marketPriceRadioBtn":
+                                marketPriceRadioBtn.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "curPriceRadio":
+                                curPriceRadio.Checked = bool.Parse(strringArray[1]);
+                                break;
+
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
     }

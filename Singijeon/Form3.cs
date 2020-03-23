@@ -34,6 +34,7 @@ namespace Singijeon
         const int MAX_CANDLE = 200;
         //public VWMA_CHART_STATE vwma_state_old = VWMA_CHART_STATE.NONE;
         public VWMA_CHART_STATE vwma_state = VWMA_CHART_STATE.NONE;
+        public double gapPercent = 0;
         public double VPCI = 0;
 
         public Form3(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1)
@@ -280,8 +281,8 @@ namespace Singijeon
                   
                     vwmaSeries.Points[i].YValues[0]  = vwma;
                    
-                    //maxValue = Math.Max(maxValue, vwma);
-                    //minValue = Math.Min(minValue, vwma);
+                    maxValue = Math.Max(maxValue, vwma);
+                    minValue = Math.Min(minValue, vwma);
                     lastValue = vwma;
                 }
                 else
@@ -328,10 +329,13 @@ namespace Singijeon
                         {
                             if (vwmaSeriesShort.Points[1].YValues[0] > vwmaSeries.Points[1].YValues[0])
                             {
+                               
                                 vwma_state = VWMA_CHART_STATE.DEAD_CROSS;
                             }
                             else
                             {
+                                if(vwmaSeriesShort.Points[0].YValues[0] > 0)
+                                    gapPercent = ((vwmaSeries.Points[0].YValues[0] - vwmaSeriesShort.Points[0].YValues[0]) / vwmaSeriesShort.Points[0].YValues[0])*100.0;
                                 vwma_state = VWMA_CHART_STATE.DOWN_STAY;
                             }
 

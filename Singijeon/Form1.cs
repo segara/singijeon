@@ -25,14 +25,16 @@ namespace Singijeon
         private string server = "0";
         public static double FEE_RATE = 1;
 
-        private const string DATA_FILE_NAME = @"_trading_item.dat";
-
+        private const string DATA_FILE_NAME = @"trading_item.dat";
+        private const string DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
         List<Condition> listCondition = new List<Condition>();
 
        
         List<TradingStrategy> tradingStrategyList = new List<TradingStrategy>();
         List<BalanceSellStrategy> balanceSellStrategyList = new List<BalanceSellStrategy>();
         List<TrailingItem> trailingList = new List<TrailingItem>();
+  
+        List<TrailingPercentageItemForSave> trailingSaveList = new List<TrailingPercentageItemForSave>();
         List<StockItem> stockItemList = new List<StockItem>(); //상장종목리스트
 
         List<TradingItem> tryingOrderList = new List<TradingItem>(); //주문접수시도
@@ -221,7 +223,7 @@ namespace Singijeon
 
                 if (ts != null)
                 {
-                    coreEngine.SendLogMessage("남은 가능 매수 종목수 : " + ts.remainItemCount);
+                    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " 남은 가능 매수 종목수 : " + ts.remainItemCount);
                     if (ts.remainItemCount > 0)
                     {
                         StockItem stockItem = stockItemList.Find(o => o.Code.Equals(itemCode));
@@ -234,6 +236,7 @@ namespace Singijeon
                                 if (ts.usingVwma)
                                 {
                                     printForm.RequestItem(itemCode, delegate (string _itemCode) {
+
                                         if (printForm.vwma_state == Form3.VWMA_CHART_STATE.DEAD_CROSS)
                                         {
                                             return;
@@ -246,19 +249,36 @@ namespace Singijeon
                                             return;
                                         }
 
+                                        //if(printForm.gapPercent > 2)
+                                        //{
+                                        //    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(_itemCode) + " 갭차이 " + printForm.gapPercent);
+                                        //    return;
+                                        //}
+
+                                        TrailingItem trailingItem = trailingList.Find(o => o.itemCode.Contains(_itemCode));
+
+                                        if (CheckCanBuyItem(ts, _itemCode) && trailingItem == null)
                                         {
-                                            //coreEngine.SendLogMessage("GOLDEN_CROSS");
-                                            TrailingItem trailingItem = trailingList.Find(o => o.itemCode.Contains(_itemCode));
+                                            ts.remainItemCount--; //남을 매수할 종목수-1
 
-                                            if (CheckCanBuyItem(ts, _itemCode) && trailingItem == null)
-                                            {
-                                                ts.remainItemCount--; //남을 매수할 종목수-1
-
-                                                ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
-                                                TryBuyItem(ts, _itemCode);
-                                            }
+                                            ts.StrategyConditionReceiveUpdate(_itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+                                            TryBuyItem(ts, _itemCode);
                                         }
+                                        
                                     });
+                                }
+                                else
+                                {
+                                    TrailingItem trailingItem = trailingList.Find(o => o.itemCode.Contains(itemCode));
+
+                                    if (CheckCanBuyItem(ts, itemCode) && trailingItem == null)
+                                    {
+                                        ts.remainItemCount--; //남을 매수할 종목수-1
+
+                                        ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+                                        TryBuyItem(ts, itemCode);
+                                    }
+                                    
                                 }
                             }
                         }
@@ -380,6 +400,7 @@ namespace Singijeon
 
                                     string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
                                     axKHOpenAPI1.SetRealReg("9001", itemcode, fidList, "1");
+                                    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " realreg");
 
                                     //매매진행 데이터 그리드뷰 표시
 
@@ -450,10 +471,11 @@ namespace Singijeon
                     Update_AccountBalanceDataGrid_UI(uiTable, rowIndex);
 
                 }
-                //string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
-                //axKHOpenAPI1.SetRealReg("9002", codeList, fidList, "1");
-                //coreEngine.SendLogWarningMessage("SetRealReg" + codeList);
+                string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
+                axKHOpenAPI1.SetRealReg("9002", codeList, fidList, "1");
+                coreEngine.SendLogWarningMessage("SetRealReg" + codeList);
                 DeserializeStrategy();
+                DeserializeTrailing();
             }
             else if (e.sRQName == "실시간미체결요청")
             {
@@ -530,6 +552,7 @@ namespace Singijeon
                         if (!bss.isSold && bss.buyingPrice != 0)
                         {
                             double profitRate = GetProfitRate((double)c_lPrice, (double)bss.buyingPrice);
+                          
                             if (bss.takeProfitRate <= profitRate) //익절
                             {
                                 int orderResult = axKHOpenAPI1.SendOrder(
@@ -703,14 +726,18 @@ namespace Singijeon
                 {
                     if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode))
                     {
-                        double buyingPrice = double.Parse(row.Cells["매매진행_매수가"].Value.ToString());
                         row.Cells["매매진행_현재가"].Value = c_lPrice;
-                        if (buyingPrice != 0)
-                        {
-                            double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
-                            row.Cells["매매진행_손익률"].Value = profitRate;
-                        }
 
+                        if (row.Cells["매매진행_매수가"].Value != null)
+                        {
+                            double buyingPrice = double.Parse(row.Cells["매매진행_매수가"].Value.ToString());
+
+                            if (buyingPrice != 0)
+                            {
+                                double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
+                                row.Cells["매매진행_손익률"].Value = profitRate;
+                            }
+                        }
                     }
                 }
             }
@@ -857,7 +884,8 @@ namespace Singijeon
                                     {
                                         if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode)
                                             && row.Cells["매매진행_매도량"].Value != null
-                                            && row.Cells["매매진행_매도량"].Value.ToString() == bss.sellQnt.ToString())
+                                            && row.Cells["매매진행_매도량"].Value.ToString() == bss.sellQnt.ToString()
+                                        )
                                         {
                                             row.Cells["매매진행_주문번호"].Value = ordernum;
                                             break;
@@ -911,7 +939,7 @@ namespace Singijeon
                             {
                                 foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
                                 {
-                                    if (row.Cells["계좌잔고_종목코드"].Value != null && row.Cells["계좌잔고_종목코드"].Value.ToString().Contains(bss.itemCode))
+                                    if (row.Cells["계좌잔고_종목코드"].Value != null && row.Cells["계좌잔고_종목코드"].Value.ToString().Replace("A","").Contains(bss.itemCode))
                                     {
                                         string qnt = row.Cells["계좌잔고_보유수량"].Value.ToString();
                                         int iQnt = int.Parse(qnt);
@@ -1237,6 +1265,8 @@ namespace Singijeon
                             if (item != null)
                             {
                                 trailingList.Remove(item);
+                              
+                                axKHOpenAPI1.SetRealRemove("9001", item.itemCode); //실시간 정보받기 해제     
                                 autoTradingDataGrid["매매진행_취소", e.RowIndex].Value = "취소접수시도";
                                 return;
                             }
@@ -1395,7 +1425,7 @@ namespace Singijeon
             }
         }
 
-        private void BalanceSell(string accountNum, string itemCode, int buyingPrice, int sellQnt, string takeProfitOrderType, string stopLossOrderType,  double takeProfitRate, double stopLossRate)
+        private void BalanceSell(string accountNum, string itemCode, int buyingPrice, int curQnt, int sellQnt, string takeProfitOrderType, string stopLossOrderType,  double takeProfitRate, double stopLossRate)
         {
             if (accountNum.Length > 0)
             {
@@ -1419,6 +1449,7 @@ namespace Singijeon
                             accountNum,
                             itemCode,
                             buyingPrice,
+                            curQnt,
                             sellQnt,
                             takeProfitOrderType,
                             stopLossOrderType,
@@ -1435,7 +1466,7 @@ namespace Singijeon
                         autoTradingDataGrid["매매진행_진행상황", rowIndex].Value = ConstName.AUTO_TRADING_STATE_SELL_MONITORING;
                         autoTradingDataGrid["매매진행_종목코드", rowIndex].Value = itemCode;
                         autoTradingDataGrid["매매진행_종목명", rowIndex].Value = axKHOpenAPI1.GetMasterCodeName(itemCode);
-                        
+                     
                         autoTradingDataGrid["매매진행_매수조건식", rowIndex].Value = "잔고자동매도"; //매수조건식이 없으므로 해당명으로 지정
 
                         coreEngine.SendLogMessage("전략이 입력됬습니다");
@@ -1459,6 +1490,7 @@ namespace Singijeon
         {
             string itemCode = balanceItemCodeTxt.Text;
             string itemName = balanceNameTextBox.Text;
+            long curQnt = long.Parse(bss_curQnt.Text);
             long sellQnt = (long)balanceQntUpdown.Value;
 
             string accountNum = accountComboBox.Text;
@@ -1482,7 +1514,7 @@ namespace Singijeon
                 stopLossRate = (double)b_stopLossUpdown.Value;
             }
 
-            BalanceSell(accountNum, itemCode, buyingPrice, (int)sellQnt, orderType, orderType, takeProfitRate, stopLossRate);
+            BalanceSell(accountNum, itemCode, buyingPrice, (int)curQnt, (int)sellQnt, orderType, orderType, takeProfitRate, stopLossRate);
         }
         private void AddStratgyBtn_Click(object sender, EventArgs e)
         {
@@ -1733,6 +1765,7 @@ namespace Singijeon
 
                     balanceItemCodeTxt.Text = itemCode.Replace("A", "");
                     balanceNameTextBox.Text = itemName;
+                    bss_curQnt.Text = balanceQnt.ToString();
                     balanceQntUpdown.Maximum = balanceQnt;
                     balanceQntUpdown.Value = balanceQnt;
                     b_averagePriceTxt.Text = buyingPrice.ToString();
@@ -1939,12 +1972,22 @@ namespace Singijeon
                             int rowIndex = autoTradingDataGrid.Rows.Add(); //종목포착정보 ui추가
 
                             TrailingItem trailItem = new TrailingItem(itemcode, buyPrice, ts);
+
+                            if(trailingSaveList.Find(o=>(o.itemCode==itemcode))!=null)
+                            {
+                                coreEngine.SaveLogMessage("이어서 체크 처리");
+                                TrailingPercentageItemForSave findItem = trailingSaveList.Find(o => (o.itemCode == itemcode));
+                                trailItem.percentageCheckPrice = findItem.percentageCheckPrice;
+                                trailingSaveList.Remove(findItem);
+                            }
+
                             trailItem.ui_rowAutoTradingItem = autoTradingDataGrid.Rows[rowIndex];
 
                             UpdateAutoTradingDataGridRowAll(rowIndex, ConstName.AUTO_TRADING_STATE_SEARCH_AND_CATCH, itemcode, ts.buyCondition.Name, i_qnt, buyPrice);
 
                             trailingList.Add(trailItem);
 
+              
                             if (ts.usingPercentageBuy)
                             {
                                 coreEngine.SendLogWarningMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 체크 호가 " + ts.percentageBuyValue + " : " + trailItem.percentageCheckPrice);
@@ -1995,7 +2038,7 @@ namespace Singijeon
 
                                         string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
                                         axKHOpenAPI1.SetRealReg("9001", itemcode, fidList, "1");
-
+                                        coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " realreg");
                                         //매매진행 데이터 그리드뷰 표시
 
                                         int addRow = autoTradingDataGrid.Rows.Add();
@@ -2092,13 +2135,12 @@ namespace Singijeon
 
                                     if (trailingItem.isVwmaCheck)
                                     {
-                                     
 
                                         printForm.RequestItem(itemCode, delegate (string _itemCode) {
 
                                             coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(_itemCode) + printForm.vwma_state);
 
-                                            if (printForm.vwma_state == Form3.VWMA_CHART_STATE.GOLDEN_CROSS)
+                                            if (printForm.vwma_state == Form3.VWMA_CHART_STATE.GOLDEN_CROSS || printForm.vwma_state == Form3.VWMA_CHART_STATE.UP_STAY)
                                             {
                                                 TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
                                                 if (findItem != null)
@@ -2111,7 +2153,6 @@ namespace Singijeon
                                             }
                                         });
                                     }
-                                   
 
                                     //if (trailingItem.ma_data_info == null)
                                     //{
@@ -2161,10 +2202,10 @@ namespace Singijeon
                                 {
                                     price = trailingItem.sumPriceAllTick / trailingItem.curTickCount;
                                 }
-                                else
-                                {
-                                    continue;
-                                }
+                                //else
+                                //{
+                                //    continue;
+                                //}
 
                                 TickBongInfo bong = trailingItem.GetTickBong(1); //1봉전 틱봉
                                 if (bong == null)
@@ -2218,7 +2259,7 @@ namespace Singijeon
 
                                     string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
                                     axKHOpenAPI1.SetRealReg("9001", itemcode, fidList, "1");
-
+                                    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " realreg");
                                     //매매진행 데이터 그리드뷰 표시
 
                                     int addRow = 0;
@@ -2240,6 +2281,7 @@ namespace Singijeon
 
                                     tradingItem.ts.StrategyBuyOrderUpdate(itemcode, price, i_qnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER);
                                     trailingList.Remove(trailingItem);
+                             
                                 }
                                 else
                                 {
@@ -2659,7 +2701,6 @@ namespace Singijeon
                         autoTradingDataGrid["매매진행_진행상황", tradeItem.ui_rowItem.Index].Value = ConstName.AUTO_TRADING_STATE_SELL_CANCEL_ALL;
                     }
                 }
-
             }
         }
         void TrailingToBuy(TrailingItem findItem, string _itemCode, int price, StockWithBiddingEntity stockInfo)
@@ -2695,7 +2736,7 @@ namespace Singijeon
 
                 string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
                 axKHOpenAPI1.SetRealReg("9001", _itemCode, fidList, "1");
-
+                coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(_itemCode) + " realreg");
                 //매매진행 데이터 그리드뷰 표시
 
                 int addRow = 0;
@@ -2717,6 +2758,8 @@ namespace Singijeon
 
                 tradingItem.ts.StrategyBuyOrderUpdate(_itemCode, price, i_qnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER);
                 trailingList.Remove(findItem);
+
+             
             }
             else
             {
@@ -2738,234 +2781,7 @@ namespace Singijeon
         private void Form_FormClosing(object sender, EventArgs e)
         {
             SerializeStrategy();
-        }
-
-        public void SaveSettingByCondition(string conditionName)
-        {
-
-        }
-
-        public void LoadSettingByCondition(string conditionName)
-        {
-
-        }
-
-        public void SaveSetting(string name)
-        {
-            using (StreamWriter streamWriter = new StreamWriter(name + ".txt", false))
-            {
-                streamWriter.WriteLine("allCostUpDown" + ";" + allCostUpDown.Value);
-
-                streamWriter.WriteLine("usingTickBuyCheck" + ";" + usingTickBuyCheck.Checked);
-                streamWriter.WriteLine("buyTickComboBox" + ";" + buyTickComboBox.SelectedIndex);
-
-                streamWriter.WriteLine("usingTrailingBuyCheck" + ";" + usingTrailingBuyCheck.Checked);
-                streamWriter.WriteLine("trailingUpDown" + ";" + (int)trailingUpDown.Value);
-
-                streamWriter.WriteLine("itemCountUpdown" + ";" + (int)itemCountUpdown.Value);
-
-                streamWriter.WriteLine("orderPecentageCheckBox" + ";" + orderPecentageCheckBox.Checked);
-                streamWriter.WriteLine("orderPercentageUpdown" + ";" + (double)orderPercentageUpdown.Value);
-
-                streamWriter.WriteLine("profitSellCheckBox" + ";" + profitSellCheckBox.Checked);
-                streamWriter.WriteLine("profitSellUpdown" + ";" + (double)profitSellUpdown.Value);
-
-                streamWriter.WriteLine("minusSellCheckBox" + ";" + minusSellCheckBox.Checked);
-                streamWriter.WriteLine("minusSellUpdown" + ";" + (double)minusSellUpdown.Value);
-
-                streamWriter.WriteLine("useGapTrailBuyCheck" + ";" + useGapTrailBuyCheck.Checked);
-                streamWriter.WriteLine("gapTrailTimeUpdown" + ";" + (int)gapTrailTimeUpdown.Value);
-                streamWriter.WriteLine("gapTrailCostUpdown" + ";" + (double)gapTrailCostUpdown.Value);
-
-                streamWriter.WriteLine("TimeUseCheck" + ";" + TimeUseCheck.Checked);
-                streamWriter.WriteLine("startTimePicker" + ";" + startTimePicker.Value);
-                streamWriter.WriteLine("endTimePicker" + ";" + endTimePicker.Value);
-
-                streamWriter.WriteLine("useVwmaCheckBox" + ";" + useVwmaCheckBox.Checked);
-
-                streamWriter.WriteLine("tickMinusValue" + ";" + (double)tickMinusValue.Value);
-
-                streamWriter.WriteLine("sellProfitSijangRadio" + ";" + sellProfitSijangRadio.Checked);
-                streamWriter.WriteLine("sellProfitJijungRadio" + ";" + sellProfitJijungRadio.Checked);
-
-                streamWriter.WriteLine("stopLossSijangRadio" + ";" + stopLossSijangRadio.Checked);
-                streamWriter.WriteLine("stopLossJijungRadio" + ";" + stopLossJijungRadio.Checked);
-                //false : 덮어쓰기
-                streamWriter.WriteLine("M_allCostUpDown" + ";" + M_allCostUpDown.Value);
-
-                streamWriter.WriteLine("M_usingTickBuyCheck" + ";" + M_usingTickBuyCheck.Checked);
-                streamWriter.WriteLine("M_buyTickComboBox" + ";" + M_buyTickComboBox.SelectedIndex);
-
-                streamWriter.WriteLine("M_usingTrailingBuyCheck" + ";" + M_usingTrailingBuyCheck.Checked);
-                streamWriter.WriteLine("M_trailingUpDown" + ";" + (int)M_trailingUpDown.Value);
-
-                streamWriter.WriteLine("M_timeCancelCheckBox" + ";" + M_timeCancelCheckBox.Checked);
-                streamWriter.WriteLine("M_waitTimeUpdown" + ";" + (int)M_waitTimeUpdown.Value);
-
-                streamWriter.WriteLine("M_SellUpdown" + ";" + (double)M_SellUpdown.Value);
-
-                streamWriter.WriteLine("m_useVwmaCheckBox" + ";" + m_useVwmaCheckBox.Checked);
-
-            }
-        }
-        public void ClearSetting()
-        {
-            allCostUpDown.Value = 0;
-
-            usingTickBuyCheck.Checked = false;
-            buyTickComboBox.SelectedIndex = 0;
-
-            usingTrailingBuyCheck.Checked = false;
-            trailingUpDown.Value = trailingUpDown.Minimum;
-
-            itemCountUpdown.Value = itemCountUpdown.Minimum;
-
-            orderPecentageCheckBox.Checked = false;
-            orderPercentageUpdown.Value = orderPercentageUpdown.Minimum;
-
-            profitSellCheckBox.Checked = false;
-            profitSellUpdown.Value = profitSellUpdown.Minimum;
-
-            minusSellCheckBox.Checked = false;
-            minusSellUpdown.Value = minusSellUpdown.Maximum;
-
-            useGapTrailBuyCheck.Checked = false;
-            gapTrailTimeUpdown.Value = gapTrailTimeUpdown.Minimum;
-            gapTrailCostUpdown.Value = gapTrailCostUpdown.Minimum;
-
-            TimeUseCheck.Checked = false;
-            startTimePicker.Value = DateTime.Now;
-            endTimePicker.Value = DateTime.Now;
-
-            sellProfitJijungRadio.Checked = true;
-            stopLossSijangRadio.Checked = true;
-
-            useVwmaCheckBox.Checked = false;
-            tickMinusValue.Value = tickMinusValue.Minimum;
-        }
-        public void LoadSetting(string settingCondition)
-        {
-            ClearSetting();
-            try
-            {
-                using (StreamReader streamReader = new StreamReader(settingCondition + ".txt"))
-                {
-
-                    while (streamReader.EndOfStream == false)
-                    {
-                        string line = streamReader.ReadLine();
-                        string[] strringArray = line.Split(';');
-
-                        switch (strringArray[0])
-                        {
-                            case "M_allCostUpDown":
-                                M_allCostUpDown.Value = int.Parse(strringArray[1]);
-                                break;
-                            case "M_usingTickBuyCheck":
-                                M_usingTickBuyCheck.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "M_buyTickComboBox":
-                                M_buyTickComboBox.SelectedIndex = int.Parse(strringArray[1]);
-                                break;
-                            case "M_usingTrailingBuyCheck":
-                                M_usingTrailingBuyCheck.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "M_trailingUpDown":
-                                M_trailingUpDown.Value = int.Parse(strringArray[1]);
-                                break;
-                            case "M_timeCancelCheckBox":
-                                M_timeCancelCheckBox.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "M_waitTimeUpdown":
-                                M_waitTimeUpdown.Value = int.Parse(strringArray[1]);
-                                break;
-                            case "M_SellUpdown":
-                                M_SellUpdown.Value = (decimal)(double.Parse(strringArray[1]));
-                                break;
-                             case "m_useVwmaCheckBox":
-                                m_useVwmaCheckBox.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "allCostUpDown":
-                                allCostUpDown.Value = int.Parse(strringArray[1]);
-                                break;
-                            case "usingTickBuyCheck":
-                                usingTickBuyCheck.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "buyTickComboBox":
-                                buyTickComboBox.SelectedIndex = int.Parse(strringArray[1]);
-                                break;
-                            case "usingTrailingBuyCheck":
-                                usingTrailingBuyCheck.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "trailingUpDown":
-                                trailingUpDown.Value = int.Parse(strringArray[1]);
-                                break;
-                            case "orderPecentageCheckBox":
-                                orderPecentageCheckBox.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "orderPercentageUpdown":
-                                orderPercentageUpdown.Value = (decimal)(double.Parse(strringArray[1]));
-                                break;
-                            case "itemCountUpdown":
-                                itemCountUpdown.Value = int.Parse(strringArray[1]);
-                                break;
-                            case "profitSellCheckBox":
-                                profitSellCheckBox.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "profitSellUpdown":
-                                profitSellUpdown.Value = (decimal)(double.Parse(strringArray[1]));
-                                break;
-                            case "minusSellCheckBox":
-                                minusSellCheckBox.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "minusSellUpdown":
-                                minusSellUpdown.Value = (decimal)(double.Parse(strringArray[1]));
-                                break;
-                            case "useGapTrailBuyCheck":
-                                useGapTrailBuyCheck.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "gapTrailTimeUpdown":
-                                gapTrailTimeUpdown.Value = int.Parse(strringArray[1]);
-                                break;
-                            case "gapTrailCostUpdown":
-                                gapTrailCostUpdown.Value = (decimal)(double.Parse(strringArray[1]));
-                                break;
-                            case "TimeUseCheck":
-                                TimeUseCheck.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "startTimePicker":
-                                startTimePicker.Value = DateTime.Parse(strringArray[1]);
-                                break;
-                            case "endTimePicker":
-                                endTimePicker.Value = DateTime.Parse(strringArray[1]);
-                                break;
-                            case "tickMinusValue":
-                                tickMinusValue.Value = (decimal)(double.Parse(strringArray[1]));
-                                break;
-                            case "sellProfitSijangRadio":
-                                sellProfitSijangRadio.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "sellProfitJijungRadio":
-                                sellProfitJijungRadio.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "stopLossSijangRadio":
-                                stopLossSijangRadio.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "stopLossJijungRadio":
-                                stopLossJijungRadio.Checked = bool.Parse(strringArray[1]);
-                                break;
-                            case "useVwmaCheckBox":
-                                useVwmaCheckBox.Checked = bool.Parse(strringArray[1]);
-                                break;
-
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            SerializeTrailing();
         }
 
         public void SerializeStrategy()
@@ -2976,11 +2792,34 @@ namespace Singijeon
                 TradingStrategyForSave save = new TradingStrategyForSave(item);
                 list.Add(save);
             }
+            foreach (var item in balanceSellStrategyList)
+            {
+                TradingStrategyForSave save = new TradingStrategyForSave(item);
+                list.Add(save);
+            }
+
             BinaryFormatter binFmt = new BinaryFormatter();
 
-            using (FileStream fs = new FileStream(DATA_FILE_NAME, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(DATA_FILE_NAME, FileMode.Create))
             {
                 binFmt.Serialize(fs, list);
+            }
+        }
+        public void SerializeTrailing()
+        {
+            trailingSaveList.Clear();
+
+            foreach (var item in trailingList)
+            {
+                TrailingPercentageItemForSave saveItem = new TrailingPercentageItemForSave(item.itemCode, item.strategy.buyCondition.Name, item.percentageCheckPrice, item.percentageCheckPrice);
+                trailingSaveList.Add(saveItem);
+            }
+          
+            BinaryFormatter binFmt = new BinaryFormatter();
+
+            using (FileStream fs = new FileStream(DATA_TRAIL_FILE_NAME, FileMode.Create))
+            {
+                binFmt.Serialize(fs, trailingSaveList);
             }
         }
         public List<TradingStrategyForSave> DeserializeStrategy()
@@ -2996,11 +2835,11 @@ namespace Singijeon
                     {
                         if(ts.stoplossRate < 0 || ts.takeProfitRate > 0)
                         {
-                            foreach (var tradingItem in ts.tradingItemList)
+                            foreach (var tradingItem in ts.tradingSaveItemList)
                             {
                                 if(tradingItem.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                                 {
-                                    BalanceSell(ts.account, tradingItem.itemCode, (int)tradingItem.buyingPrice, tradingItem.curQnt, ts.sellProfitOrderOption, ts.sellStopLossOrderOption, ts.takeProfitRate, ts.stoplossRate);
+                                    BalanceSell(ts.account, tradingItem.itemCode, (int)tradingItem.buyingPrice, tradingItem.curQnt, tradingItem.curQnt, ts.sellProfitOrderOption, ts.sellStopLossOrderOption, ts.takeProfitRate, ts.stoplossRate);
                                 }
                             }
                         }
@@ -3015,7 +2854,26 @@ namespace Singijeon
           
             return list;
         }
-
+        public void DeserializeTrailing()
+        {
+            BinaryFormatter binFmt = new BinaryFormatter();
+            try
+            {
+                using (FileStream rdr = new FileStream(DATA_TRAIL_FILE_NAME, FileMode.Open))
+                {
+                    trailingSaveList = (List<TrailingPercentageItemForSave>)binFmt.Deserialize(rdr);
+                    foreach(var item in trailingSaveList)
+                    {
+                        string itemAdd = item.showingTime.ToString("HH-mm") + ":" + item.ConditionName + ":" + item.itemCode + ":" + axKHOpenAPI1.GetMasterCodeName(item.itemCode);
+                        trailingSaveListBox.Items.Add(itemAdd);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         private void BuyConditionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (BuyConditionComboBox.SelectedItem != null)
@@ -3026,7 +2884,6 @@ namespace Singijeon
                 {
                     LoadSetting(conditionName);
                 }
-
             }
         }
 
@@ -3064,6 +2921,33 @@ namespace Singijeon
                     LoadSetting(conditionName);
                 }
 
+            }
+        }
+
+        private void interestListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddForceBtn_Click(object sender, EventArgs e)
+        {
+            if (trailingSaveListBox.SelectedItem != null && TsListBox.SelectedItem != null)
+            {
+                string selectItem = trailingSaveListBox.SelectedItem.ToString();
+                string selectTsItem = TsListBox.SelectedItem.ToString();
+                string[] rqNameArray = selectItem.Split(':');
+                string condition = rqNameArray[1];
+                string itemCode = rqNameArray[2];
+
+                TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition.Name.Equals(condition));
+
+                if(ts!=null && ts.remainItemCount > 0)
+                {
+                    ts.remainItemCount--;
+
+                    ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+                    TryBuyItem(ts, itemCode);
+                }
             }
         }
     }
