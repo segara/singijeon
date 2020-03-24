@@ -795,14 +795,16 @@ namespace Singijeon
                         {
                             coreEngine.SendLogWarningMessage("orderlist : " + item.itemName);
                         }
-                        //외부프로그램에서 매도했을시 처리
-                        if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL))
+                        //외부프로그램에서  매도했을시 처리
+                       if(orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL))
                         {
                             List<TradingItem> itemArray = this.tryingOrderList.FindAll(o => (itemCode.Contains(o.itemCode)));
 
                             foreach(var item in itemArray)
                             {
-                                if(item.curQnt == int.Parse(orderQuantity)) //일부 매도는 고려하지않는다
+                                if(!string.IsNullOrEmpty(orderQuantity)
+                                    && int.Parse(orderQuantity) > 0 
+                                    && item.curQnt == int.Parse(orderQuantity)) //일부 매도는 고려하지않는다
                                 {
                                     item.sellPrice = long.Parse(orderPrice);
                                     item.sellOrderNum = ordernum;
