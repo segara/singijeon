@@ -223,7 +223,7 @@ namespace Singijeon
 
                 if (ts != null)
                 {
-                    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " 남은 가능 매수 종목수 : " + ts.remainItemCount);
+                    coreEngine.SendLogMessage(conditionName + " 남은 가능 매수 종목수 : " + ts.remainItemCount);
                     if (ts.remainItemCount > 0)
                     {
                         StockItem stockItem = stockItemList.Find(o => o.Code.Equals(itemCode));
@@ -794,6 +794,25 @@ namespace Singijeon
                         foreach (var item in tryingOrderList)
                         {
                             coreEngine.SendLogWarningMessage("orderlist : " + item.itemName);
+                        }
+                        //외부프로그램에서 매도했을시 처리
+                        if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL))
+                        {
+                            List<TradingItem> itemArray = this.tryingOrderList.FindAll(o => (itemCode.Contains(o.itemCode)));
+
+                            foreach(var item in itemArray)
+                            {
+                                if(item.curQnt == int.Parse(orderQuantity)) //일부 매도는 고려하지않는다
+                                {
+                                    item.sellPrice = long.Parse(orderPrice);
+                                    item.sellOrderNum = ordernum;
+                                    item.sellQnt = int.Parse(orderQuantity);
+                                    item.SetState(TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
+                                    UpdateSellAutoTradingDataGridStateOnly(ordernum, ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
+                                    item.ts.StrategyOnReceiveSellOrderUpdate(item.itemCode, (int)item.buyingPrice, item.buyingQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
+                                    coreEngine.SendLogMessage("자동 매도 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
+                                }
+                            }
                         }
                     }
                     //주문번호 따오기 위한 부분 
@@ -2639,7 +2658,6 @@ namespace Singijeon
                     }
                     else
                         tradeItem.ts.StrategyOnReceiveSellChejanUpdate(tradeItem.itemCode, (int)tradeItem.sellPrice, tradeItem.sellQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT);
-
                 }
             }
         }
