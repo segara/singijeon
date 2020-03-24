@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace Singijeon
     [Serializable]
     public class TradingItemForSave
     {
-        public TradingStrategyForSave ts = null;
+        public TradingStrategyForSave tsSave = null;
 
         public TRADING_ITEM_STATE state { get { return curState; } }
         private TRADING_ITEM_STATE curState = TRADING_ITEM_STATE.NONE;
@@ -43,15 +44,54 @@ namespace Singijeon
         protected bool isCompleteSold; //매수완료 여부
         public string conditionUid = string.Empty;
 
-        public TradingItemForSave(TradingItem item)
+        public TradingItemForSave()
         {
-            itemCode = item.itemCode;
-            itemName = item.itemName;
-            buyingPrice = item.buyingPrice;
-            curQnt = item.curQnt;
-            buyingQnt = item.buyingQnt;
-            sellQnt = item.sellQnt;
-            curState = item.state;
+
+        }
+        public  TradingItemForSave(TradingItem item, TradingStrategyForSave ts)
+        {
+            this.tsSave = (ts);
+            BindingFlags flags = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
+            FieldInfo[] fieldArray = item.GetType().GetFields(flags);
+
+            BindingFlags flagsStrategySave = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
+            FieldInfo[] ItemSaveFieldArray = this.GetType().GetFields(flagsStrategySave);
+
+
+            foreach (FieldInfo field in fieldArray)
+            {
+                foreach (FieldInfo SaveField in ItemSaveFieldArray)
+                {
+                    if (field.Name == SaveField.Name)
+                    {
+                        SaveField.SetValue(this, field.GetValue(item));
+                    }
+                }
+            }
+            
+        }
+        public TradingItem ReloadTradingItem()
+        {
+            TradingItem returnVal = new TradingItem();
+            BindingFlags flags = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
+            FieldInfo[] fieldArray = returnVal.GetType().GetFields(flags);
+
+            BindingFlags flagsStrategySave = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
+            FieldInfo[] ItemSaveFieldArray = this.GetType().GetFields(flagsStrategySave);
+
+
+            foreach (FieldInfo field in fieldArray)
+            {
+                foreach (FieldInfo SaveField in ItemSaveFieldArray)
+                {
+                    if (field.Name == SaveField.Name)
+                    {
+                        SaveField.SetValue(returnVal, field.GetValue(this));
+                    }
+                }
+            }
+
+            return returnVal;
         }
 
         public TradingItemForSave(BalanceSellStrategy item)

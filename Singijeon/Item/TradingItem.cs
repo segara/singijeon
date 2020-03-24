@@ -65,7 +65,11 @@ namespace Singijeon
         public string Uid { get; set; }
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
-      
+        public TradingItem()
+        {
+
+        }
+
         public TradingItem(TradingStrategy tsItem, string itemCode, string itemName, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string buyOrderType = "", string sellOrderType = "")
         {
             this.ts = tsItem;

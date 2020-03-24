@@ -10,14 +10,14 @@ namespace Singijeon
     [Serializable]
     public class TrailingItem
     {
-        public Stack<TickBongInfo> tickBongInfo = new Stack<TickBongInfo>();
+        public List<TickBongInfo> tickBongInfo = new List<TickBongInfo>();
         public TickBongInfo curTickBong = null;
         public string itemCode;
         public TradingStrategy strategy;
         public int settingTickCount = 0;
         public int curTickCount = 0;
         public bool isTrailing = true;
-        public int lowestPrice = 0;
+        public int firstPrice = 0;
         public int averagePrice = 0;
         public int sumPriceAllTick = 0; //평균가 계산을 위한 변수
         public int percentageCheckPrice = 0;
@@ -33,13 +33,16 @@ namespace Singijeon
         //public CheckMaUp ma_data_info = null;
         [NonSerialized]
         public DataGridViewRow ui_rowAutoTradingItem;
-       
 
-        public TrailingItem(string itemcode, int firstPrice, TradingStrategy inputStrategy)
+        public TrailingItem()
+        {
+
+        }
+        public TrailingItem(string itemcode, int _firstPrice, TradingStrategy inputStrategy)
         {
             itemCode = itemcode;
             strategy = inputStrategy;
-            lowestPrice = firstPrice;
+            firstPrice = _firstPrice;
             settingTickCount = strategy.trailTickValue;
             buyOrderOption = inputStrategy.buyOrderOption;
 

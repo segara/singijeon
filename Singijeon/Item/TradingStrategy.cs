@@ -42,8 +42,7 @@ namespace Singijeon
         public bool usingTimeLimit = false;
         public DateTime startDate = DateTime.Now;
         public DateTime endDate = DateTime.Now;
-
-        public bool onlyBuyInterest = false;
+        
 
         //매매 진행 종목 리스트
         public List<TradingItem> tradingItemList = new List<TradingItem>();
@@ -82,7 +81,7 @@ namespace Singijeon
             //this.sellOrderOption = _sellOrderOption;
             //this.usingStoploss = _usingStoploss;
             //this.stoplossRate = _stoplossRate;
-            this.onlyBuyInterest = _buyOnlyInterest;
+            //this.onlyBuyInterest = _buyOnlyInterest;
 
             //this.usingTickBuy = _usingTickBuy;
             this.usingRestart = _buyRestart;
@@ -235,8 +234,6 @@ namespace Singijeon
 
         public bool usingStrategy = false;
         public string strategyItemName = string.Empty;
-
-        
 
         public void SetActive(bool isActive)
         {

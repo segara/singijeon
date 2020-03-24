@@ -118,7 +118,7 @@ namespace Singijeon
                 balanceDataGrid["잔고_현재가", rowIndex].Value = table["잔고_현재가"];
         }
 
-        private void AddStrategyToDataGridView(TradingStrategy tradingStrategy)
+        public void AddStrategyToDataGridView(TradingStrategy tradingStrategy)
         {
             if (tradingStrategy != null)
             {
