@@ -39,6 +39,7 @@ namespace Singijeon
         public const string RECEIVE_CHEJAN_CANCEL_BUY_ORDER = "매수취소";
         public const string RECEIVE_CHEJAN_CANCEL_SELL_ORDER = "매도취소";
 
+        public const string AUTO_TRADING_STATE_NONE = "";
         public const string AUTO_TRADING_STATE_SEARCH_AND_CATCH = "종목포착";
 
         public const string AUTO_TRADING_STATE_BUY_BEFORE_ORDER = "매수주문접수시도";
@@ -56,9 +57,11 @@ namespace Singijeon
         public const string AUTO_TRADING_STATE_SELL_COMPLETE = "매도완료";
 
         public const string AUTO_TRADING_STATE_SELL_CANCEL_ALL = "매도취소완료";
+        public const string AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE = "매도취소시도";
+        public const string AUTO_TRADING_STATE_BUY_CANCEL_NOT_COMPLETE = "매수취소시도";
 
         public const string AUTO_TRADING_STATE_CANCEL_ORDER = "주문취소시도";
-
+        public const string AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE = "매수취소완료";
         public const string AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL = "익절취소";
         public const string AUTO_TRADING_STATE_STOPLOSS_CANCEL = "손절취소";
 

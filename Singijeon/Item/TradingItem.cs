@@ -30,6 +30,7 @@ namespace Singijeon
         AUTO_TRADING_STATE_SELL_COMPLETE, //매도완료
 
     }
+
     [Serializable]
     public class TradingItem
     {
@@ -180,6 +181,41 @@ namespace Singijeon
             if (buying)
                 curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }
+        public static string StateToString(TRADING_ITEM_STATE state)
+        {
+            switch (state)
+            {
+                case TRADING_ITEM_STATE.NONE:
+                    return ConstName.AUTO_TRADING_STATE_NONE;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT:
+                    return ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE:
+                    return ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE:
+                    return ConstName.AUTO_TRADING_STATE_SELL_COMPLETE;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE:
+                    return ConstName.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER:
+                    return ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH:
+                    return ConstName.AUTO_TRADING_STATE_SEARCH_AND_CATCH;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT:
+                    return ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE:
+                    return ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE:
+                    return ConstName.AUTO_TRADING_STATE_BUY_COMPLETE;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_NOT_COMPLETE:
+                    return ConstName.AUTO_TRADING_STATE_BUY_CANCEL_NOT_COMPLETE;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE:
+                    return ConstName.AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE;
+                case TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER:
+                    return ConstName.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
+                default:
+                    return "ERROR";
+            }
+        }
+
         
     }
 }
