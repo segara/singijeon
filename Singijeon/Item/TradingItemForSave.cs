@@ -73,20 +73,21 @@ namespace Singijeon
         public TradingItem ReloadTradingItem()
         {
             TradingItem returnVal = new TradingItem();
+
             BindingFlags flags = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
-            FieldInfo[] fieldArray = returnVal.GetType().GetFields(flags);
+            FieldInfo[] returnFieldArray = returnVal.GetType().GetFields(flags);
 
             BindingFlags flagsStrategySave = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
             FieldInfo[] ItemSaveFieldArray = this.GetType().GetFields(flagsStrategySave);
 
 
-            foreach (FieldInfo field in fieldArray)
+            foreach (FieldInfo field in returnFieldArray)
             {
                 foreach (FieldInfo SaveField in ItemSaveFieldArray)
                 {
                     if (field.Name == SaveField.Name)
                     {
-                        SaveField.SetValue(returnVal, field.GetValue(this));
+                        field.SetValue(returnVal, SaveField.GetValue(this));
                     }
                 }
             }
