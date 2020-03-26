@@ -42,10 +42,14 @@ namespace Singijeon
         public bool usingTimeLimit = false;
         public DateTime startDate = DateTime.Now;
         public DateTime endDate = DateTime.Now;
-        
+
+        public bool usingDoubleCheck = false;
+        public Condition doubleCheckCondition = null;
 
         //매매 진행 종목 리스트
         public List<TradingItem> tradingItemList = new List<TradingItem>();
+        public List<string> doubleCheckItemCode = new List<string>();
+
         public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
         
         public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveCondition; //종목 검색시

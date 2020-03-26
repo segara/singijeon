@@ -311,6 +311,8 @@ namespace Singijeon
                 streamWriter.WriteLine("marketPriceRadioBtn" + ";" + marketPriceRadioBtn.Checked);
                 streamWriter.WriteLine("curPriceRadio" + ";" + curPriceRadio.Checked);
 
+                streamWriter.WriteLine("usingDoubleConditionCheck" + ";" + usingDoubleConditionCheck.Checked);
+                streamWriter.WriteLine("BuyConditionDoubleComboBox" + ";" + BuyConditionDoubleComboBox.SelectedItem);
             }
         }
         public void ClearSetting()
@@ -350,6 +352,10 @@ namespace Singijeon
 
             useVwmaCheckBox.Checked = false;
             tickMinusValue.Value = tickMinusValue.Minimum;
+
+            usingDoubleConditionCheck.Checked = false;
+            BuyConditionDoubleComboBox.SelectedText = string.Empty;
+            BuyConditionDoubleComboBox.SelectedItem = string.Empty;
         }
         public void LoadSetting(string settingCondition)
         {
@@ -471,6 +477,13 @@ namespace Singijeon
                             case "curPriceRadio":
                                 curPriceRadio.Checked = bool.Parse(strringArray[1]);
                                 break;
+                            case "usingDoubleConditionCheck":
+                                usingDoubleConditionCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "BuyConditionDoubleComboBox":
+                                BuyConditionDoubleComboBox.SelectedItem = (strringArray[1]);
+                                break;
+                             
 
                         }
                     }

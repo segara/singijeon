@@ -25,12 +25,12 @@ namespace Singijeon
         private string server = "0";
         public static double FEE_RATE = 1;
 
-        
-        
         List<Condition> listCondition = new List<Condition>();
-
-       
+        
         public List<TradingStrategy> tradingStrategyList = new List<TradingStrategy>();
+
+        Hashtable doubleCheckHashTable = new Hashtable();
+
         List<BalanceSellStrategy> balanceSellStrategyList = new List<BalanceSellStrategy>();
         List<TrailingItem> trailingList = new List<TrailingItem>();
   
@@ -185,6 +185,7 @@ namespace Singijeon
             {
                 BuyConditionComboBox.Items.Add(condition.Name);
                 M_BuyConditionComboBox.Items.Add(condition.Name);
+                BuyConditionDoubleComboBox.Items.Add(condition.Name);
 
                 interestConditionListBox.Items.Add(condition.Name);
             }
@@ -219,7 +220,18 @@ namespace Singijeon
                 //coreEngine.SendLogMessage("_________________________________");
 
                 //종목 편입(어떤 전략(검색식)이었는지)
+
                 TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition.Name.Equals(conditionName));
+
+                if (doubleCheckHashTable.ContainsKey(conditionName))
+                {
+                    TradingStrategy ts_doubleCheck = (TradingStrategy)doubleCheckHashTable[conditionName];
+                    if(ts_doubleCheck.doubleCheckItemCode.Contains(conditionName) == false)
+                    {
+                        coreEngine.SendLogWarningMessage(ts_doubleCheck.buyCondition.Name + " 이중체크 리스트에 추가 : " + axKHOpenAPI1.GetMasterCodeName(itemCode));
+                        ts_doubleCheck.doubleCheckItemCode.Add(itemCode);
+                    }
+                }
 
                 if (ts != null)
                 {
@@ -229,10 +241,20 @@ namespace Singijeon
                         StockItem stockItem = stockItemList.Find(o => o.Code.Equals(itemCode));
                         if (stockItem != null) //시장 종목 리스트 있는것
                         {
-
                             if (ts.CheckBuyPossibleStrategyAddedItem()) //모든 구매조건을 체크
                             {
                                 //TradingItem tradeItem = ts.tradingItemList.Find(o => o.itemCode.Contains(itemCode)); //한 전략에서 구매하려했던 종목은 재편입하지 않음
+                                if(ts.usingDoubleCheck)
+                                {
+                                    if (ts.doubleCheckItemCode.Contains(itemCode) == false)
+                                    {
+                                        Console.WriteLine(conditionName + " 이중체크 실패 : " + axKHOpenAPI1.GetMasterCodeName(itemCode));
+                                        return;
+                                    }
+                                      
+                                    coreEngine.SendLogWarningMessage(conditionName + " 이중체크 통과 : " + axKHOpenAPI1.GetMasterCodeName(itemCode));
+                                }
+
                                 if (ts.usingVwma)
                                 {
                                     printForm.RequestItem(itemCode, delegate (string _itemCode) {
@@ -1183,7 +1205,6 @@ namespace Singijeon
 
         #region UI_EVENT_FUNCTION
 
-
         private void DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             coreEngine.SendLogMessage("e.ColumnIndex : " + e.ColumnIndex + " e.RowIndex : " + e.RowIndex);
@@ -1389,9 +1410,28 @@ namespace Singijeon
                         if (MartinGailManager.GetInstance().IsMartinStrategy(ts))
                             MartinGailManager.GetInstance().Stop();
 
+                        foreach (var trailingItem in trailingList.Reverse<TrailingItem>())
+                        {
+                            if (trailingItem.strategy != null && trailingItem.strategy == ts)
+                            {
+                                axKHOpenAPI1.SetRealRemove("9001", trailingItem.itemCode); //실시간 정보받기 해제    
+                                autoTradingDataGrid["매매진행_취소", trailingItem.ui_rowAutoTradingItem.Index].Value = "취소접수시도";
+                                trailingList.Remove(trailingItem);
+                            }
+                        }
+
                         tradingStrategyList.Remove(ts);
                         tsDataGridView.Rows.RemoveAt(e.RowIndex);
-
+                        string removeKey = string.Empty;
+                        foreach(var item in doubleCheckHashTable.Values)
+                        {
+                            if(((TradingStrategy)item) == ts)
+                            {
+                                removeKey = ts.doubleCheckCondition.Name;
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(removeKey))
+                            doubleCheckHashTable.Remove(removeKey);
                     }
                 }
             }
@@ -1561,6 +1601,11 @@ namespace Singijeon
                     MessageBox.Show("현재 등록되있는 전략 검색식입니다");
                     return;
                 }
+                if (doubleCheckHashTable.ContainsKey(conditionName))
+                {
+                    MessageBox.Show("현재 이중체크에 등록되있는 전략 검색식입니다 연관전략 : " + ((TradingStrategy)doubleCheckHashTable[conditionName]).buyCondition.Name);
+                    return;
+                }
             }
             else
             {
@@ -1683,11 +1728,25 @@ namespace Singijeon
                 ts.trailMinusValue = (float)tickMinusValue.Value * 0.01f;
             }
 
+            bool usingDoubleCheck = usingDoubleConditionCheck.Checked; //트레일링 매수 적용
+
+            if (usingDoubleCheck)
+            {
+                string selectTsItem = BuyConditionDoubleComboBox.SelectedItem.ToString();
+                if (string.IsNullOrEmpty(selectTsItem))
+                {
+                    MessageBox.Show("동시 사용할 전략을 선택해주세요");
+                    return;
+                }
+                ts.usingDoubleCheck = true;
+                Condition condition = listCondition.Find(o => o.Name.Equals(selectTsItem));
+                ts.doubleCheckCondition = condition;
+            }
+
             bool usingAutoPercentage = orderPecentageCheckBox.Checked; //틱 가격 적용
 
             if (usingAutoPercentage)
             {
-
                 float tickValue = (float)orderPercentageUpdown.Value;
 
                 ts.usingPercentageBuy = true;
@@ -1768,6 +1827,12 @@ namespace Singijeon
             AddStrategyToDataGridView(ts);
 
             StartMonitoring(ts.buyCondition);
+
+            if(usingDoubleCheck)
+            {
+                StartMonitoring(ts.doubleCheckCondition);
+                doubleCheckHashTable.Add(ts.doubleCheckCondition.Name ,ts);
+            }
 
             SaveSetting(conditionName);
             coreEngine.SendLogMessage("전략이 입력됬습니다 \n 매수조건식 : " + ts.buyCondition.Name + "\n" + " 총투자금 : " + ts.totalInvestment + "\n" + " 종목수 : " + ts.buyItemCount);
@@ -1996,14 +2061,7 @@ namespace Singijeon
 
                             TrailingItem trailItem = new TrailingItem(itemcode, buyPrice, ts);
 
-                            //if(trailingSaveList.Find(o=>(o.itemCode==itemcode))!=null)
-                            //{
-                            //    coreEngine.SaveLogMessage("이어서 체크 처리");
-                            //    TrailingPercentageItemForSave findItem = trailingSaveList.Find(o => (o.itemCode == itemcode));
-                            //    trailItem.percentageCheckPrice = findItem.percentageCheckPrice;
-                            //    trailingSaveList.Remove(findItem);
-                            //}
-
+                           
                             trailItem.ui_rowAutoTradingItem = autoTradingDataGrid.Rows[rowIndex];
 
                             UpdateAutoTradingDataGridRowAll(rowIndex, ConstName.AUTO_TRADING_STATE_SEARCH_AND_CATCH, itemcode, ts.buyCondition.Name, i_qnt, buyPrice);
