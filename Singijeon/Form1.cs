@@ -1738,6 +1738,12 @@ namespace Singijeon
                     MessageBox.Show("동시 사용할 전략을 선택해주세요");
                     return;
                 }
+                TradingStrategy inStrategyCondition = tradingStrategyList.Find(o => o.buyCondition.Name.Equals(selectTsItem));
+                if (findCondition != null && inStrategyCondition != null)
+                {
+                    MessageBox.Show("현재 등록되있는 전략 검색식입니다");
+                    return;
+                }
                 ts.usingDoubleCheck = true;
                 Condition condition = listCondition.Find(o => o.Name.Equals(selectTsItem));
                 ts.doubleCheckCondition = condition;
