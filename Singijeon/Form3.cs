@@ -196,7 +196,11 @@ namespace Singijeon
                     axKHOpenAPI1.SetInputValue("종목코드", ItemCode);
                     axKHOpenAPI1.SetInputValue("틱범위", "30");
                     axKHOpenAPI1.SetInputValue("수정주가구분", "0");
-                    axKHOpenAPI1.CommRqData("틱차트조회", "opt10079", 0, "1080");
+                    int result = axKHOpenAPI1.CommRqData("틱차트조회", "opt10079", 0, "1080");
+                    if (result != ErrorCode.정상처리)
+                    {
+                        Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " +result.ToString());
+                    }
                 });
                 Core.CoreEngine.GetInstance().requestTrDataManager.RequestTrData(requestItemInfoTask);
             }

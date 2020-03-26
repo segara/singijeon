@@ -41,7 +41,6 @@ namespace Singijeon
         public double profitPercentage = 0;      //손익률
 
     }
-
     public class MartinGailManager
     {
         private static MartinGailManager martinInstance;
@@ -65,9 +64,6 @@ namespace Singijeon
                 }
                 else
                 {
-                   //Console.WriteLine("null error");
-                   // System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
-                   // Console.WriteLine(t.ToString());
                     return null;
                 }
             }
@@ -174,7 +170,7 @@ namespace Singijeon
            
             Item.itemState = e.State;
             Item.itemCode = e.ItemCode;
-
+            startOrderTime = DateTime.Now;
             CoreEngine.GetInstance().SendLogMessage("!!!!! 마틴게일 아이템 :" + e.State.ToString());
         }
         private void OnReceiveBuyOrderTryResult(object sender, OnReceiveStrateyStateResultArgs e)
@@ -185,16 +181,13 @@ namespace Singijeon
 
                 Item.itemState = e.State;
                 Item.buyQnt = e.Qnt;
-                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER)
+                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER 
+                    || Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE)
                 {
                     //주문접수 시도 완료
                     startOrderTime = DateTime.Now;
                 }
-                else if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE )
-                {
-                    //주문접수 완료
-                    startOrderTime = DateTime.Now;
-                }
+                
             }
         }
 
@@ -206,16 +199,13 @@ namespace Singijeon
 
                 Item.itemState = e.State;
                 Item.sellQnt = e.Qnt;
-                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER)
+                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER ||
+                    Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE)
                 {
                     //주문접수 시도 완료
                     startOrderTime = DateTime.Now;
                 }
-                else if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE)
-                {
-                    //주문접수 완료
-                    startOrderTime = DateTime.Now;
-                }
+               
             }
         }
         public void OnReceiveChejanResult(object sender, OnReceiveStrateyStateResultArgs e)
@@ -227,16 +217,13 @@ namespace Singijeon
                 Item.itemState = e.State;
                
 
-                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
+                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT ||
+                    Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 {
-                    //일부 매수일때
+                    //매수완료 ,일부 매수일때
                     startOrderTime = DateTime.Now;
                 }
-                else if(Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
-                {
-                    //매수완료
-                    startOrderTime = DateTime.Now;
-                }
+              
             }
         }
 
@@ -249,16 +236,13 @@ namespace Singijeon
                 Item.itemState = e.State;
 
 
-                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT)
+                if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT
+                    || Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE)
                 {
-                    //일부 매수일때
+                    //일부 매수, 매수완료 일때
                     startOrderTime = DateTime.Now;
                 }
-                else if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE)
-                {
-                    //매수완료
-                    startOrderTime = DateTime.Now;
-                }
+               
             }
         }
         public int CheckMartinValid(TradingStrategy strategy)
@@ -621,16 +605,46 @@ namespace Singijeon
                 }
             }
         }
+        private void CancelTrailing()
+        {
+            if (Item == null)
+                return;
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! CancelBeforeBuyOrder cancel code : " + Item.itemCode);
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! CancelBeforeBuyOrder cancel orderNum : " + Item.buyOrderNum);
+            CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!! CancelBeforeBuyOrder cancel quantity : " + (Item.buyQnt - Item.curQnt).ToString());
+            //form1.CancelBuyOrder(Item.itemCode, Item.buyOrderNum);
+            if (tradingStrategy != null)
+            {
+                List<TradingItem> tradeItemListAll = tradingStrategy.tradingItemList.FindAll(o => (o.itemCode == Item.itemCode));
 
+                foreach (TradingItem tradeItem in tradeItemListAll)
+                {
+                    if (tradeItem.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH)
+                    {
+                        tradeItem.SetBuyCancelComplete();
+                        PopMartinGailItem(0);
+                        return;
+                    }
+                }
+            }
+        }
         void Update()
         {
             if (Item != null)
             {
+                if(Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH)
+                {
+                    if ((DateTime.Now - startOrderTime).TotalSeconds > Wait_And_CancelValue)
+                    {
+                        CoreEngine.GetInstance().SendLogMessage("트레일링 취소");
+                        CancelTrailing();
+                    }
+                }
                 if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE ||
                     Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
                 {
-                    Console.WriteLine((DateTime.Now - startOrderTime).ToString());
-                    Console.WriteLine(tradingStrategyGridView.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice).ToString());
+                    //Console.WriteLine((DateTime.Now - startOrderTime).ToString());
+                    //Console.WriteLine(tradingStrategyGridView.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice).ToString());
 
                     if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
                     {
@@ -638,7 +652,7 @@ namespace Singijeon
                         {
                             CoreEngine.GetInstance().SendLogWarningMessage("!!!!!!!!!!!!using_Outstand_UpAndCancel!!!!!!!!!!!!!!");
                             CancelBuyOrderAll();
-                            SellAllClear();
+                            SellAllClear(); //청산
                         }
                     }
                     else
@@ -659,8 +673,8 @@ namespace Singijeon
 
                 if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER )
                 {
-                    Console.WriteLine("주문접수성공 대기 : " + (DateTime.Now - startOrderTime).ToString());
-                    if ((DateTime.Now - startOrderTime).TotalSeconds > 60)
+                    //Console.WriteLine("주문접수성공 대기 : " + (DateTime.Now - startOrderTime).ToString());
+                    if ((DateTime.Now - startOrderTime).TotalSeconds > Wait_And_CancelValue)
                     {
                         CoreEngine.GetInstance().SendLogMessage("주문접수성공 실패");
                         CancelBeforeBuyOrder();

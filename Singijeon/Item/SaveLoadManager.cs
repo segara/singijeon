@@ -15,8 +15,8 @@ namespace Singijeon
         private const string DATA_FILE_NAME = @"trading_item.dat";
         private const string DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
 
-        private const string LOAD_DATA_FILE_NAME = @"trading_item_bak.dat";
-        private const string LOAD_DATA_TRAIL_FILE_NAME = @"trailing_item_bak.dat";
+        private const string LOAD_DATA_FILE_NAME = @"trading_item.dat";
+        private const string LOAD_DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
 
        
         tradingStrategyGridView form;
@@ -52,7 +52,7 @@ namespace Singijeon
 
             BinaryFormatter binFmt = new BinaryFormatter();
 
-            using (FileStream fs = new FileStream(DATA_TRAIL_FILE_NAME, FileMode.Create))
+            using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_TRAIL_FILE_NAME, FileMode.Create))
             {
                 binFmt.Serialize(fs, trailingSaveList);
             }
@@ -65,7 +65,7 @@ namespace Singijeon
             BinaryFormatter binFmt = new BinaryFormatter();
             try
             {
-                using (FileStream rdr = new FileStream(LOAD_DATA_TRAIL_FILE_NAME, FileMode.Open))
+                using (FileStream rdr = new FileStream(DateTime.Now.ToString("MM_dd") + LOAD_DATA_TRAIL_FILE_NAME, FileMode.Open))
                 {
                     trailingSaveList = (List<TrailingPercentageItemForSave>)binFmt.Deserialize(rdr);
                     foreach (var item in trailingSaveList)
@@ -90,8 +90,8 @@ namespace Singijeon
             }
 
             BinaryFormatter binFmt = new BinaryFormatter();
-
-            using (FileStream fs = new FileStream(DATA_FILE_NAME, FileMode.Create))
+           
+            using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd")+DATA_FILE_NAME, FileMode.Create))
             {
                 binFmt.Serialize(fs, list);
             }
@@ -102,7 +102,7 @@ namespace Singijeon
             BinaryFormatter binFmt = new BinaryFormatter();
             try
             {
-                using (FileStream rdr = new FileStream(LOAD_DATA_FILE_NAME, FileMode.Open))
+                using (FileStream rdr = new FileStream(DateTime.Now.ToString("MM_dd") + LOAD_DATA_FILE_NAME, FileMode.Open))
                 {
                     list = (List<TradingStrategyForSave>)binFmt.Deserialize(rdr);
                     foreach (TradingStrategyForSave ts in list)
