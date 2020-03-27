@@ -1419,7 +1419,7 @@ namespace Singijeon
                                 trailingList.Remove(trailingItem);
                             }
                         }
-
+                        
                         tradingStrategyList.Remove(ts);
                         tsDataGridView.Rows.RemoveAt(e.RowIndex);
                         string removeKey = string.Empty;
@@ -1918,9 +1918,11 @@ namespace Singijeon
         #endregion
         public void StartMonitoring(Condition _condition)
         {
-            int result = axKHOpenAPI1.SendCondition(GetScreenNum().ToString(), _condition.Name, _condition.Index, 1);
+            _condition.ScreenNum = GetScreenNum().ToString();
+            int result = axKHOpenAPI1.SendCondition(_condition.ScreenNum, _condition.Name, _condition.Index, 1);
             if (result == 1)
             {
+                
                 coreEngine.SendLogMessage("감시요청 성공");
             }
             else
@@ -1928,7 +1930,11 @@ namespace Singijeon
                 coreEngine.SendLogMessage("감시요청 실패");
             }
         }
-
+        public void StopMonitoring(Condition _condition)
+        {
+            axKHOpenAPI1.SendConditionStop(_condition.ScreenNum, _condition.Name, _condition.Index);
+           
+        }
         public int GetScreenNum()
         {
             screenNum++;
