@@ -144,7 +144,7 @@ namespace Singijeon
 
                     string conclusionTime = (axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "체결시간")).Trim();
 
-                    string format = "yyyyddHHmmss";
+                    string format = "yyyyMMddHHmmss";
 
                     int index = candleChart.Series["StockCandle"].Points.AddXY(DateTime.ParseExact(conclusionTime,format,CultureInfo.InvariantCulture).ToString("HH-mm-ss"), highPrice);
 
