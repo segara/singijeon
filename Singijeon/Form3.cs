@@ -143,7 +143,7 @@ namespace Singijeon
 
                     string conclusionTime = (axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, i, "체결시간")).Trim();
 
-                    int index = candleChart.Series["StockCandle"].Points.AddXY(conclusionTime, highPrice);
+                    int index = candleChart.Series["StockCandle"].Points.AddXY(DateTime.Parse(conclusionTime).ToString("HH-mm-ss"), highPrice);
 
                     candleChart.Series["StockCandle"].Points[index].YValues[1] = lowPrice;
                     candleChart.Series["StockCandle"].Points[index].YValues[2] = openPrice;
@@ -160,10 +160,10 @@ namespace Singijeon
                         candleChart.Series["StockCandle"].Points[index].BorderColor = Color.Blue;
                     }
 
-                    int volume_index = candleChart.Series["Volume"].Points.AddXY(conclusionTime, curVol);
+                    int volume_index = candleChart.Series["Volume"].Points.AddXY(DateTime.Parse(conclusionTime).ToString("HH-mm-ss"), curVol);
 
-                    candleChart.Series["VWMA"].Points.AddXY(conclusionTime, 0);
-                    candleChart.Series["VPCI"].Points.AddXY(conclusionTime, 0);
+                    candleChart.Series["VWMA"].Points.AddXY(DateTime.Parse(conclusionTime).ToString("HH-mm-ss"), 0);
+                    candleChart.Series["VPCI"].Points.AddXY(DateTime.Parse(conclusionTime).ToString("HH-mm-ss"), 0);
 
                 }
                 MakeMA();
