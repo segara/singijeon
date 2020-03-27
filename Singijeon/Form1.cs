@@ -815,30 +815,32 @@ namespace Singijeon
                     if (CheckItemExist == null)
                     {
                         coreEngine.SendLogWarningMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " 원주문찾기 실패");
-                        foreach (var item in tryingOrderList)
-                        {
-                            coreEngine.SendLogWarningMessage("orderlist : " + item.itemName);
-                        }
+                       
+                      
                         //외부프로그램에서  매도했을시 처리
-                       if(orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL))
+                        if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL))
                         {
-                            List<TradingItem> itemArray = this.tryingOrderList.FindAll(o => (itemCode.Contains(o.itemCode)));
-
-                            foreach(var item in itemArray)
+                            foreach (TradingStrategy ts in tradingStrategyList)
                             {
-                                if(!string.IsNullOrEmpty(orderQuantity)
-                                    && int.Parse(orderQuantity) > 0 
-                                    && item.curQnt == int.Parse(orderQuantity)) //일부 매도는 고려하지않는다
+                                TradingItem item = ts.tradingItemList.Find(o => o.itemCode.Equals(itemCode));
+                                if (item != null)
                                 {
-                                    item.sellPrice = long.Parse(orderPrice);
-                                    item.sellOrderNum = ordernum;
-                                    item.sellQnt = int.Parse(orderQuantity);
-                                    item.SetState(TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
-                                    UpdateSellAutoTradingDataGridStateOnly(ordernum, ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
-                                    item.ts.StrategyOnReceiveSellOrderUpdate(item.itemCode, (int)item.buyingPrice, item.buyingQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
-                                    coreEngine.SendLogMessage("자동 매도 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
+                                    coreEngine.SendLogWarningMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + "  수량 : "+ item.curQnt);
+
+                                    if (!string.IsNullOrEmpty(orderQuantity)
+                                    && int.Parse(orderQuantity) > 0
+                                    && item.curQnt == int.Parse(orderQuantity)) //일부 매도는 고려하지않는다
+                                    {
+                                        item.sellPrice = long.Parse(orderPrice);
+                                        item.sellOrderNum = ordernum;
+                                        item.sellQnt = int.Parse(orderQuantity);
+                                        item.SetState(TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
+                                        UpdateSellAutoTradingDataGridStateOnly(ordernum, ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
+                                        item.ts.StrategyOnReceiveSellOrderUpdate(item.itemCode, (int)item.buyingPrice, item.buyingQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
+                                        coreEngine.SendLogMessage("자동 매도 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
+                                    }
                                 }
-                            }
+                            }  
                         }
                     }
                     //주문번호 따오기 위한 부분 
