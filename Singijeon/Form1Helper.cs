@@ -313,6 +313,7 @@ namespace Singijeon
 
                 streamWriter.WriteLine("usingDoubleConditionCheck" + ";" + usingDoubleConditionCheck.Checked);
                 streamWriter.WriteLine("BuyConditionDoubleComboBox" + ";" + BuyConditionDoubleComboBox.SelectedItem);
+                streamWriter.WriteLine("TrailingSellCheckBox" + ";" + TrailingSellCheckBox.Checked);
             }
         }
         public void ClearSetting()
@@ -356,6 +357,9 @@ namespace Singijeon
             usingDoubleConditionCheck.Checked = false;
             BuyConditionDoubleComboBox.SelectedText = string.Empty;
             BuyConditionDoubleComboBox.SelectedItem = string.Empty;
+
+            TrailingSellCheckBox.Checked = false;
+
         }
         public void LoadSetting(string settingCondition)
         {
@@ -483,7 +487,9 @@ namespace Singijeon
                             case "BuyConditionDoubleComboBox":
                                 BuyConditionDoubleComboBox.SelectedItem = (strringArray[1]);
                                 break;
-                             
+                            case "TrailingSellCheckBox":
+                                TrailingSellCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
 
                         }
                     }
