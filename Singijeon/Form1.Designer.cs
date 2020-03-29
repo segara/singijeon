@@ -79,6 +79,8 @@
             this.usingTickBuyCheck = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.BuyConditionDoubleComboBox = new System.Windows.Forms.ComboBox();
+            this.usingDoubleConditionCheck = new System.Windows.Forms.CheckBox();
             this.panel14 = new System.Windows.Forms.Panel();
             this.marketPriceRadioBtn = new System.Windows.Forms.RadioButton();
             this.curPriceRadio = new System.Windows.Forms.RadioButton();
@@ -280,8 +282,7 @@
             this.매매전략_손절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.usingDoubleConditionCheck = new System.Windows.Forms.CheckBox();
-            this.BuyConditionDoubleComboBox = new System.Windows.Forms.ComboBox();
+            this.TrailingSellCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -432,7 +433,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 323F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 325F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -471,10 +472,10 @@
             this.panel7.Controls.Add(this.label11);
             this.panel7.Controls.Add(this.usingTickBuyCheck);
             this.panel7.Controls.Add(this.label12);
-            this.panel7.Location = new System.Drawing.Point(402, 3);
+            this.panel7.Location = new System.Drawing.Point(401, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(514, 205);
+            this.panel7.Size = new System.Drawing.Size(513, 205);
             this.panel7.TabIndex = 5;
             // 
             // useVwmaCheckBox
@@ -760,8 +761,28 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(391, 205);
+            this.panel1.Size = new System.Drawing.Size(390, 205);
             this.panel1.TabIndex = 0;
+            // 
+            // BuyConditionDoubleComboBox
+            // 
+            this.BuyConditionDoubleComboBox.FormattingEnabled = true;
+            this.BuyConditionDoubleComboBox.Location = new System.Drawing.Point(216, 33);
+            this.BuyConditionDoubleComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BuyConditionDoubleComboBox.Name = "BuyConditionDoubleComboBox";
+            this.BuyConditionDoubleComboBox.Size = new System.Drawing.Size(158, 20);
+            this.BuyConditionDoubleComboBox.TabIndex = 14;
+            // 
+            // usingDoubleConditionCheck
+            // 
+            this.usingDoubleConditionCheck.AutoSize = true;
+            this.usingDoubleConditionCheck.Location = new System.Drawing.Point(216, 8);
+            this.usingDoubleConditionCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.usingDoubleConditionCheck.Name = "usingDoubleConditionCheck";
+            this.usingDoubleConditionCheck.Size = new System.Drawing.Size(88, 16);
+            this.usingDoubleConditionCheck.TabIndex = 13;
+            this.usingDoubleConditionCheck.Text = "조건 겹치기";
+            this.usingDoubleConditionCheck.UseVisualStyleBackColor = true;
             // 
             // panel14
             // 
@@ -923,6 +944,7 @@
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.TrailingSellCheckBox);
             this.panel2.Controls.Add(this.panel12);
             this.panel2.Controls.Add(this.panel11);
             this.panel2.Controls.Add(this.label9);
@@ -933,10 +955,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(923, 3);
+            this.panel2.Location = new System.Drawing.Point(921, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(318, 205);
+            this.panel2.Size = new System.Drawing.Size(320, 205);
             this.panel2.TabIndex = 4;
             // 
             // panel12
@@ -2924,25 +2946,16 @@
             this.매매전략_취소.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.매매전략_취소.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // usingDoubleConditionCheck
+            // TrailingSellCheckBox
             // 
-            this.usingDoubleConditionCheck.AutoSize = true;
-            this.usingDoubleConditionCheck.Location = new System.Drawing.Point(216, 8);
-            this.usingDoubleConditionCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.usingDoubleConditionCheck.Name = "usingDoubleConditionCheck";
-            this.usingDoubleConditionCheck.Size = new System.Drawing.Size(88, 16);
-            this.usingDoubleConditionCheck.TabIndex = 13;
-            this.usingDoubleConditionCheck.Text = "조건 겹치기";
-            this.usingDoubleConditionCheck.UseVisualStyleBackColor = true;
-            // 
-            // BuyConditionDoubleComboBox
-            // 
-            this.BuyConditionDoubleComboBox.FormattingEnabled = true;
-            this.BuyConditionDoubleComboBox.Location = new System.Drawing.Point(216, 33);
-            this.BuyConditionDoubleComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.BuyConditionDoubleComboBox.Name = "BuyConditionDoubleComboBox";
-            this.BuyConditionDoubleComboBox.Size = new System.Drawing.Size(158, 20);
-            this.BuyConditionDoubleComboBox.TabIndex = 14;
+            this.TrailingSellCheckBox.AutoSize = true;
+            this.TrailingSellCheckBox.Location = new System.Drawing.Point(114, 19);
+            this.TrailingSellCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.TrailingSellCheckBox.Name = "TrailingSellCheckBox";
+            this.TrailingSellCheckBox.Size = new System.Drawing.Size(96, 16);
+            this.TrailingSellCheckBox.TabIndex = 14;
+            this.TrailingSellCheckBox.Text = "트레일링스톱";
+            this.TrailingSellCheckBox.UseVisualStyleBackColor = true;
             // 
             // tradingStrategyGridView
             // 
@@ -3275,6 +3288,7 @@
         private System.Windows.Forms.ListBox trailingSaveListBox;
         private System.Windows.Forms.ComboBox BuyConditionDoubleComboBox;
         private System.Windows.Forms.CheckBox usingDoubleConditionCheck;
+        private System.Windows.Forms.CheckBox TrailingSellCheckBox;
     }
 }
 

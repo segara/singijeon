@@ -1793,8 +1793,9 @@ namespace Singijeon
             }
 
             bool usingProfitCheckBox = profitSellCheckBox.Checked; //익절사용
+            bool usingTrailingStopSell = TrailingSellCheckBox.Checked;
 
-            if (usingProfitCheckBox)
+            if (usingProfitCheckBox && !usingTrailingStopSell)
             {
                 double takeProfitRate = 0;
                 TradingStrategyItemWithUpDownValue takeProfitStrategy = null;
@@ -1805,6 +1806,23 @@ namespace Singijeon
                              CHECK_TIMING.SELL_TIME,
                              "buyingPrice",
                              TradingStrategyItemWithUpDownValue.IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
+                             takeProfitRate);
+                takeProfitStrategy.OnReceivedTrData += this.OnReceiveTrDataCheckProfitSell;
+                ts.AddTradingStrategyItemList(takeProfitStrategy);
+                ts.takeProfitRate = takeProfitRate;
+            }
+
+            if (usingTrailingStopSell && usingProfitCheckBox)
+            {
+                double takeProfitRate = 0;
+                TradingStrategyItemWithTrailingStopValue takeProfitStrategy = null;
+                takeProfitRate = (double)profitSellUpdown.Value;
+                takeProfitStrategy =
+                     new TradingStrategyItemWithTrailingStopValue(
+                             StrategyItemName.TAKE_PROFIT_TRAILING_SELL,
+                             CHECK_TIMING.SELL_TIME,
+                             "buyingPrice",
+                             TradingStrategyItemWithTrailingStopValue.IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
                              takeProfitRate);
                 takeProfitStrategy.OnReceivedTrData += this.OnReceiveTrDataCheckProfitSell;
                 ts.AddTradingStrategyItemList(takeProfitStrategy);

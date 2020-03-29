@@ -329,7 +329,7 @@ namespace Singijeon
 
             if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
             {
-               d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
+                d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
             }
             if (checkType == IS_TRUE_OR_FALE_TYPE.UPPER || checkType == IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME)
             {
@@ -379,6 +379,76 @@ namespace Singijeon
                             OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
                     }
                     return;
+            }
+        }
+    }
+    [Serializable]
+    public class TradingStrategyItemWithTrailingStopValue : TradingStrategyADDItem
+    {
+        public enum IS_TRUE_OR_FALE_TYPE
+        {
+            UPPER,
+            UPPER_OR_SAME,
+            SAME,
+            DOWN_OR_SAME,
+            DOWN,
+        }
+
+        public IS_TRUE_OR_FALE_TYPE checkType = IS_TRUE_OR_FALE_TYPE.SAME;
+
+        private double d_conditionValue = 0;
+        private double d_updateValue = 0;
+        private bool startTrailing = false;
+        public double checkConditionValue { get { return d_conditionValue; } set { d_conditionValue = value; } }
+
+        public event EventHandler<OnReceivedTrEventArgs> OnReceivedTrData;
+
+        public TradingStrategyItemWithTrailingStopValue(string _strategyItemName, CHECK_TIMING _checkTiming, string _valueName, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue)
+        {
+            usingStrategy = true;
+
+            strategyItemName = _strategyItemName;
+            strategyCheckTime = _checkTiming;
+            checkType = _checkType;
+            d_conditionValue = _conditionValue;
+            d_updateValue = _conditionValue;
+            startTrailing = false;
+
+            if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
+            {
+                d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
+            }
+            if (checkType == IS_TRUE_OR_FALE_TYPE.UPPER || checkType == IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME)
+            {
+                d_conditionValue = _conditionValue + tradingStrategyGridView.FEE_RATE;
+            }
+        }
+
+        public override void CheckUpdate(TradingItem item, double value)
+        {
+            if (!usingStrategy)
+                return;
+      
+            if (startTrailing && value < d_updateValue)
+            {
+                if (OnReceivedTrData != null)
+                {
+                    Core.CoreEngine.GetInstance().SendLogMessage("익절 주문 : " + value);
+
+                    OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
+
+                    startTrailing = false;
+                }
+            }
+        
+            if (value > d_conditionValue)
+            {
+                if(!startTrailing)
+                    Core.CoreEngine.GetInstance().SendLogMessage("익절 트레일링 시작");
+
+                startTrailing = true;
+                d_updateValue = value;
+                Core.CoreEngine.GetInstance().SendLogMessage("익절 트레일링 체크 : " + d_updateValue);
             }
         }
     }
