@@ -494,8 +494,8 @@ namespace Singijeon
 
                 }
                 string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
-                axKHOpenAPI1.SetRealReg("9002", codeList, fidList, "1");
-                coreEngine.SendLogWarningMessage("SetRealReg" + codeList);
+                axKHOpenAPI1.SetRealReg("9001", codeList, fidList, "1");
+                coreEngine.SendLogWarningMessage("SetRealReg  : " + codeList);
 
                 SaveLoadManager.GetInstance().SetForm(this, axKHOpenAPI1);
                 SaveLoadManager.GetInstance().DeserializeStrategy();
@@ -1938,17 +1938,23 @@ namespace Singijeon
         #endregion
         public void StartMonitoring(Condition _condition)
         {
-            _condition.ScreenNum = GetScreenNum().ToString();
-            int result = axKHOpenAPI1.SendCondition(_condition.ScreenNum, _condition.Name, _condition.Index, 1);
-            if (result == 1)
+            Task requestItemInfoTask = new Task(() =>
             {
-                
-                coreEngine.SendLogMessage("감시요청 성공");
-            }
-            else
-            {
-                coreEngine.SendLogMessage("감시요청 실패");
-            }
+                _condition.ScreenNum = GetScreenNum().ToString();
+                int result = axKHOpenAPI1.SendCondition(_condition.ScreenNum, _condition.Name, _condition.Index, 1);
+                if (result == 1)
+                {
+
+                    coreEngine.SendLogMessage("감시요청 성공");
+                }
+                else
+                {
+                    coreEngine.SendLogMessage("감시요청 실패");
+                }
+            });
+            Core.CoreEngine.GetInstance().requestTrDataManager.RequestTrData(requestItemInfoTask);
+
+          
         }
         public void StopMonitoring(Condition _condition)
         {
@@ -2784,7 +2790,7 @@ namespace Singijeon
                     tradeItem.SetCompleteSold(sellComplete);
                     if (sellComplete)
                     {
-                        axKHOpenAPI1.SetRealRemove("9002", tradeItem.itemCode); //실시간 정보받기 해제
+                        coreEngine.SendLogWarningMessage("SetRealRemove : " + tradeItem.itemCode);
                         axKHOpenAPI1.SetRealRemove("9001", tradeItem.itemCode); //실시간 정보받기 해제
                         tradeItem.ts.StrategyOnReceiveSellChejanUpdate(tradeItem.itemCode, (int)tradeItem.sellPrice, tradeItem.sellQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE);
                     }
