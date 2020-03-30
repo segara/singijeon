@@ -429,7 +429,7 @@ namespace Singijeon
             if (!usingStrategy)
                 return;
       
-            if (startTrailing && value < d_updateValue)
+            if (startTrailing && value < d_updateValue && value > d_conditionValue)
             {
                 if (OnReceivedTrData != null)
                 {
