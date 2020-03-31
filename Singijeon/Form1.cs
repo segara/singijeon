@@ -2069,7 +2069,7 @@ namespace Singijeon
 
         private void API_OnReceiveTrDataHoga(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
-            coreEngine.SendLogMessage(e.sRQName);
+            //coreEngine.SendLogMessage(e.sRQName);
 
             if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_HOGA))
             {
@@ -2310,28 +2310,18 @@ namespace Singijeon
                                             }
                                         });
                                     }
-
-                                    //if (trailingItem.ma_data_info == null)
-                                    //{
-                                    //    CheckMaUp ma_info = new CheckMaUp(axKHOpenAPI1);
-                                    //    trailingItem.ma_data_info = ma_info;
-                                    //    trailingItem.ma_data_info.ReqChartData(trailingItem.itemCode);
-                                    //}
-                                    //else
-                                    //{
-                                    //    trailingItem.ma_data_info.ReqChartData(trailingItem.itemCode);
-                                    //}
+                                   
                                 }
 
                                 trailingItem.curTickBong.AddPrice(price);
 
-                                trailingItem.sumPriceAllTick += price;
+                                //trailingItem.sumPriceAllTick += price;
                                 trailingItem.curTickCount++;
                      
                             }
                             else
                             {
-                                trailingItem.sumPriceAllTick = 0;
+                                //trailingItem.sumPriceAllTick = 0;
                                 trailingItem.curTickCount = 0;
                             }
 
@@ -2340,7 +2330,17 @@ namespace Singijeon
                                 continue;
                             }
 
-                            if (CostCheck && trailingItem.settingTickCount > 0)
+                            if (CostCheck)
+                            {
+                                float gapRate = ((float)price / (float)trailingItem.firstPrice);
+                                if (gapRate > 1.02f) //등장 가격보다 2퍼센트이상 상승상태로 들어올시 매수하지 않음
+                                    continue;
+                                //2퍼센트 내에서 등장가격보다 현재가 높을시 매수
+                            }
+
+                            if ( CostCheck  && 
+                                trailingItem.settingTickCount > 0 &&
+                                 price <= trailingItem.firstPrice)
                             {
 
                                 //if (trailingItem.ma_data_info.GetLastItem() != null)
@@ -2354,17 +2354,17 @@ namespace Singijeon
                                 //        return;
                                 //    }
                                 //}
-                                
-                                if (trailingItem.curTickCount > 0 && trailingItem.curTickCount == trailingItem.settingTickCount)
-                                {
-                                    price = trailingItem.sumPriceAllTick / trailingItem.curTickCount;
-                                }
+
+                                //if (trailingItem.curTickCount > 0 && trailingItem.curTickCount == trailingItem.settingTickCount)
+                                //{
+                                //    price = trailingItem.sumPriceAllTick / trailingItem.curTickCount;
+                                //}
                                 //else
                                 //{
                                 //    continue;
                                 //}
 
-                                TickBongInfo bong = trailingItem.GetTickBong(1); //1봉전 틱봉
+                                TickBongInfo bong = trailingItem.GetTickBong(1); //1봉전 틱봉 !!0봉전 아님!!
                                 if (bong == null)
                                     continue;
 

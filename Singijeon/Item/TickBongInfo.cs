@@ -53,7 +53,7 @@ namespace Singijeon
                 returnValue = (float)sumPrice / (float)curSaveIndex;
             }
 
-            CoreEngine.GetInstance().SendLogWarningMessage(sumPrice + "/" + curSaveIndex);
+            //CoreEngine.GetInstance().SendLogWarningMessage(sumPrice + "/" + curSaveIndex);
 
             if (returnValue == 0)
                 CoreEngine.GetInstance().SendLogErrorMessage("평균값 0");
