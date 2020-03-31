@@ -2330,13 +2330,13 @@ namespace Singijeon
                                 continue;
                             }
 
-                            if (CostCheck)
-                            {
-                                float gapRate = ((float)price / (float)trailingItem.firstPrice);
-                                if (gapRate > 1.02f) //등장 가격보다 2퍼센트이상 상승상태로 들어올시 매수하지 않음
-                                    continue;
-                                //2퍼센트 내에서 등장가격보다 현재가 높을시 매수
-                            }
+                            //if (CostCheck)
+                            //{
+                            //    float gapRate = ((float)price / (float)trailingItem.firstPrice);
+                            //    if (gapRate > 1.02f) //등장 가격보다 2퍼센트이상 상승상태로 들어올시 매수하지 않음
+                            //        continue;
+                            //    //2퍼센트 내에서 등장가격보다 현재가 높을시 매수
+                            //}
 
                             if ( CostCheck  && 
                                 trailingItem.settingTickCount > 0 &&
