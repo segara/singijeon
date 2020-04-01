@@ -441,12 +441,14 @@ namespace Singijeon
                 }
             }
         
-            if (value > d_conditionValue)
+            if (value >= d_conditionValue)
             {
-                if(!startTrailing)
+                if (!startTrailing)
+                {
                     Core.CoreEngine.GetInstance().SendLogMessage("익절 트레일링 시작");
-
-                startTrailing = true;
+                    startTrailing = true;
+                }
+                   
                 d_updateValue = value;
                 Core.CoreEngine.GetInstance().SendLogMessage("익절 트레일링 체크 : " + d_updateValue);
             }
