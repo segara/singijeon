@@ -222,7 +222,6 @@ namespace Singijeon
                 ts.AddTradingStrategyItemList(trailGapBuy);
             }
 
-         
             if (saved.takeProfitRate > 0)
             {
                 double takeProfitRate = 0;
@@ -232,8 +231,7 @@ namespace Singijeon
                      new TradingStrategyItemWithUpDownValue(
                              StrategyItemName.TAKE_PROFIT_SELL,
                              CHECK_TIMING.SELL_TIME,
-                             "buyingPrice",
-                             TradingStrategyItemWithUpDownValue.IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
+                             IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
                              takeProfitRate);
                 takeProfitStrategy.OnReceivedTrData += form.OnReceiveTrDataCheckProfitSell;
                 ts.AddTradingStrategyItemList(takeProfitStrategy);
@@ -249,8 +247,7 @@ namespace Singijeon
                     new TradingStrategyItemWithUpDownValue(
                             StrategyItemName.STOPLOSS_SELL,
                             CHECK_TIMING.SELL_TIME,
-                            "buyingPrice",
-                            TradingStrategyItemWithUpDownValue.IS_TRUE_OR_FALE_TYPE.DOWN,
+                            IS_TRUE_OR_FALE_TYPE.DOWN,
                             stopLossRate);
 
                 stopLossStrategy.OnReceivedTrData += form.OnReceiveTrDataCheckStopLoss;
@@ -258,10 +255,31 @@ namespace Singijeon
                 ts.stoplossRate = stopLossRate;
             }
 
+            if (saved.usingBuyMore)
+            {
+                ts.usingBuyMore = true;
+             
+                TradingStrategyItemBuyingDivide buyMoreStrategy =
+                    new TradingStrategyItemBuyingDivide(
+                            StrategyItemName.BUY_MORE,
+                            CHECK_TIMING.SELL_TIME,
+                            IS_TRUE_OR_FALE_TYPE.DOWN,
+                            saved.buyMoreRate);
+
+                buyMoreStrategy.OnReceivedTrData += form.OnReceiveTrDataBuyMore;
+                ts.AddTradingStrategyItemList(buyMoreStrategy);
+            }
+
             form.tradingStrategyList.Add(ts);
             form.AddStrategyToDataGridView(ts);
 
             form.StartMonitoring(ts.buyCondition);
+
+            if (saved.usingDoubleCheck)
+            {
+                form.StartMonitoring(ts.doubleCheckCondition);
+                form.doubleCheckHashTable.Add(ts.doubleCheckCondition.Name, ts);
+            }
 
         }
     }

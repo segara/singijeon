@@ -79,6 +79,10 @@
             this.usingTickBuyCheck = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label27 = new System.Windows.Forms.Label();
+            this.BuyMoreValueUpdown = new System.Windows.Forms.NumericUpDown();
+            this.BuyMorePercentUpdown = new System.Windows.Forms.NumericUpDown();
+            this.BuyMoreCheckBox1 = new System.Windows.Forms.CheckBox();
             this.BuyConditionDoubleComboBox = new System.Windows.Forms.ComboBox();
             this.usingDoubleConditionCheck = new System.Windows.Forms.CheckBox();
             this.panel14 = new System.Windows.Forms.Panel();
@@ -95,6 +99,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.TrailingSellCheckBox = new System.Windows.Forms.CheckBox();
             this.panel12 = new System.Windows.Forms.Panel();
             this.stopLossSijangRadio = new System.Windows.Forms.RadioButton();
             this.stopLossJijungRadio = new System.Windows.Forms.RadioButton();
@@ -282,7 +287,6 @@
             this.매매전략_손절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.TrailingSellCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -296,6 +300,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.orderPercentageUpdown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trailingUpDown)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BuyMoreValueUpdown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BuyMorePercentUpdown)).BeginInit();
             this.panel14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemCountUpdown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.allCostUpDown)).BeginInit();
@@ -433,7 +439,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 325F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 335F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -472,10 +478,10 @@
             this.panel7.Controls.Add(this.label11);
             this.panel7.Controls.Add(this.usingTickBuyCheck);
             this.panel7.Controls.Add(this.label12);
-            this.panel7.Location = new System.Drawing.Point(401, 3);
+            this.panel7.Location = new System.Drawing.Point(396, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(513, 205);
+            this.panel7.Size = new System.Drawing.Size(508, 205);
             this.panel7.TabIndex = 5;
             // 
             // useVwmaCheckBox
@@ -745,6 +751,10 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.label27);
+            this.panel1.Controls.Add(this.BuyMoreValueUpdown);
+            this.panel1.Controls.Add(this.BuyMorePercentUpdown);
+            this.panel1.Controls.Add(this.BuyMoreCheckBox1);
             this.panel1.Controls.Add(this.BuyConditionDoubleComboBox);
             this.panel1.Controls.Add(this.usingDoubleConditionCheck);
             this.panel1.Controls.Add(this.panel14);
@@ -761,8 +771,76 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(390, 205);
+            this.panel1.Size = new System.Drawing.Size(385, 205);
             this.panel1.TabIndex = 0;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(266, 90);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(41, 12);
+            this.label27.TabIndex = 17;
+            this.label27.Text = "하락시";
+            // 
+            // BuyMoreValueUpdown
+            // 
+            this.BuyMoreValueUpdown.Location = new System.Drawing.Point(214, 112);
+            this.BuyMoreValueUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BuyMoreValueUpdown.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.BuyMoreValueUpdown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.BuyMoreValueUpdown.Name = "BuyMoreValueUpdown";
+            this.BuyMoreValueUpdown.Size = new System.Drawing.Size(93, 21);
+            this.BuyMoreValueUpdown.TabIndex = 16;
+            this.BuyMoreValueUpdown.ThousandsSeparator = true;
+            this.BuyMoreValueUpdown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // BuyMorePercentUpdown
+            // 
+            this.BuyMorePercentUpdown.DecimalPlaces = 2;
+            this.BuyMorePercentUpdown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.BuyMorePercentUpdown.Location = new System.Drawing.Point(214, 87);
+            this.BuyMorePercentUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BuyMorePercentUpdown.Maximum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.BuyMorePercentUpdown.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.BuyMorePercentUpdown.Name = "BuyMorePercentUpdown";
+            this.BuyMorePercentUpdown.Size = new System.Drawing.Size(46, 21);
+            this.BuyMorePercentUpdown.TabIndex = 15;
+            // 
+            // BuyMoreCheckBox1
+            // 
+            this.BuyMoreCheckBox1.AutoSize = true;
+            this.BuyMoreCheckBox1.Location = new System.Drawing.Point(216, 66);
+            this.BuyMoreCheckBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BuyMoreCheckBox1.Name = "BuyMoreCheckBox1";
+            this.BuyMoreCheckBox1.Size = new System.Drawing.Size(60, 16);
+            this.BuyMoreCheckBox1.TabIndex = 15;
+            this.BuyMoreCheckBox1.Text = "물타기";
+            this.BuyMoreCheckBox1.UseVisualStyleBackColor = true;
             // 
             // BuyConditionDoubleComboBox
             // 
@@ -819,16 +897,16 @@
             // 
             // PerCostText
             // 
-            this.PerCostText.Location = new System.Drawing.Point(130, 175);
+            this.PerCostText.Location = new System.Drawing.Point(107, 172);
             this.PerCostText.Name = "PerCostText";
-            this.PerCostText.Size = new System.Drawing.Size(100, 18);
+            this.PerCostText.Size = new System.Drawing.Size(84, 18);
             this.PerCostText.TabIndex = 11;
             this.PerCostText.Text = "0";
             this.PerCostText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // itemCountUpdown
             // 
-            this.itemCountUpdown.Location = new System.Drawing.Point(124, 142);
+            this.itemCountUpdown.Location = new System.Drawing.Point(107, 143);
             this.itemCountUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.itemCountUpdown.Minimum = new decimal(new int[] {
             1,
@@ -836,7 +914,7 @@
             0,
             0});
             this.itemCountUpdown.Name = "itemCountUpdown";
-            this.itemCountUpdown.Size = new System.Drawing.Size(105, 21);
+            this.itemCountUpdown.Size = new System.Drawing.Size(84, 21);
             this.itemCountUpdown.TabIndex = 10;
             this.itemCountUpdown.Value = new decimal(new int[] {
             1,
@@ -846,7 +924,7 @@
             // 
             // allCostUpDown
             // 
-            this.allCostUpDown.Location = new System.Drawing.Point(124, 118);
+            this.allCostUpDown.Location = new System.Drawing.Point(107, 117);
             this.allCostUpDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.allCostUpDown.Maximum = new decimal(new int[] {
             99999999,
@@ -854,7 +932,7 @@
             0,
             0});
             this.allCostUpDown.Name = "allCostUpDown";
-            this.allCostUpDown.Size = new System.Drawing.Size(105, 21);
+            this.allCostUpDown.Size = new System.Drawing.Size(84, 21);
             this.allCostUpDown.TabIndex = 9;
             this.allCostUpDown.ThousandsSeparator = true;
             // 
@@ -955,11 +1033,22 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(921, 3);
+            this.panel2.Location = new System.Drawing.Point(911, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(320, 205);
+            this.panel2.Size = new System.Drawing.Size(330, 205);
             this.panel2.TabIndex = 4;
+            // 
+            // TrailingSellCheckBox
+            // 
+            this.TrailingSellCheckBox.AutoSize = true;
+            this.TrailingSellCheckBox.Location = new System.Drawing.Point(114, 19);
+            this.TrailingSellCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.TrailingSellCheckBox.Name = "TrailingSellCheckBox";
+            this.TrailingSellCheckBox.Size = new System.Drawing.Size(170, 16);
+            this.TrailingSellCheckBox.TabIndex = 14;
+            this.TrailingSellCheckBox.Text = "상승 트레일링(시장가매도)";
+            this.TrailingSellCheckBox.UseVisualStyleBackColor = true;
             // 
             // panel12
             // 
@@ -1030,7 +1119,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(25, 155);
+            this.label9.Location = new System.Drawing.Point(15, 155);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(77, 12);
             this.label9.TabIndex = 9;
@@ -1084,7 +1173,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(25, 47);
+            this.label8.Location = new System.Drawing.Point(15, 47);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(77, 12);
             this.label8.TabIndex = 3;
@@ -2946,17 +3035,6 @@
             this.매매전략_취소.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.매매전략_취소.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // TrailingSellCheckBox
-            // 
-            this.TrailingSellCheckBox.AutoSize = true;
-            this.TrailingSellCheckBox.Location = new System.Drawing.Point(114, 19);
-            this.TrailingSellCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.TrailingSellCheckBox.Name = "TrailingSellCheckBox";
-            this.TrailingSellCheckBox.Size = new System.Drawing.Size(96, 16);
-            this.TrailingSellCheckBox.TabIndex = 14;
-            this.TrailingSellCheckBox.Text = "트레일링스톱";
-            this.TrailingSellCheckBox.UseVisualStyleBackColor = true;
-            // 
             // tradingStrategyGridView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -2988,6 +3066,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trailingUpDown)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BuyMoreValueUpdown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BuyMorePercentUpdown)).EndInit();
             this.panel14.ResumeLayout(false);
             this.panel14.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemCountUpdown)).EndInit();
@@ -3289,6 +3369,10 @@
         private System.Windows.Forms.ComboBox BuyConditionDoubleComboBox;
         private System.Windows.Forms.CheckBox usingDoubleConditionCheck;
         private System.Windows.Forms.CheckBox TrailingSellCheckBox;
+        private System.Windows.Forms.CheckBox BuyMoreCheckBox1;
+        private System.Windows.Forms.NumericUpDown BuyMoreValueUpdown;
+        private System.Windows.Forms.NumericUpDown BuyMorePercentUpdown;
+        private System.Windows.Forms.Label label27;
     }
 }
 

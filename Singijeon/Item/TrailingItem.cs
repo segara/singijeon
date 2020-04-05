@@ -10,8 +10,6 @@ namespace Singijeon
     [Serializable]
     public class TrailingItem
     {
-        public List<TickBongInfo> tickBongInfo = new List<TickBongInfo>();
-        public TickBongInfo curTickBong = null;
         public string itemCode;
         public TradingStrategy strategy;
         public int settingTickCount = 0;
@@ -31,6 +29,8 @@ namespace Singijeon
         public string buyOrderOption; //주문 호가 옵션
         //public string sellOrderOption; //주문 호가 옵션
         //public CheckMaUp ma_data_info = null;
+
+        public TickBongInfoMgr tickBongInfoMgr = null;
         [NonSerialized]
         public DataGridViewRow ui_rowAutoTradingItem;
 
@@ -44,6 +44,8 @@ namespace Singijeon
             strategy = inputStrategy;
             firstPrice = _firstPrice;
             settingTickCount = strategy.trailTickValue;
+            tickBongInfoMgr = new TickBongInfoMgr(settingTickCount);
+
             buyOrderOption = inputStrategy.buyOrderOption;
 
             //sellOrderOption = inputStrategy.sellOrderOption;
@@ -64,20 +66,6 @@ namespace Singijeon
             isVwmaCheck = inputStrategy.usingVwma; 
         }
 
-        public TickBongInfo GetTickBong(int index)
-        {
-            int idx = 0;
-            TickBongInfo bong = null;
-            foreach (var bongItem in tickBongInfo)
-            {
-                if (idx == index && bongItem.IsComplete())
-                {
-                    bong = bongItem;
-                    break;
-                }
-                idx++;
-            }
-            return bong;
-        }
+       
     }
 }

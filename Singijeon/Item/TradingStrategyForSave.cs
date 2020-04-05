@@ -47,6 +47,12 @@ namespace Singijeon
         public DateTime startDate = DateTime.Now;
         public DateTime endDate = DateTime.Now;
 
+        public bool usingBuyMore = false;
+        public double buyMoreRate = 0;
+
+        public bool usingDoubleCheck = false;
+        public Condition doubleCheckCondition = null;
+
         //매매 진행 종목 리스트
         public List<TradingItemForSave> tradingSaveItemList = new List<TradingItemForSave>();
         //public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();

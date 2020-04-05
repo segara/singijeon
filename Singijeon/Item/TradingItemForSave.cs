@@ -28,10 +28,10 @@ namespace Singijeon
         public long buyingPrice;
         public long sellPrice;
 
-        public int curQnt;
+    
         public int buyingQnt;
         public int sellQnt;
-
+        public int curQnt;
         public int trailingTickCnt;
         public int outStandingQnt;
 

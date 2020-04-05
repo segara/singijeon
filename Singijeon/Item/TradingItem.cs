@@ -64,6 +64,7 @@ namespace Singijeon
         public string conditionUid = string.Empty;
         
         public string Uid { get; set; }
+
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
         public TradingItem()
@@ -127,7 +128,6 @@ namespace Singijeon
        
         public void SetSold(bool isProfitSell = true)
         {
-          
             this.isProfitSell = isProfitSell;
             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER;
         }
@@ -135,7 +135,6 @@ namespace Singijeon
         {
             return isProfitSell;
         }
-      
         public void SetSellCancelOrder()
         {
           curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE; 

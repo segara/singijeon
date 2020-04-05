@@ -43,6 +43,9 @@ namespace Singijeon
         public DateTime startDate = DateTime.Now;
         public DateTime endDate = DateTime.Now;
 
+        public bool usingBuyMore = false;
+        public double buyMoreRate = 0;
+
         public bool usingDoubleCheck = false;
         public Condition doubleCheckCondition = null;
 
@@ -216,9 +219,21 @@ namespace Singijeon
     {
         public TradingItem tradingItem { get; set; }
         public double checkNum { get; set; }
-        public double checkNum2 { get; set; }
         public OnReceivedTrEventArgs(TradingItem item , double checkValue)
         {
+            this.tradingItem = item;
+            this.checkNum = checkValue;
+        }
+    }
+    [Serializable]
+    public class OnReceivedTrBuyMoreEventArgs : EventArgs
+    {
+        public TradingStrategyItemBuyingDivide strategyItem { get; set; }
+        public TradingItem tradingItem { get; set; }
+        public double checkNum { get; set; }
+        public OnReceivedTrBuyMoreEventArgs(TradingStrategyItemBuyingDivide tsItem, TradingItem item, double checkValue)
+        {
+            this.strategyItem = tsItem;
             this.tradingItem = item;
             this.checkNum = checkValue;
         }
@@ -232,8 +247,6 @@ namespace Singijeon
     [Serializable]
     public class TradingStrategyADDItem
     {
-        public string valueName = string.Empty;
-
         public CHECK_TIMING strategyCheckTime = CHECK_TIMING.BUY_TIME;
 
         public bool usingStrategy = false;
@@ -260,12 +273,11 @@ namespace Singijeon
         private double d_changeValue = 0;
         public double checkConditionValue { get { return d_changeValue; } set { d_changeValue = value; } }
 
-        public TradingStrategyItemChangeValue(string _strategyItemName, CHECK_TIMING _checkTiming, string _valueName, double changeConditionValue)
+        public TradingStrategyItemChangeValue(string _strategyItemName, CHECK_TIMING _checkTiming, double changeConditionValue)
         {
             usingStrategy = true;
             strategyItemName = _strategyItemName;
             strategyCheckTime = _checkTiming;
-            valueName = _valueName;
             d_changeValue = changeConditionValue;
         }
 
@@ -303,15 +315,6 @@ namespace Singijeon
     [Serializable]
     public class TradingStrategyItemWithUpDownValue : TradingStrategyADDItem
     {
-        public enum IS_TRUE_OR_FALE_TYPE
-        {
-            UPPER,
-            UPPER_OR_SAME,
-            SAME,
-            DOWN_OR_SAME,
-            DOWN,
-        }
-
        public IS_TRUE_OR_FALE_TYPE checkType = IS_TRUE_OR_FALE_TYPE.SAME;
 
        private double d_conditionValue = 0;
@@ -319,7 +322,7 @@ namespace Singijeon
 
         public event EventHandler<OnReceivedTrEventArgs> OnReceivedTrData;
 
-        public TradingStrategyItemWithUpDownValue(string _strategyItemName, CHECK_TIMING _checkTiming, string _valueName, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue)
+        public TradingStrategyItemWithUpDownValue(string _strategyItemName, CHECK_TIMING _checkTiming, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue)
         {
             usingStrategy = true;
             strategyItemName = _strategyItemName;
@@ -382,28 +385,30 @@ namespace Singijeon
             }
         }
     }
+    public enum IS_TRUE_OR_FALE_TYPE
+    {
+        UPPER,
+        UPPER_OR_SAME,
+        SAME,
+        DOWN_OR_SAME,
+        DOWN,
+    }
     [Serializable]
     public class TradingStrategyItemWithTrailingStopValue : TradingStrategyADDItem
     {
-        public enum IS_TRUE_OR_FALE_TYPE
-        {
-            UPPER,
-            UPPER_OR_SAME,
-            SAME,
-            DOWN_OR_SAME,
-            DOWN,
-        }
-
+ 
         public IS_TRUE_OR_FALE_TYPE checkType = IS_TRUE_OR_FALE_TYPE.SAME;
 
         private double d_conditionValue = 0;
-        private double d_updateValue = 0;
+
         private bool startTrailing = false;
         public double checkConditionValue { get { return d_conditionValue; } set { d_conditionValue = value; } }
 
+        public TickBongInfoMgr tickBongInfoMgr = new TickBongInfoMgr(30);
+
         public event EventHandler<OnReceivedTrEventArgs> OnReceivedTrData;
 
-        public TradingStrategyItemWithTrailingStopValue(string _strategyItemName, CHECK_TIMING _checkTiming, string _valueName, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue)
+        public TradingStrategyItemWithTrailingStopValue(string _strategyItemName, CHECK_TIMING _checkTiming, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue)
         {
             usingStrategy = true;
 
@@ -411,7 +416,7 @@ namespace Singijeon
             strategyCheckTime = _checkTiming;
             checkType = _checkType;
             d_conditionValue = _conditionValue;
-            d_updateValue = _conditionValue;
+           
             startTrailing = false;
 
             if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
@@ -428,16 +433,18 @@ namespace Singijeon
         {
             if (!usingStrategy)
                 return;
-      
-            if (startTrailing && value < d_updateValue && value > d_conditionValue)
+            
+            if (startTrailing &&
+                tickBongInfoMgr.IsCompleteBong(1) &&
+                value < tickBongInfoMgr.GetTickBong(1).GetAverage())
             {
                 if (OnReceivedTrData != null)
                 {
-                    Core.CoreEngine.GetInstance().SendLogMessage("익절 주문 : " + value);
-
+                    Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "익절 주문 : " + value);
                     OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
-
+             
                     startTrailing = false;
+                    usingStrategy = false;
                 }
             }
         
@@ -445,12 +452,73 @@ namespace Singijeon
             {
                 if (!startTrailing)
                 {
-                    Core.CoreEngine.GetInstance().SendLogMessage("익절 트레일링 시작");
+                    Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode,"익절 트레일링 시작");
                     startTrailing = true;
                 }
-                   
-                d_updateValue = value;
-                Core.CoreEngine.GetInstance().SendLogMessage("익절 트레일링 체크 : " + d_updateValue);
+            }
+            else
+            {
+                if(startTrailing)
+                {
+                    Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "익절 상승 후 하락 주문 : " + value);
+                    OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
+                    startTrailing = false;
+                    usingStrategy = false;
+                }
+            }
+  
+            tickBongInfoMgr.AddPrice(value);
+            Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "현재 : " + value);
+            Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "평균 : " + tickBongInfoMgr.curTickBong.GetAverage() + " index " + tickBongInfoMgr.curTickBong.CurSaveIndex);
+        }
+    }
+    [Serializable]
+    public class TradingStrategyItemBuyingDivide : TradingStrategyADDItem
+    {
+     
+        public IS_TRUE_OR_FALE_TYPE checkType = IS_TRUE_OR_FALE_TYPE.SAME;
+
+        private int buyQuantity;
+        public int BuyQuantity { get { return buyQuantity; } set { buyQuantity = value; } }
+
+        private double d_conditionValue = 0;
+        public double checkConditionValue { get { return d_conditionValue; } set { d_conditionValue = value; } }
+
+        public event EventHandler<OnReceivedTrBuyMoreEventArgs> OnReceivedTrData;
+
+        public TradingStrategyItemBuyingDivide(string _strategyItemName, CHECK_TIMING _checkTiming, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue)
+        {
+            usingStrategy = true;
+
+            strategyItemName = _strategyItemName;
+            strategyCheckTime = _checkTiming;
+            checkType = _checkType;
+            d_conditionValue = _conditionValue;
+
+            if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
+            {
+                d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
+            }
+            if (checkType == IS_TRUE_OR_FALE_TYPE.UPPER || checkType == IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME)
+            {
+                d_conditionValue = _conditionValue + tradingStrategyGridView.FEE_RATE;
+            }
+        }
+
+        public override void CheckUpdate(TradingItem item, double value)
+        {
+            if (!usingStrategy)
+                return;
+
+            if (value < d_conditionValue)
+            {
+                if (OnReceivedTrData != null)
+                {
+                    Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode,"추가 물타기 주문 : " + value);
+
+                    OnReceivedTrData.Invoke(this, new OnReceivedTrBuyMoreEventArgs(this, item, value));
+                    usingStrategy = false;
+                }
             }
         }
     }

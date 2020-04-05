@@ -7,18 +7,77 @@ using Singijeon.Core;
 namespace Singijeon
 {
     [Serializable]
+    public class TickBongInfoMgr
+    {
+        public Stack<TickBongInfo> tickBongInfoList = new Stack<TickBongInfo>();
+        public TickBongInfo curTickBong = null;
+        public int settingMaxCount;
+        public TickBongInfoMgr(int _settingMaxCount)
+        {
+            settingMaxCount = _settingMaxCount;
+            tickBongInfoList.Push(new TickBongInfo(_settingMaxCount));
+            curTickBong = tickBongInfoList.Peek();
+        }
+        public void Clear()
+        {
+            tickBongInfoList.Clear();
+            tickBongInfoList.Push(new TickBongInfo(settingMaxCount));
+            curTickBong = tickBongInfoList.Peek();
+        }
+        public bool IsCompleteBong (int index)
+        {
+            int idx = 0;
+        
+            foreach (var bongItem in tickBongInfoList)
+            {
+                if (idx == index)
+                {
+                    return bongItem.IsComplete();
+                }
+                idx++;
+            }
+            return false;
+        }
+        public void AddPrice(double _price)
+        {
+             if(curTickBong.IsComplete())
+             {
+                tickBongInfoList.Push(new TickBongInfo(settingMaxCount));
+                curTickBong = tickBongInfoList.Peek();
+            }
+             curTickBong.AddPrice(_price);
+        }
+        public TickBongInfo GetTickBong(int index)
+        {
+            int idx = 0;
+            TickBongInfo bong = null;
+            foreach (var bongItem in tickBongInfoList)
+            {
+                if (idx == index && bongItem.IsComplete())
+                {
+                    bong = bongItem;
+                    break;
+                }
+                idx++;
+            }
+            return bong;
+        }
+    }
+    [Serializable]
     public class TickBongInfo
     {
         int saveCount = 0; //봉당 저장갯수 예)5틱봉 => 5개 30틱봉 =>30개
         int curSaveIndex = 0; //현재 저장횟수
-        int sumPrice = 0;
-        int average = 0;
+        public int CurSaveIndex { get { return curSaveIndex; } }
+        double sumPrice = 0;
+        double average = 0;
+
         public TickBongInfo(int _saveCount)
         {
             saveCount = _saveCount;
         }
 
-        public void AddPrice(int _price)
+        public void AddPrice(double _price)
         {
             if(curSaveIndex >= saveCount)
             {
@@ -28,11 +87,10 @@ namespace Singijeon
             sumPrice += _price;
             curSaveIndex++;
 
-            if (curSaveIndex == saveCount)
-                average = CalAverage();
+            average = CalAverage();
         }
 
-        public int GetAverage()
+        public double GetAverage()
         {
             return average;
         }
@@ -45,27 +103,22 @@ namespace Singijeon
             return false;
         }
 
-        private int CalAverage()
+        private double CalAverage()
         {
-            float returnValue = 0;
+            double returnValue = 0;
             if (curSaveIndex > 0)
             {
-                returnValue = (float)sumPrice / (float)curSaveIndex;
+                returnValue = (double)sumPrice / (double)curSaveIndex;
             }
-
-            //CoreEngine.GetInstance().SendLogWarningMessage(sumPrice + "/" + curSaveIndex);
 
             if (returnValue == 0)
                 CoreEngine.GetInstance().SendLogErrorMessage("평균값 0");
-
-            if (curSaveIndex < saveCount)
-                CoreEngine.GetInstance().SendLogErrorMessage("저장갯수 " + curSaveIndex);
-
+            
             if(sumPrice == 0)
                 CoreEngine.GetInstance().SendLogErrorMessage( "저장가격 " + sumPrice);
 
             
-            return (int)returnValue;
+            return returnValue;
         }
     }
 }

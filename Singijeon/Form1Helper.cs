@@ -16,6 +16,87 @@ namespace Singijeon
 {
     public partial class tradingStrategyGridView : Form
     {
+        //실시간 종목 조회 응답시//
+        private void UpdateAccountBalanceDataGridViewRow(string itemCode, long c_lPrice)
+        {
+            foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
+            {
+                if (row.Cells["계좌잔고_종목코드"].Value != null)
+                {
+                    if (row.Cells["계좌잔고_종목코드"].Value.ToString().Contains(itemCode))
+                    {
+                        row.Cells["계좌잔고_현재가"].Value = c_lPrice;
+
+                        double buyingPrice = double.Parse(row.Cells["계좌잔고_평균단가"].Value.ToString());
+                        int balanceCount = int.Parse(row.Cells["계좌잔고_보유수량"].Value.ToString());
+
+                        double currentAllPrice = c_lPrice * balanceCount;
+
+                        if (buyingPrice != 0)
+                        {
+                            row.Cells["계좌잔고_평균단가"].Value = buyingPrice;
+                            row.Cells["계좌잔고_평가금액"].Value = currentAllPrice;
+
+                            double sellPrice = buyingPrice; // 평단가 
+                            double stockFee = ((double)c_lPrice * 0.01 * FEE_RATE) * (double)balanceCount; //+ ((double)c_lPrice * 0.01 * 0.015 * (double)balanceCount); //+ ((double)buyingPrice * 0.01 * 0.015 * (double)balanceCount);
+                            double allSellPrice = (sellPrice * (double)balanceCount) + stockFee;
+
+                            row.Cells["계좌잔고_손익금액"].Value = currentAllPrice - allSellPrice;
+
+                            double profitRate = GetProfitRate((double)c_lPrice, (double)sellPrice);
+                            row.Cells["계좌잔고_손익률"].Value = profitRate;
+                        }
+                    }
+                }
+            }
+        }
+        private void UpdateBalanceDataGridViewRow(string itemCode, long c_lPrice)
+        {
+            foreach (DataGridViewRow row in balanceDataGrid.Rows)
+            {
+                if (row.Cells["잔고_종목코드"].Value != null)
+                {
+                    if (row.Cells["잔고_종목코드"].Value.ToString().Contains(itemCode))
+                    {
+                        row.Cells["잔고_현재가"].Value = c_lPrice;
+
+                        double buyingPrice = double.Parse(row.Cells["잔고_매입단가"].Value.ToString());
+
+                        if (buyingPrice != 0)
+                        {
+                            double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
+
+                            row.Cells["잔고_손익률"].Value = profitRate;
+                        }
+
+                    }
+                }
+            }
+        }
+        private void UpdateAutoTradingDataGridViewRow(string itemCode, long c_lPrice)
+        {
+            foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
+            {
+                if (row.Cells["매매진행_종목코드"].Value != null)
+                {
+                    if (row.Cells["매매진행_종목코드"].Value.ToString().Contains(itemCode))
+                    {
+                        row.Cells["매매진행_현재가"].Value = c_lPrice;
+
+                        if (row.Cells["매매진행_매수가"].Value != null)
+                        {
+                            double buyingPrice = double.Parse(row.Cells["매매진행_매수가"].Value.ToString());
+
+                            if (buyingPrice != 0)
+                            {
+                                double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
+                                row.Cells["매매진행_손익률"].Value = profitRate;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         public void Update_OutStandingDataGrid_UI(Hashtable table, int rowIndex)
         {
             if (table.ContainsKey("미체결_주문번호"))
@@ -175,7 +256,7 @@ namespace Singijeon
             autoTradingDataGrid["매매진행_매수시간", index].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
-        private void UpdateBuyAutoTradingDataGridState(string orderNum, string state, bool buyComplete = false)
+        private void UpdateBuyAutoTradingDataGridState(string orderNum, bool buyComplete = false)
         {
             foreach (TradingStrategy ts in tradingStrategyList)
             {
@@ -183,19 +264,21 @@ namespace Singijeon
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.buyOrderNum.Equals(orderNum));
                 foreach(var item in ts.tradingItemList)
                 {
-                    coreEngine.SendLogWarningMessage(item.itemName + " 요청 주문 넘버 : " + orderNum + " 상태값 : " + state);
+                    coreEngine.SendLogWarningMessage(item.itemName + " 요청 주문 넘버 : " + orderNum );
                 }
                 if (tradeItem != null)
                 {
-                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
+                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = TradingItem.StateToString(tradeItem.state);
+                    tradeItem.GetUiConnectRow().Cells["매매진행_매수가"].Value = tradeItem.buyingPrice;
+                    tradeItem.GetUiConnectRow().Cells["매매진행_매수량"].Value = tradeItem.curQnt;
                     break;
                 }
             }
         }
 
-        private void UpdateSellAutoTradingDataGridStatePrice(string orderNum, string state, string conclusionPrice)
+        private void UpdateSellAutoTradingDataGridStatePrice(string orderNum, string conclusionPrice)
         {
-            coreEngine.SendLogWarningMessage("요청 주문 넘버 : " + orderNum + " 상태값 : " + state);
+            coreEngine.SendLogWarningMessage("요청 주문 넘버 : " + orderNum);
             foreach (TradingStrategy ts in tradingStrategyList)
             {
                 foreach (var item in ts.tradingItemList)
@@ -206,7 +289,7 @@ namespace Singijeon
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.sellOrderNum.Equals(orderNum));
                 if (tradeItem != null)
                 {
-                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
+                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = TradingItem.StateToString( tradeItem.state);
                     tradeItem.GetUiConnectRow().Cells["매매진행_매도가"].Value = conclusionPrice;
                     tradeItem.GetUiConnectRow().Cells["매매진행_매도시간"].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 }
@@ -314,6 +397,10 @@ namespace Singijeon
                 streamWriter.WriteLine("usingDoubleConditionCheck" + ";" + usingDoubleConditionCheck.Checked);
                 streamWriter.WriteLine("BuyConditionDoubleComboBox" + ";" + BuyConditionDoubleComboBox.SelectedItem);
                 streamWriter.WriteLine("TrailingSellCheckBox" + ";" + TrailingSellCheckBox.Checked);
+
+                streamWriter.WriteLine("BuyMoreCheckBox1" + ";" + BuyMoreCheckBox1.Checked);
+                streamWriter.WriteLine("BuyMorePercentUpdown" + ";" + (double)BuyMorePercentUpdown.Value);
+                streamWriter.WriteLine("BuyMoreValueUpdown" + ";" + (int)BuyMoreValueUpdown.Value);
             }
         }
         public void ClearSetting()
@@ -359,6 +446,8 @@ namespace Singijeon
             BuyConditionDoubleComboBox.SelectedItem = string.Empty;
 
             TrailingSellCheckBox.Checked = false;
+
+            BuyMoreCheckBox1.Checked = false;
 
         }
         public void LoadSetting(string settingCondition)
@@ -490,7 +579,15 @@ namespace Singijeon
                             case "TrailingSellCheckBox":
                                 TrailingSellCheckBox.Checked = bool.Parse(strringArray[1]);
                                 break;
-
+                            case "BuyMoreCheckBox1":
+                                BuyMoreCheckBox1.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "BuyMorePercentUpdown":
+                                BuyMorePercentUpdown.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "BuyMoreValueUpdown":
+                                BuyMoreValueUpdown.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
                         }
                     }
                 }

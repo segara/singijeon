@@ -68,11 +68,11 @@ namespace Singijeon.Core
 
         public void SendLogMessage(string logMessage) //Event를 이용해 로그 메세지 전달
         {
-
             StackFrame callStack = new StackFrame(1, true);
             logMessage = DateTime.Now.ToString("[HH:mm:ss] ") + logMessage + " ("+ Path.GetFileName(callStack.GetFileName())+ ") line : "+ callStack.GetFileLineNumber();
             OnReceivedLogMessage?.Invoke(this, new OnReceivedLogMessageEventArgs(logMessage));
 
+            
             //함수들의 인자(object sender, OnReceivedLogMessageEventArgs e)
             //SendLogMessage메세지가 실행되면 OnReceivedLogMessage에 등록되있던 함수들이 같이 실행됨
         }
@@ -82,12 +82,12 @@ namespace Singijeon.Core
             logMessage = DateTime.Now.ToString("[HH:mm:ss] ") + logMessage + " (" + Path.GetFileName(callStack.GetFileName()) + ") line : " + callStack.GetFileLineNumber();
             OnReceivedLogWarningMessage?.Invoke(this, new OnReceivedLogMessageEventArgs(logMessage));
 
+         
             //함수들의 인자(object sender, OnReceivedLogMessageEventArgs e)
             //SendLogMessage메세지가 실행되면 OnReceivedLogMessage에 등록되있던 함수들이 같이 실행됨
         }
         public void SendLogErrorMessage(string logMessage) //Event를 이용해 로그 메세지 전달
         {
-
             StackFrame callStack = new StackFrame(1, true);
             logMessage = DateTime.Now.ToString("[HH:mm:ss] ") + logMessage + " (" + Path.GetFileName(callStack.GetFileName()) + ") line : " + callStack.GetFileLineNumber();
             OnReceivedLogErrorMessage?.Invoke(this, new OnReceivedLogMessageEventArgs(logMessage));
@@ -245,7 +245,39 @@ namespace Singijeon.Core
             }
         }
 
-        public void SaveLogMessage(string log)
+    public void SaveItemLogMessage(string itemCode, string logMessage)
+    {
+        StackFrame callStack = new StackFrame(1, true);
+        logMessage = DateTime.Now.ToString("[HH:mm:ss] ") + logMessage + " (" + Path.GetFileName(callStack.GetFileName()) + ") line : " + callStack.GetFileLineNumber();
+        string itemName = axKHOpenAPI.GetMasterCodeName(itemCode);
+        string filePath = DateTime.Now.ToString("yyyyMMdd_") + itemName + "_log.txt";
+        FileInfo fi = new FileInfo(filePath);
+
+        try
+        {
+            if (fi.Exists)
+            {
+                using (StreamWriter sw = File.AppendText(filePath))
+                {
+                    sw.WriteLine(logMessage);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = new StreamWriter(filePath))
+                {
+                    sw.WriteLine(logMessage);
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            SendLogMessage(e.Message);
+        }
+    }
+    
+    public void SaveLogMessage(string log)
         {
             string filePath = DateTime.Now.ToString("yyyyMMdd")+ Uid + "_log.txt";
             FileInfo fi = new FileInfo(filePath);

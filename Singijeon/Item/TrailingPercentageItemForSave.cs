@@ -10,8 +10,6 @@ namespace Singijeon
     [Serializable]
     public class TrailingPercentageItemForSave
     {
-        public List<TickBongInfo> tickBongInfo = new List<TickBongInfo>();
-        public TickBongInfo curTickBong = null;
         public string itemCode;
 
         public TradingStrategyForSave strategySave;
@@ -31,6 +29,7 @@ namespace Singijeon
         public DateTime gapTrailBuyCheckDateTime = DateTime.Now;
         public long gapTrailBuyCheckTimeSecond = 0;
         public string buyOrderOption; //주문 호가 옵션
+        public TickBongInfoMgr tickBongInfoMgr = null;
 
         public TrailingPercentageItemForSave()
         {
@@ -76,7 +75,7 @@ namespace Singijeon
                     }
                 }
             }
-            returnVal.tickBongInfo.Clear();
+            returnVal.tickBongInfoMgr.Clear();
             returnVal.curTickCount = 0;
             return returnVal;
         }

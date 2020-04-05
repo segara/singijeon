@@ -154,5 +154,6 @@ namespace Singijeon
         public const string TAKE_PROFIT_TRAILING_SELL = "매매전략_익절트레일링";
         public const string BUY_TIME_LIMIT = "매매시간설정";
         public const string BUY_GAP_CHECK = "갭상승추격매수";
+        public const string BUY_MORE = "물타기";
     }
  }
