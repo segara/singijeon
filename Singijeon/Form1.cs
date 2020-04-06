@@ -716,10 +716,11 @@ namespace Singijeon
                 string unitConclusionQuantity = axKHOpenAPI1.GetChejanData(915);
                 string price = axKHOpenAPI1.GetChejanData(10).Trim();
 
+                int i_allQuantity, i_averagePrice = 0;
                 string allQuantity = axKHOpenAPI1.GetChejanData(930).Trim();
-                int i_allQuantity = int.Parse(allQuantity);
+                int.TryParse(allQuantity, out i_allQuantity);
                 string averagePrice = axKHOpenAPI1.GetChejanData(931).Trim();
-                int i_averagePrice = int.Parse(allQuantity);
+                int.TryParse(averagePrice, out i_averagePrice);
 
                 coreEngine.SaveItemLogMessage(itemCode,"___________접수/체결_____________");
                 coreEngine.SaveItemLogMessage(itemCode, "종목명 : " + axKHOpenAPI1.GetMasterCodeName(itemCode));
