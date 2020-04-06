@@ -65,11 +65,14 @@ namespace Singijeon
         
         public string Uid { get; set; }
 
+        public TickBongInfoMgr tickBongInfoMgr = new TickBongInfoMgr(30);
+        public bool startTrailingSell = false;
+        public bool useBuyMore = true;
+
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
         public TradingItem()
         {
-
         }
 
         public TradingItem(TradingStrategy tsItem, string itemCode, string itemName, long buyingPrice, int buyingQnt, bool completeBuying = false, bool sold = false, string buyOrderType = "", string sellOrderType = "")

@@ -402,10 +402,10 @@ namespace Singijeon
 
         private double d_conditionValue = 0;
 
-        private bool startTrailing = false;
+       
         public double checkConditionValue { get { return d_conditionValue; } set { d_conditionValue = value; } }
 
-        public TickBongInfoMgr tickBongInfoMgr = new TickBongInfoMgr(30);
+        
 
         public event EventHandler<OnReceivedTrEventArgs> OnReceivedTrData;
 
@@ -418,7 +418,7 @@ namespace Singijeon
             checkType = _checkType;
             d_conditionValue = _conditionValue;
            
-            startTrailing = false;
+        
 
             if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
             {
@@ -435,40 +435,40 @@ namespace Singijeon
             if (!usingStrategy)
                 return;
             
-            if (startTrailing &&
-                tickBongInfoMgr.IsCompleteBong(1) &&
-                value < tickBongInfoMgr.GetTickBong(1).GetAverage())
+            if (item.startTrailingSell &&
+                item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE &&
+                item.tickBongInfoMgr.IsCompleteBong(1) &&
+                value < item.tickBongInfoMgr.GetTickBong(1).GetAverage())
             {
                 if (OnReceivedTrData != null)
                 {
                     Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "익절 주문 : " + value);
                     OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
-             
-                    startTrailing = false;
-                    usingStrategy = false;
+
+                    item.startTrailingSell = false;
+                   
                 }
             }
         
             if (value >= d_conditionValue)
             {
-                if (!startTrailing)
+                if (!item.startTrailingSell)
                 {
                     Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode,"익절 트레일링 시작");
-                    startTrailing = true;
+                    item.startTrailingSell = true;
                 }
             }
             else
             {
-                if(startTrailing)
+                if (item.startTrailingSell && item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 {
                     Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "익절 상승 후 하락 주문 : " + value);
                     OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
-                    startTrailing = false;
-                    usingStrategy = false;
+                    item.startTrailingSell = false;
                 }
             }
-  
-            tickBongInfoMgr.AddPrice(value);
+
+            item.tickBongInfoMgr.AddPrice(value);
             //Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "현재 : " + value);
             //Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "평균 : " + tickBongInfoMgr.curTickBong.GetAverage() + " index " + tickBongInfoMgr.curTickBong.CurSaveIndex);
         }
@@ -513,7 +513,7 @@ namespace Singijeon
             if (!usingStrategy)
                 return;
 
-            if (value < d_conditionValue)
+            if (value < d_conditionValue && item.useBuyMore)
             {
                 if (OnReceivedTrData != null)
                 {
@@ -521,7 +521,9 @@ namespace Singijeon
                    Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode," 추가 물타기 주문 : " + value);
 
                    OnReceivedTrData.Invoke(this, new OnReceivedTrBuyMoreEventArgs(this, item, value));
-                   usingStrategy = false;
+
+                    item.useBuyMore = false;
+
                 }
             }
         }
