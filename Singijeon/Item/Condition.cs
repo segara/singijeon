@@ -19,7 +19,7 @@ namespace Singijeon
         {
             this.Index = index;
             this.Name = name;
-            this.Uid = System.Guid.NewGuid().ToString();
+            this.Uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Singijeon
         //public CheckMaUp ma_data_info = null;
 
         public TickBongInfoMgr tickBongInfoMgr = null;
+
         [NonSerialized]
         public DataGridViewRow ui_rowAutoTradingItem;
 

@@ -29,6 +29,7 @@ namespace Singijeon
         public DateTime gapTrailBuyCheckDateTime = DateTime.Now;
         public long gapTrailBuyCheckTimeSecond = 0;
         public string buyOrderOption; //주문 호가 옵션
+
         public TickBongInfoMgr tickBongInfoMgr = null;
 
         public TrailingPercentageItemForSave()

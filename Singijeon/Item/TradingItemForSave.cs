@@ -28,7 +28,6 @@ namespace Singijeon
         public long buyingPrice;
         public long sellPrice;
 
-    
         public int buyingQnt;
         public int sellQnt;
         public int curQnt;
@@ -43,6 +42,12 @@ namespace Singijeon
         protected bool isCompleteBuying; //매수완료 여부
         protected bool isCompleteSold; //매수완료 여부
         public string conditionUid = string.Empty;
+
+        public string Uid { get; set; }
+
+        public TickBongInfoMgr tickBongInfoMgr = new TickBongInfoMgr(30);
+        public bool startTrailingSell = false;
+        public bool useBuyMore = true;
 
         public TradingItemForSave()
         {
@@ -91,7 +96,7 @@ namespace Singijeon
                     }
                 }
             }
-
+            returnVal.tickBongInfoMgr.Clear();
             return returnVal;
         }
 

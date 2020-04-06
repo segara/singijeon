@@ -417,9 +417,7 @@ namespace Singijeon
             strategyCheckTime = _checkTiming;
             checkType = _checkType;
             d_conditionValue = _conditionValue;
-           
-        
-
+       
             if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
             {
                 d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
@@ -522,7 +520,7 @@ namespace Singijeon
 
                    OnReceivedTrData.Invoke(this, new OnReceivedTrBuyMoreEventArgs(this, item, value));
 
-                    item.useBuyMore = false;
+                   item.useBuyMore = false;
 
                 }
             }

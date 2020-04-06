@@ -439,7 +439,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 335F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 337F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -478,10 +478,10 @@
             this.panel7.Controls.Add(this.label11);
             this.panel7.Controls.Add(this.usingTickBuyCheck);
             this.panel7.Controls.Add(this.label12);
-            this.panel7.Location = new System.Drawing.Point(396, 3);
+            this.panel7.Location = new System.Drawing.Point(395, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(508, 205);
+            this.panel7.Size = new System.Drawing.Size(507, 205);
             this.panel7.TabIndex = 5;
             // 
             // useVwmaCheckBox
@@ -771,7 +771,7 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(385, 205);
+            this.panel1.Size = new System.Drawing.Size(384, 205);
             this.panel1.TabIndex = 0;
             // 
             // label27
@@ -1033,10 +1033,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(911, 3);
+            this.panel2.Location = new System.Drawing.Point(909, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(330, 205);
+            this.panel2.Size = new System.Drawing.Size(332, 205);
             this.panel2.TabIndex = 4;
             // 
             // TrailingSellCheckBox
@@ -1045,9 +1045,9 @@
             this.TrailingSellCheckBox.Location = new System.Drawing.Point(114, 19);
             this.TrailingSellCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TrailingSellCheckBox.Name = "TrailingSellCheckBox";
-            this.TrailingSellCheckBox.Size = new System.Drawing.Size(170, 16);
+            this.TrailingSellCheckBox.Size = new System.Drawing.Size(100, 16);
             this.TrailingSellCheckBox.TabIndex = 14;
-            this.TrailingSellCheckBox.Text = "상승 트레일링(시장가매도)";
+            this.TrailingSellCheckBox.Text = "상승 트레일링";
             this.TrailingSellCheckBox.UseVisualStyleBackColor = true;
             // 
             // panel12

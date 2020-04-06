@@ -281,13 +281,13 @@ namespace Singijeon
         {
             foreach (TradingStrategy ts in tradingStrategyList)
             {
-                coreEngine.SendLogWarningMessage(ts.buyCondition.Name);
+                coreEngine.SendLogWarningMessage("ui update"+ts.buyCondition.Name);
                 List<TradingItem> tradeItemArray = ts.tradingItemList.FindAll(o => o.itemCode.Equals(itemCode));
                 foreach (TradingItem tradeItem in tradeItemArray)
                 {
-                    if (tradeItem != null && 
-                        tradeItem.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE)
+                    if (tradeItem != null)
                     {
+                        coreEngine.SendLogWarningMessage("tradeItem uid" + tradeItem.Uid);
                         tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = TradingItem.StateToString(tradeItem.state);
                         tradeItem.GetUiConnectRow().Cells["매매진행_매수가"].Value = tradeItem.buyingPrice;
                         tradeItem.GetUiConnectRow().Cells["매매진행_매수량"].Value = tradeItem.curQnt;

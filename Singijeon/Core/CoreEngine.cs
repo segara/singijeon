@@ -28,9 +28,10 @@ namespace Singijeon.Core
         {
             requestTrDataManager = RequestTrDataManager.GetInstance();
             requestTrDataManager.Run();
-            Uid = System.Guid.NewGuid().ToString();
+            Uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         }
-        public static CoreEngine GetInstance() //싱글톤으로 jost 객체관리
+
+        public static CoreEngine GetInstance()
         {
             if (coreInstance == null)
                 coreInstance = new CoreEngine();

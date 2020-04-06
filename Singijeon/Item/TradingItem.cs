@@ -94,9 +94,10 @@ namespace Singijeon
             this.buyOrderType = buyOrderType;
             //this.sellOrderType = sellOrderType;
 
-            this.Uid = System.Guid.NewGuid().ToString();
+            this.Uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }
+
         public void UpdateCurrentPrice(long _price)
         {
             this.curPrice = _price;
