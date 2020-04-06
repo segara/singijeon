@@ -919,7 +919,7 @@ namespace Singijeon
                         if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                         {
                             coreEngine.SaveItemLogMessage(itemCode, "매수 체결 체결량: " + conclusionQuantity);
-                            UpdateTradingStrategyBuy(ordernum, true, i_allQuantity, i_averagePrice);
+                            UpdateTradingStrategyBuy(ordernum, true, int.Parse(conclusionQuantity), i_orderPrice);
                             UpdateBuyAutoTradingDataGridState(ordernum, true);
                         }
                         else if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_SELL))
@@ -992,7 +992,7 @@ namespace Singijeon
                         {
                             if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                             {
-                                UpdateTradingStrategyBuy(ordernum, false, i_allQuantity, i_averagePrice);
+                                UpdateTradingStrategyBuy(ordernum, false, int.Parse(conclusionQuantity), i_orderPrice);
 
                                 UpdateBuyTradingItemOutstand(ordernum, int.Parse(outstanding));
                                 UpdateBuyAutoTradingDataGridState(ordernum,  false);
@@ -1070,8 +1070,10 @@ namespace Singijeon
                 coreEngine.SaveItemLogMessage(itemCode, "________________________________");
 
                 double profitRate = GetProfitRate(double.Parse(price), double.Parse(buyingPrice));
+   
+                UpdateTradingStrategyByBalance(itemCode, int.Parse(balanceQnt), int.Parse(buyingPrice));
+                
                 //잔고탭 업데이트
-
                 bool hasItem_balanceDataGrid = false;
                 foreach (DataGridViewRow row in balanceDataGrid.Rows)
                 {
@@ -1098,7 +1100,6 @@ namespace Singijeon
                     int rowIndex = balanceDataGrid.Rows.Add();
                     Hashtable uiTable = new Hashtable() { { "잔고_계좌번호", account }, { "잔고_종목코드", itemCode }, { "잔고_종목명", itemName }, { "잔고_보유수량", balanceQnt }, { "잔고_주문가능수량", orderAvailableQnt }, { "잔고_매입단가", buyingPrice }, { "잔고_총매입가", totalBuyingPrice }, { "잔고_손익률", profitRate }, { "잔고_매매구분", tradingType }, { "잔고_현재가", price } };
                     Update_BalanceDataGrid_UI(uiTable, rowIndex);
-
                 }
 
                 //기존잔고매수잔고탭 업데이트
@@ -2736,7 +2737,22 @@ namespace Singijeon
             coreEngine.SendLogMessage("마틴 게일 전략이 입력됬습니다 \n 매수조건식 : " + ts.buyCondition.Name + "\n" + " 총투자금 : " + ts.totalInvestment + "\n" + " 종목수 : " + ts.buyItemCount);
         }
 
-
+        private void UpdateTradingStrategyByBalance(string itemCode, int allQnt, int priceUpdate)
+        {
+            foreach (TradingStrategy ts in tradingStrategyList)
+            {
+                TradingItem tradeItem = ts.tradingItemList.Find(o => o.itemCode.Equals(itemCode));
+                if (tradeItem != null)
+                {
+                    tradeItem.buyingPrice = priceUpdate;
+                    tradeItem.curQnt = allQnt;
+                }
+                else
+                {
+                    coreEngine.SendLogWarningMessage("종목을 찾을 수 없습니다 : " + itemCode);
+                }
+            }
+        }
         private void UpdateTradingStrategyBuy(string orderNum, bool buyComplete, int allQnt, int priceUpdate)
         {
 
