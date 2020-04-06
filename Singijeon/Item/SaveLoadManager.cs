@@ -264,7 +264,8 @@ namespace Singijeon
                             StrategyItemName.BUY_MORE,
                             CHECK_TIMING.SELL_TIME,
                             IS_TRUE_OR_FALE_TYPE.DOWN,
-                            saved.buyMoreRate);
+                            saved.buyMoreRate,
+                            saved.buyMoreMoney);
 
                 buyMoreStrategy.OnReceivedTrData += form.OnReceiveTrDataBuyMore;
                 ts.AddTradingStrategyItemList(buyMoreStrategy);

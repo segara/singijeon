@@ -1072,7 +1072,7 @@ namespace Singijeon
                 double profitRate = GetProfitRate(double.Parse(price), double.Parse(buyingPrice));
    
                 UpdateTradingStrategyByBalance(itemCode, int.Parse(balanceQnt), int.Parse(buyingPrice));
-                
+                UpdateBuyAutoTradingDataGridState(itemCode);
                 //잔고탭 업데이트
                 bool hasItem_balanceDataGrid = false;
                 foreach (DataGridViewRow row in balanceDataGrid.Rows)
@@ -1204,7 +1204,7 @@ namespace Singijeon
         public void ReceiveSellAllClear(string itemCode, int balanceCnt, int rowIndex)
         {
             coreEngine.SendLogMessage("접수 성공");
-            if (rowIndex > -1)
+            if (rowIndex > -1 && rowIndex < accountBalanceDataGrid.RowCount)
                 accountBalanceDataGrid["계좌잔고_청산", rowIndex].Value = "청산주문접수";
 
             SettlementItem settlementItem = new SettlementItem(currentAccount, itemCode, balanceCnt);
@@ -1801,12 +1801,15 @@ namespace Singijeon
             {
                 ts.usingBuyMore = true;
                 ts.buyMoreRate = (double)BuyMorePercentUpdown.Value;
+                ts.buyMoreMoney = (int)BuyMoreValueUpdown.Value;
                 TradingStrategyItemBuyingDivide buyMoreStrategy =
                     new TradingStrategyItemBuyingDivide(
                             StrategyItemName.BUY_MORE,
                             CHECK_TIMING.SELL_TIME,
                             IS_TRUE_OR_FALE_TYPE.DOWN,
-                             ts.buyMoreRate);
+                             ts.buyMoreRate,
+                             ts.buyMoreMoney
+                             );
 
                 buyMoreStrategy.OnReceivedTrData += this.OnReceiveTrDataBuyMore;
                 ts.AddTradingStrategyItemList(buyMoreStrategy);
@@ -2424,13 +2427,14 @@ namespace Singijeon
                 item.itemName + "order 추가매수 "
             );
 
+            int buyQnt = (int)(tsItem.BuyMoney / item.curPrice);
             int orderResult = axKHOpenAPI1.SendOrder(
-                "추가매수",
+                 ConstName.SEND_ORDER_BUY,
                 GetScreenNum().ToString(),
                 item.ts.account,
                 CONST_NUMBER.SEND_ORDER_BUY,
                 item.itemCode,
-                tsItem.BuyQuantity,
+                buyQnt,
                 item.buyOrderType == ConstName.ORDER_SIJANGGA ? 0 : (int)item.curPrice,
                 item.buyOrderType,
                 "" //원주문번호없음
@@ -2746,6 +2750,7 @@ namespace Singijeon
                 {
                     tradeItem.buyingPrice = priceUpdate;
                     tradeItem.curQnt = allQnt;
+                   
                 }
                 else
                 {

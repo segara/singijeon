@@ -49,6 +49,7 @@ namespace Singijeon
 
         public bool usingBuyMore = false;
         public double buyMoreRate = 0;
+        public int buyMoreMoney = 0;
 
         public bool usingDoubleCheck = false;
         public Condition doubleCheckCondition = null;

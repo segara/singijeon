@@ -45,6 +45,7 @@ namespace Singijeon
 
         public bool usingBuyMore = false;
         public double buyMoreRate = 0;
+        public int buyMoreMoney = 0;
 
         public bool usingDoubleCheck = false;
         public Condition doubleCheckCondition = null;
@@ -478,15 +479,15 @@ namespace Singijeon
      
         public IS_TRUE_OR_FALE_TYPE checkType = IS_TRUE_OR_FALE_TYPE.SAME;
 
-        private int buyQuantity;
-        public int BuyQuantity { get { return buyQuantity; } set { buyQuantity = value; } }
+        private int buyMoney;
+        public int BuyMoney { get { return buyMoney; } set { buyMoney = value; } }
 
         private double d_conditionValue = 0;
         public double checkConditionValue { get { return d_conditionValue; } set { d_conditionValue = value; } }
 
         public event EventHandler<OnReceivedTrBuyMoreEventArgs> OnReceivedTrData;
 
-        public TradingStrategyItemBuyingDivide(string _strategyItemName, CHECK_TIMING _checkTiming, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue)
+        public TradingStrategyItemBuyingDivide(string _strategyItemName, CHECK_TIMING _checkTiming, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue, int _buyMoney)
         {
             usingStrategy = true;
 
@@ -494,6 +495,8 @@ namespace Singijeon
             strategyCheckTime = _checkTiming;
             checkType = _checkType;
             d_conditionValue = _conditionValue;
+
+            buyMoney = _buyMoney;
 
             if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
             {
@@ -514,10 +517,11 @@ namespace Singijeon
             {
                 if (OnReceivedTrData != null)
                 {
-                    Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode,"추가 물타기 주문 : " + value);
+                   Core.CoreEngine.GetInstance().SendLogMessage(item.itemCode +" 추가 물타기 주문");
+                   Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode," 추가 물타기 주문 : " + value);
 
-                    OnReceivedTrData.Invoke(this, new OnReceivedTrBuyMoreEventArgs(this, item, value));
-                    usingStrategy = false;
+                   OnReceivedTrData.Invoke(this, new OnReceivedTrBuyMoreEventArgs(this, item, value));
+                   usingStrategy = false;
                 }
             }
         }
