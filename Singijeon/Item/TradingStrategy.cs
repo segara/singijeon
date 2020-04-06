@@ -468,8 +468,8 @@ namespace Singijeon
             }
   
             tickBongInfoMgr.AddPrice(value);
-            Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "현재 : " + value);
-            Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "평균 : " + tickBongInfoMgr.curTickBong.GetAverage() + " index " + tickBongInfoMgr.curTickBong.CurSaveIndex);
+            //Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "현재 : " + value);
+            //Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "평균 : " + tickBongInfoMgr.curTickBong.GetAverage() + " index " + tickBongInfoMgr.curTickBong.CurSaveIndex);
         }
     }
     [Serializable]
