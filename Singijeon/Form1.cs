@@ -789,7 +789,8 @@ namespace Singijeon
 
                                         if (!string.IsNullOrEmpty(orderQuantity)
                                         && int.Parse(orderQuantity) > 0
-                                        && item.state >= TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
+                                        && item.state >= TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE
+                                        && item.state < TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE)
                                         {
                                             coreEngine.SaveItemLogMessage(itemCode, "uid : " + item.Uid + " 물타기 ordernum : " + ordernum);
                                             item.buyOrderNum = ordernum;

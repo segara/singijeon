@@ -54,6 +54,9 @@ namespace Singijeon
         public bool usingDoubleCheck = false;
         public Condition doubleCheckCondition = null;
 
+        public List<TradingItem> tradingItemList = new List<TradingItem>();
+        public List<string> doubleCheckItemCode = new List<string>();
+
         //매매 진행 종목 리스트
         public List<TradingItemForSave> tradingSaveItemList = new List<TradingItemForSave>();
         //public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
