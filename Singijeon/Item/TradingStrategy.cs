@@ -308,8 +308,6 @@ namespace Singijeon
             if (!usingStrategy)
                 return false;
 
-            Console.WriteLine("시작체크" + (d_startTime - DateTime.Now).Ticks);
-            Console.WriteLine("끝체크" + (d_endTime - DateTime.Now).Ticks);
             if ((d_startTime - DateTime.Now).Ticks < 0 && (d_endTime - DateTime.Now).Ticks > 0)
                 return true;
             return false;
