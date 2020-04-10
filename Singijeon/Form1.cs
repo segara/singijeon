@@ -218,10 +218,10 @@ namespace Singijeon
 
             if (e.strType.Equals(ConstName.RECEIVE_REAL_CONDITION_INSERTED))
             {
-                //coreEngine.SendLogMessage("________실시간 검색 종목_________");
-                //coreEngine.SendLogMessage("검색명 = " + conditionName);
-                //coreEngine.SendLogMessage("종목명 = " + axKHOpenAPI1.GetMasterCodeName(itemCode));
-                //coreEngine.SendLogMessage("_________________________________");
+                coreEngine.SendLogMessage("________실시간 검색 종목_________");
+                coreEngine.SendLogMessage("검색명 = " + conditionName);
+                coreEngine.SendLogMessage("종목명 = " + axKHOpenAPI1.GetMasterCodeName(itemCode));
+                coreEngine.SendLogMessage("_________________________________");
 
                 //종목 편입(어떤 전략(검색식)이었는지)
 
@@ -245,6 +245,7 @@ namespace Singijeon
                         StockItem stockItem = stockItemList.Find(o => o.Code.Equals(itemCode));
                         if (stockItem != null) //시장 종목 리스트 있는것
                         {
+                            coreEngine.SendLogMessage(conditionName + " 리스트확인 ");
                             if (ts.CheckBuyPossibleStrategyAddedItem()) //모든 구매조건을 체크
                             {
                                 //TradingItem tradeItem = ts.tradingItemList.Find(o => o.itemCode.Contains(itemCode)); //한 전략에서 구매하려했던 종목은 재편입하지 않음
@@ -1645,8 +1646,10 @@ namespace Singijeon
 
             if (usingTimeCheck)
             {
-                DateTime startDate = startTimePicker.Value;
-                DateTime endDate = endTimePicker.Value;
+                DateTime startDate =
+                    new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, startTimePicker.Value.Hour, startTimePicker.Value.Minute,0) ;
+                DateTime endDate =
+                    new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, endTimePicker.Value.Hour, endTimePicker.Value.Minute, 0);
                 TradingStrategyItemBuyTimeCheck timeBuyCheck =
                      new TradingStrategyItemBuyTimeCheck(
                              StrategyItemName.BUY_TIME_LIMIT,
@@ -2965,8 +2968,20 @@ namespace Singijeon
         }
         private void Form_FormClosing(object sender, EventArgs e)
         {
+            axKHOpenAPI1.OnEventConnect -= API_OnEventConnect; //로그인
+            axKHOpenAPI1.OnReceiveConditionVer -= API_OnReceiveConditionVer; //검색 받기
+            axKHOpenAPI1.OnReceiveRealCondition -= API_OnReceiveRealCondition; //실시간 검색
+            axKHOpenAPI1.OnReceiveTrCondition -= API_OnReceiveTrCondition; //검색
+
+            axKHOpenAPI1.OnReceiveTrData -= API_OnReceiveTrData; //정보요청
+            axKHOpenAPI1.OnReceiveTrData -= API_OnReceiveTrDataHoga; //정보요청(호가)
+            axKHOpenAPI1.OnReceiveChejanData -= API_OnReceiveChejanData; //체결잔고
+            axKHOpenAPI1.OnReceiveRealData -= API_OnReceiveRealData; //실시간정보
+            axKHOpenAPI1.OnReceiveRealData -= API_OnReceiveRealDataHoga; //실시간정보
+
             SaveLoadManager.GetInstance().SerializeStrategy(tradingStrategyList);
             SaveLoadManager.GetInstance().SerializeTrailing(trailingList);
+        
         }
 
        
