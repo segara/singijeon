@@ -71,7 +71,7 @@ namespace Singijeon
         public int CurSaveIndex { get { return curSaveIndex; } }
         double sumPrice = 0;
         double average = 0;
-
+        double lowest = 0;
         public TickBongInfo(int _saveCount)
         {
             saveCount = _saveCount;
@@ -86,13 +86,20 @@ namespace Singijeon
             }
             sumPrice += _price;
             curSaveIndex++;
-
+            if(lowest == 0 || lowest > _price)
+            {
+                lowest = _price;
+            }
             average = CalAverage();
         }
 
         public double GetAverage()
         {
             return average;
+        }
+        public double GetLowest()
+        {
+            return lowest;
         }
 
         public bool IsComplete()

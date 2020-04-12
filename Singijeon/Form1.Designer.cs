@@ -439,7 +439,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 337F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 339F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -481,7 +481,7 @@
             this.panel7.Location = new System.Drawing.Point(395, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(507, 205);
+            this.panel7.Size = new System.Drawing.Size(505, 205);
             this.panel7.TabIndex = 5;
             // 
             // useVwmaCheckBox
@@ -681,9 +681,9 @@
             this.usingTrailingBuyCheck.Location = new System.Drawing.Point(13, 103);
             this.usingTrailingBuyCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.usingTrailingBuyCheck.Name = "usingTrailingBuyCheck";
-            this.usingTrailingBuyCheck.Size = new System.Drawing.Size(330, 16);
+            this.usingTrailingBuyCheck.Size = new System.Drawing.Size(290, 16);
             this.usingTrailingBuyCheck.TabIndex = 12;
-            this.usingTrailingBuyCheck.Text = "저가 트레일링 후 시장가 매수 (트레일링 후 상승시 매수)";
+            this.usingTrailingBuyCheck.Text = "저가 트레일링 후 매수 (트레일링 후 상승시 매수)";
             this.usingTrailingBuyCheck.UseVisualStyleBackColor = true;
             // 
             // loopBuyCheck
@@ -1033,10 +1033,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(909, 3);
+            this.panel2.Location = new System.Drawing.Point(907, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(332, 205);
+            this.panel2.Size = new System.Drawing.Size(334, 205);
             this.panel2.TabIndex = 4;
             // 
             // TrailingSellCheckBox

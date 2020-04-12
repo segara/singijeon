@@ -436,10 +436,11 @@ namespace Singijeon
             if (item.startTrailingSell &&
                 item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE &&
                 item.tickBongInfoMgr.IsCompleteBong(1) &&
-                value < item.tickBongInfoMgr.GetTickBong(1).GetAverage())
+                value < item.tickBongInfoMgr.GetTickBong(1).GetLowest()) //전봉 최저가 보다 낮을시
             {
                 if (OnReceivedTrData != null)
                 {
+                    Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "1전봉 최저 : " + item.tickBongInfoMgr.GetTickBong(1).GetLowest() + " 현재 : " + value);
                     Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, "익절 주문 : " + value);
                     OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
 
