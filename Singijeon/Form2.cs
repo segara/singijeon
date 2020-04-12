@@ -37,7 +37,13 @@ namespace Singijeon {
             axKHOpenAPI1 = _axKHOpenAPI1;
             axKHOpenAPI1.OnReceiveTrData += AxKHOpenAPI_OnReceiveTrData;
 
+            this.FormClosing += Form_FormClosing;
+
             Start();
+        }
+        private void Form_FormClosing(object sender, EventArgs e)
+        {
+            
         }
         private void Start()
         {

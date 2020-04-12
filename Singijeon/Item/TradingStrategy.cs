@@ -49,7 +49,7 @@ namespace Singijeon
 
         public bool usingDoubleCheck = false;
         public Condition doubleCheckCondition = null;
-
+        public bool usingBuyCancelByTime = false; 
         //매매 진행 종목 리스트
         public List<TradingItem> tradingItemList = new List<TradingItem>();
         public List<string> doubleCheckItemCode = new List<string>();
@@ -240,9 +240,23 @@ namespace Singijeon
         }
     }
     [Serializable]
+    public class OnReceivedTrBuyCancel: EventArgs
+    {
+        public TradingStrategyItemCancelByTime strategyItem { get; set; }
+        public TradingItem tradingItem { get; set; }
+        public double checkNum { get; set; }
+        public OnReceivedTrBuyCancel(TradingStrategyItemCancelByTime tsItem, TradingItem item, double checkValue)
+        {
+            this.strategyItem = tsItem;
+            this.tradingItem = item;
+            this.checkNum = checkValue;
+        }
+    }
+    [Serializable]
     public enum CHECK_TIMING
     {
         BUY_TIME,
+        BUY_ORDER_BEFORE_CONCLUSION,
         SELL_TIME,
     }
     [Serializable]
@@ -527,6 +541,46 @@ namespace Singijeon
             }
         }
     }
+
+    [Serializable]
+    public class TradingStrategyItemCancelByTime : TradingStrategyADDItem
+    {
+
+        public IS_TRUE_OR_FALE_TYPE checkType = IS_TRUE_OR_FALE_TYPE.SAME;
+
+
+        private const double TIME_OVER_TIME = 3600000; //60MINUTE
+        private double d_conditionValue = 0;
+        public double checkConditionValue { get { return d_conditionValue; } set { d_conditionValue = value; } }
+
+        public event EventHandler<OnReceivedTrBuyCancel> OnReceivedTrData;
+
+        public TradingStrategyItemCancelByTime(string _strategyItemName, CHECK_TIMING _checkTiming, double _conditionValue)
+        {
+            usingStrategy = true;
+
+            strategyItemName = _strategyItemName;
+            strategyCheckTime = _checkTiming;
+
+            d_conditionValue = _conditionValue;
+        }
+
+        public override void CheckUpdate(TradingItem item, double value)
+        {
+            if (!usingStrategy)
+                return;
+            Console.WriteLine(item.itemName +" "+ (value - d_conditionValue).ToString());
+            if (value - d_conditionValue > TIME_OVER_TIME && item.usingBuyCancelByTime)
+            {
+                if (OnReceivedTrData != null)
+                {
+                    OnReceivedTrData.Invoke(this, new OnReceivedTrBuyCancel(this, item, value));
+                    item.usingBuyCancelByTime = false;
+
+                }
+            }
+        }
+    }
     [Serializable]
     public class TradingStrategyItemWithUpDownPercentValue : TradingStrategyADDItem
     {
@@ -538,6 +592,7 @@ namespace Singijeon
         public TradingStrategyItemWithUpDownPercentValue(string _strategyItemName, CHECK_TIMING _checkTiming, string _valueName, double _conditionValue)
         {
             usingStrategy = true;
+
             strategyItemName = _strategyItemName;
             strategyCheckTime = _checkTiming;
 
@@ -553,8 +608,8 @@ namespace Singijeon
             {
                 if (OnReceivedTrData != null)
                     OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
-
-                usingStrategy = false;
+                //usingStrategy = false;
+             
             }
 
         }

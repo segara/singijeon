@@ -287,6 +287,7 @@
             this.매매전략_손절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.buyCancelTimeCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -751,6 +752,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.buyCancelTimeCheckBox);
             this.panel1.Controls.Add(this.label27);
             this.panel1.Controls.Add(this.BuyMoreValueUpdown);
             this.panel1.Controls.Add(this.BuyMorePercentUpdown);
@@ -3035,6 +3037,17 @@
             this.매매전략_취소.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.매매전략_취소.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
+            // buyCancelTimeCheckBox
+            // 
+            this.buyCancelTimeCheckBox.AutoSize = true;
+            this.buyCancelTimeCheckBox.Location = new System.Drawing.Point(214, 143);
+            this.buyCancelTimeCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buyCancelTimeCheckBox.Name = "buyCancelTimeCheckBox";
+            this.buyCancelTimeCheckBox.Size = new System.Drawing.Size(112, 16);
+            this.buyCancelTimeCheckBox.TabIndex = 18;
+            this.buyCancelTimeCheckBox.Text = "60분후 매수취소";
+            this.buyCancelTimeCheckBox.UseVisualStyleBackColor = true;
+            // 
             // tradingStrategyGridView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -3373,6 +3386,7 @@
         private System.Windows.Forms.NumericUpDown BuyMoreValueUpdown;
         private System.Windows.Forms.NumericUpDown BuyMorePercentUpdown;
         private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.CheckBox buyCancelTimeCheckBox;
     }
 }
 

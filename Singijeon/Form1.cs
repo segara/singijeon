@@ -558,7 +558,7 @@ namespace Singijeon
                     {
                         double realProfitRate = GetProfitRate((double)c_lPrice, (double)tradeItem.buyingPrice);
 
-
+       
                         //자동 감시 주문 체크
                         if (tradeItem.state >= TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE
                             && tradeItem.state < TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE)
@@ -568,6 +568,12 @@ namespace Singijeon
                         {
                             tradeItem.ts.remainItemCount = tradeItem.ts.buyItemCount;
                         }
+                    }
+                    else
+                    {
+                        //시간체크 주문취소
+                        if (tradeItem.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE)
+                            tradeItem.ts.CheckUpdateTradingStrategyAddedItem(tradeItem, DateTime.Now.Ticks, CHECK_TIMING.BUY_ORDER_BEFORE_CONCLUSION);
                     }
                 }
 
@@ -1286,8 +1292,6 @@ namespace Singijeon
                         {
                             if (tradeItem.ui_rowItem == rowItem)
                             {
-                                
-
                                 if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE) || curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT))
                                 {
                                     //취소주문
@@ -1829,6 +1833,24 @@ namespace Singijeon
                 buyMoreStrategy.OnReceivedTrData += this.OnReceiveTrDataBuyMore;
                 ts.AddTradingStrategyItemList(buyMoreStrategy);
              
+            }
+
+            bool usingBuyCancleByTime = buyCancelTimeCheckBox.Checked; //물타기
+
+            if (usingBuyCancleByTime)
+            {
+                ts.usingBuyCancelByTime = true;
+
+                TradingStrategyItemCancelByTime buyCancelStrategy =
+                    new TradingStrategyItemCancelByTime(
+                            StrategyItemName.BUY_CANCEL_BY_TIME,
+                            CHECK_TIMING.BUY_ORDER_BEFORE_CONCLUSION,
+                            DateTime.Now.Ticks
+                             );
+
+                buyCancelStrategy.OnReceivedTrData += this.OnReceiveTrDataBuyCancelByTime;
+                ts.AddTradingStrategyItemList(buyCancelStrategy);
+
             }
 
             tradingStrategyList.Add(ts);
@@ -2465,6 +2487,16 @@ namespace Singijeon
             }
         }
 
+        public void OnReceiveTrDataBuyCancelByTime(object sender, OnReceivedTrBuyCancel e)
+        {
+            if (e.tradingItem.state.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE))
+            {
+                coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "시간 초과 매수 취소");
+                //취소주문
+                CancelBuyOrder(e.tradingItem.itemCode, e.tradingItem.buyOrderNum);
+            }
+        }
+
         public void OnReceiveTrDataCheckStopLoss(object sender, OnReceivedTrEventArgs e)
         {
             OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum);
@@ -2553,9 +2585,7 @@ namespace Singijeon
                 //주문 정정을 한다
 
                 //coreEngine.SendLogWarningMessage("주문 수량 정정 : " + item.itemName + " 수량 " + item.outStandingQnt);
-
                 //int orderResultCancel = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.outStandingQnt, (int)item.sellPrice, ConstName.ORDER_JIJUNGGA, item.sellOrderNum);
-
                 //if (orderResultCancel == 0)
                 //{
                 //    AddOrderList(item);
@@ -2566,8 +2596,7 @@ namespace Singijeon
             }
             else if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH)
             {
-                //바로 주문을 한다
-
+              //검색 -> 트레일링 에서 해당사항 체크 
             }
         }
 
@@ -2597,7 +2626,6 @@ namespace Singijeon
                         return;
                     }
                 }
-
             }
             else
             {

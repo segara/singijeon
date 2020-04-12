@@ -423,6 +423,8 @@ namespace Singijeon
                 streamWriter.WriteLine("BuyMoreCheckBox1" + ";" + BuyMoreCheckBox1.Checked);
                 streamWriter.WriteLine("BuyMorePercentUpdown" + ";" + (double)BuyMorePercentUpdown.Value);
                 streamWriter.WriteLine("BuyMoreValueUpdown" + ";" + (int)BuyMoreValueUpdown.Value);
+
+                streamWriter.WriteLine("buyCancelTimeCheckBox" + ";" + buyCancelTimeCheckBox.Checked);
             }
         }
         public void ClearSetting()
@@ -470,7 +472,7 @@ namespace Singijeon
             TrailingSellCheckBox.Checked = false;
 
             BuyMoreCheckBox1.Checked = false;
-
+            buyCancelTimeCheckBox.Checked = false;
         }
         public void LoadSetting(string settingCondition)
         {
@@ -610,6 +612,10 @@ namespace Singijeon
                             case "BuyMoreValueUpdown":
                                 BuyMoreValueUpdown.Value = (decimal)(double.Parse(strringArray[1]));
                                 break;
+                            case "buyCancelTimeCheckBox":
+                                buyCancelTimeCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+
                         }
                     }
                 }

@@ -155,5 +155,6 @@ namespace Singijeon
         public const string BUY_TIME_LIMIT = "매매시간설정";
         public const string BUY_GAP_CHECK = "갭상승추격매수";
         public const string BUY_MORE = "물타기";
+        public const string BUY_CANCEL_BY_TIME = "시간경과취소";
     }
  }
