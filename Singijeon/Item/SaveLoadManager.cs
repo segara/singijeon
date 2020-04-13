@@ -134,7 +134,7 @@ namespace Singijeon
                 }
 
                 axKHOpenAPI1.SetInputValue("종목코드", itemAdd.itemCode);
-                int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_REAL_DATA_HOGA, "opt10004", 0, form.GetScreenNum().ToString());
+                int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_REAL_DATA_HOGA, "opt10004", 0, tradingStrategyGridView.GetScreenNum().ToString());
 
                 form.SetTrailingItem(itemAdd);
 

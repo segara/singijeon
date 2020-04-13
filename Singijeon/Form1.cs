@@ -21,7 +21,7 @@ namespace Singijeon
         CoreEngine coreEngine;
         private string currentAccount = string.Empty;
         public static string account = string.Empty;
-        private int screenNum = 1000;
+        private static int screenNum = 1000;
         private string server = "0";
         public static double FEE_RATE = 1;
 
@@ -1965,7 +1965,7 @@ namespace Singijeon
             axKHOpenAPI1.SendConditionStop(_condition.ScreenNum, _condition.Name, _condition.Index);
            
         }
-        public int GetScreenNum()
+        public static int GetScreenNum()
         {
             screenNum++;
 
