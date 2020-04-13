@@ -20,7 +20,7 @@ namespace Singijeon
     {
         CoreEngine coreEngine;
         private string currentAccount = string.Empty;
-        private string account = string.Empty;
+        public static string account = string.Empty;
         private int screenNum = 1000;
         private string server = "0";
         public static double FEE_RATE = 1;

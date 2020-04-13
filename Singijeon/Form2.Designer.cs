@@ -64,6 +64,7 @@
             this.warningLogListBox = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.errorListBox = new System.Windows.Forms.ListBox();
+            this.accountRefreshBtn = new System.Windows.Forms.Button();
             this.groupBox6.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -77,12 +78,13 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.accountRefreshBtn);
             this.groupBox6.Controls.Add(this.tableLayoutPanel2);
             this.groupBox6.Location = new System.Drawing.Point(12, 11);
             this.groupBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox6.Size = new System.Drawing.Size(369, 226);
+            this.groupBox6.Size = new System.Drawing.Size(369, 260);
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "계좌정보";
@@ -285,7 +287,7 @@
             // 
             // martin_lose_txt
             // 
-            this.martin_lose_txt.Location = new System.Drawing.Point(83, 31);
+            this.martin_lose_txt.Location = new System.Drawing.Point(83, 36);
             this.martin_lose_txt.Name = "martin_lose_txt";
             this.martin_lose_txt.Size = new System.Drawing.Size(75, 18);
             this.martin_lose_txt.TabIndex = 11;
@@ -294,7 +296,7 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(3, 31);
+            this.label1.Location = new System.Drawing.Point(3, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 31);
             this.label1.TabIndex = 8;
@@ -321,7 +323,7 @@
             // 
             // martin_profit
             // 
-            this.martin_profit.Location = new System.Drawing.Point(83, 62);
+            this.martin_profit.Location = new System.Drawing.Point(83, 72);
             this.martin_profit.Name = "martin_profit";
             this.martin_profit.Size = new System.Drawing.Size(75, 18);
             this.martin_profit.TabIndex = 15;
@@ -330,7 +332,7 @@
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(3, 62);
+            this.label5.Location = new System.Drawing.Point(3, 72);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(74, 31);
             this.label5.TabIndex = 14;
@@ -339,7 +341,7 @@
             // 
             // martin_curStep_txt
             // 
-            this.martin_curStep_txt.Location = new System.Drawing.Point(83, 93);
+            this.martin_curStep_txt.Location = new System.Drawing.Point(83, 108);
             this.martin_curStep_txt.Name = "martin_curStep_txt";
             this.martin_curStep_txt.Size = new System.Drawing.Size(75, 18);
             this.martin_curStep_txt.TabIndex = 17;
@@ -348,7 +350,7 @@
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(3, 93);
+            this.label4.Location = new System.Drawing.Point(3, 108);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(74, 31);
             this.label4.TabIndex = 16;
@@ -357,7 +359,7 @@
             // 
             // martin_max_try_txt
             // 
-            this.martin_max_try_txt.Location = new System.Drawing.Point(83, 124);
+            this.martin_max_try_txt.Location = new System.Drawing.Point(83, 144);
             this.martin_max_try_txt.Name = "martin_max_try_txt";
             this.martin_max_try_txt.Size = new System.Drawing.Size(75, 18);
             this.martin_max_try_txt.TabIndex = 19;
@@ -367,7 +369,7 @@
             // label6
             // 
             this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.label6.Location = new System.Drawing.Point(3, 124);
+            this.label6.Location = new System.Drawing.Point(3, 144);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(74, 31);
             this.label6.TabIndex = 18;
@@ -381,7 +383,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(172, 226);
+            this.groupBox1.Size = new System.Drawing.Size(172, 260);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "마틴게일";
@@ -415,7 +417,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(161, 187);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(161, 221);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox2
@@ -425,7 +427,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(109, 226);
+            this.groupBox2.Size = new System.Drawing.Size(109, 260);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "마틴게일 결과";
@@ -444,10 +446,10 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(12, 242);
+            this.tabControl1.Location = new System.Drawing.Point(12, 276);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(881, 333);
+            this.tabControl1.Size = new System.Drawing.Size(881, 299);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage1
@@ -456,7 +458,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(873, 307);
+            this.tabPage1.Size = new System.Drawing.Size(873, 273);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Log";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -472,7 +474,7 @@
             this.LogListBox.ItemHeight = 12;
             this.LogListBox.Location = new System.Drawing.Point(-4, 0);
             this.LogListBox.Name = "LogListBox";
-            this.LogListBox.Size = new System.Drawing.Size(877, 304);
+            this.LogListBox.Size = new System.Drawing.Size(877, 268);
             this.LogListBox.TabIndex = 1;
             // 
             // tabPage2
@@ -520,6 +522,16 @@
             this.errorListBox.Name = "errorListBox";
             this.errorListBox.Size = new System.Drawing.Size(867, 304);
             this.errorListBox.TabIndex = 1;
+            // 
+            // accountRefreshBtn
+            // 
+            this.accountRefreshBtn.Location = new System.Drawing.Point(276, 221);
+            this.accountRefreshBtn.Name = "accountRefreshBtn";
+            this.accountRefreshBtn.Size = new System.Drawing.Size(75, 23);
+            this.accountRefreshBtn.TabIndex = 1;
+            this.accountRefreshBtn.Text = "새로고침";
+            this.accountRefreshBtn.UseVisualStyleBackColor = true;
+            this.accountRefreshBtn.Click += new System.EventHandler(this.accountRefreshBtn_Click);
             // 
             // Form2
             // 
@@ -583,5 +595,6 @@
         private System.Windows.Forms.ListBox warningLogListBox;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.ListBox errorListBox;
+        private System.Windows.Forms.Button accountRefreshBtn;
     }
 }
