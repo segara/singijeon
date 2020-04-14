@@ -447,7 +447,7 @@ namespace Singijeon
                     }
                 }
             }
-            else if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO))
+            else if (e.sRQName == (ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO))
             {
                 currentAccount = account;
 
