@@ -49,12 +49,18 @@ namespace Singijeon
                 TrailingPercentageItemForSave saveItem = new TrailingPercentageItemForSave(item, item.strategy);
                 trailingSaveList.Add(saveItem);
             }
-
-            BinaryFormatter binFmt = new BinaryFormatter();
-
-            using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_TRAIL_FILE_NAME, FileMode.Create))
+            try
             {
-                binFmt.Serialize(fs, trailingSaveList);
+                BinaryFormatter binFmt = new BinaryFormatter();
+
+                using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_TRAIL_FILE_NAME, FileMode.Create))
+                {
+                    binFmt.Serialize(fs, trailingSaveList);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
@@ -88,12 +94,19 @@ namespace Singijeon
                 TradingStrategyForSave save = new TradingStrategyForSave(item);
                 list.Add(save);
             }
-
-            BinaryFormatter binFmt = new BinaryFormatter();
-           
-            using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd")+DATA_FILE_NAME, FileMode.Create))
+            try
             {
-                binFmt.Serialize(fs, list);
+                BinaryFormatter binFmt = new BinaryFormatter();
+
+                using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_FILE_NAME, FileMode.Create))
+                {
+
+                    binFmt.Serialize(fs, list);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
         public List<TradingStrategyForSave> DeserializeStrategy()
