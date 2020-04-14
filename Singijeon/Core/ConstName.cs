@@ -22,7 +22,7 @@ namespace Singijeon
         public const string RECEIVE_TR_DATA_TICK_CHART = "틱차트조회";
         public const string RECEIVE_TR_DATA_BUY_INFO = "매수종목정보요청";
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO = "계좌평가현황요청";
-
+        public const string RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2 = "계좌평가현황요청2";
         public const string ORDER_JIJUNGGA = "00";
         public const string ORDER_SIJANGGA = "03";
 

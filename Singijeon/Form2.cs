@@ -239,7 +239,7 @@ namespace Singijeon {
 
         private void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
-            if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO))
+            if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2))
             {
                 string accountName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "계좌명");
                 string bankName = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "지점명");
@@ -360,7 +360,7 @@ namespace Singijeon {
             axKHOpenAPI1.SetInputValue("비밀번호", "");
             axKHOpenAPI1.SetInputValue("상장폐지조회구분", "0");
             axKHOpenAPI1.SetInputValue("비밀번호입력매체구분", "00");
-            axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO, "OPW00004", 0, tradingStrategyGridView.GetScreenNum().ToString());
+            axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2, "OPW00004", 0, tradingStrategyGridView.GetScreenNum().ToString());
 
         }
     }
