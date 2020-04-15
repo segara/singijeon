@@ -1276,6 +1276,16 @@ namespace Singijeon
             coreEngine.SendLogMessage("e.ColumnIndex : " + e.ColumnIndex + " e.RowIndex : " + e.RowIndex);
             if (e.RowIndex < 0)
                 return;
+            if (accountBalanceDataGrid.Columns["계좌잔고_종목코드"].Index == e.ColumnIndex)
+            {
+                string itemCode = accountBalanceDataGrid["계좌잔고_종목코드", e.RowIndex].Value.ToString().Replace("A", "");
+                Form3 chartForm = new Form3(axKHOpenAPI1);
+
+                chartForm.RequestItem(itemCode, delegate (string _itemCode)
+                {
+                    chartForm.Show();
+                }, Form3.CHART_TYPE.MINUTE_5);
+            }
             if (accountBalanceDataGrid.Columns["계좌잔고_청산"].Index == e.ColumnIndex)
             {
                 if (e.ColumnIndex >= 0 && accountBalanceDataGrid.Columns.Count >= e.ColumnIndex)

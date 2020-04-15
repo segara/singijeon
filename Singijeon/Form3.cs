@@ -15,6 +15,13 @@ namespace Singijeon
 {
     public partial class Form3 : Form
     {
+        public enum CHART_TYPE
+        {
+            NONE,
+           TICK_30,
+           MINUTE_5,
+        }
+
         public enum VWMA_CHART_STATE
         {
             NONE,
@@ -27,6 +34,8 @@ namespace Singijeon
         AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
 
         Series maSeries;
+
+        Series maSeries_EvelopeDown;
         Series maSeriesShort;
         Series vwmaSeriesShort;
         string itemcode;
@@ -47,6 +56,10 @@ namespace Singijeon
 
             maSeries = new Series("SMA");
             maSeries.ChartType = SeriesChartType.Line;
+
+            maSeries_EvelopeDown = new Series("SMA_DOWN");
+            maSeries_EvelopeDown.ChartType = SeriesChartType.Line;
+
             maSeriesShort = new Series("SMA_SHORT");
             maSeriesShort.ChartType = SeriesChartType.Line;
 
@@ -114,7 +127,7 @@ namespace Singijeon
 
         public void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
-            if(e.sRQName.Equals("틱차트조회"))
+            if(e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_TICK_CHART))
             {
                 if (candleChart.Series == null)
                     return;
@@ -186,26 +199,51 @@ namespace Singijeon
         }
 
         ReceiveAfter afterEventFunction = null;
-        public delegate void ReceiveAfter(string itemCode); 
-        public void RequestItem(string ItemCode, ReceiveAfter delFunc)
+        public delegate void ReceiveAfter(string itemCode);
+
+        public void RequestItem(string ItemCode, ReceiveAfter delFunc, CHART_TYPE typeChart = CHART_TYPE.TICK_30)
         {
             if (!string.IsNullOrEmpty(ItemCode))
             {
                 afterEventFunction = delFunc;
                 chartItemCodeTextBox.Text = ItemCode;
                 ItemName.Text = axKHOpenAPI1.GetMasterCodeName(ItemCode);
-                Task requestItemInfoTask = new Task(() =>
+
+                switch (typeChart)
                 {
-                    axKHOpenAPI1.SetInputValue("종목코드", ItemCode);
-                    axKHOpenAPI1.SetInputValue("틱범위", "30");
-                    axKHOpenAPI1.SetInputValue("수정주가구분", "0");
-                    int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_TICK_CHART, "opt10079", 0, "1080");
-                    if (result != ErrorCode.정상처리)
-                    {
-                        Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " +result.ToString());
-                    }
-                });
-                Core.CoreEngine.GetInstance().requestTrDataManager.RequestTrData(requestItemInfoTask);
+                    case  CHART_TYPE.TICK_30:
+                        Task requestItemInfoTask = new Task(() =>
+                        {
+                            axKHOpenAPI1.SetInputValue("종목코드", ItemCode);
+                            axKHOpenAPI1.SetInputValue("틱범위", "30");
+                            axKHOpenAPI1.SetInputValue("수정주가구분", "0");
+                            int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_TICK_CHART, "opt10079", 0, "1080");
+                            if (result != ErrorCode.정상처리)
+                            {
+                                Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());
+                            }
+                        });
+                        Core.CoreEngine.GetInstance().requestTrDataManager.RequestTrData(requestItemInfoTask);
+                        break;
+                    case CHART_TYPE.MINUTE_5:
+                        Task requestItemInfoTaskMinute = new Task(() =>
+                        {
+                            axKHOpenAPI1.SetInputValue("종목코드", ItemCode);
+                            axKHOpenAPI1.SetInputValue("틱범위", "5");
+                            axKHOpenAPI1.SetInputValue("수정주가구분", "0");
+                            int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_TICK_CHART, "opt10080", 0, "1080");
+                            if (result != ErrorCode.정상처리)
+                            {
+                                Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());
+                            }
+                        });
+                        Core.CoreEngine.GetInstance().requestTrDataManager.RequestTrData(requestItemInfoTaskMinute);
+                        break;
+
+                    default:
+                        break;
+                }
+              
             }
         }
    
@@ -214,6 +252,8 @@ namespace Singijeon
            
             Series priceSeries = candleChart.Series["StockCandle"];
             maSeries.Points.Clear();
+      
+            maSeries_EvelopeDown.Points.Clear();
             maSeriesShort.Points.Clear();
             for (int i = 0; i < priceSeries.Points.Count; ++i)
             {
@@ -226,6 +266,7 @@ namespace Singijeon
                     }
                     double priceAverage = priceSum / MA_PERIOD;
                     maSeries.Points.AddXY(priceSeries.Points[i].XValue, priceAverage);
+                    maSeries_EvelopeDown.Points.AddXY(priceSeries.Points[i].XValue, priceAverage * 0.96f);
                 }
                 if (i + MA_PERIOD_SHORT < priceSeries.Points.Count)
                 {
@@ -244,6 +285,12 @@ namespace Singijeon
                 candleChart.Series[maSeries.Name] = maSeries;
 
             maSeries.ChartArea = "PriceChartArea";
+
+            if (candleChart.Series.Contains(maSeries_EvelopeDown) == false)
+                candleChart.Series.Add(maSeries_EvelopeDown);
+            else
+                candleChart.Series[maSeries_EvelopeDown.Name] = maSeries_EvelopeDown;
+            maSeries_EvelopeDown.ChartArea = "PriceChartArea";
 
             if (candleChart.Series.Contains(maSeriesShort) == false)
                 candleChart.Series.Add(maSeriesShort);
