@@ -23,6 +23,7 @@ namespace Singijeon
         public const string RECEIVE_TR_DATA_BUY_INFO = "매수종목정보요청";
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO = "계좌평가현황요청";
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2 = "계좌평가현황요청2";
+        public const string RECEIVE_TR_DATA_REALTIME_NOT_CONCLUSION = "실시간미체결요청";
         public const string ORDER_JIJUNGGA = "00";
         public const string ORDER_SIJANGGA = "03";
 
@@ -72,7 +73,7 @@ namespace Singijeon
         public const string AUTO_TRADING_STATE_CLEAR_NOT_COMPLETE = "청산중";
         public const string AUTO_TRADING_STATE_CLEAR_COMPLETE = "청산완료";
 
-        public const string AUTO_TRADING_STATE_SELL_MONITORING = "매도감시";
+        public const string AUTO_TRADING_STATE_SELL_MONITORING = "잔고매도";
         public const string AUTO_TRADING_STATE_CONCLUESION_COMPLETE = "매매완료";
     }
     public class CONST_NUMBER

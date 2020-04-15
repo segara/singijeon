@@ -16,8 +16,9 @@ namespace Singijeon {
     {
         CoreEngine coreEngine;
         AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
+
         List<LogItem> logMessage = new List<LogItem>();
-      
+
         int curLogIndex = 0;
         int curWarningIndex = 0;
         int curErrorIndex   = 0;
@@ -38,6 +39,8 @@ namespace Singijeon {
             axKHOpenAPI1.OnReceiveTrData += AxKHOpenAPI_OnReceiveTrData;
 
             this.FormClosing += Form_FormClosing;
+
+            logMessage = coreEngine.logMessage;
 
             Start();
         }
@@ -119,7 +122,7 @@ namespace Singijeon {
         private void OnReceiveLogMessage(object sender, OnReceivedLogMessageEventArgs e)
         {
             logMessage.Add(new LogItem(e.Message));
-            coreEngine.SaveLogMessage(e.Message);
+            //coreEngine.SaveLogMessage(e.Message);
             if (LogListBox.InvokeRequired)
             {
                 LogListBox.Invoke(new MethodInvoker(delegate ()
@@ -147,7 +150,7 @@ namespace Singijeon {
         private void OnReceiveLogWarningMessage(object sender, OnReceivedLogMessageEventArgs e)
         {
             logMessage.Add(new LogItem(e.Message, LOG_TYPE.WARNING));
-            coreEngine.SaveLogMessage(e.Message);
+            //coreEngine.SaveLogMessage(e.Message);
 
             List<LogItem> warningItem = logMessage.FindAll(o => o.logType == LOG_TYPE.WARNING);
 
@@ -196,7 +199,7 @@ namespace Singijeon {
         private void OnReceiveLogErrorMessage(object sender, OnReceivedLogMessageEventArgs e)
         {
             logMessage.Add(new LogItem(e.Message, LOG_TYPE.ERROR));
-            coreEngine.SaveLogMessage(e.Message);
+            //coreEngine.SaveLogMessage(e.Message);
             List<LogItem> errorItem = logMessage.FindAll(o => o.logType == LOG_TYPE.ERROR);
             if (LogListBox.InvokeRequired)
             {

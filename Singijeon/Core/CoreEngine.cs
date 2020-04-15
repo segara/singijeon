@@ -22,7 +22,9 @@ namespace Singijeon.Core
         public event EventHandler<OnReceivedLogMessageEventArgs> OnReceivedLogWarningMessage; //로그 수신 시
         public event EventHandler<OnReceivedLogMessageEventArgs> OnReceivedLogErrorMessage; //로그 수신 시
         public event EventHandler<OnReceivedUserInfoEventArgs> OnReceivedUserInfo; //사용자 정보 수신 시
-       
+
+        public List<LogItem> logMessage = new List<LogItem>();
+        public Dictionary<string, string> logMessageItem = new Dictionary<string, string>();
 
         private CoreEngine()
         {
@@ -246,39 +248,76 @@ namespace Singijeon.Core
             }
         }
 
-    public void SaveItemLogMessage(string itemCode, string logMessage)
-    {
-        StackFrame callStack = new StackFrame(1, true);
-        logMessage = DateTime.Now.ToString("[HH:mm:ss] ") + logMessage + " (" + Path.GetFileName(callStack.GetFileName()) + ") line : " + callStack.GetFileLineNumber();
-        string itemName = axKHOpenAPI.GetMasterCodeName(itemCode);
-        string filePath = DateTime.Now.ToString("yyyyMMdd_") + itemName + "_log.txt";
-        FileInfo fi = new FileInfo(filePath);
-
-        try
+        public void SaveItemLogMessage(string itemCode, string logMessage)
         {
-            if (fi.Exists)
+            StackFrame callStack = new StackFrame(1, true);
+            logMessage = DateTime.Now.ToString("[HH:mm:ss] ") + logMessage + " (" + Path.GetFileName(callStack.GetFileName()) + ") line : " + callStack.GetFileLineNumber();
+            string itemName = axKHOpenAPI.GetMasterCodeName(itemCode);
+
+            if (logMessageItem.ContainsKey(itemName))
             {
-                using (StreamWriter sw = File.AppendText(filePath))
-                {
-                    sw.WriteLine(logMessage);
-                }
+                logMessageItem[itemName] += Environment.NewLine;
+                logMessageItem[itemName] += logMessage;
             }
             else
             {
-                using (StreamWriter sw = new StreamWriter(filePath))
+                logMessageItem.Add(itemName, logMessage);
+            }
+        }
+
+        public void SaveItemLogMessageAll()
+        {
+            foreach (var item in logMessageItem)
+            {
+                string filePath = DateTime.Now.ToString("yyyyMMdd_") + item.Key + "_log.txt";
+
+
+                FileInfo fi = new FileInfo(filePath);
+
+                try
                 {
-                    sw.WriteLine(logMessage);
+                    if (fi.Exists)
+                    {
+                        using (StreamWriter sw = File.AppendText(filePath))
+                        {
+                            sw.WriteLine(item.Value);
+                        }
+                    }
+                    else
+                    {
+                        using (StreamWriter sw = new StreamWriter(filePath))
+                        {
+                            sw.WriteLine(item.Value);
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    //SendLogMessage(e.Message);
                 }
             }
-
+           
         }
-        catch (Exception e)
-        {
-            SendLogMessage(e.Message);
-        }
-    }
     
-    public void SaveLogMessage(string log)
+        public void SaveAllLog()
+        {
+            List<LogItem> saveItems = new List<LogItem>();
+            foreach (var item in logMessage)
+            {
+                saveItems.Add(new LogItem(item.logTxt, item.logType));
+            
+            }
+
+            foreach (var item in saveItems)
+            {
+                SaveLogMessage(item.logTxt);
+            }
+            SaveItemLogMessageAll();
+        }
+
+        public void SaveLogMessage(string log)
         {
             string filePath = DateTime.Now.ToString("yyyyMMdd")+ Uid + "_log.txt";
             FileInfo fi = new FileInfo(filePath);
@@ -303,11 +342,9 @@ namespace Singijeon.Core
             }
             catch (Exception e)
             {
-                SendLogMessage(e.Message);
+                Console.WriteLine(e);
             }
         }
     }
-
-
 
 }

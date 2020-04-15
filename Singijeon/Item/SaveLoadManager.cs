@@ -49,6 +49,7 @@ namespace Singijeon
                 TrailingPercentageItemForSave saveItem = new TrailingPercentageItemForSave(item, item.strategy);
                 trailingSaveList.Add(saveItem);
             }
+
             try
             {
                 BinaryFormatter binFmt = new BinaryFormatter();
@@ -60,6 +61,7 @@ namespace Singijeon
             }
             catch (Exception e)
             {
+                Console.WriteLine(1);
                 Console.WriteLine(e);
             }
         }
@@ -82,6 +84,7 @@ namespace Singijeon
             }
             catch (Exception e)
             {
+                Console.WriteLine(2);
                 Console.WriteLine(e);
             }
         }
@@ -106,6 +109,7 @@ namespace Singijeon
             }
             catch (Exception e)
             {
+                Console.WriteLine(3);
                 Console.WriteLine(e);
             }
         }
@@ -126,6 +130,7 @@ namespace Singijeon
             }
             catch (Exception e)
             {
+                Console.WriteLine(4);
                 Console.WriteLine(e);
             }
             
