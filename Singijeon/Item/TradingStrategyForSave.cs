@@ -61,7 +61,8 @@ namespace Singijeon
 
         //매매 진행 종목 리스트
         public List<TradingItemForSave> tradingSaveItemList = new List<TradingItemForSave>();
-        public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
+        //복원하면서 재설정하기 때문에 저장하지 않음
+        //public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
 
         public TradingStrategyForSave(BalanceSellStrategy strategy)
         {

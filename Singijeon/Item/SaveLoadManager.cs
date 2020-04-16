@@ -288,6 +288,22 @@ namespace Singijeon
                 ts.AddTradingStrategyItemList(buyMoreStrategy);
             }
 
+            if (saved.usingBuyCancelByTime)
+            {
+                ts.usingBuyCancelByTime = true;
+
+                TradingStrategyItemCancelByTime buyCancelStrategy =
+                new TradingStrategyItemCancelByTime(
+                        StrategyItemName.BUY_CANCEL_BY_TIME,
+                        CHECK_TIMING.BUY_ORDER_BEFORE_CONCLUSION,
+                        DateTime.Now.Ticks
+                         );
+
+                buyCancelStrategy.OnReceivedTrData += form.OnReceiveTrDataBuyCancelByTime;
+                ts.AddTradingStrategyItemList(buyCancelStrategy);
+
+            }
+
             form.tradingStrategyList.Add(ts);
             form.AddStrategyToDataGridView(ts);
 

@@ -1951,7 +1951,7 @@ namespace Singijeon
              
             }
 
-            bool usingBuyCancleByTime = buyCancelTimeCheckBox.Checked; //물타기
+            bool usingBuyCancleByTime = buyCancelTimeCheckBox.Checked; 
 
             if (usingBuyCancleByTime)
             {
