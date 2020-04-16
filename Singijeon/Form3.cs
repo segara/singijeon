@@ -127,7 +127,7 @@ namespace Singijeon
 
         public void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
-            if(e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_TICK_CHART))
+            if(e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_TICK_CHART) || e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_MINUTE_CHART))
             {
                 if (candleChart.Series == null)
                     return;
@@ -231,7 +231,7 @@ namespace Singijeon
                             axKHOpenAPI1.SetInputValue("종목코드", ItemCode);
                             axKHOpenAPI1.SetInputValue("틱범위", "5");
                             axKHOpenAPI1.SetInputValue("수정주가구분", "0");
-                            int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_TICK_CHART, "opt10080", 0, "1080");
+                            int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_MINUTE_CHART, "opt10080", 0, "1080");
                             if (result != ErrorCode.정상처리)
                             {
                                 Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());

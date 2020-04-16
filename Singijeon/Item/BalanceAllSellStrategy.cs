@@ -10,7 +10,7 @@ namespace Singijeon.Item
     {
         public string itemCode;
         public string itemName;
-        public bool bSell;
+        public bool bSell = false;
         public int buyingPrice;
         public int balanceQnt;
 
