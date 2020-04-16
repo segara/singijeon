@@ -400,6 +400,7 @@ namespace Singijeon
             }
         }
     }
+    [Serializable]
     public enum IS_TRUE_OR_FALE_TYPE
     {
         UPPER,
@@ -623,7 +624,7 @@ namespace Singijeon
             return true;
         }
     }
-    
+    [Serializable]
     public class OnReceiveStrateyStateResultArgs : EventArgs
     {
         public string ItemCode { get; set; }

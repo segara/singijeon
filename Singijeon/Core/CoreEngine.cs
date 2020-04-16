@@ -309,17 +309,19 @@ namespace Singijeon.Core
                 saveItems.Add(new LogItem(item.logTxt, item.logType));
             
             }
-
+            string contents = string.Empty;
             foreach (var item in saveItems)
             {
-                SaveLogMessage(item.logTxt);
+                contents +=(item.logTxt);
+                contents += Environment.NewLine;
             }
+            SaveLogMessage(contents);
             SaveItemLogMessageAll();
         }
 
         public void SaveLogMessage(string log)
         {
-            string filePath = DateTime.Now.ToString("yyyyMMdd")+ Uid + "_log.txt";
+            string filePath = DateTime.Now.ToString("yyyyMMddmm")+ "_log.txt";
             FileInfo fi = new FileInfo(filePath);
 
             try

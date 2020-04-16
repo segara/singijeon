@@ -90,20 +90,28 @@ namespace Singijeon
             FieldInfo[] StrategySaveFieldArray = this.GetType().GetFields(flagsStrategySave);
 
 
-            foreach (FieldInfo field in fieldArray)
+            try
             {
-                foreach (FieldInfo SaveField in StrategySaveFieldArray)
+                foreach (FieldInfo field in fieldArray)
                 {
-                    if(field.Name == SaveField.Name)
+                    foreach (FieldInfo SaveField in StrategySaveFieldArray)
                     {
-                        SaveField.SetValue(this, field.GetValue(strategy));
+                        if (field.Name == SaveField.Name)
+                        {
+                            SaveField.SetValue(this, field.GetValue(strategy));
+                        }
                     }
                 }
-            }
 
-            foreach (var item in strategy.tradingItemList)
+                foreach (var item in strategy.tradingItemList)
+                {
+                    tradingSaveItemList.Add(new TradingItemForSave(item, this));
+                }
+            }
+            catch (Exception e)
             {
-                tradingSaveItemList.Add(new TradingItemForSave(item, this));
+               
+                Console.WriteLine(e);
             }
 
         }

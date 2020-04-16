@@ -103,7 +103,6 @@ namespace Singijeon
 
                 using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_FILE_NAME, FileMode.Create))
                 {
-
                     binFmt.Serialize(fs, list);
                 }
             }
