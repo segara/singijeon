@@ -55,13 +55,13 @@ namespace Singijeon
         public Condition doubleCheckCondition = null;
         public bool usingBuyCancelByTime = false;
 
-        public List<TradingItem> tradingItemList = new List<TradingItem>();
+        //public List<TradingItem> tradingItemList = new List<TradingItem>();
         public List<string> doubleCheckItemCode = new List<string>();
 
 
         //매매 진행 종목 리스트
         public List<TradingItemForSave> tradingSaveItemList = new List<TradingItemForSave>();
-        //public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
+        public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
 
         public TradingStrategyForSave(BalanceSellStrategy strategy)
         {
