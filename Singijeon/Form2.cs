@@ -23,6 +23,8 @@ namespace Singijeon {
         int curWarningIndex = 0;
         int curErrorIndex   = 0;
         int curMartinIndex = 0;
+
+        long curProfit = 0;
         Thread taskWorker;
         delegate void CrossThreadSafetyUpdate(ListBox ctl);
 
@@ -147,6 +149,7 @@ namespace Singijeon {
                 //CheckLogLength();
             }
         }
+
         private void OnReceiveLogWarningMessage(object sender, OnReceivedLogMessageEventArgs e)
         {
             logMessage.Add(new LogItem(e.Message, LOG_TYPE.WARNING));
@@ -240,6 +243,24 @@ namespace Singijeon {
             }
         }
 
+        public void AddProfit(long l_profit)
+        {
+            curProfit += l_profit;
+            coreEngine.SendLogWarningMessage("손익:"+curProfit);
+            if (profit_label.InvokeRequired)
+            {
+                profit_label.Invoke(new MethodInvoker(delegate ()
+                {
+                    profit_label.Text = string.Format("{0:n0}", curProfit);
+                }));
+            }
+            else
+            {
+                profit_label.Text = string.Format("{0:n0}", curProfit);
+            }
+         
+        }
+
         private void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
             if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2))
@@ -272,7 +293,7 @@ namespace Singijeon {
                 d2Asset_label.Text = string.Format("{0:n0}", l_d2asset);
                 estimatedAsset_label.Text = string.Format("{0:n0}", l_estimatedAsset);
                 investment_label.Text = string.Format("{0:n0}", l_investment);
-                profit_label.Text = string.Format("{0:n0}", l_profit);
+                
 
                 profitRate_label.Text = d_profitRate.ToString();
             }

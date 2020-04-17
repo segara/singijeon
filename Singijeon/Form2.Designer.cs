@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.accountRefreshBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.asset_label = new System.Windows.Forms.Label();
             this.d2Asset_label = new System.Windows.Forms.Label();
@@ -64,7 +65,6 @@
             this.warningLogListBox = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.errorListBox = new System.Windows.Forms.ListBox();
-            this.accountRefreshBtn = new System.Windows.Forms.Button();
             this.groupBox6.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -89,6 +89,16 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "계좌정보";
             // 
+            // accountRefreshBtn
+            // 
+            this.accountRefreshBtn.Location = new System.Drawing.Point(276, 221);
+            this.accountRefreshBtn.Name = "accountRefreshBtn";
+            this.accountRefreshBtn.Size = new System.Drawing.Size(75, 23);
+            this.accountRefreshBtn.TabIndex = 1;
+            this.accountRefreshBtn.Text = "새로고침";
+            this.accountRefreshBtn.UseVisualStyleBackColor = true;
+            this.accountRefreshBtn.Click += new System.EventHandler(this.accountRefreshBtn_Click);
+            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
@@ -98,7 +108,6 @@
             this.tableLayoutPanel2.Controls.Add(this.d2Asset_label, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.estimatedAsset_label, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.investment_label, 1, 3);
-            this.tableLayoutPanel2.Controls.Add(this.profit_label, 1, 4);
             this.tableLayoutPanel2.Controls.Add(this.profitRate_label, 1, 5);
             this.tableLayoutPanel2.Controls.Add(this.label10, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.label11, 0, 1);
@@ -106,6 +115,7 @@
             this.tableLayoutPanel2.Controls.Add(this.label13, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.label14, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.label15, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.profit_label, 1, 4);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(18, 21);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -483,7 +493,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(873, 307);
+            this.tabPage2.Size = new System.Drawing.Size(873, 273);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Warning";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -506,7 +516,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(873, 307);
+            this.tabPage3.Size = new System.Drawing.Size(873, 273);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Error";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -522,16 +532,6 @@
             this.errorListBox.Name = "errorListBox";
             this.errorListBox.Size = new System.Drawing.Size(867, 304);
             this.errorListBox.TabIndex = 1;
-            // 
-            // accountRefreshBtn
-            // 
-            this.accountRefreshBtn.Location = new System.Drawing.Point(276, 221);
-            this.accountRefreshBtn.Name = "accountRefreshBtn";
-            this.accountRefreshBtn.Size = new System.Drawing.Size(75, 23);
-            this.accountRefreshBtn.TabIndex = 1;
-            this.accountRefreshBtn.Text = "새로고침";
-            this.accountRefreshBtn.UseVisualStyleBackColor = true;
-            this.accountRefreshBtn.Click += new System.EventHandler(this.accountRefreshBtn_Click);
             // 
             // Form2
             // 

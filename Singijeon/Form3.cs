@@ -47,6 +47,12 @@ namespace Singijeon
         public double gapPercent = 0;
         public double VPCI = 0;
 
+        double evelopeValue = 0.96;
+        const double MA_4_PERCENT = 0.96;
+        const double MA_3_PERCENT = 0.97;
+
+        CHART_TYPE curTypeChart = CHART_TYPE.MINUTE_5;
+
         public Form3(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1)
         {
             axKHOpenAPI1 = _axKHOpenAPI1;
@@ -59,6 +65,8 @@ namespace Singijeon
 
             maSeries_EvelopeDown = new Series("SMA_DOWN");
             maSeries_EvelopeDown.ChartType = SeriesChartType.Line;
+            maSeries_EvelopeDown.Color = Color.Black;
+
 
             maSeriesShort = new Series("SMA_SHORT");
             maSeriesShort.ChartType = SeriesChartType.Line;
@@ -192,7 +200,7 @@ namespace Singijeon
             if (axKHOpenAPI1.GetConnectState() == 1)
             {
                 string itemCode = chartItemCodeTextBox.Text;
-                RequestItem(itemCode, null);
+                RequestItem(itemCode, null, curTypeChart);
             }
             else
                 MessageBox.Show("로그인해주세요");
@@ -266,7 +274,7 @@ namespace Singijeon
                     }
                     double priceAverage = priceSum / MA_PERIOD;
                     maSeries.Points.AddXY(priceSeries.Points[i].XValue, priceAverage);
-                    maSeries_EvelopeDown.Points.AddXY(priceSeries.Points[i].XValue, priceAverage * 0.96f);
+                    maSeries_EvelopeDown.Points.AddXY(priceSeries.Points[i].XValue, priceAverage * evelopeValue);
                 }
                 if (i + MA_PERIOD_SHORT < priceSeries.Points.Count)
                 {
@@ -492,6 +500,26 @@ namespace Singijeon
 
             if(afterEventFunction != null)
                 afterEventFunction.Invoke(itemcode);
+        }
+
+        private void Envel4RadioBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            evelopeValue = MA_4_PERCENT;
+        }
+
+        private void Envel3RadioBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            evelopeValue = MA_3_PERCENT;
+        }
+
+        private void Tick_30_tick_CheckedChanged(object sender, EventArgs e)
+        {
+            curTypeChart = CHART_TYPE.TICK_30;
+        }
+
+        private void Tick_5_minute_CheckedChanged(object sender, EventArgs e)
+        {
+            curTypeChart = CHART_TYPE.MINUTE_5;
         }
     }
 }

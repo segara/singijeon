@@ -25,6 +25,8 @@ namespace Singijeon
         private string server = "0";
         public static double FEE_RATE = 1;
 
+        Form2 printForm2;
+
         List<Condition> listCondition = new List<Condition>();
         
         public List<TradingStrategy> tradingStrategyList = new List<TradingStrategy>();
@@ -1352,16 +1354,7 @@ namespace Singijeon
             coreEngine.SendLogMessage("e.ColumnIndex : " + e.ColumnIndex + " e.RowIndex : " + e.RowIndex);
             if (e.RowIndex < 0)
                 return;
-            if(autoTradingDataGrid.Columns["매매진행_종목코드"].Index == e.ColumnIndex)
-            {
-                string itemCode = autoTradingDataGrid["매매진행_종목코드", e.RowIndex].Value.ToString().Replace("A", "");
-                Form3 chartForm = new Form3(axKHOpenAPI1);
-               
-                chartForm.RequestItem(itemCode, delegate(string _itemCode)
-                {
-                    chartForm.Show();
-                });
-            }
+          
             if (autoTradingDataGrid.Columns["매매진행_취소"].Index == e.ColumnIndex)
             {
                 if (e.ColumnIndex >= 0 && autoTradingDataGrid.Columns.Count >= e.ColumnIndex)
@@ -1503,7 +1496,9 @@ namespace Singijeon
                                 trailingList.Remove(trailingItem);
                             }
                         }
-                        
+
+                        StopMonitoring(ts.buyCondition);
+
                         tradingStrategyList.Remove(ts);
                         tsDataGridView.Rows.RemoveAt(e.RowIndex);
                         string removeKey = string.Empty;
@@ -1512,10 +1507,14 @@ namespace Singijeon
                             if(((TradingStrategy)item) == ts)
                             {
                                 removeKey = ts.doubleCheckCondition.Name;
+                                StopMonitoring(ts.doubleCheckCondition);
                             }
                         }
                         if (!string.IsNullOrEmpty(removeKey))
+                        {
                             doubleCheckHashTable.Remove(removeKey);
+                        }
+                           
                     }
                 }
             }
@@ -2047,7 +2046,7 @@ namespace Singijeon
 
         private void OpenSecondWindow()
         {
-            Form2 printForm2 = new Form2(axKHOpenAPI1);
+            printForm2 = new Form2(axKHOpenAPI1);
             printForm2.Show();
         }
 
@@ -2178,6 +2177,7 @@ namespace Singijeon
                 coreEngine.SaveItemLogMessage(item.itemCode, "ui -> 매도주문접수시도");
                 UpdateAutoTradingDataGridRow(item.itemCode, item, item.curPrice, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                 UpdateAutoTradingDataGridRowWinLose(item.itemCode, item, "win");
+                printForm2.AddProfit((item.curPrice - item.buyingPrice) * item.curQnt);
             }
             else
             {
@@ -2647,7 +2647,6 @@ namespace Singijeon
                 }
             }
 
-           
             if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 return;
 
@@ -2678,6 +2677,7 @@ namespace Singijeon
                 coreEngine.SaveItemLogMessage(item.itemCode, "ui -> 매도주문접수시도");
                 UpdateAutoTradingDataGridRow(item.itemCode, item, item.curPrice, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                 UpdateAutoTradingDataGridRowWinLose(item.itemCode, item, "lose");
+                printForm2.AddProfit((item.curPrice - item.buyingPrice) * item.curQnt);
             }
             else
             {
