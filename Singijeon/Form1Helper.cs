@@ -311,7 +311,7 @@ namespace Singijeon
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.sellOrderNum.Equals(orderNum));
                 if (tradeItem != null)
                 {
-                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = TradingItem.StateToString( tradeItem.state);
+                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = TradingItem.StateToString(tradeItem.state);
                     tradeItem.GetUiConnectRow().Cells["매매진행_매도가"].Value = conclusionPrice;
                     tradeItem.GetUiConnectRow().Cells["매매진행_매도시간"].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 }
@@ -425,6 +425,15 @@ namespace Singijeon
                 streamWriter.WriteLine("BuyMoreValueUpdown" + ";" + (int)BuyMoreValueUpdown.Value);
 
                 streamWriter.WriteLine("buyCancelTimeCheckBox" + ";" + buyCancelTimeCheckBox.Checked);
+
+                streamWriter.WriteLine("DivideSellLossCheckBox" + ";" + DivideSellLossCheckBox.Checked);
+                streamWriter.WriteLine("divideRatePercentLoss" + ";" + (double)divideRatePercentLoss.Value);
+                streamWriter.WriteLine("divideSellPercentLoss" + ";" + (double)divideSellPercentLoss.Value);
+
+                streamWriter.WriteLine("DivideSellProfitCheckBox" + ";" + DivideSellProfitCheckBox.Checked);
+                streamWriter.WriteLine("divideRatePercentProfit" + ";" + (double)divideRatePercentProfit.Value);
+                streamWriter.WriteLine("divideSellPercentProfit" + ";" + (double)divideSellPercentProfit.Value);
+
             }
         }
         public void ClearSetting()
@@ -473,6 +482,14 @@ namespace Singijeon
 
             BuyMoreCheckBox1.Checked = false;
             buyCancelTimeCheckBox.Checked = false;
+
+            DivideSellLossCheckBox.Checked = false;
+            divideRatePercentLoss.Value = divideRatePercentLoss.Maximum;
+            divideSellPercentLoss.Value = divideSellPercentLoss.Minimum;
+
+            DivideSellProfitCheckBox.Checked = false;
+            divideRatePercentProfit.Value = divideRatePercentProfit.Minimum;
+            divideSellPercentProfit.Value = divideSellPercentProfit.Minimum;
         }
         public void LoadSetting(string settingCondition)
         {
@@ -615,7 +632,24 @@ namespace Singijeon
                             case "buyCancelTimeCheckBox":
                                 buyCancelTimeCheckBox.Checked = bool.Parse(strringArray[1]);
                                 break;
-
+                            case "DivideSellLossCheckBox":
+                                DivideSellLossCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "divideRatePercentLoss":
+                                divideRatePercentLoss.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "divideSellPercentLoss":
+                                divideSellPercentLoss.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "DivideSellProfitCheckBox":
+                                DivideSellProfitCheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "divideRatePercentProfit":
+                                divideRatePercentProfit.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "divideSellPercentProfit":
+                                divideSellPercentProfit.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
                         }
                     }
                 }

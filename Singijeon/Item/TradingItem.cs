@@ -73,7 +73,6 @@ namespace Singijeon
         public bool usingDivideSellProfit = false;
         public bool usingDivideSellLoss = false;
 
-
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
         public TradingItem()

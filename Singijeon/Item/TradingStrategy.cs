@@ -60,6 +60,7 @@ namespace Singijeon
         public double divideStoplossRate = 0; //손절률2
         public double divideSellProfitPercentage = 1; //익절률2 매도 퍼센테지
         public double divideSellLossPercentage = 1; //손절률2 매도 퍼센테지
+
         public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
         
         public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveCondition; //종목 검색시

@@ -317,12 +317,30 @@ namespace Singijeon
                             saved.divideStoplossRate);
 
                 divideStopLossStrategy.OnReceivedTrData += form.OnReceiveTrDataCheckStopLossDivide;
-                ts.useDivideSellLoss = true;
+
                 ts.AddTradingStrategyItemList(divideStopLossStrategy);
                 ts.divideStoplossRate = saved.divideStoplossRate;
                 ts.divideSellLossPercentage = (saved.divideSellLossPercentage);
-                
-                ts.AddTradingStrategyItemList(divideStopLossStrategy);
+
+            }
+
+            if (saved.useDivideSellProfit)
+            {
+                ts.useDivideSellProfit = true;
+
+                TradingStrategyItemWithUpDownValue divideProfitStrategy = null;
+                divideProfitStrategy =
+                    new TradingStrategyItemWithUpDownValue(
+                            StrategyItemName.STOPLOSS_SELL,
+                            CHECK_TIMING.SELL_TIME,
+                            IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
+                            saved.divideTakeProfitRate);
+
+                divideProfitStrategy.OnReceivedTrData += form.OnReceiveTrDataCheckProfitDivide;
+      
+                ts.AddTradingStrategyItemList(divideProfitStrategy);
+                ts.divideStoplossRate = saved.divideTakeProfitRate;
+                ts.divideSellLossPercentage = (saved.divideSellProfitPercentage);
 
             }
 
