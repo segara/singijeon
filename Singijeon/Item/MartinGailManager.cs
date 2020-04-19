@@ -45,7 +45,7 @@ namespace Singijeon
     {
         private static MartinGailManager martinInstance;
 
-        public const int MARTIN_MAX_STEP = 3;
+        public int MARTIN_MAX_STEP = 4;
 
         List<string> todayAllCode = new List<string>();
         List<MartinGailItem> todayAllItems = new List<MartinGailItem>();
@@ -165,7 +165,6 @@ namespace Singijeon
 
         private void OnReceiveConditionResult(object sender, OnReceiveStrateyStateResultArgs e)
         {
-
             Item = new MartinGailItem();
            
             Item.itemState = e.State;

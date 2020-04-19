@@ -600,6 +600,9 @@ namespace Singijeon
             {
                 foreach(var item in balanceSelectedItemList)
                 {
+                    if (item.itemCode.Contains(itemCode.Replace("A","")) == false)
+                        continue;
+
                     if (item.bSell)
                         continue;
 
@@ -627,7 +630,9 @@ namespace Singijeon
                         {
                             coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 익절 매도주문접수시도");
                             item.bSell = true;
-                            //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
+                            
+                            coreEngine.SendLogMessage("ui -> 매도주문접수시도");
+                            UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                         }
                         else
                         {
@@ -651,7 +656,9 @@ namespace Singijeon
                         {
                             coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 손절 매도주문접수시도");
                             item.bSell = true;
-                            //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
+                       
+                            coreEngine.SendLogMessage("ui -> 매도주문접수시도");
+                            UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                         }
                         else
                         {
@@ -2939,6 +2946,9 @@ namespace Singijeon
                 ts.trailTickValue = 30;
             }
 
+          
+
+
             double takeProfitRate = (double)M_SellUpdown.Value;
 
             TradingStrategyItemWithUpDownValue takeProfitStrategy =
@@ -2953,7 +2963,7 @@ namespace Singijeon
             ts.AddTradingStrategyItemList(takeProfitStrategy);
             ts.takeProfitRate = takeProfitRate;
 
-            double stopLossRate = (double)M_SellUpdown.Value * -1;
+            double stopLossRate = (double)M_SellUpdownLoss.Value;
 
             TradingStrategyItemWithUpDownValue stopLossStrategy =
                 new TradingStrategyItemWithUpDownValue(
@@ -2977,7 +2987,15 @@ namespace Singijeon
             AddStrategyToDataGridView(ts);
             StartMonitoring(ts.buyCondition);
 
-            MartinGailManager.GetInstance().SetMartinStrategy(ts, MartinGailManager.MARTIN_MAX_STEP);
+            int martinMaxStep = (int)MartinStepUpDown.Value;
+            if (martinMaxStep <= 0)
+            {
+                MessageBox.Show("스텝단위를 선택해주세요");
+                return;
+            }
+            MartinGailManager.GetInstance().MARTIN_MAX_STEP = martinMaxStep;
+
+            MartinGailManager.GetInstance().SetMartinStrategy(ts, martinMaxStep);
             SaveSetting(conditionName);
             coreEngine.SendLogMessage("마틴 게일 전략이 입력됬습니다 \n 매수조건식 : " + ts.buyCondition.Name + "\n" + " 총투자금 : " + ts.totalInvestment + "\n" + " 종목수 : " + ts.buyItemCount);
         }

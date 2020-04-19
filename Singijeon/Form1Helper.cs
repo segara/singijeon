@@ -411,6 +411,7 @@ namespace Singijeon
                 streamWriter.WriteLine("M_waitTimeUpdown" + ";" + (int)M_waitTimeUpdown.Value);
 
                 streamWriter.WriteLine("M_SellUpdown" + ";" + (double)M_SellUpdown.Value);
+                streamWriter.WriteLine("M_SellUpdownLoss" + ";" + (double)M_SellUpdownLoss.Value);
 
                 streamWriter.WriteLine("m_useVwmaCheckBox" + ";" + m_useVwmaCheckBox.Checked);
                 streamWriter.WriteLine("marketPriceRadioBtn" + ";" + marketPriceRadioBtn.Checked);
@@ -529,6 +530,9 @@ namespace Singijeon
                                 break;
                             case "M_SellUpdown":
                                 M_SellUpdown.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "M_SellUpdownLoss":
+                                M_SellUpdownLoss.Value = (decimal)(double.Parse(strringArray[1]));
                                 break;
                             case "m_useVwmaCheckBox":
                                 m_useVwmaCheckBox.Checked = bool.Parse(strringArray[1]);
