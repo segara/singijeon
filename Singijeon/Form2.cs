@@ -78,7 +78,7 @@ namespace Singijeon {
                 martin_curStep_txt.Invoke(new MethodInvoker(delegate ()
                 {
                     martin_curStep_txt.Text = MartinGailManager.GetInstance().StepInner.ToString();
-                    martin_max_try_txt.Text = MartinGailManager.MARTIN_MAX_STEP.ToString();
+                    martin_max_try_txt.Text = MartinGailManager.GetInstance().MARTIN_MAX_STEP.ToString();
 
                     martin_win_txt.Text = MartinGailManager.GetInstance().WinCnt.ToString();
                     martin_lose_txt.Text = MartinGailManager.GetInstance().LoseCnt.ToString();
@@ -100,7 +100,7 @@ namespace Singijeon {
             else
             {
                 martin_curStep_txt.Text = MartinGailManager.GetInstance().StepInner.ToString();
-                martin_max_try_txt.Text = MartinGailManager.MARTIN_MAX_STEP.ToString();
+                martin_max_try_txt.Text = MartinGailManager.GetInstance().MARTIN_MAX_STEP.ToString();
 
                 martin_win_txt.Text = MartinGailManager.GetInstance().WinCnt.ToString();
                 martin_lose_txt.Text = MartinGailManager.GetInstance().LoseCnt.ToString();
