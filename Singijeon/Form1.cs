@@ -976,9 +976,7 @@ namespace Singijeon
                     Update_OrderDataGrid_UI(uiOrderTable, rowIndex);
 
                     //미체결 처리
-                     if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_SUBMIT) &&
-                         (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL) || orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_SELL))
-                        )
+                    
                     {
                         coreEngine.SendLogWarningMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " 미체결처리");
                         int index = outstandingDataGrid.Rows.Add();
