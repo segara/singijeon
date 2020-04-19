@@ -54,6 +54,12 @@ namespace Singijeon
         public List<TradingItem> tradingItemList = new List<TradingItem>();
         public List<string> doubleCheckItemCode = new List<string>();
 
+        public bool useDivideSellProfit = false;
+        public bool useDivideSellLoss = false;
+        public double divideTakeProfitRate = 0; //익절률2
+        public double divideStoplossRate = 0; //손절률2
+        public double divideSellProfitPercentage = 1; //익절률2 매도 퍼센테지
+        public double divideSellLossPercentage = 1; //손절률2 매도 퍼센테지
         public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
         
         public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveCondition; //종목 검색시
@@ -570,14 +576,13 @@ namespace Singijeon
         {
             if (!usingStrategy)
                 return;
-            Console.WriteLine(item.itemName +" "+ (value - d_conditionValue).ToString());
+            Console.WriteLine(item.itemName +" "+ TimeSpan.FromTicks((long)(value - d_conditionValue)).TotalSeconds.ToString());
             if (value - d_conditionValue > TIME_OVER_TIME && item.usingBuyCancelByTime)
             {
                 if (OnReceivedTrData != null)
                 {
                     OnReceivedTrData.Invoke(this, new OnReceivedTrBuyCancel(this, item, value));
                     item.usingBuyCancelByTime = false;
-
                 }
             }
         }

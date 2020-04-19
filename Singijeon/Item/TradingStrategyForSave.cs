@@ -54,13 +54,18 @@ namespace Singijeon
         public bool usingDoubleCheck = false;
         public Condition doubleCheckCondition = null;
         public bool usingBuyCancelByTime = false;
-
+        //매매 진행 종목 리스트
+        public List<TradingItemForSave> tradingSaveItemList = new List<TradingItemForSave>();
         //public List<TradingItem> tradingItemList = new List<TradingItem>();
         public List<string> doubleCheckItemCode = new List<string>();
 
+        public bool useDivideSellProfit = false;
+        public bool useDivideSellLoss = false;
+        public double divideTakeProfitRate = 0; //익절률2
+        public double divideStoplossRate = 0; //손절률2
+        public double divideSellProfitPercentage = 0; //익절률2 매도 퍼센테지
+        public double divideSellLossPercentage = 0; //손절률2 매도 퍼센테지
 
-        //매매 진행 종목 리스트
-        public List<TradingItemForSave> tradingSaveItemList = new List<TradingItemForSave>();
         //복원하면서 재설정하기 때문에 저장하지 않음
         //public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
 

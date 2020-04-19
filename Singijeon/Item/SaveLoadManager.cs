@@ -304,6 +304,28 @@ namespace Singijeon
 
             }
 
+            if (saved.useDivideSellLoss)
+            {
+                ts.useDivideSellLoss = true;
+
+                TradingStrategyItemWithUpDownValue divideStopLossStrategy = null;
+                divideStopLossStrategy =
+                    new TradingStrategyItemWithUpDownValue(
+                            StrategyItemName.STOPLOSS_SELL,
+                            CHECK_TIMING.SELL_TIME,
+                            IS_TRUE_OR_FALE_TYPE.DOWN,
+                            saved.divideStoplossRate);
+
+                divideStopLossStrategy.OnReceivedTrData += form.OnReceiveTrDataCheckStopLossDivide;
+                ts.useDivideSellLoss = true;
+                ts.AddTradingStrategyItemList(divideStopLossStrategy);
+                ts.divideStoplossRate = saved.divideStoplossRate;
+                ts.divideSellLossPercentage = (saved.divideSellLossPercentage);
+                
+                ts.AddTradingStrategyItemList(divideStopLossStrategy);
+
+            }
+
             form.tradingStrategyList.Add(ts);
             form.AddStrategyToDataGridView(ts);
 

@@ -50,6 +50,9 @@ namespace Singijeon
         public bool useBuyMore = true;
         public bool usingBuyCancelByTime = true;
 
+        public bool usingDivideSellProfit = false;
+        public bool usingDivideSellLoss = false;
+
         public TradingItemForSave()
         {
 

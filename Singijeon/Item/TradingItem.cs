@@ -69,6 +69,11 @@ namespace Singijeon
         public bool startTrailingSell = false;
         public bool useBuyMore = true;
         public bool usingBuyCancelByTime = true;
+
+        public bool usingDivideSellProfit = false;
+        public bool usingDivideSellLoss = false;
+
+
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
         public TradingItem()
