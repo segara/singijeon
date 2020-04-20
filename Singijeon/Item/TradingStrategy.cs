@@ -427,8 +427,6 @@ namespace Singijeon
        
         public double checkConditionValue { get { return d_conditionValue; } set { d_conditionValue = value; } }
 
-        
-
         public event EventHandler<OnReceivedTrEventArgs> OnReceivedTrData;
 
         public TradingStrategyItemWithTrailingStopValue(string _strategyItemName, CHECK_TIMING _checkTiming, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue)

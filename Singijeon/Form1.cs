@@ -1008,7 +1008,7 @@ namespace Singijeon
                             UpdateTradingStrategySellData(ordernum, i_unitConclusionQuantity, int.Parse(outstanding));
                             UpdateSellAutoTradingDataGridStatePrice(ordernum, conclusionPrice);
 
-                            printForm2.AddProfit((int.Parse(conclusionPrice) - i_averagePrice) * i_unitConclusionQuantity);
+                            //printForm2.AddProfit((int.Parse(conclusionPrice) - i_averagePrice) * i_unitConclusionQuantity);
 
                             CheckBSS_Sell(ordernum, conclusionPrice); //bss 체크
                             CheckSettle_Sell(ordernum); //청산 체크
@@ -2198,8 +2198,15 @@ namespace Singijeon
         }
         public void OnReceiveTrDataCheckProfitDivide(object sender, OnReceivedTrEventArgs e)
         {
-            coreEngine.SaveItemLogMessage(e.tradingItem.itemCode,"분할 익절 주문 실행");
-            OnReceiveTrDataCheckProfitSell(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellProfitPercentage);
+            if(e.tradingItem.usingDivideSellProfit)
+            {
+                coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 익절 주문 실행");
+                OnReceiveTrDataCheckProfitSell(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellProfitPercentage);
+                if(e.tradingItem.usingDivideSellProfitLoop == false)
+                {
+                    e.tradingItem.usingDivideSellProfit = false;
+                }
+            }
         }
         public void OnReceiveTrDataCheckProfitSell(TradingItem item, double checkValue, double sellPercentage = 1)
         {
@@ -2268,7 +2275,92 @@ namespace Singijeon
             }
            
         }
+        public void OnReceiveTrDataCheckStopLoss(object sender, OnReceivedTrEventArgs e)
+        {
+            OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum);
+        }
 
+        public void OnReceiveTrDataCheckStopLossDivide(object sender, OnReceivedTrEventArgs e)
+        {
+         
+            if (e.tradingItem.usingDivideSellLoss)
+            {
+                coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행");
+                OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellLossPercentage);
+                if( e.tradingItem.usingDivideSellLossLoop == false)
+                {
+                    e.tradingItem.usingDivideSellLoss = false;
+                    //손절 1회 실행
+                }
+            }
+        }
+
+        public void OnReceiveTrDataCheckStopLoss(TradingItem item, double checkValue, double sellPercentage = 1)
+        {
+            if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE
+                || item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT)
+            {
+                if (item.IsProfitSell())
+                {
+                    //취소주문(익절주문취소)
+                    coreEngine.SaveItemLogMessage(item.itemCode, "익절주문취소 : " + item.itemName + " 수량 " + item.curQnt);
+                    int orderResultCancel = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
+
+                    if (orderResultCancel == 0)
+                    {
+                        AddOrderList(item);
+                        item.SetSellCancelOrder();
+                        coreEngine.SaveItemLogMessage(item.itemCode, "취소 접수 성공");
+                        autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
+
+                        return;
+                    }
+                }
+                else
+                {
+                    coreEngine.SaveItemLogMessage(item.itemCode, "기존 손절주문확인 : " + item.itemName + " 수량 " + item.outStandingQnt);
+                    //같은 손절 주문이면 아무것도 안함
+                    return;
+                }
+            }
+
+            if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
+                return;
+
+            item.SetSellOrderType(false);
+
+            coreEngine.SaveItemLogMessage(item.itemCode,
+               item.itemName + "order 종목손절매도 " +
+               " 수량: " + item.curQnt +
+               " 주문가: " + item.curPrice +
+               " 주문구분: " + item.sellOrderType
+            );
+            int orderQnt = (int)((double)item.curQnt * sellPercentage);
+            int orderResult = axKHOpenAPI1.SendOrder(
+                "종목손절매도",
+                GetScreenNum().ToString(),
+                item.ts.account,
+                CONST_NUMBER.SEND_ORDER_SELL,
+                item.itemCode,
+                (orderQnt <= 0) ? item.curQnt : orderQnt,
+                item.sellOrderType == ConstName.ORDER_SIJANGGA ? 0 : (int)item.curPrice,
+                item.sellOrderType,
+                "" //원주문번호없음
+            );
+            if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
+            {
+                AddOrderList(item);
+                item.SetSold(false);
+                coreEngine.SaveItemLogMessage(item.itemCode, "ui -> 손절 매도주문접수시도");
+                UpdateAutoTradingDataGridRow(item.itemCode, item, item.curPrice, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
+                UpdateAutoTradingDataGridRowWinLose(item.itemCode, item, "lose");
+                //printForm2.AddProfit((item.curPrice - item.buyingPrice) * item.curQnt);
+            }
+            else
+            {
+                coreEngine.SaveItemLogMessage(item.itemCode, "자동 손절 요청 실패");
+            }
+        }
         private void API_OnReceiveTrDataHoga(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
             //coreEngine.SendLogMessage(e.sRQName);
@@ -2696,86 +2788,7 @@ namespace Singijeon
             }
         }
 
-        public void OnReceiveTrDataCheckStopLoss(object sender, OnReceivedTrEventArgs e)
-        {
-            OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum);
-        }
-
-        public void OnReceiveTrDataCheckStopLossDivide(object sender, OnReceivedTrEventArgs e)
-        {
-            coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행");
-
-            OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellLossPercentage);
-            e.tradingItem.ts.RemoveTradingStrategyItemList(StrategyItemName.STOPLOSS_DIVIDE_SELL);
-            //손절 1회 실행
-        }
-
-        public void OnReceiveTrDataCheckStopLoss(TradingItem item, double checkValue, double sellPercentage = 1)
-        {
-            if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE
-                || item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT)
-            {
-                if (item.IsProfitSell())
-                {
-                    //취소주문(익절주문취소)
-                    coreEngine.SaveItemLogMessage(item.itemCode, "익절주문취소 : " + item.itemName + " 수량 " + item.curQnt);
-                    int orderResultCancel = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
-
-                    if (orderResultCancel == 0)
-                    {
-                        AddOrderList(item);
-                        item.SetSellCancelOrder();
-                        coreEngine.SaveItemLogMessage(item.itemCode, "취소 접수 성공");
-                        autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
-                        
-                        return;
-                    }
-                }
-                else
-                {
-                    coreEngine.SaveItemLogMessage(item.itemCode, "기존 손절주문확인 : " + item.itemName + " 수량 " + item.outStandingQnt);
-                    //같은 손절 주문이면 아무것도 안함
-                    return;
-                }
-            }
-
-            if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
-                return;
-
-            item.SetSellOrderType(false);
-
-            coreEngine.SaveItemLogMessage(item.itemCode,
-               item.itemName + "order 종목손절매도 " +
-               " 수량: " + item.curQnt +
-               " 주문가: " + item.curPrice +
-               " 주문구분: " + item.sellOrderType
-            );
-            int orderQnt = (int)((double)item.curQnt * sellPercentage);
-            int orderResult = axKHOpenAPI1.SendOrder(
-                "종목손절매도",
-                GetScreenNum().ToString(),
-                item.ts.account,
-                CONST_NUMBER.SEND_ORDER_SELL,
-                item.itemCode,
-                (orderQnt <= 0) ? item.curQnt : orderQnt,
-                item.sellOrderType == ConstName.ORDER_SIJANGGA ? 0 : (int)item.curPrice,
-                item.sellOrderType,
-                "" //원주문번호없음
-            );
-            if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
-            {
-                AddOrderList(item);
-                item.SetSold(false);
-                coreEngine.SaveItemLogMessage(item.itemCode, "ui -> 손절 매도주문접수시도");
-                UpdateAutoTradingDataGridRow(item.itemCode, item, item.curPrice, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
-                UpdateAutoTradingDataGridRowWinLose(item.itemCode, item, "lose");
-                //printForm2.AddProfit((item.curPrice - item.buyingPrice) * item.curQnt);
-            }
-            else
-            {
-                coreEngine.SaveItemLogMessage(item.itemCode, "자동 손절 요청 실패");
-            }
-        }
+      
 
         public void OnReceiveTrDataCheckGapTrailBuy(object sender, OnReceivedTrEventArgs e)
         {

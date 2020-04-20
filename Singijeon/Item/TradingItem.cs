@@ -71,7 +71,9 @@ namespace Singijeon
         public bool usingBuyCancelByTime = true;
 
         public bool usingDivideSellProfit = false;
+        public bool usingDivideSellProfitLoop = false;
         public bool usingDivideSellLoss = false;
+        public bool usingDivideSellLossLoop = false;
 
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
