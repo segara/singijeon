@@ -435,6 +435,8 @@ namespace Singijeon
                 streamWriter.WriteLine("divideRatePercentProfit" + ";" + (double)divideRatePercentProfit.Value);
                 streamWriter.WriteLine("divideSellPercentProfit" + ";" + (double)divideSellPercentProfit.Value);
 
+                streamWriter.WriteLine("divideLossSellLoopCheck" + ";" + divideLossSellLoopCheck.Checked);
+                streamWriter.WriteLine("divideProfitSellLoopCheck" + ";" + divideProfitSellLoopCheck.Checked);
             }
         }
         public void ClearSetting()
@@ -491,6 +493,9 @@ namespace Singijeon
             DivideSellProfitCheckBox.Checked = false;
             divideRatePercentProfit.Value = divideRatePercentProfit.Minimum;
             divideSellPercentProfit.Value = divideSellPercentProfit.Minimum;
+
+            divideProfitSellLoopCheck.Checked = false;
+            divideLossSellLoopCheck.Checked = false;
         }
         public void LoadSetting(string settingCondition)
         {
@@ -653,6 +658,12 @@ namespace Singijeon
                                 break;
                             case "divideSellPercentProfit":
                                 divideSellPercentProfit.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "divideLossSellLoopCheck":
+                                divideLossSellLoopCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "divideProfitSellLoopCheck":
+                                divideProfitSellLoopCheck.Checked = bool.Parse(strringArray[1]);
                                 break;
                         }
                     }

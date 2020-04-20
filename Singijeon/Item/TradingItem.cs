@@ -91,7 +91,7 @@ namespace Singijeon
             this.outStandingQnt = buyingQnt;
             this.isCompleteBuying = false;
          
-            this.isBuyCancel = false;
+            this.isBuyCancel = false;   
             this.isCompleteSold = false;
 
             this.buyOrderNum = string.Empty;
@@ -99,6 +99,9 @@ namespace Singijeon
 
             this.buyOrderType = buyOrderType;
             //this.sellOrderType = sellOrderType;
+
+            this.usingDivideSellLossLoop = ts.useDivideSellLossLoop;
+            this.usingDivideSellProfitLoop = ts.useDivideSellProfitLoop;
 
             this.Uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;

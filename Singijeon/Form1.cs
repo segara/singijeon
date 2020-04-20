@@ -107,7 +107,7 @@ namespace Singijeon
             axKHOpenAPI1.OnReceiveRealData += API_OnReceiveRealDataHoga; //실시간정보
             
             MartinGailManager.GetInstance().Init(axKHOpenAPI1, this);
-
+            BlockManager.GetInstance().Init(axKHOpenAPI1, this);
             //LoadSetting();
            
         }
@@ -955,6 +955,7 @@ namespace Singijeon
                         else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                         {
                             coreEngine.SaveItemLogMessage(itemCode, " 물타기 스텝 : 주문완료"); //내가 수동으로 사든 프로그램이 사든 물타기로 취급
+                            bool findItem = false;
                             foreach (TradingStrategy ts in tradingStrategyList)
                             {
                                 List<TradingItem> itemArray = ts.tradingItemList.FindAll(o => o.itemCode.Equals(itemCode));
@@ -971,9 +972,12 @@ namespace Singijeon
                                         {
                                             coreEngine.SaveItemLogMessage(itemCode, "uid : " + item.Uid + " 물타기 ordernum : " + ordernum);
                                             item.buyOrderNum = ordernum;
+                                            findItem = true;
                                         }
                                     }
                                 }
+
+                               
                             }
                         }
                     }
@@ -1981,6 +1985,7 @@ namespace Singijeon
                 ts.AddTradingStrategyItemList(divideStopLossStrategy);
                 divideStopLossStrategy.OnReceivedTrData += this.OnReceiveTrDataCheckStopLossDivide;
                 ts.useDivideSellLoss = true;
+                ts.useDivideSellLossLoop = divideLossSellLoopCheck.Checked;
                 ts.divideStoplossRate = stopLossRate;
                 ts.divideSellLossPercentage = (stopLossSellPercent * 0.01);
             }
@@ -2004,6 +2009,7 @@ namespace Singijeon
                 ts.AddTradingStrategyItemList(divideProfitStrategy);
                 divideProfitStrategy.OnReceivedTrData += this.OnReceiveTrDataCheckProfitDivide;
                 ts.useDivideSellProfit = true;
+                ts.useDivideSellProfitLoop = divideProfitSellLoopCheck.Checked;
                 ts.divideTakeProfitRate = profitRate;
                 ts.divideSellProfitPercentage = (profitSellPercent * 0.01);
             }

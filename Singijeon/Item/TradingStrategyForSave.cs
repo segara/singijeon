@@ -66,6 +66,9 @@ namespace Singijeon
         public double divideSellProfitPercentage = 0; //익절률2 매도 퍼센테지
         public double divideSellLossPercentage = 0; //손절률2 매도 퍼센테지
 
+        public bool useDivideSellProfitLoop = false;
+        public bool useDivideSellLossLoop = false;
+
         //복원하면서 재설정하기 때문에 저장하지 않음
         //public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
 

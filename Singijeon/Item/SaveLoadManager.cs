@@ -307,7 +307,7 @@ namespace Singijeon
             if (saved.useDivideSellLoss)
             {
                 ts.useDivideSellLoss = true;
-
+                ts.useDivideSellLossLoop = saved.useDivideSellLossLoop;
                 TradingStrategyItemWithUpDownValue divideStopLossStrategy = null;
                 divideStopLossStrategy =
                     new TradingStrategyItemWithUpDownValue(
@@ -327,7 +327,7 @@ namespace Singijeon
             if (saved.useDivideSellProfit)
             {
                 ts.useDivideSellProfit = true;
-
+                ts.useDivideSellProfitLoop = saved.useDivideSellProfitLoop;
                 TradingStrategyItemWithUpDownValue divideProfitStrategy = null;
                 divideProfitStrategy =
                     new TradingStrategyItemWithUpDownValue(
