@@ -3094,7 +3094,8 @@ namespace Singijeon
                 }
                 else
                 {
-                    coreEngine.SaveItemLogMessage(tradeItem.itemCode, "주문 찾기 실패 주문번호 : " + orderNum);
+
+                    coreEngine.SendLogMessage("주문 찾기 실패 주문번호 : " + orderNum);
                 }
             }
         }
