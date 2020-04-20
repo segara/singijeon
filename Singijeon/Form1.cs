@@ -1973,7 +1973,7 @@ namespace Singijeon
                 TradingStrategyItemWithUpDownValue divideStopLossStrategy = null;
                 divideStopLossStrategy =
                     new TradingStrategyItemWithUpDownValue(
-                            StrategyItemName.STOPLOSS_SELL,
+                            StrategyItemName.STOPLOSS_DIVIDE_SELL,
                             CHECK_TIMING.SELL_TIME,
                             IS_TRUE_OR_FALE_TYPE.DOWN,
                             stopLossRate);
@@ -1989,23 +1989,23 @@ namespace Singijeon
             if (usingDivideSellProfit)
             {
                 double profitRate = 0;
-                profitRate = (double)divideRatePercentLoss.Value;
+                profitRate = (double)divideRatePercentProfit.Value;
                 double profitSellPercent = 0;
                 profitSellPercent = (double)divideSellPercentProfit.Value;
 
                 TradingStrategyItemWithUpDownValue divideProfitStrategy = null;
                 divideProfitStrategy =
                     new TradingStrategyItemWithUpDownValue(
-                            StrategyItemName.STOPLOSS_SELL,
+                            StrategyItemName.TAKE_PROFIT_DIVIDE_SELL,
                             CHECK_TIMING.SELL_TIME,
-                            IS_TRUE_OR_FALE_TYPE.DOWN,
+                            IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
                             profitRate);
 
                 ts.AddTradingStrategyItemList(divideProfitStrategy);
                 divideProfitStrategy.OnReceivedTrData += this.OnReceiveTrDataCheckProfitDivide;
-                ts.useDivideSellLoss = true;
-                ts.divideStoplossRate = profitRate;
-                ts.divideSellLossPercentage = (profitSellPercent * 0.01);
+                ts.useDivideSellProfit = true;
+                ts.divideTakeProfitRate = profitRate;
+                ts.divideSellProfitPercentage = (profitSellPercent * 0.01);
             }
 
             bool usingBuyMore = BuyMoreCheckBox1.Checked; //물타기
