@@ -2241,14 +2241,14 @@ namespace Singijeon
                 " 주문가: "+item.curPrice+
                 " 주문구분: " +item.sellOrderType
             );
-
+            int orderQnt = (int)((double)item.curQnt * sellPercentage);
             int orderResult = axKHOpenAPI1.SendOrder(
                 "종목익절매도",
                 GetScreenNum().ToString(),
                 item.ts.account,
                 CONST_NUMBER.SEND_ORDER_SELL,
                 item.itemCode,
-                (int)((double)item.curQnt * sellPercentage),
+                (orderQnt<=0)? item.curQnt:orderQnt,
                 item.sellOrderType == ConstName.ORDER_SIJANGGA ? 0 : (int)item.curPrice,
                 item.sellOrderType,//지정가
                 "" //원주문번호없음
@@ -2704,7 +2704,10 @@ namespace Singijeon
         public void OnReceiveTrDataCheckStopLossDivide(object sender, OnReceivedTrEventArgs e)
         {
             coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행");
+
             OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellLossPercentage);
+            e.tradingItem.ts.RemoveTradingStrategyItemList(StrategyItemName.STOPLOSS_DIVIDE_SELL);
+            //손절 1회 실행
         }
 
         public void OnReceiveTrDataCheckStopLoss(TradingItem item, double checkValue, double sellPercentage = 1)
@@ -2747,14 +2750,14 @@ namespace Singijeon
                " 주문가: " + item.curPrice +
                " 주문구분: " + item.sellOrderType
             );
-            
+            int orderQnt = (int)((double)item.curQnt * sellPercentage);
             int orderResult = axKHOpenAPI1.SendOrder(
                 "종목손절매도",
                 GetScreenNum().ToString(),
                 item.ts.account,
                 CONST_NUMBER.SEND_ORDER_SELL,
                 item.itemCode,
-                (int)((double)item.curQnt * sellPercentage),
+                (orderQnt <= 0) ? item.curQnt : orderQnt,
                 item.sellOrderType == ConstName.ORDER_SIJANGGA ? 0 : (int)item.curPrice,
                 item.sellOrderType,
                 "" //원주문번호없음
