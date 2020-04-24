@@ -35,7 +35,7 @@ namespace Singijeon
 
         public BalanceAllSellStrategy bssAll;
         List<BalanceItem> balanceItemList = new List<BalanceItem>();
-        List<BalanceItem> balanceSelectedItemList = new List<BalanceItem>();
+        List<BalanceItem> balanceSelectedItemList = new List<BalanceItem>(); //전체잔고 매도전략
         List<BalanceSellStrategy> balanceSellStrategyList = new List<BalanceSellStrategy>();
         List<TrailingItem> trailingList = new List<TrailingItem>();
   
@@ -632,7 +632,7 @@ namespace Singijeon
                             item.bSell = true;
                             
                             coreEngine.SendLogMessage("ui -> 매도주문접수시도");
-                            UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
+                            //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                         }
                         else
                         {
@@ -658,7 +658,7 @@ namespace Singijeon
                             item.bSell = true;
                        
                             coreEngine.SendLogMessage("ui -> 매도주문접수시도");
-                            UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
+                            //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                         }
                         else
                         {
@@ -699,7 +699,7 @@ namespace Singijeon
                                 bss.isSold = true;
                                 tryingSellList.Add(bss);
                                 coreEngine.SendLogMessage("ui -> 매도주문접수시도");
-                                UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
+                                //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                             }
                             else
                             {
@@ -724,7 +724,7 @@ namespace Singijeon
                                 bss.isSold = true;
                                 tryingSellList.Add(bss);
                                 coreEngine.SendLogMessage("ui -> 매도주문접수시도");
-                                UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
+                                //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                             }
                             else
                             {
@@ -1149,16 +1149,29 @@ namespace Singijeon
                     Update_BalanceDataGrid_UI(uiTable, rowIndex);
                 }
 
-                //기존잔고+매수잔고탭 업데이트
-                //if(balanceItemList.Find(o => (o.itemCode == itemCode)) == null){
-                //    balanceItemList.Add(new BalanceItem(itemCode, int.Parse(buyingPrice), int.Parse(balanceQnt)));
-                //}
-                //else
-                //{
-                //    BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
-                //    item.buyingPrice = int.Parse(buyingPrice);
-                //    item.balanceQnt = int.Parse(balanceQnt);
-                //}
+                if (int.Parse(balanceQnt) > 0)
+                {
+                    if (balanceItemList.Find(o => (o.itemCode == itemCode)) == null)
+                    {
+                        coreEngine.SendLogMessage(itemCode + " 잔고 리스트에 추가");
+                        balanceItemList.Add(new BalanceItem(itemCode, itemName, int.Parse(buyingPrice), int.Parse(balanceQnt)));
+                    }
+                    else
+                    {
+                        coreEngine.SendLogMessage(itemCode + " 잔고 리스트 값 변경");
+                        BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
+                        item.buyingPrice = int.Parse(buyingPrice);
+                        item.balanceQnt = int.Parse(balanceQnt);
+                    }
+                }
+                else
+                {
+                    if (balanceItemList.Find(o => (o.itemCode == itemCode)) != null)
+                    {
+                        balanceItemList.Remove(balanceItemList.Find(o => (o.itemCode == itemCode)));
+                    }
+                }
+                 
 
                 bool hasItem_accountBalanceDataGrid = false;
 
@@ -1260,32 +1273,41 @@ namespace Singijeon
             BalanceSellStrategy bss = balanceSellStrategyList.Find(o => o.orderNum.Equals(ordernum));
             if (bss != null)
             {
+                BalanceItem item = balanceItemList.Find(o => (o.itemCode == bss.itemCode));
+                if(item == null)
+                {
+                    coreEngine.SendLogErrorMessage("wrong idx : " + bss.itemCode);
+                    return;
+                }
+
+                int iQnt = item.balanceQnt;
+                item.balanceQnt = iQnt - (int)bss.sellQnt;
+
+                if (item.balanceQnt < 0)
+                    coreEngine.SendLogErrorMessage("count wrong");
+  
                 foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
                 {
                     if (row.Cells["계좌잔고_종목코드"].Value != null && row.Cells["계좌잔고_종목코드"].Value.ToString().Replace("A", "").Contains(bss.itemCode))
                     {
-                        string qnt = row.Cells["계좌잔고_보유수량"].Value.ToString();
-                        int iQnt = int.Parse(qnt);
-                        iQnt = iQnt - (int)bss.sellQnt;
-
-                        if (iQnt > 0)
+                        if (item.balanceQnt > 0)
                         {
-                            row.Cells["계좌잔고_보유수량"].Value = iQnt;
+                            row.Cells["계좌잔고_보유수량"].Value = item.balanceQnt;
                         }
                         else
                         {
                             accountBalanceDataGrid.Rows.Remove(row);
                         }
-                        break;
                     }
                 }
+
                 foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
                 {
                     if (row.Cells["매매진행_종목코드"].Value != null
                         && row.Cells["매매진행_종목코드"].Value.ToString().Contains(bss.itemCode)
                         && row.Cells["매매진행_매도량"].Value != null
                         && row.Cells["매매진행_매도량"].Value.ToString().Equals(bss.sellQnt.ToString())
-                        && row.Cells["매매진행_매수조건식"].Value.ToString().Equals("잔고자동매도")
+                        && row.Cells["매매진행_매수조건식"].Value.ToString().Equals(StrategyItemName.AUTO_SELL_STRATEGY)
                         )
                     {
                         row.Cells["매매진행_진행상황"].Value = ConstName.AUTO_TRADING_STATE_SELL_COMPLETE;
@@ -1648,8 +1670,9 @@ namespace Singijeon
                         autoTradingDataGrid["매매진행_진행상황", rowIndex].Value = ConstName.AUTO_TRADING_STATE_SELL_MONITORING;
                         autoTradingDataGrid["매매진행_종목코드", rowIndex].Value = itemCode;
                         autoTradingDataGrid["매매진행_종목명", rowIndex].Value = axKHOpenAPI1.GetMasterCodeName(itemCode);
-                     
-                        autoTradingDataGrid["매매진행_매수조건식", rowIndex].Value = "잔고자동매도"; //매수조건식이 없으므로 해당명으로 지정
+                        autoTradingDataGrid["매매진행_매도량", rowIndex].Value = sellQnt;
+                        autoTradingDataGrid["매매진행_손익률", rowIndex].Value = takeProfitRate.ToString() + " / " +stopLossRate.ToString();
+                        autoTradingDataGrid["매매진행_매수조건식", rowIndex].Value = StrategyItemName.AUTO_SELL_STRATEGY; //매수조건식이 없으므로 해당명으로 지정
 
                         coreEngine.SaveItemLogMessage(itemCode,"잔고 매매 전략이 입력됬습니다");
                     }
@@ -1679,10 +1702,17 @@ namespace Singijeon
             int buyingPrice = (int)double.Parse(b_averagePriceTxt.Text);
 
             string orderType = (bssJijungRadio.Checked) ? ConstName.ORDER_JIJUNGGA : ConstName.ORDER_SIJANGGA;
-            
+    
+
+            if (!b_ProfitSellCheckBox.Checked && !b_StopLossCheckBox.Checked)
+            {
+                MessageBox.Show("익절 / 손절 값을 체크해주세요");
+                return;
+            }
+
             bool usingProfitCheckBox = b_ProfitSellCheckBox.Checked; //익절사용
             double takeProfitRate = 0;
-            
+
             if (usingProfitCheckBox)
             {
                 takeProfitRate = (double)b_takeProfitUpdown.Value;
@@ -3334,24 +3364,24 @@ namespace Singijeon
 
         private void AddForceBtn_Click(object sender, EventArgs e)
         {
-            if (trailingSaveListBox.SelectedItem != null && TsListBox.SelectedItem != null)
-            {
-                string selectItem = trailingSaveListBox.SelectedItem.ToString();
-                string selectTsItem = TsListBox.SelectedItem.ToString();
-                string[] rqNameArray = selectItem.Split(':');
-                string condition = rqNameArray[1];
-                string itemCode = rqNameArray[2];
+            //if (trailingSaveListBox.SelectedItem != null && TsListBox.SelectedItem != null)
+            //{
+            //    string selectItem = trailingSaveListBox.SelectedItem.ToString();
+            //    string selectTsItem = TsListBox.SelectedItem.ToString();
+            //    string[] rqNameArray = selectItem.Split(':');
+            //    string condition = rqNameArray[1];
+            //    string itemCode = rqNameArray[2];
 
-                TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition.Name.Equals(condition));
+            //    TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition.Name.Equals(condition));
 
-                if(ts!=null && ts.remainItemCount > 0)
-                {
-                    ts.remainItemCount--;
+            //    if(ts!=null && ts.remainItemCount > 0)
+            //    {
+            //        ts.remainItemCount--;
 
-                    ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
-                    TryBuyItem(ts, itemCode);
-                }
-            }
+            //        ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+            //        TryBuyItem(ts, itemCode);
+            //    }
+            //}
         }
 
         private void balanceSellMonitorBtn_Click(object sender, EventArgs e)

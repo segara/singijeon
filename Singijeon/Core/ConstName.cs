@@ -151,6 +151,8 @@ namespace Singijeon
 
     class StrategyItemName
     {
+        public const string AUTO_SELL_STRATEGY = "잔고자동매도";
+
         public const string STOPLOSS_SELL = "매매전략_손절";
         public const string TAKE_PROFIT_SELL = "매매전략_익절";
         public const string STOPLOSS_DIVIDE_SELL = "매매전략_분할손절";

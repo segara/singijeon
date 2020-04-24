@@ -203,7 +203,6 @@ namespace Singijeon
         {
             if (tradingStrategy != null)
             {
-                TsListBox.Items.Add(tradingStrategy.buyCondition.Name);
                 int rowIndex = tsDataGridView.Rows.Add();
                 tsDataGridView["매매전략_계좌번호", rowIndex].Value = tradingStrategy.account;
                 tsDataGridView["매매전략_재실행", rowIndex].Value = tradingStrategy.usingRestart;

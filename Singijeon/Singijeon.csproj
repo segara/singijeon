@@ -58,6 +58,7 @@
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
     <Compile Include="Item\BalanceAllSellStrategy.cs" />
+    <Compile Include="Item\BalanceItem.cs" />
     <Compile Include="Item\BlockManager.cs" />
     <Compile Include="Item\BuyDevideItem.cs" />
     <Compile Include="Item\CheckMaUp.cs" />
