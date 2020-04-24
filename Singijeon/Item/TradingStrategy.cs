@@ -195,7 +195,11 @@ namespace Singijeon
             foreach(TradingStrategyADDItem item in tradingStrategyItemList)
             {
                 if(item.strategyCheckTime == checkTiming)
+                {
+                    Console.WriteLine(trading_item.itemName + " / " + item.strategyItemName + "/" + inputValue);
                     item.CheckUpdate(trading_item, inputValue);
+                }
+                    
             }
         }
 
@@ -533,8 +537,12 @@ namespace Singijeon
         public override void CheckUpdate(TradingItem item, double value)
         {
             if (!usingStrategy)
+            {
+                Console.WriteLine("usingStrategy : "+usingStrategy);
                 return;
+            }
 
+            Console.WriteLine("buyMore : " + item.useBuyMore + " value : " + value + " / d_conditionValue : " + d_conditionValue);
             if (value < d_conditionValue && item.useBuyMore)
             {
                 if (OnReceivedTrData != null)

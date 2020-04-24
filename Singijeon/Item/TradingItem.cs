@@ -99,7 +99,8 @@ namespace Singijeon
 
             this.buyOrderType = buyOrderType;
             //this.sellOrderType = sellOrderType;
-
+            this.usingDivideSellLoss = ts.useDivideSellLoss;
+            this.usingDivideSellProfit = ts.useDivideSellProfit;
             this.usingDivideSellLossLoop = ts.useDivideSellLossLoop;
             this.usingDivideSellProfitLoop = ts.useDivideSellProfitLoop;
 

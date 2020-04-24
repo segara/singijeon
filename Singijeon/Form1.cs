@@ -3086,12 +3086,11 @@ namespace Singijeon
                     int curLastQnt = tradeItem.curQnt;
                     tradeItem.curQnt += addQnt;
 
-                    long PriceAverage = (long)((float)((curLastQnt * tradeItem.buyingPrice) + (priceUpdate * addQnt)) / tradeItem.curQnt);
-                    
-                    tradeItem.buyingPrice = PriceAverage;
+                    //long PriceAverage = (long)((float)((curLastQnt * tradeItem.buyingPrice) + (priceUpdate * addQnt)) / tradeItem.curQnt);
+                    //coreEngine.SaveItemLogMessage(tradeItem.itemCode, "평단가 : " + PriceAverage);
+                    //tradeItem.buyingPrice = PriceAverage;
                     tradeItem.SetCompleteBuying(buyComplete);
 
-                    coreEngine.SaveItemLogMessage(tradeItem.itemCode, "평단가 : "+ PriceAverage);
                     coreEngine.SaveItemLogMessage(tradeItem.itemCode, "보유량 : " + tradeItem.curQnt);
 
                     if (buyComplete)
