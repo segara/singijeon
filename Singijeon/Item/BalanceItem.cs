@@ -12,6 +12,7 @@ namespace Singijeon.Item
         public string itemName;
         public bool bSell = false;
         public int buyingPrice;
+        public int curPrice;
         public int balanceQnt;
 
         public BalanceItem(string _itemCode, string _itemName, int _buyingPrice, int _balanceQnt)

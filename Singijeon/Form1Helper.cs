@@ -199,6 +199,32 @@ namespace Singijeon
                 balanceDataGrid["잔고_현재가", rowIndex].Value = table["잔고_현재가"];
         }
 
+        public void UpdateBssGridView(Hashtable table, int rowIndex)
+        {
+            if (table.ContainsKey("bss_진행상황"))
+                autoTradingDataGrid["bss_진행상황", rowIndex].Value = table["bss_진행상황"];
+            if (table.ContainsKey("bss_종목코드"))
+                autoTradingDataGrid["bss_종목코드", rowIndex].Value = table["bss_종목코드"];
+            if (table.ContainsKey("bss_종목명"))
+                autoTradingDataGrid["bss_종목명", rowIndex].Value = table["bss_종목명"];
+            if (table.ContainsKey("bss_매도량"))
+                autoTradingDataGrid["bss_매도량", rowIndex].Value = table["bss_매도량"];
+            if (table.ContainsKey("bss_손익률"))
+                autoTradingDataGrid["bss_손익률", rowIndex].Value = table["bss_손익률"];
+        }
+
+        private void UpdateBBSGridView(Hashtable table, int rowIndex)
+        {
+            if (table.ContainsKey("bbs_종목코드"))
+                autoTradingDataGrid["bbs_종목코드", rowIndex].Value = table["bbs_종목코드"];
+            if (table.ContainsKey("bbs_종목명"))
+                autoTradingDataGrid["bbs_종목명", rowIndex].Value = table["bbs_종목명"];
+            if (table.ContainsKey("bbs_매수가"))
+                autoTradingDataGrid["bbs_매수가", rowIndex].Value = table["bbs_매수가"];
+            if (table.ContainsKey("bbs_매수금"))
+                autoTradingDataGrid["bbs_매수금", rowIndex].Value = table["bbs_매수금"];
+        }
+
         public void AddStrategyToDataGridView(TradingStrategy tradingStrategy)
         {
             if (tradingStrategy != null)
@@ -243,6 +269,7 @@ namespace Singijeon
 
             }
         }
+        
         private void UpdateAutoTradingDataGridRowAll(int index, string state, string itemcode, string conditionName, int i_qnt, int i_price)
         {
             autoTradingDataGrid["매매진행_진행상황", index].Value = state;
@@ -255,6 +282,7 @@ namespace Singijeon
             autoTradingDataGrid["매매진행_매수시간", index].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
+     
         private void UpdateBuyAutoTradingDataGridState(string orderNum, bool buyComplete = false)
         {
             foreach (TradingStrategy ts in tradingStrategyList)

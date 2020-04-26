@@ -17,7 +17,7 @@ namespace Singijeon
     {
         public enum CHART_TYPE
         {
-            NONE,
+           NONE,
            TICK_30,
            MINUTE_5,
         }
@@ -53,6 +53,8 @@ namespace Singijeon
 
         CHART_TYPE curTypeChart = CHART_TYPE.MINUTE_5;
 
+        public Button btn { get { return ChartRequestBtn; } }
+
         public Form3(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1)
         {
             axKHOpenAPI1 = _axKHOpenAPI1;
@@ -66,7 +68,6 @@ namespace Singijeon
             maSeries_EvelopeDown = new Series("SMA_DOWN");
             maSeries_EvelopeDown.ChartType = SeriesChartType.Line;
             maSeries_EvelopeDown.Color = Color.Black;
-
 
             maSeriesShort = new Series("SMA_SHORT");
             maSeriesShort.ChartType = SeriesChartType.Line;
@@ -135,15 +136,17 @@ namespace Singijeon
 
         public void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
-            if(e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_TICK_CHART) || e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_MINUTE_CHART))
+            if(e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART) || e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_TICK_CHART) || e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_MINUTE_CHART))
             {
                 if (candleChart.Series == null)
                     return;
-
-                itemcode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "종목코드").Replace("A","").Trim();
-
-                if (chartItemCodeTextBox.Text != itemcode)
-                    return;
+                
+                if (e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART) == false)
+                {
+                    itemcode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "종목코드").Replace("A", "").Trim();
+                    if (chartItemCodeTextBox.Text != itemcode)
+                        return;
+                }
 
                 candleChart.Series["StockCandle"].Points.Clear();
                 candleChart.Series["Volume"].Points.Clear();
@@ -195,7 +198,7 @@ namespace Singijeon
                 MakeVPCI();
             }
         }
-        private void ChartRequestBtn_Click(object sender, EventArgs e)
+        public void ChartRequestBtn_Click(object sender, EventArgs e)
         {
             if (axKHOpenAPI1.GetConnectState() == 1)
             {
@@ -209,6 +212,29 @@ namespace Singijeon
         ReceiveAfter afterEventFunction = null;
         public delegate void ReceiveAfter(string itemCode);
 
+        public void KospiChartRequestBtn_Click(object sender, EventArgs e)
+        {
+            RequestKospi(null, CHART_TYPE.MINUTE_5);
+        }
+        public void RequestKospi(ReceiveAfter delFunc, CHART_TYPE typeChart = CHART_TYPE.MINUTE_5)
+        {
+            afterEventFunction = delFunc;
+            ItemName.Text = "코스피지수";
+            Task requestItemInfoTask = new Task(() =>
+            {
+                axKHOpenAPI1.SetInputValue("업종코드", "001");
+                axKHOpenAPI1.SetInputValue("틱범위", "5:5분");
+                axKHOpenAPI1.SetInputValue("수정주가구분", "1");
+
+                int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART, "OPT20005", 0, "1080");
+                if (result != ErrorCode.정상처리)
+                {
+                    Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());
+                }
+            });
+            Core.CoreEngine.GetInstance().requestTrDataLoopManager.RequestTrData(requestItemInfoTask);
+         
+        }
         public void RequestItem(string ItemCode, ReceiveAfter delFunc, CHART_TYPE typeChart = CHART_TYPE.TICK_30)
         {
             if (!string.IsNullOrEmpty(ItemCode))
