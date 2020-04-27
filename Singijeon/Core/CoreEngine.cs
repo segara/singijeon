@@ -16,7 +16,7 @@ namespace Singijeon.Core
         private string Uid;
         private static CoreEngine coreInstance;
         public RequestTrDataManager requestTrDataManager;
-
+        public RequestTrDataLoopManager requestTrDataLoopManager;
         //Events
         public event EventHandler<OnReceivedLogMessageEventArgs> OnReceivedLogMessage; //로그 수신 시
         public event EventHandler<OnReceivedLogMessageEventArgs> OnReceivedLogWarningMessage; //로그 수신 시
@@ -30,6 +30,10 @@ namespace Singijeon.Core
         {
             requestTrDataManager = RequestTrDataManager.GetInstance();
             requestTrDataManager.Run();
+
+            requestTrDataLoopManager = RequestTrDataLoopManager.GetInstance();
+            requestTrDataLoopManager.Run();
+
             Uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         }
 

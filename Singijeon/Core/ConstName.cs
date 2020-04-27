@@ -20,6 +20,7 @@ namespace Singijeon
         public const string SEND_ORDER_BUY = "편입종목매수";
         public const string RECEIVE_TR_DATA_HOGA = "주식호가요청";
         public const string RECEIVE_TR_DATA_TICK_CHART = "틱차트조회";
+        public const string RECEIVE_TR_DATA_KOSPI_MINUTE_CHART = "코스피분차트조회";
         public const string RECEIVE_TR_DATA_MINUTE_CHART = "분차트조회";
         public const string RECEIVE_TR_DATA_BUY_INFO = "매수종목정보요청";
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO = "계좌평가현황요청";
@@ -151,6 +152,8 @@ namespace Singijeon
 
     class StrategyItemName
     {
+        public const string AUTO_SELL_STRATEGY = "잔고자동매도";
+
         public const string STOPLOSS_SELL = "매매전략_손절";
         public const string TAKE_PROFIT_SELL = "매매전략_익절";
         public const string STOPLOSS_DIVIDE_SELL = "매매전략_분할손절";

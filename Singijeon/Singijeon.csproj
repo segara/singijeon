@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\RequestTrDataLoopManager.cs" />
     <Compile Include="Form1Helper.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +59,9 @@
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
     <Compile Include="Item\BalanceAllSellStrategy.cs" />
+    <Compile Include="Item\BalanceBuyStrategy.cs" />
+    <Compile Include="Item\BalanceItem.cs" />
+    <Compile Include="Item\BalanceStrategy.cs" />
     <Compile Include="Item\BlockManager.cs" />
     <Compile Include="Item\BuyDevideItem.cs" />
     <Compile Include="Item\CheckMaUp.cs" />
