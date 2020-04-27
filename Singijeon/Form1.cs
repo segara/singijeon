@@ -1652,7 +1652,7 @@ namespace Singijeon
                         balanceStrategyList.Add(bs);
 
                         int rowIndex = BssDataGridView.Rows.Add();
-                        Hashtable uiTable = new Hashtable() { { "bss_종목코드", itemCode }, { "bss_종목명", axKHOpenAPI1.GetMasterCodeName(itemCode) }, { "bss_매도량", sellQnt }, { "bss_손익률", takeProfitRate.ToString() + " / " + stopLossRate.ToString() } };
+                        Hashtable uiTable = new Hashtable() { { "bss_종목코드", itemCode }, { "bss_종목명", axKHOpenAPI1.GetMasterCodeName(itemCode) }, { "bss_매도량", sellQnt }, { "bss_설정손익률", takeProfitRate.ToString() + " / " + stopLossRate.ToString() } };
                         UpdateBssGridView(uiTable, rowIndex);
                     
                         coreEngine.SaveItemLogMessage(itemCode,"잔고 매매 전략이 입력됬습니다");
@@ -2780,8 +2780,9 @@ namespace Singijeon
                 item.itemName + "order 추가매수 "
             );
 
-            int buyQnt = (int)(tsItem.BuyMoney / item.curPrice);
-            BalanceBuy(account, item.itemCode, (int)item.curPrice, buyQnt, item.buyOrderType);
+            int buyQnt = Math.Abs((int)(tsItem.BuyMoney / item.curPrice));
+            int curPrice = Math.Abs((int)item.curPrice);
+            BalanceBuy(account, item.itemCode, curPrice, buyQnt, item.buyOrderType);
 
             //int orderResult = axKHOpenAPI1.SendOrder(
             //     ConstName.SEND_ORDER_BUY,
@@ -3482,8 +3483,8 @@ namespace Singijeon
 
                         int rowIndex = BBSdataGridView.Rows.Add();
                         bs.ui_rowItem = BBSdataGridView.Rows[rowIndex];
-
-                        Hashtable uiTable = new Hashtable() { { "bbs_종목코드", itemCode }, { "bss_종목명", axKHOpenAPI1.GetMasterCodeName(itemCode) }, { "bss_매수금", buyingPrice * buyQnt }, { "bbs_매수가", buyingPrice } };
+                        string codeName = axKHOpenAPI1.GetMasterCodeName(itemCode);
+                        Hashtable uiTable = new Hashtable() { { "bbs_종목코드", itemCode }, { "bbs_종목명", codeName}, { "bbs_매수금", (buyingPrice * buyQnt).ToString() }, { "bbs_매수가", buyingPrice } };
                         UpdateBBSGridView(uiTable, rowIndex);
                         coreEngine.SaveItemLogMessage(itemCode, "잔고 매수! 전략이 입력됬습니다");
                     }
@@ -3508,8 +3509,8 @@ namespace Singijeon
         {
             string itemCode = BBSItemCodeTxt.Text;
             string itemName = BBSItemNameTextbox.Text;
-          
-            long buyQnt = (long)BBSValueUpdown.Value;
+
+            long buyMoney = (long)BBSValueUpdown.Value;
             double buyPercent = (double)BBSPercentUpdown.Value;
 
             BalanceItem item = null;
@@ -3522,13 +3523,18 @@ namespace Singijeon
                 MessageBox.Show("잔고 데이터를 찾을 수 없습니다");
                 return;
             }
-            double buyingPrice = (double)(item.curPrice) * (1 - (buyPercent * 0.01));
-            
+            double buyingPrice = (double)(item.buyingPrice) * (1 + (buyPercent * 0.01));
+            if (buyMoney <= 0)
+            {
+                return;
+            }
+               
+            long buyQnt = buyMoney / (int)buyingPrice;
             string accountNum = accountComboBox.Text;
 
             string orderType = (bbsJijungRadio.Checked) ? ConstName.ORDER_JIJUNGGA : ConstName.ORDER_SIJANGGA;
 
-            BalanceBuy(accountNum, itemCode, (int)buyingPrice, (int)buyQnt, orderType);
+            BalanceBuy(accountNum, itemCode, Math.Abs((int)buyingPrice), Math.Abs((int)buyQnt), orderType);
         }
     }
 }

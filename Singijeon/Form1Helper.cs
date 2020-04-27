@@ -202,27 +202,27 @@ namespace Singijeon
         public void UpdateBssGridView(Hashtable table, int rowIndex)
         {
             if (table.ContainsKey("bss_진행상황"))
-                autoTradingDataGrid["bss_진행상황", rowIndex].Value = table["bss_진행상황"];
+                BssDataGridView["bss_진행상황", rowIndex].Value = table["bss_진행상황"];
             if (table.ContainsKey("bss_종목코드"))
-                autoTradingDataGrid["bss_종목코드", rowIndex].Value = table["bss_종목코드"];
+                BssDataGridView["bss_종목코드", rowIndex].Value = table["bss_종목코드"];
             if (table.ContainsKey("bss_종목명"))
-                autoTradingDataGrid["bss_종목명", rowIndex].Value = table["bss_종목명"];
+                BssDataGridView["bss_종목명", rowIndex].Value = table["bss_종목명"];
             if (table.ContainsKey("bss_매도량"))
-                autoTradingDataGrid["bss_매도량", rowIndex].Value = table["bss_매도량"];
-            if (table.ContainsKey("bss_손익률"))
-                autoTradingDataGrid["bss_손익률", rowIndex].Value = table["bss_손익률"];
+                BssDataGridView["bss_매도량", rowIndex].Value = table["bss_매도량"];
+            if (table.ContainsKey("bss_설정손익률"))
+                BssDataGridView["bss_설정손익률", rowIndex].Value = table["bss_설정손익률"];
         }
 
         private void UpdateBBSGridView(Hashtable table, int rowIndex)
         {
             if (table.ContainsKey("bbs_종목코드"))
-                autoTradingDataGrid["bbs_종목코드", rowIndex].Value = table["bbs_종목코드"];
+                 BBSdataGridView["bbs_종목코드", rowIndex].Value = table["bbs_종목코드"];
             if (table.ContainsKey("bbs_종목명"))
-                autoTradingDataGrid["bbs_종목명", rowIndex].Value = table["bbs_종목명"];
+                BBSdataGridView["bbs_종목명", rowIndex].Value = table["bbs_종목명"];
             if (table.ContainsKey("bbs_매수가"))
-                autoTradingDataGrid["bbs_매수가", rowIndex].Value = table["bbs_매수가"];
+                BBSdataGridView["bbs_매수가", rowIndex].Value = table["bbs_매수가"];
             if (table.ContainsKey("bbs_매수금"))
-                autoTradingDataGrid["bbs_매수금", rowIndex].Value = table["bbs_매수금"];
+                BBSdataGridView["bbs_매수금", rowIndex].Value = table["bbs_매수금"];
         }
 
         public void AddStrategyToDataGridView(TradingStrategy tradingStrategy)
