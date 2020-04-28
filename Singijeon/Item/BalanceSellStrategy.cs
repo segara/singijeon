@@ -54,7 +54,7 @@ namespace Singijeon
             {
                 double profitRate = tradingStrategyGridView.GetProfitRate((double)c_lPrice, (double)buyingPrice);
 
-                if (takeProfitRate <= profitRate) //익절
+                if (usingTakeProfit && takeProfitRate <= profitRate) //익절
                 {
                     int orderResult = obj.AxKHOpenAPI.SendOrder(
                                         "잔고익절매도",
@@ -80,7 +80,7 @@ namespace Singijeon
                         Core.CoreEngine.GetInstance().SendLogMessage("bss 잔고 익절 요청 실패");
                     }
                 }
-                else if (stoplossRate > profitRate) //손절
+                if (usingStoploss && stoplossRate > profitRate) //손절
                 {
                     int orderResult = obj.AxKHOpenAPI.SendOrder(
                                             "잔고손절매도",
