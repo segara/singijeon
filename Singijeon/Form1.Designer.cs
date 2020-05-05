@@ -1,6 +1,6 @@
 ﻿namespace Singijeon
 {
-    partial class tradingStrategyGridView
+    partial class Form1
     {
         /// <summary>
         /// 필수 디자이너 변수입니다.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(tradingStrategyGridView));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -92,6 +92,7 @@
             this.BuyMoreValueUpdown = new System.Windows.Forms.NumericUpDown();
             this.BuyMorePercentUpdown = new System.Windows.Forms.NumericUpDown();
             this.BuyMoreCheckBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.BuyConditionDoubleComboBox = new System.Windows.Forms.ComboBox();
             this.usingDoubleConditionCheck = new System.Windows.Forms.CheckBox();
             this.panel14 = new System.Windows.Forms.Panel();
@@ -527,7 +528,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 370F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 374F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -567,10 +568,10 @@
             this.panel7.Controls.Add(this.label11);
             this.panel7.Controls.Add(this.usingTickBuyCheck);
             this.panel7.Controls.Add(this.label12);
-            this.panel7.Location = new System.Drawing.Point(381, 3);
+            this.panel7.Location = new System.Drawing.Point(379, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(488, 205);
+            this.panel7.Size = new System.Drawing.Size(486, 205);
             this.panel7.TabIndex = 5;
             // 
             // buyCancelTimeCheckBox
@@ -871,7 +872,7 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(370, 205);
+            this.panel1.Size = new System.Drawing.Size(368, 205);
             this.panel1.TabIndex = 0;
             // 
             // label27
@@ -942,19 +943,30 @@
             this.BuyMoreCheckBox1.Text = "물타기";
             this.BuyMoreCheckBox1.UseVisualStyleBackColor = true;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(66, 127);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(124, 16);
+            this.checkBox1.TabIndex = 35;
+            this.checkBox1.Text = "물타기후 매도적용";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // BuyConditionDoubleComboBox
             // 
             this.BuyConditionDoubleComboBox.FormattingEnabled = true;
-            this.BuyConditionDoubleComboBox.Location = new System.Drawing.Point(212, 33);
+            this.BuyConditionDoubleComboBox.Location = new System.Drawing.Point(214, 33);
             this.BuyConditionDoubleComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BuyConditionDoubleComboBox.Name = "BuyConditionDoubleComboBox";
-            this.BuyConditionDoubleComboBox.Size = new System.Drawing.Size(158, 20);
+            this.BuyConditionDoubleComboBox.Size = new System.Drawing.Size(132, 20);
             this.BuyConditionDoubleComboBox.TabIndex = 14;
             // 
             // usingDoubleConditionCheck
             // 
             this.usingDoubleConditionCheck.AutoSize = true;
-            this.usingDoubleConditionCheck.Location = new System.Drawing.Point(216, 8);
+            this.usingDoubleConditionCheck.Location = new System.Drawing.Point(216, 13);
             this.usingDoubleConditionCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.usingDoubleConditionCheck.Name = "usingDoubleConditionCheck";
             this.usingDoubleConditionCheck.Size = new System.Drawing.Size(88, 16);
@@ -1126,6 +1138,7 @@
             this.panel2.Controls.Add(this.divideProfitSellLoopCheck);
             this.panel2.Controls.Add(this.label47);
             this.panel2.Controls.Add(this.label46);
+            this.panel2.Controls.Add(this.checkBox1);
             this.panel2.Controls.Add(this.label45);
             this.panel2.Controls.Add(this.label43);
             this.panel2.Controls.Add(this.divideSellPercentLoss);
@@ -1145,10 +1158,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(876, 3);
+            this.panel2.Location = new System.Drawing.Point(872, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(365, 205);
+            this.panel2.Size = new System.Drawing.Size(369, 205);
             this.panel2.TabIndex = 4;
             // 
             // divideLossSellLoopCheck
@@ -1281,9 +1294,9 @@
             this.DivideSellLossCheckBox.Location = new System.Drawing.Point(196, 117);
             this.DivideSellLossCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DivideSellLossCheckBox.Name = "DivideSellLossCheckBox";
-            this.DivideSellLossCheckBox.Size = new System.Drawing.Size(134, 16);
+            this.DivideSellLossCheckBox.Size = new System.Drawing.Size(146, 16);
             this.DivideSellLossCheckBox.TabIndex = 16;
-            this.DivideSellLossCheckBox.Text = "분할매도(손|수량%)";
+            this.DivideSellLossCheckBox.Text = "분할매도(손절|수량%)";
             this.DivideSellLossCheckBox.UseVisualStyleBackColor = true;
             // 
             // DivideSellProfitCheckBox
@@ -1292,9 +1305,9 @@
             this.DivideSellProfitCheckBox.Location = new System.Drawing.Point(196, 24);
             this.DivideSellProfitCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DivideSellProfitCheckBox.Name = "DivideSellProfitCheckBox";
-            this.DivideSellProfitCheckBox.Size = new System.Drawing.Size(124, 16);
+            this.DivideSellProfitCheckBox.Size = new System.Drawing.Size(136, 16);
             this.DivideSellProfitCheckBox.TabIndex = 15;
-            this.DivideSellProfitCheckBox.Text = "분할매도(익|수량)";
+            this.DivideSellProfitCheckBox.Text = "분할매도(익절|수량)";
             this.DivideSellProfitCheckBox.UseVisualStyleBackColor = true;
             // 
             // TrailingSellCheckBox
@@ -1391,7 +1404,7 @@
             0,
             0,
             65536});
-            this.minusSellUpdown.Location = new System.Drawing.Point(90, 142);
+            this.minusSellUpdown.Location = new System.Drawing.Point(95, 147);
             this.minusSellUpdown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.minusSellUpdown.Maximum = new decimal(new int[] {
             0,
@@ -1499,7 +1512,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 46.99187F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 53.00813F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 438F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 314F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 316F));
             this.tableLayoutPanel3.Controls.Add(this.panel16, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel17, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel4, 1, 1);
@@ -1521,10 +1534,10 @@
             // 
             this.panel16.Controls.Add(this.balanceSellBtn);
             this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel16.Location = new System.Drawing.Point(230, 196);
+            this.panel16.Location = new System.Drawing.Point(229, 196);
             this.panel16.Margin = new System.Windows.Forms.Padding(0);
             this.panel16.Name = "panel16";
-            this.panel16.Size = new System.Drawing.Size(259, 40);
+            this.panel16.Size = new System.Drawing.Size(258, 40);
             this.panel16.TabIndex = 10;
             // 
             // balanceSellBtn
@@ -1543,13 +1556,13 @@
             this.panel17.Location = new System.Drawing.Point(0, 196);
             this.panel17.Margin = new System.Windows.Forms.Padding(0);
             this.panel17.Name = "panel17";
-            this.panel17.Size = new System.Drawing.Size(230, 40);
+            this.panel17.Size = new System.Drawing.Size(229, 40);
             this.panel17.TabIndex = 9;
             // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(489, 196);
+            this.panel4.Location = new System.Drawing.Point(487, 196);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(438, 40);
@@ -1572,14 +1585,14 @@
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(230, 196);
+            this.panel5.Size = new System.Drawing.Size(229, 196);
             this.panel5.TabIndex = 6;
             // 
             // bss_curQnt
             // 
             this.bss_curQnt.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.bss_curQnt.AutoSize = true;
-            this.bss_curQnt.Location = new System.Drawing.Point(171, 79);
+            this.bss_curQnt.Location = new System.Drawing.Point(170, 79);
             this.bss_curQnt.Name = "bss_curQnt";
             this.bss_curQnt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.bss_curQnt.Size = new System.Drawing.Size(59, 12);
@@ -1617,7 +1630,7 @@
             // 
             this.b_averagePriceTxt.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.b_averagePriceTxt.AutoSize = true;
-            this.b_averagePriceTxt.Location = new System.Drawing.Point(171, 135);
+            this.b_averagePriceTxt.Location = new System.Drawing.Point(170, 135);
             this.b_averagePriceTxt.Name = "b_averagePriceTxt";
             this.b_averagePriceTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.b_averagePriceTxt.Size = new System.Drawing.Size(59, 12);
@@ -1681,7 +1694,7 @@
             // panel18
             // 
             this.panel18.Controls.Add(this.panel6);
-            this.panel18.Location = new System.Drawing.Point(930, 3);
+            this.panel18.Location = new System.Drawing.Point(928, 3);
             this.panel18.Name = "panel18";
             this.panel18.Size = new System.Drawing.Size(298, 190);
             this.panel18.TabIndex = 11;
@@ -1830,7 +1843,7 @@
             // panel19
             // 
             this.panel19.Controls.Add(this.balanceSellMonitorBtn);
-            this.panel19.Location = new System.Drawing.Point(930, 199);
+            this.panel19.Location = new System.Drawing.Point(928, 199);
             this.panel19.Name = "panel19";
             this.panel19.Size = new System.Drawing.Size(298, 34);
             this.panel19.TabIndex = 12;
@@ -1857,7 +1870,7 @@
             this.panel3.Controls.Add(this.b_takeProfitUpdown);
             this.panel3.Controls.Add(this.b_ProfitSellCheckBox);
             this.panel3.Controls.Add(this.label18);
-            this.panel3.Location = new System.Drawing.Point(237, 2);
+            this.panel3.Location = new System.Drawing.Point(235, 2);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(245, 192);
@@ -1976,7 +1989,7 @@
             // panel21
             // 
             this.panel21.Controls.Add(this.BssDataGridView);
-            this.panel21.Location = new System.Drawing.Point(492, 3);
+            this.panel21.Location = new System.Drawing.Point(490, 3);
             this.panel21.Name = "panel21";
             this.panel21.Size = new System.Drawing.Size(431, 190);
             this.panel21.TabIndex = 13;
@@ -2080,7 +2093,7 @@
             this.잔고추가매수.Controls.Add(this.panel20);
             this.잔고추가매수.Location = new System.Drawing.Point(4, 22);
             this.잔고추가매수.Name = "잔고추가매수";
-            this.잔고추가매수.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.잔고추가매수.Padding = new System.Windows.Forms.Padding(3);
             this.잔고추가매수.Size = new System.Drawing.Size(1254, 256);
             this.잔고추가매수.TabIndex = 5;
             this.잔고추가매수.Text = "잔고추가매수";
@@ -2458,7 +2471,7 @@
             this.tabPage9.Controls.Add(this.panel8);
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage9.Size = new System.Drawing.Size(1254, 256);
             this.tabPage9.TabIndex = 4;
             this.tabPage9.Text = "마틴게일";
@@ -3926,7 +3939,7 @@
             this.blockingCheckBox.Text = "블럭킹:프로그램 이외  외부주문 즉시매도";
             this.blockingCheckBox.UseVisualStyleBackColor = true;
             // 
-            // tradingStrategyGridView
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -3940,7 +3953,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "tradingStrategyGridView";
+            this.Name = "Form1";
             this.Text = " Form1";
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -4348,6 +4361,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn bss_매도량;
         private System.Windows.Forms.DataGridViewButtonColumn bss_취소;
         private System.Windows.Forms.DataGridViewTextBoxColumn bss_상태;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

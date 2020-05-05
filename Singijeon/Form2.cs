@@ -380,11 +380,11 @@ namespace Singijeon {
 
         private void accountRefreshBtn_Click(object sender, EventArgs e)
         {
-            axKHOpenAPI1.SetInputValue("계좌번호", tradingStrategyGridView.account);
+            axKHOpenAPI1.SetInputValue("계좌번호", Form1.account);
             axKHOpenAPI1.SetInputValue("비밀번호", "");
             axKHOpenAPI1.SetInputValue("상장폐지조회구분", "0");
             axKHOpenAPI1.SetInputValue("비밀번호입력매체구분", "00");
-            axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2, "OPW00004", 0, tradingStrategyGridView.GetScreenNum().ToString());
+            axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2, "OPW00004", 0, Form1.GetScreenNum().ToString());
 
         }
     }

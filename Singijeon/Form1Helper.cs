@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Singijeon
 {
-    public partial class tradingStrategyGridView : Form
+    public partial class Form1 : Form
     {
         //실시간 종목 조회 응답시//
         private void UpdateAccountBalanceDataGridViewRow(string itemCode, long c_lPrice)

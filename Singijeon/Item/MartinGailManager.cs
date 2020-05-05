@@ -75,7 +75,7 @@ namespace Singijeon
         }
 
         AxKHOpenAPI axKHOpenAPI1;
-        tradingStrategyGridView form1;
+        Form1 form1;
         
         DateTime startOrderTime = DateTime.Now;
 
@@ -140,7 +140,7 @@ namespace Singijeon
             return martinInstance;
         }
 
-        public void Init(AxKHOpenAPI axKHOpenAPI, tradingStrategyGridView form)
+        public void Init(AxKHOpenAPI axKHOpenAPI, Form1 form)
         {
             this.axKHOpenAPI1 = axKHOpenAPI;
             this.form1 = form;
@@ -647,7 +647,7 @@ namespace Singijeon
 
                     if (Item.itemState == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
                     {
-                        if (using_Outstand_UpAndCancel && tradingStrategyGridView.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice) > OutStand_And_CancelValue)
+                        if (using_Outstand_UpAndCancel && Form1.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice) > OutStand_And_CancelValue)
                         {
                             CoreEngine.GetInstance().SendLogWarningMessage("!!!!!!!!!!!!using_Outstand_UpAndCancel!!!!!!!!!!!!!!");
                             CancelBuyOrderAll();
@@ -656,7 +656,7 @@ namespace Singijeon
                     }
                     else
                     {
-                        if (using_Up_And_Cancel && tradingStrategyGridView.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice) > Up_And_CancelValue)
+                        if (using_Up_And_Cancel && Form1.GetProfitRate((double)Item.curPrice, (double)Item.buyPrice) > Up_And_CancelValue)
                         {
                             CoreEngine.GetInstance().SendLogMessage("!!!!!!!!!!!!using_Up_And_Cancel Pop MartinGail Item!!!!!!!!!!!!!!");
                             CancelBuyOrderAll();

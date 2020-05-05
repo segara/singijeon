@@ -48,17 +48,17 @@ namespace Singijeon
 
         override public void CheckBalanceStrategy(object sender, string itemCode, long c_lPrice, Action func)
         {
-            tradingStrategyGridView obj = (tradingStrategyGridView)sender;
+            Form1 obj = (Form1)sender;
 
             if (!isSold && buyingPrice != 0)
             {
-                double profitRate = tradingStrategyGridView.GetProfitRate((double)c_lPrice, (double)buyingPrice);
+                double profitRate = Form1.GetProfitRate((double)c_lPrice, (double)buyingPrice);
 
                 if (usingTakeProfit && takeProfitRate <= profitRate) //익절
                 {
                     int orderResult = obj.AxKHOpenAPI.SendOrder(
                                         "잔고익절매도",
-                                        tradingStrategyGridView.GetScreenNum().ToString(),
+                                        Form1.GetScreenNum().ToString(),
                                         account,
                                         CONST_NUMBER.SEND_ORDER_SELL,
                                         itemCode,
@@ -84,7 +84,7 @@ namespace Singijeon
                 {
                     int orderResult = obj.AxKHOpenAPI.SendOrder(
                                             "잔고손절매도",
-                                            tradingStrategyGridView.GetScreenNum().ToString(),
+                                            Form1.GetScreenNum().ToString(),
                                             account,
                                             CONST_NUMBER.SEND_ORDER_SELL,
                                             itemCode,

@@ -16,7 +16,7 @@ using Singijeon.Item;
 
 namespace Singijeon
 {
-    public partial class tradingStrategyGridView : Form
+    public partial class Form1 : Form
     {
         CoreEngine coreEngine;
         private string currentAccount = string.Empty;
@@ -57,7 +57,7 @@ namespace Singijeon
         Form3 printForm = null;
 
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
-        public tradingStrategyGridView()
+        public Form1()
         {
             InitializeComponent();
 

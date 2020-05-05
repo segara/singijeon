@@ -16,7 +16,7 @@ namespace Singijeon
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new tradingStrategyGridView());
+            Application.Run(new Form1());
         }
     }
 }

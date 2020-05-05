@@ -26,11 +26,11 @@ namespace Singijeon.Item
         }
 
         AxKHOpenAPI axKHOpenAPI1;
-        tradingStrategyGridView form1;
+        Form1 form1;
 
         
 
-        public void Init(AxKHOpenAPI axKHOpenAPI, tradingStrategyGridView form)
+        public void Init(AxKHOpenAPI axKHOpenAPI, Form1 form)
         {
             this.axKHOpenAPI1 = axKHOpenAPI;
             this.form1 = form;

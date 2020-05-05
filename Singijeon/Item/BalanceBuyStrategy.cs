@@ -36,10 +36,10 @@ namespace Singijeon
             {
                 if (buyingPrice >= c_lPrice)
                 {
-                    tradingStrategyGridView obj = (tradingStrategyGridView)sender;
+                    Form1 obj = (Form1)sender;
                     int orderResult = obj.AxKHOpenAPI.SendOrder(
                               ConstName.SEND_ORDER_BUY,
-                              tradingStrategyGridView.GetScreenNum().ToString(),
+                              Form1.GetScreenNum().ToString(),
                               account,
                               CONST_NUMBER.SEND_ORDER_BUY,//1:신규매수
                               itemCode,

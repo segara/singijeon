@@ -19,7 +19,7 @@ namespace Singijeon
         private const string LOAD_DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
 
        
-        tradingStrategyGridView form;
+        Form1 form;
         private AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
         private SaveLoadManager()
         {
@@ -34,7 +34,7 @@ namespace Singijeon
             }
             return instance;
         }
-        public void SetForm(tradingStrategyGridView _form, AxKHOpenAPILib.AxKHOpenAPI api)
+        public void SetForm(Form1 _form, AxKHOpenAPILib.AxKHOpenAPI api)
         {
             form = _form;
             axKHOpenAPI1 = api;
@@ -151,7 +151,7 @@ namespace Singijeon
                 }
 
                 axKHOpenAPI1.SetInputValue("종목코드", itemAdd.itemCode);
-                int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_REAL_DATA_HOGA, "opt10004", 0, tradingStrategyGridView.GetScreenNum().ToString());
+                int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_REAL_DATA_HOGA, "opt10004", 0, Form1.GetScreenNum().ToString());
 
                 form.SetTrailingItem(itemAdd);
 

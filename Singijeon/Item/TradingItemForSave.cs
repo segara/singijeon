@@ -48,12 +48,15 @@ namespace Singijeon
         public TickBongInfoMgr tickBongInfoMgr = new TickBongInfoMgr(30);
         public bool startTrailingSell = false;
         public bool useBuyMore = true;
+        public bool buyMoreFinish = false;
         public bool usingBuyCancelByTime = true;
 
         public bool usingDivideSellProfit = false;
         public bool usingDivideSellProfitLoop = false;
         public bool usingDivideSellLoss = false;
         public bool usingDivideSellLossLoop = false;
+
+        public bool usingStopLossAfterBuyMore = false;
 
         public TradingItemForSave()
         {

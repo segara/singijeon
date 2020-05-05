@@ -64,6 +64,8 @@ namespace Singijeon
         public bool useDivideSellProfitLoop = false;
         public bool useDivideSellLossLoop = false;
 
+        public bool usingStopLossAfterBuyMore = false;
+
         public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
         
         public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveCondition; //종목 검색시
@@ -361,11 +363,11 @@ namespace Singijeon
 
             if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
             {
-                d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
+                d_conditionValue = _conditionValue - Form1.FEE_RATE;
             }
             if (checkType == IS_TRUE_OR_FALE_TYPE.UPPER || checkType == IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME)
             {
-                d_conditionValue = _conditionValue + tradingStrategyGridView.FEE_RATE;
+                d_conditionValue = _conditionValue + Form1.FEE_RATE;
             }
         }
 
@@ -447,11 +449,11 @@ namespace Singijeon
        
             if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
             {
-                d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
+                d_conditionValue = _conditionValue - Form1.FEE_RATE;
             }
             if (checkType == IS_TRUE_OR_FALE_TYPE.UPPER || checkType == IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME)
             {
-                d_conditionValue = _conditionValue + tradingStrategyGridView.FEE_RATE;
+                d_conditionValue = _conditionValue + Form1.FEE_RATE;
             }
         }
 
@@ -526,11 +528,11 @@ namespace Singijeon
 
             if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
             {
-                d_conditionValue = _conditionValue - tradingStrategyGridView.FEE_RATE;
+                d_conditionValue = _conditionValue - Form1.FEE_RATE;
             }
             if (checkType == IS_TRUE_OR_FALE_TYPE.UPPER || checkType == IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME)
             {
-                d_conditionValue = _conditionValue + tradingStrategyGridView.FEE_RATE;
+                d_conditionValue = _conditionValue + Form1.FEE_RATE;
             }
         }
 

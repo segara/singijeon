@@ -37,6 +37,7 @@ namespace Singijeon
         public TradingStrategy ts = null;
         public TRADING_ITEM_STATE state {get{return curState;}}
         private TRADING_ITEM_STATE curState = TRADING_ITEM_STATE.NONE;
+
         public string buyOrderNum = string.Empty;
         public string sellOrderNum = string.Empty;
         public string buyCancelOrderNum = string.Empty;
@@ -68,12 +69,15 @@ namespace Singijeon
         public TickBongInfoMgr tickBongInfoMgr = new TickBongInfoMgr(30);
         public bool startTrailingSell = false;
         public bool useBuyMore = true;
+        public bool buyMoreFinish = false;
         public bool usingBuyCancelByTime = true;
 
         public bool usingDivideSellProfit = false;
         public bool usingDivideSellProfitLoop = false;
         public bool usingDivideSellLoss = false;
         public bool usingDivideSellLossLoop = false;
+
+        public bool usingStopLossAfterBuyMore = false;
 
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
@@ -103,6 +107,7 @@ namespace Singijeon
             this.usingDivideSellProfit = ts.useDivideSellProfit;
             this.usingDivideSellLossLoop = ts.useDivideSellLossLoop;
             this.usingDivideSellProfitLoop = ts.useDivideSellProfitLoop;
+            this.usingStopLossAfterBuyMore = ts.usingStopLossAfterBuyMore;
 
             this.Uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
