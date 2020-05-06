@@ -51,10 +51,12 @@ namespace Singijeon
                     if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
                     {
                         func();
-                        obj.balanceStrategyList.Remove(this);
+                        state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_BEFORE_ORDER;
+                        //obj.balanceStrategyList.Remove(this);
                         DataGridView gridView = ui_rowItem.DataGridView;
                         gridView.Rows.Remove(ui_rowItem);
                         Core.CoreEngine.GetInstance().SendLogMessage("ui -> bbs 매수주문접수시도");
+                     
                         //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                     }
                     else

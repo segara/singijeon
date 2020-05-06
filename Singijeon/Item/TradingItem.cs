@@ -20,6 +20,10 @@ namespace Singijeon
 
         AUTO_TRADING_STATE_BUY_COMPLETE, //매수완료
 
+        AUTO_TRADING_STATE_BUYMORE_BEFORE_ORDER,//추가매수주문접수시도중
+        AUTO_TRADING_STATE_BUYMORE_NOT_COMPLETE,//추가매수주문완료_체결대기
+        AUTO_TRADING_STATE_BUYMORE_COMPLETE, //추가매수완료
+
         AUTO_TRADING_STATE_SELL_BEFORE_ORDER,//매도주문접수시도
         AUTO_TRADING_STATE_SELL_NOT_COMPLETE, //매도주문완료
 
@@ -94,7 +98,7 @@ namespace Singijeon
             this.buyingQnt = buyingQnt;
             this.outStandingQnt = buyingQnt;
             this.isCompleteBuying = false;
-         
+            this.conditionUid = ts.buyCondition.Uid;
             this.isBuyCancel = false;   
             this.isCompleteSold = false;
 
@@ -194,10 +198,9 @@ namespace Singijeon
              curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_COMPLETE;
         }
        
-        public void SetBuy(bool buying)
+        public void SetBuyState()
         {
-            if (buying)
-                curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
+             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }
         public static string StateToString(TRADING_ITEM_STATE state)
         {

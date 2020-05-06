@@ -70,8 +70,9 @@ namespace Singijeon
                     if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
                     {
                         isSold = true;
+                        state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER;
                         obj.AddTryingSellList(this);
-                        obj.balanceStrategyList.Remove(this);
+                        //obj.balanceStrategyList.Remove(this);
                         Core.CoreEngine.GetInstance().SendLogMessage("ui -> bss 매도주문접수시도");
                         //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                     }
@@ -96,8 +97,9 @@ namespace Singijeon
                     if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
                     {
                         isSold = true;
+                        state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER;
                         obj.AddTryingSellList(this);
-                        obj.balanceStrategyList.Remove(this);
+                        //obj.balanceStrategyList.Remove(this);
                         Core.CoreEngine.GetInstance().SendLogMessage("ui ->bss 매도주문접수시도");
                         //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                     }

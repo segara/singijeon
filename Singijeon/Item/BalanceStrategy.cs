@@ -15,9 +15,12 @@ namespace Singijeon.Item
             SELL,
         }
 
+   
+
         public int listIndex = 0;
         public string orderNum = string.Empty;
         public BALANCE_STRATEGY_TYPE type;
+        public TRADING_ITEM_STATE state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE;
         public string account;
         public string itemCode;
         public int buyingPrice;

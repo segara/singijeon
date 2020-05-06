@@ -423,8 +423,8 @@ namespace Singijeon
                                     coreEngine.SaveItemLogMessage(itemcode, "매수주문 성공");
 
                                     TradingItem tradingItem = new TradingItem(ts, itemcode, axKHOpenAPI1.GetMasterCodeName(itemcode), i_price, i_qnt, false, false, ts.buyOrderOption);
-                                    tradingItem.SetBuy(true);
-                                    tradingItem.SetConditonUid(conditionUid);
+                                    tradingItem.SetBuyState();
+                                   
 
                                     ts.tradingItemList.Add(tradingItem); //매수전략 내에 매매진행 종목 추가
                                     AddOrderList(tradingItem);
@@ -605,7 +605,7 @@ namespace Singijeon
 
         private void CheckBS(string itemCode, long c_lPrice)
         {
-            List<BalanceStrategy> bsList = balanceStrategyList.FindAll(o => o.itemCode.Equals(itemCode));
+            List<BalanceStrategy> bsList = balanceStrategyList.FindAll(o => (o.itemCode.Equals(itemCode) && o.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE));
             
             foreach(var bs in bsList)
             {
@@ -616,7 +616,26 @@ namespace Singijeon
                     });
                 }
             }
-        
+        }
+
+        private void CheckBS_Finish(string itemCode, bool buy, long conclusionQnt)
+        {
+            List<BalanceStrategy> bsList = balanceStrategyList.FindAll(o => o.itemCode.Equals(itemCode));
+
+            foreach (var bs in bsList)
+            {
+                if (bs != null)
+                {
+                   if(buy && bs.buyQnt == conclusionQnt && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_BEFORE_ORDER)
+                   {
+                        balanceStrategyList.Remove(bs);
+                   }
+                   if (!buy && bs.sellQnt == conclusionQnt && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER)
+                   {
+                        balanceStrategyList.Remove(bs);
+                   }
+                }
+            }
         }
 
         private void CheckBSSAll (string itemCode, long c_lPrice)
@@ -2468,8 +2487,8 @@ namespace Singijeon
                                         coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 매수주문요청 성공");
 
                                         TradingItem tradingItem = new TradingItem(ts, itemcode, axKHOpenAPI1.GetMasterCodeName(itemcode), price, i_qnt, false, false, ts.buyOrderOption);
-                                        tradingItem.SetBuy(true);
-                                        tradingItem.SetConditonUid(conditionUid);
+                                        tradingItem.SetBuyState();
+                                        
 
                                         ts.tradingItemList.Add(tradingItem);
                                         AddOrderList(tradingItem);
@@ -2717,8 +2736,8 @@ namespace Singijeon
                                     coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 매수주문 성공");
 
                                     TradingItem tradingItem = new TradingItem(trailingItem.strategy, itemcode, axKHOpenAPI1.GetMasterCodeName(itemcode), price, i_qnt, false, false, trailingItem.buyOrderOption);
-                                    tradingItem.SetBuy(true);
-                                    tradingItem.SetConditonUid(trailingItem.strategy.buyCondition.Uid);
+                                    tradingItem.SetBuyState();
+                                   
 
                                     trailingItem.strategy.tradingItemList.Add(tradingItem); //매수전략 내에 매매진행 종목 추가
 
@@ -3241,8 +3260,8 @@ namespace Singijeon
                 coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(_itemCode) + " 매수주문 성공");
 
                 TradingItem tradingItem = new TradingItem(findItem.strategy, _itemCode, axKHOpenAPI1.GetMasterCodeName(_itemCode), price, i_qnt, false, false, findItem.buyOrderOption);
-                tradingItem.SetBuy(true);
-                tradingItem.SetConditonUid(findItem.strategy.buyCondition.Uid);
+                tradingItem.SetBuyState();
+                
 
                 findItem.strategy.tradingItemList.Add(tradingItem); //매수전략 내에 매매진행 종목 추가
 
