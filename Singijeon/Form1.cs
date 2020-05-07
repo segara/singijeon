@@ -624,17 +624,25 @@ namespace Singijeon
 
             foreach (var bs in bsList)
             {
-                if (bs != null)
+                Console.WriteLine("CheckBS_Finish : " + axKHOpenAPI1.GetMasterCodeName(bs.itemCode) + "/" +conclusionQnt+"/"+bs.buyQnt);
+                
+                if(buy && bs.buyQnt == conclusionQnt && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_BEFORE_ORDER)
                 {
-                   if(buy && bs.buyQnt == conclusionQnt && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_BEFORE_ORDER)
-                   {
-                        balanceStrategyList.Remove(bs);
-                   }
-                   if (!buy && bs.sellQnt == conclusionQnt && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER)
-                   {
-                        balanceStrategyList.Remove(bs);
-                   }
+                    Console.WriteLine("buy more finish");
+                    List<TradingItem> tradeItemListAll = GetAllTradingItemData(itemCode);
+                    foreach(var item in tradeItemListAll)
+                    {
+                        if (item.usingStopLossAfterBuyMore)
+                            item.usingStopLossAfterBuyMore = false;
+                    }
+                    balanceStrategyList.Remove(bs);
                 }
+                if (!buy && bs.sellQnt == conclusionQnt && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_BEFORE_ORDER)
+                {
+                    Console.WriteLine("bs sell finish");
+                    balanceStrategyList.Remove(bs);
+                }
+                
             }
         }
 
@@ -788,6 +796,9 @@ namespace Singijeon
                 string conclusionPrice = axKHOpenAPI1.GetChejanData(910);
                 string conclusionQuantity = axKHOpenAPI1.GetChejanData(911);
                 string unitConclusionQuantity = axKHOpenAPI1.GetChejanData(915);
+
+                int i_ConclusionQuantity = 0;
+                int.TryParse(conclusionQuantity, out i_ConclusionQuantity);
 
                 int i_unitConclusionQuantity = 0;
                 int.TryParse(unitConclusionQuantity,out i_unitConclusionQuantity);
@@ -977,12 +988,14 @@ namespace Singijeon
                 else if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_CONCLUSION))
                 {
                     coreEngine.SaveItemLogMessage(itemCode, "체결 주문당 잔고 : " + outstanding + " / 누적 체결수량 :" + conclusionQuantity+" / 유닛체결수량 : " + i_unitConclusionQuantity);
+
                     if (int.Parse(outstanding) == 0 && string.IsNullOrEmpty(conclusionQuantity) == false)
                     {
                         if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                         {
                             UpdateTradingStrategyBuy(ordernum, true, i_unitConclusionQuantity, i_orderPrice);
                             UpdateBuyAutoTradingDataGridState(ordernum, true);
+                            CheckBS_Finish(itemCode, true, i_ConclusionQuantity);
                         }
                         else if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_SELL))
                         {
@@ -994,7 +1007,9 @@ namespace Singijeon
 
                             CheckBSS_Sell(ordernum, conclusionPrice); //bss 체크
                             CheckSettle_Sell(ordernum); //청산 체크
+                            CheckBS_Finish(itemCode, false, i_ConclusionQuantity);
                         }
+                        
                     }
                     else //일부만 매수/매도 완료
                     {
@@ -1976,6 +1991,7 @@ namespace Singijeon
             }
 
             bool usingStopLoss = minusSellCheckBox.Checked; //손절사용
+            bool usingStopLossAfterBuyMore = stopLossAfterBuyMoreCheck.Checked;
 
             if (usingStopLoss)
             {
@@ -1992,6 +2008,7 @@ namespace Singijeon
                 stopLossStrategy.OnReceivedTrData += this.OnReceiveTrDataCheckStopLoss;
                 ts.AddTradingStrategyItemList(stopLossStrategy);
                 ts.stoplossRate = stopLossRate;
+                ts.usingStopLossAfterBuyMore = usingStopLossAfterBuyMore;
             }
 
             bool usingDivideSellLoss = DivideSellLossCheckBox.Checked; //분할매도손절
@@ -2326,11 +2343,11 @@ namespace Singijeon
 
         public void OnReceiveTrDataCheckStopLossDivide(object sender, OnReceivedTrEventArgs e)
         {
-         
+           
             if (e.tradingItem.usingDivideSellLoss)
             {
                 coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행");
-                OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellLossPercentage);
+                OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellLossPercentage, true);
                 if( e.tradingItem.usingDivideSellLossLoop == false)
                 {
                     e.tradingItem.usingDivideSellLoss = false;
@@ -2339,7 +2356,7 @@ namespace Singijeon
             }
         }
 
-        public void OnReceiveTrDataCheckStopLoss(TradingItem item, double checkValue, double sellPercentage = 1)
+        public void OnReceiveTrDataCheckStopLoss(TradingItem item, double checkValue, double sellPercentage = 1, bool StopLossDivide = false)
         {
             if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE
                 || item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT)
@@ -2369,6 +2386,9 @@ namespace Singijeon
             }
 
             if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
+                return;
+
+            if (item.usingStopLossAfterBuyMore && !StopLossDivide) //true 일때 return , 물타기 후 꺼줌
                 return;
 
             item.SetSellOrderType(false);

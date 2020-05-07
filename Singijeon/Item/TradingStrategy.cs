@@ -544,7 +544,7 @@ namespace Singijeon
                 return;
             }
 
-            Console.WriteLine("buyMore : " + item.useBuyMore + " value : " + value + " / d_conditionValue : " + d_conditionValue);
+            //Console.WriteLine("buyMore : " + item.useBuyMore + " value : " + value + " / d_conditionValue : " + d_conditionValue);
             if (value < d_conditionValue && item.useBuyMore)
             {
                 if (OnReceivedTrData != null)
