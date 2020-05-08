@@ -3575,5 +3575,43 @@ namespace Singijeon
 
             BalanceBuy(accountNum, itemCode, Math.Abs((int)buyingPrice), Math.Abs((int)buyQnt), orderType);
         }
+
+        private void BssDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+            if (e.ColumnIndex == BssDataGridView.Columns["bss_취소"].Index)
+            {
+                int listIndex = e.RowIndex;
+                List<BalanceStrategy> sell_list = balanceStrategyList.FindAll(o => (o.type == BalanceStrategy.BALANCE_STRATEGY_TYPE.SELL));
+              
+                if (sell_list != null && sell_list.Count > listIndex)
+                {
+                    BalanceStrategy select_strategy = sell_list[listIndex];
+                  
+                    balanceStrategyList.Remove(select_strategy);
+                    BssDataGridView.Rows.RemoveAt(e.RowIndex);
+                }
+            }
+        }
+
+        private void BBSdataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+            if (e.ColumnIndex == BBSdataGridView.Columns["bbs_취소"].Index)
+            {
+                int listIndex = e.RowIndex;
+                List<BalanceStrategy> buy_list = balanceStrategyList.FindAll(o => (o.type == BalanceStrategy.BALANCE_STRATEGY_TYPE.BUY));
+  
+                if (buy_list != null && buy_list.Count > listIndex)
+                {
+                    BalanceStrategy select_strategy = buy_list[listIndex];
+
+                    balanceStrategyList.Remove(select_strategy);
+                    BBSdataGridView.Rows.RemoveAt(e.RowIndex);
+                }
+            }
+        }
     }
 }

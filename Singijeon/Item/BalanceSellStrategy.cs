@@ -44,6 +44,7 @@ namespace Singijeon
             this.stoplossOrderOption = _sellStopLossOrderOption;
             this.usingStoploss = _usingStoploss;
             this.stoplossRate = _stoplossRate;
+            this.type = BALANCE_STRATEGY_TYPE.SELL;
         }
 
         override public void CheckBalanceStrategy(object sender, string itemCode, long c_lPrice, Action func)

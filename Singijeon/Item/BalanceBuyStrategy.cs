@@ -28,6 +28,7 @@ namespace Singijeon
             this.buyQnt = _buyQnt;
             this.buyingPrice = _buyingPrice;
             this.orderOption = _orderOption;
+            this.type = BALANCE_STRATEGY_TYPE.BUY;
         }
 
         override public void CheckBalanceStrategy(object sender, string itemCode, long c_lPrice, Action func)
