@@ -1244,7 +1244,7 @@ namespace Singijeon
         {
             List<BalanceBuyStrategy> bbsList = GetTryingBuyList(itemCode);
 
-            if (bbsList != null && bbsList.Count > 0)
+            if (bbsList != null)
             {
                 foreach (BalanceBuyStrategy bbs in bbsList)
                 {
