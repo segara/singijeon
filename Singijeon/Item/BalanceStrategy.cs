@@ -14,7 +14,7 @@ namespace Singijeon.Item
             BUY,
             SELL,
         }
-
+        public bool bUseStrategy = true;
         public int listIndex = 0;
         public string orderNum = string.Empty;
         public BALANCE_STRATEGY_TYPE type;

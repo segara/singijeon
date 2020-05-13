@@ -53,9 +53,10 @@ namespace Singijeon
                     {
                         func();
                         state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_BEFORE_ORDER;
+                        obj.AddTryingBuyList(this);
                         //obj.balanceStrategyList.Remove(this);
-                        DataGridView gridView = ui_rowItem.DataGridView;
-                        gridView.Rows.Remove(ui_rowItem);
+                        //DataGridView gridView = ui_rowItem.DataGridView;
+                        //gridView.Rows.Remove(ui_rowItem);
                         Core.CoreEngine.GetInstance().SendLogMessage("ui -> bbs 매수주문접수시도");
                      
                         //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
