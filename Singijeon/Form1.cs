@@ -56,7 +56,7 @@ namespace Singijeon
         Dictionary<string, NotConclusionItem> nonConclusionList = new Dictionary<string, NotConclusionItem>();
 
         Form3 printForm = null;
-
+        Form3 printForm_kosdaq = null;
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
         public Form1()
         {
@@ -69,7 +69,7 @@ namespace Singijeon
             OpenSecondWindow();
 
             printForm = new Form3(axKHOpenAPI1);
-           
+            printForm_kosdaq = new Form3(axKHOpenAPI1);
 
             startTimePicker.Value = DateTime.Now;
             startTimePicker.Format = DateTimePickerFormat.Custom;
@@ -2224,6 +2224,13 @@ namespace Singijeon
                 printForm.btn.Click += new System.EventHandler(printForm.KospiChartRequestBtn_Click);
                 printForm.Show();
             }, Form3.CHART_TYPE.MINUTE_5);
+
+            printForm_kosdaq.RequestKosdap(delegate (string _itemCode)
+            {
+                printForm_kosdaq.btn.Click -= new System.EventHandler(printForm_kosdaq.ChartRequestBtn_Click);
+                printForm_kosdaq.btn.Click += new System.EventHandler(printForm_kosdaq.KosdaqChartRequestBtn_Click);
+                printForm_kosdaq.Show();
+            }, Form3.CHART_TYPE.MINUTE_5);
         }
         #endregion
         public void StartMonitoring(Condition _condition)
@@ -3655,6 +3662,9 @@ namespace Singijeon
             }
         }
 
-     
+        private void KospiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

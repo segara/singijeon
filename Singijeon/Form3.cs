@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Globalization;
+using Singijeon.Core;
 
 namespace Singijeon
 {
@@ -50,9 +51,9 @@ namespace Singijeon
         double evelopeValue = 0.96;
         const double MA_4_PERCENT = 0.96;
         const double MA_3_PERCENT = 0.97;
-
+        TimerJob newTimer;
         CHART_TYPE curTypeChart = CHART_TYPE.MINUTE_5;
-
+        string screenNumber = Form1.GetScreenNum().ToString();
         public Button btn { get { return ChartRequestBtn; } }
 
         public Form3(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1)
@@ -78,11 +79,28 @@ namespace Singijeon
             axKHOpenAPI1.OnReceiveTrData += AxKHOpenAPI_OnReceiveTrData;
             candleChart.AxisViewChanged += Chart_AxisViewChanged;
 
+            newTimer = new TimerJob();
+            newTimer.StartWork(1000 * 60 * 5, delegate () {
+                if (btn.InvokeRequired)
+                {
+                    btn.Invoke(new MethodInvoker(delegate ()
+                    {
+                        btn.PerformClick();
+                    }));
+                }
+                else
+                {
+                    btn.PerformClick();
+                }
+          
+            });
+
             this.FormClosing += Form_FormClosing;
         }
 
         private void Form_FormClosing(object sender, EventArgs e)
         {
+            newTimer.Stop();
             axKHOpenAPI1.OnReceiveTrData -= AxKHOpenAPI_OnReceiveTrData;
         }
 
@@ -136,12 +154,20 @@ namespace Singijeon
 
         public void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
-            if(e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART) || e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_TICK_CHART) || e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_MINUTE_CHART))
+            if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART) || e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_TICK_CHART) || e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_MINUTE_CHART))
             {
                 if (candleChart.Series == null)
                     return;
-                
-                if (e.sRQName.Equals(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART) == false)
+
+                string[] strArray = e.sRQName.Split(':');
+
+                if (strArray.Length == 2)
+                {
+                    if (strArray[1] != screenNumber)
+                        return;
+                }
+
+                if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART) == false)
                 {
                     itemcode = axKHOpenAPI1.GetCommData(e.sTrCode, e.sRQName, 0, "종목코드").Replace("A", "").Trim();
                     if (chartItemCodeTextBox.Text != itemcode)
@@ -216,6 +242,10 @@ namespace Singijeon
         {
             RequestKospi(null, CHART_TYPE.MINUTE_5);
         }
+        public void KosdaqChartRequestBtn_Click(object sender, EventArgs e)
+        {
+            RequestKosdap(null, CHART_TYPE.MINUTE_5);
+        }
         public void RequestKospi(ReceiveAfter delFunc, CHART_TYPE typeChart = CHART_TYPE.MINUTE_5)
         {
             afterEventFunction = delFunc;
@@ -226,14 +256,36 @@ namespace Singijeon
                 axKHOpenAPI1.SetInputValue("틱범위", "5:5분");
                 axKHOpenAPI1.SetInputValue("수정주가구분", "1");
 
-                int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART, "OPT20005", 0, "1080");
+                int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART+":"+screenNumber, "OPT20005", 0, "1080");
+                if (result != ErrorCode.정상처리)
+                {
+                    Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());
+                }
+
+            });
+            Core.CoreEngine.GetInstance().requestTrDataLoopManager.RequestTrData(requestItemInfoTask);
+            KospiInfo info = new KospiInfo();
+            UpDownInfoText.Text = info.GetStockKospi();
+        }
+        public void RequestKosdap(ReceiveAfter delFunc, CHART_TYPE typeChart = CHART_TYPE.MINUTE_5)
+        {
+            afterEventFunction = delFunc;
+            ItemName.Text = "코스닥지수";
+            Task requestItemInfoTask = new Task(() =>
+            {
+                axKHOpenAPI1.SetInputValue("업종코드", "101");
+                axKHOpenAPI1.SetInputValue("틱범위", "5:5분");
+                axKHOpenAPI1.SetInputValue("수정주가구분", "1");
+
+                int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_KOSPI_MINUTE_CHART + ":" + screenNumber, "OPT20005", 0, "1080");
                 if (result != ErrorCode.정상처리)
                 {
                     Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());
                 }
             });
             Core.CoreEngine.GetInstance().requestTrDataLoopManager.RequestTrData(requestItemInfoTask);
-         
+            KospiInfo info = new KospiInfo();
+            UpDownInfoText.Text = info.GetStockKosdaq();
         }
         public void RequestItem(string ItemCode, ReceiveAfter delFunc, CHART_TYPE typeChart = CHART_TYPE.TICK_30)
         {
@@ -251,7 +303,7 @@ namespace Singijeon
                             axKHOpenAPI1.SetInputValue("종목코드", ItemCode);
                             axKHOpenAPI1.SetInputValue("틱범위", "30");
                             axKHOpenAPI1.SetInputValue("수정주가구분", "0");
-                            int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_TICK_CHART, "opt10079", 0, "1080");
+                            int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_TICK_CHART + ":" + screenNumber, "opt10079", 0, "1080");
                             if (result != ErrorCode.정상처리)
                             {
                                 Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());
@@ -265,7 +317,7 @@ namespace Singijeon
                             axKHOpenAPI1.SetInputValue("종목코드", ItemCode);
                             axKHOpenAPI1.SetInputValue("틱범위", "5");
                             axKHOpenAPI1.SetInputValue("수정주가구분", "0");
-                            int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_MINUTE_CHART, "opt10080", 0, "1080");
+                            int result = axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_MINUTE_CHART + ":" + screenNumber, "opt10080", 0, "1080");
                             if (result != ErrorCode.정상처리)
                             {
                                 Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());
@@ -491,7 +543,6 @@ namespace Singijeon
 
                     double vpr = vwmaShort / smaShort;
 
-
                     for (int j = 0; j < MA_PERIOD; ++j)
                     {
                         volumeSum += (double)volumeSeries.Points[i + j].YValues[0];
@@ -546,6 +597,18 @@ namespace Singijeon
         private void Tick_5_minute_CheckedChanged(object sender, EventArgs e)
         {
             curTypeChart = CHART_TYPE.MINUTE_5;
+        }
+
+        private void refreshCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if(refreshCheck.Checked)
+            {
+                newTimer.SetPause(false);
+            }
+            else
+            {
+                newTimer.SetPause(true);
+            }
         }
     }
 }

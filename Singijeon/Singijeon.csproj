@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\KospiInfo.cs" />
     <Compile Include="Core\RequestTrDataLoopManager.cs" />
+    <Compile Include="Core\Timer.cs" />
     <Compile Include="Form1Helper.cs">
       <SubType>Form</SubType>
     </Compile>
