@@ -248,6 +248,7 @@ namespace Singijeon
         }
         public void RequestKospi(ReceiveAfter delFunc, CHART_TYPE typeChart = CHART_TYPE.MINUTE_5)
         {
+            refreshCheck.Checked = true;
             afterEventFunction = delFunc;
             ItemName.Text = "코스피지수";
             Task requestItemInfoTask = new Task(() =>
@@ -269,6 +270,7 @@ namespace Singijeon
         }
         public void RequestKosdap(ReceiveAfter delFunc, CHART_TYPE typeChart = CHART_TYPE.MINUTE_5)
         {
+            refreshCheck.Checked = true;
             afterEventFunction = delFunc;
             ItemName.Text = "코스닥지수";
             Task requestItemInfoTask = new Task(() =>

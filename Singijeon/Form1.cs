@@ -627,7 +627,7 @@ namespace Singijeon
             {
                 Console.WriteLine("CheckBS_Finish : " + axKHOpenAPI1.GetMasterCodeName(bs.itemCode) + "/" +conclusionQnt+"/"+bs.buyQnt);
                 
-                if(buy && bs.orderNum == orderNum && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_BEFORE_ORDER)
+                if(buy && bs.orderNum == orderNum && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_NOT_COMPLETE)
                 {
                     Console.WriteLine("buy more finish");
                     bs.state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_COMPLETE;
@@ -1249,11 +1249,11 @@ namespace Singijeon
                 foreach (BalanceBuyStrategy bbs in bbsList)
                 {
                     if (!bbs.orderNum.Equals(ordernum)
-                        && bbs.sellQnt == long.Parse(orderQuantity)
                         && bbs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_BEFORE_ORDER)
                     {
                         bbs.orderNum = ordernum;
                         //tryingSellList.Remove(bss);
+                        bbs.state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_NOT_COMPLETE;
                         bbs.ui_rowItem.Cells["bbs_주문번호"].Value = ordernum;
 
                         break;
