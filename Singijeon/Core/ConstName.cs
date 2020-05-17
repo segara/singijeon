@@ -26,6 +26,8 @@ namespace Singijeon
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO = "계좌평가현황요청";
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2 = "계좌평가현황요청2";
         public const string RECEIVE_TR_DATA_REALTIME_NOT_CONCLUSION = "실시간미체결요청";
+        public const string RECEIVE_TR_DATA_MODIFY = "종목주문정정";
+
         public const string ORDER_JIJUNGGA = "00";
         public const string ORDER_SIJANGGA = "03";
 

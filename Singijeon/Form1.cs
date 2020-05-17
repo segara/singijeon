@@ -973,8 +973,6 @@ namespace Singijeon
                                         }
                                     }
                                 }
-
-                               
                             }
                         }
                     }
@@ -1506,10 +1504,11 @@ namespace Singijeon
                                 if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE) || curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT))
                                 {
                                     //취소주문
-                                    int orderResult = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_BUY, itemCode, tradeItem.outStandingQnt, (int)tradeItem.buyingPrice, tradeItem.buyOrderType, tradeItem.buyOrderNum);
+                                    int orderResult = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_BUY, itemCode, tradeItem.outStandingQnt, (int)tradeItem.buyingPrice, tradeItem.buyOrderType, tradeItem.buyOrderNum);
 
                                     if (orderResult == 0)
                                     {
+                                        tradeItem.SetBuyCancelOrder();
                                         AddOrderList(tradeItem);
                                         coreEngine.SendLogMessage("취소 접수 성공");
                                         autoTradingDataGrid["매매진행_취소", e.RowIndex].Value = "취소접수시도";
@@ -1520,10 +1519,11 @@ namespace Singijeon
                                 if (curState.Equals(ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE) || curState.Equals(ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT))
                                 {
                                     //취소주문
-                                    int orderResult = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, itemCode, tradeItem.outStandingQnt, (int)tradeItem.sellPrice, tradeItem.sellOrderType, tradeItem.sellOrderNum);
+                                    int orderResult = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, itemCode, tradeItem.outStandingQnt, (int)tradeItem.sellPrice, tradeItem.sellOrderType, tradeItem.sellOrderNum);
 
                                     if (orderResult == 0)
                                     {
+                                        tradeItem.SetSellCancelOrder();
                                         AddOrderList(tradeItem);
                                         coreEngine.SendLogMessage("취소 접수 성공");
                                         autoTradingDataGrid["매매진행_취소", e.RowIndex].Value = "취소접수시도";
@@ -2322,12 +2322,12 @@ namespace Singijeon
                 else
                 {
                     coreEngine.SaveItemLogMessage(item.itemCode, "손절주문 취소 : " + item.itemName + " 수량 " + item.curQnt);
-                    int orderResultCancel = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
+                    int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
 
                     if (orderResultCancel == 0)
                     {
                         AddOrderList(item);
-                        item.SetSellCancelOrder();
+                        item.SetSellCancelOrder(); 
                         coreEngine.SaveItemLogMessage(item.itemCode, "취소 접수 성공");
                         autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_STOPLOSS_CANCEL;
                         return;
@@ -2386,9 +2386,12 @@ namespace Singijeon
             {
                 coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행");
                 OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellLossPercentage, true);
-                if( e.tradingItem.usingDivideSellLossLoop == false)
+
+                e.tradingItem.usingDivideSellLoss = false;
+
+                if (e.tradingItem.usingDivideSellLossLoop)
                 {
-                    e.tradingItem.usingDivideSellLoss = false;
+                    e.tradingItem.usingDivideSellLoss = true;
                     //손절 1회 실행
                 }
             }
@@ -2396,20 +2399,29 @@ namespace Singijeon
 
         public void OnReceiveTrDataCheckStopLoss(TradingItem item, double checkValue, double sellPercentage = 1, bool StopLossDivide = false)
         {
+            if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE)
+                return;
+
             if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE
                 || item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT)
             {
                 if (item.IsProfitSell())
                 {
                     //취소주문(익절주문취소)
-                    coreEngine.SaveItemLogMessage(item.itemCode, "익절주문취소 : " + item.itemName + " 수량 " + item.curQnt);
-                    int orderResultCancel = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
+                    coreEngine.SaveItemLogMessage(item.itemCode,
+                        "익절주문취소 : " + item.itemName
+                         + " 수량 : " + item.curQnt
+                         + " 가격 : " + (int)item.sellPrice
+                         + " 주문방법 : " + item.sellOrderType
+                         + " 주문번호 : " + item.sellOrderNum
+                        );
+                    int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
 
                     if (orderResultCancel == 0)
                     {
                         AddOrderList(item);
                         item.SetSellCancelOrder();
-                        coreEngine.SaveItemLogMessage(item.itemCode, "취소 접수 성공");
+                        coreEngine.SaveItemLogMessage(item.itemCode, "취소 접수 시도");
                         autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
 
                         return;
@@ -2425,10 +2437,12 @@ namespace Singijeon
 
             if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 return;
-
-            if (item.usingStopLossAfterBuyMore) //&& !StopLossDivide) //true 일때 return , 물타기 후 꺼줌
-                return;
-
+            if (!StopLossDivide)
+            {
+                if (item.usingStopLossAfterBuyMore)//물타기 후 꺼줌
+                    return;
+            }
+            
             item.SetSellOrderType(false);
 
             coreEngine.SaveItemLogMessage(item.itemCode,
@@ -2437,6 +2451,7 @@ namespace Singijeon
                " 주문가: " + item.curPrice +
                " 주문구분: " + item.sellOrderType
             );
+
             int orderQnt = (int)((double)item.curQnt * sellPercentage);
             int orderResult = axKHOpenAPI1.SendOrder(
                 "종목손절매도",
@@ -2859,7 +2874,7 @@ namespace Singijeon
 
             int buyQnt = Math.Abs((int)(tsItem.BuyMoney / item.curPrice));
             int curPrice = Math.Abs((int)item.curPrice);
-            BalanceBuy(account, item.itemCode, curPrice, buyQnt, item.buyOrderType);
+            BalanceBuy(account, item.itemCode, curPrice, buyQnt, item.buyOrderType, checkValue);
 
             //int orderResult = axKHOpenAPI1.SendOrder(
             //     ConstName.SEND_ORDER_BUY,
@@ -3297,7 +3312,7 @@ namespace Singijeon
                     {
                         tradeItem.SetSellCancelOrderComplete();
                         //ts.tradingItemList.Remove(tradeItem);
-                        autoTradingDataGrid["매매진행_진행상황", tradeItem.ui_rowItem.Index].Value = ConstName.AUTO_TRADING_STATE_SELL_CANCEL_ALL;
+                        autoTradingDataGrid["매매진행_진행상황", tradeItem.ui_rowItem.Index].Value = ConstName.AUTO_TRADING_STATE_BUY_COMPLETE;
                     }
                 }
             }
@@ -3419,7 +3434,7 @@ namespace Singijeon
                 if(string.IsNullOrEmpty(orderNum) == false && nonConclusionList.ContainsKey(orderNum))
                 {
                     NotConclusionItem item = nonConclusionList[orderNum];
-                    int orderResult = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, 
+                    int orderResult = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, 
                         CONST_NUMBER.SEND_ORDER_CANCEL_BUY,
                         item.itemCode, item.outstandingNumber, (int)item.orderPrice, item.orderGubun, item.orderNum);
 
@@ -3546,7 +3561,7 @@ namespace Singijeon
             }
         }
 
-        private void BalanceBuy(string accountNum, string itemCode, int buyingPrice, int buyQnt, string OrderType)
+        private void BalanceBuy(string accountNum, string itemCode, int buyingPrice, int buyQnt, string OrderType, double buyPercent)
         {
             if (accountNum.Length > 0)
             {
@@ -3569,7 +3584,7 @@ namespace Singijeon
                         int rowIndex = BBSdataGridView.Rows.Add();
                         bs.ui_rowItem = BBSdataGridView.Rows[rowIndex];
                         string codeName = axKHOpenAPI1.GetMasterCodeName(itemCode);
-                        Hashtable uiTable = new Hashtable() { { "bbs_종목코드", itemCode }, { "bbs_종목명", codeName}, { "bbs_매수금", (buyingPrice * buyQnt).ToString() }, { "bbs_매수가", buyingPrice } };
+                        Hashtable uiTable = new Hashtable() { { "bbs_종목코드", itemCode }, { "bbs_종목명", codeName}, { "bbs_매수금", (buyingPrice * buyQnt).ToString() }, { "bbs_조건", buyPercent } };
                         UpdateBBSGridView(uiTable, rowIndex);
                         coreEngine.SaveItemLogMessage(itemCode, "잔고 매수! 전략이 입력됬습니다");
                     }
@@ -3619,7 +3634,7 @@ namespace Singijeon
 
             string orderType = (bbsJijungRadio.Checked) ? ConstName.ORDER_JIJUNGGA : ConstName.ORDER_SIJANGGA;
 
-            BalanceBuy(accountNum, itemCode, Math.Abs((int)buyingPrice), Math.Abs((int)buyQnt), orderType);
+            BalanceBuy(accountNum, itemCode, Math.Abs((int)buyingPrice), Math.Abs((int)buyQnt), orderType, buyPercent);
         }
 
         private void BssDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)

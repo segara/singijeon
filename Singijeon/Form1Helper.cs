@@ -219,8 +219,8 @@ namespace Singijeon
                  BBSdataGridView["bbs_종목코드", rowIndex].Value = table["bbs_종목코드"];
             if (table.ContainsKey("bbs_종목명"))
                 BBSdataGridView["bbs_종목명", rowIndex].Value = table["bbs_종목명"];
-            if (table.ContainsKey("bbs_매수가"))
-                BBSdataGridView["bbs_매수가", rowIndex].Value = table["bbs_매수가"];
+            if (table.ContainsKey("bbs_조건"))
+                BBSdataGridView["bbs_조건", rowIndex].Value = table["bbs_조건"];
             if (table.ContainsKey("bbs_매수금"))
                 BBSdataGridView["bbs_매수금", rowIndex].Value = table["bbs_매수금"];
         }
