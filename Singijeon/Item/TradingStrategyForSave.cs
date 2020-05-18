@@ -90,7 +90,6 @@ namespace Singijeon
 
         public TradingStrategyForSave(TradingStrategy strategy)
         {
-           
 
             BindingFlags flags = BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
             FieldInfo[] fieldArray = strategy.GetType().GetFields(flags);
