@@ -51,6 +51,10 @@
     <Compile Include="Core\KospiInfo.cs" />
     <Compile Include="Core\RequestTrDataLoopManager.cs" />
     <Compile Include="Core\Timer.cs" />
+    <Compile Include="Favorite\FavoriteBuyMgr.cs" />
+    <Compile Include="Favorite\FavoriteItem.cs" />
+    <Compile Include="Favorite\FavoriteStrategy.cs" />
+    <Compile Include="Favorite\Singleton.cs" />
     <Compile Include="Form1Helper.cs">
       <SubType>Form</SubType>
     </Compile>

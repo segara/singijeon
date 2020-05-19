@@ -90,8 +90,7 @@ namespace Singijeon
 
             accountComboBox.SelectedIndexChanged += ComboBoxIndexChanged;
 
-            interestConditionListBox.SelectedIndexChanged += InterestConditionListBox_SelectedIndexChanged;
-
+           
             accountBalanceDataGrid.CellClick += DataGridView_CellClick;
             autoTradingDataGrid.CellClick += AutoTradingDataGridView_CellClick;
             tsDataGridView.CellClick += TradingStrategyGridView_CellClick;
@@ -195,7 +194,6 @@ namespace Singijeon
                 M_BuyConditionComboBox.Items.Add(condition.Name);
                 BuyConditionDoubleComboBox.Items.Add(condition.Name);
 
-                interestConditionListBox.Items.Add(condition.Name);
             }
         }
 
@@ -407,7 +405,7 @@ namespace Singijeon
 
                                 int orderResult =
 
-                                axKHOpenAPI1. SendOrder(
+                                axKHOpenAPI1.SendOrder(
                                     ConstName.SEND_ORDER_BUY,
                                     GetScreenNum().ToString(),
                                     ts.account,
@@ -1620,6 +1618,11 @@ namespace Singijeon
                     }
                 }
             }
+            else
+            {
+                string conditionName = tsDataGridView["매매전략_매수조건식", e.RowIndex].Value.ToString();
+                ForceAddStrategyTextBox.Text = conditionName;
+            }
         }
 
         private void ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1629,23 +1632,7 @@ namespace Singijeon
 
         private void InterestConditionListBox_SelectedIndexChanged(object sender, EventArgs s)
         {
-            if (sender.Equals(interestConditionListBox))
-            {
-                if (interestConditionListBox.SelectedItem != null)
-                {
-                    string conditionName = interestConditionListBox.SelectedItem.ToString();
-                    Condition condition = listCondition.Find(o => o.Name.Equals(conditionName));
-
-                    if (condition != null)
-                    {
-                        interestListBox.Items.Clear();
-                        foreach (StockItem stockItem in condition.interestItemList)
-                        {
-                            interestListBox.Items.Add(stockItem.Name);
-                        }
-                    }
-                }
-            }
+            
         }
 
         private void ComboBoxIndexChanged(object sender, EventArgs e)
@@ -2178,33 +2165,46 @@ namespace Singijeon
 
         private void addInterestBtn_Click(object sender, EventArgs e)
         {
-            if (interestConditionListBox.SelectedItem != null)
+            string itemName = interestTextBox.Text;
+            StockItem stockItem = stockItemList.Find(o => o.Name.Equals(itemName));
+            string itemCode = stockItem.Code;
+            string conditionName = ForceAddStrategyTextBox.Text;
+
+
+
+            if (stockItem != null && string.IsNullOrEmpty(conditionName) == false)
             {
-                string conditionNameSelect = interestConditionListBox.SelectedItem.ToString();
 
-                Condition condition = listCondition.Find(o => o.Name.Equals(conditionNameSelect));
-                if (condition != null)
+                TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(conditionName));
+
+                if (ts != null)
                 {
-                    string itemName = interestTextBox.Text;
-                    StockItem stockItem = stockItemList.Find(o => o.Name.Equals(itemName));
-
-                    if (stockItem != null)
+                    DialogResult result = MessageBox.Show(conditionName + "매매 종목을 강제 추가하겠습니까?", "매매전략 추가", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
                     {
-                        if (condition.interestItemList.Contains(stockItem) == false)
+
+                        if (ts.remainItemCount == 0)
                         {
-                            condition.interestItemList.Add(stockItem);
-                            interestListBox.Items.Add(stockItem.Name);
+                            MessageBox.Show("매수가능 갯수 초과");
+                            return;
                         }
+                         
+                        TrailingItem trailingItem = trailingList.Find(o => o.itemCode.Contains(itemCode));
+
+                        if (CheckCanBuyItem(itemCode) && trailingItem == null)
+                        {
+                            ts.remainItemCount--; //남을 매수할 종목수-1
+                            coreEngine.SaveItemLogMessage(itemCode, "구매 시도 종목 추가 검색명 = " + conditionName);
+
+                            ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+                            TryBuyItem(ts, itemCode);
+                        }
+
                     }
                 }
-
             }
-            else
-            {
-                MessageBox.Show("조건식을 선택해주세요");
-            }
-
         }
+
         private void PrintToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenSecondWindow();
@@ -3677,9 +3677,5 @@ namespace Singijeon
             }
         }
 
-        private void KospiToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
