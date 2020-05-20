@@ -12,7 +12,7 @@ namespace Singijeon
 
         public List<TradingStrategy> tradingStrategyList = new List<TradingStrategy>();
 
-        private TradingStrategyMgr()
+        private TradingStrategyMgr()          
         {
 
         }

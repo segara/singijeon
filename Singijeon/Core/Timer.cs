@@ -41,7 +41,7 @@ namespace Singijeon.Core
                                 func.Invoke();
 
                             });
-                            requestItemInfoTask.RunSynchronously();
+                            requestItemInfoTask.Start();
                         }
                           
                         Thread.Sleep(delay); //기본 실행 주기
