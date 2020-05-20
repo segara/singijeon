@@ -502,7 +502,7 @@ namespace Singijeon
                     Hashtable uiTable = new Hashtable() { { "계좌잔고_종목코드", itemCode }, { "계좌잔고_종목명", itemName }, { "계좌잔고_보유수량", lBalanceCnt }, { "계좌잔고_평균단가", dBuyingPrice }, { "계좌잔고_평가금액", lEstimatedAmount }, { "계좌잔고_매입금액", lBuyingAmount }, { "계좌잔고_손익금액", lProfitAmount }, { "계좌잔고_손익률", dProfitRate } };
                     Update_AccountBalanceDataGrid_UI(uiTable, rowIndex);
 
-                    balanceItemList.Add(new BalanceItem(itemCode, itemName, (int)dBuyingPrice, (int)lBalanceCnt));
+                    balanceItemList.Add(new BalanceItem(itemCode, itemName, (int)dBuyingPrice, (int)lBalanceCnt, accountBalanceDataGrid.Rows[rowIndex]));
                 }
                 string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
                 axKHOpenAPI1.SetRealReg("9001", codeList, fidList, "1");
@@ -596,7 +596,7 @@ namespace Singijeon
 
                 UpdateAccountBalanceDataGridViewRow(itemCode, c_lPrice);
 
-                UpdateBalanceDataGridViewRow(itemCode, c_lPrice);
+                //UpdateBalanceDataGridViewRow(itemCode, c_lPrice);
 
                 UpdateAutoTradingDataGridViewRow(itemCode, c_lPrice);
             }
@@ -1118,40 +1118,43 @@ namespace Singijeon
                 }
                
                 //잔고탭 업데이트
-                bool hasItem_balanceDataGrid = false;
-                foreach (DataGridViewRow row in balanceDataGrid.Rows)
-                {
-                    if (row.Cells["잔고_종목코드"].Value != null && row.Cells["잔고_종목코드"].Value.ToString().Contains(itemCode))
-                    {
-                        hasItem_balanceDataGrid = true;
+                //bool hasItem_balanceDataGrid = false;
+                //foreach (DataGridViewRow row in balanceDataGrid.Rows)
+                //{
+                //    if (row.Cells["잔고_종목코드"].Value != null && row.Cells["잔고_종목코드"].Value.ToString().Contains(itemCode))
+                //    {
+                //        hasItem_balanceDataGrid = true;
 
-                        if (int.Parse(balanceQnt) > 0)
-                        {
-                            Hashtable uiTable = new Hashtable() { { "잔고_보유수량", balanceQnt }, { "잔고_현재가", price }, { "잔고_매입단가", buyingPrice }, { "잔고_주문가능수량", orderAvailableQnt }, { "잔고_총매입가", totalBuyingPrice }, { "잔고_손익률", profitRate } };
-                            Update_BalanceDataGrid_UI(uiTable, row.Index);
-                        }
-                        else
-                        {
-                            balanceDataGrid.Rows.Remove(row);
-                        }
+                //        if (int.Parse(balanceQnt) > 0)
+                //        {
+                //            Hashtable uiTable = new Hashtable() { { "잔고_보유수량", balanceQnt }, { "잔고_현재가", price }, { "잔고_매입단가", buyingPrice }, { "잔고_주문가능수량", orderAvailableQnt }, { "잔고_총매입가", totalBuyingPrice }, { "잔고_손익률", profitRate } };
+                //            Update_BalanceDataGrid_UI(uiTable, row.Index);
+                //        }
+                //        else
+                //        {
+                //            balanceDataGrid.Rows.Remove(row);
+                //        }
 
-                        break;
-                    }
-                }
-
-                if (!hasItem_balanceDataGrid)
-                {
-                    int rowIndex = balanceDataGrid.Rows.Add();
-                    Hashtable uiTable = new Hashtable() { { "잔고_계좌번호", account }, { "잔고_종목코드", itemCode }, { "잔고_종목명", itemName }, { "잔고_보유수량", balanceQnt }, { "잔고_주문가능수량", orderAvailableQnt }, { "잔고_매입단가", buyingPrice }, { "잔고_총매입가", totalBuyingPrice }, { "잔고_손익률", profitRate }, { "잔고_매매구분", tradingType }, { "잔고_현재가", price } };
-                    Update_BalanceDataGrid_UI(uiTable, rowIndex);
-                }
+                //        break;
+                //    }
+                //}
+               
+                //if (!hasItem_balanceDataGrid)
+                //{
+                //    int balance_rowIndex = balanceDataGrid.Rows.Add();
+                //    Hashtable uiTable = new Hashtable() { { "잔고_계좌번호", account }, { "잔고_종목코드", itemCode }, { "잔고_종목명", itemName }, { "잔고_보유수량", balanceQnt }, { "잔고_주문가능수량", orderAvailableQnt }, { "잔고_매입단가", buyingPrice }, { "잔고_총매입가", totalBuyingPrice }, { "잔고_손익률", profitRate }, { "잔고_매매구분", tradingType }, { "잔고_현재가", price } };
+                //    Update_BalanceDataGrid_UI(uiTable, balance_rowIndex);
+                //}
+               
+               
 
                 if (int.Parse(balanceQnt) > 0)
                 {
                     if (balanceItemList.Find(o => (o.itemCode == itemCode)) == null)
                     {
                         coreEngine.SendLogMessage(itemCode + " 잔고 리스트에 추가");
-                        balanceItemList.Add(new BalanceItem(itemCode, itemName, int.Parse(buyingPrice), int.Parse(balanceQnt)));
+                        int rowIndex = accountBalanceDataGrid.Rows.Add();
+                        balanceItemList.Add(new BalanceItem(itemCode, itemName, int.Parse(buyingPrice), int.Parse(balanceQnt), accountBalanceDataGrid.Rows[rowIndex]));
                     }
                     else
                     {
@@ -2273,22 +2276,6 @@ namespace Singijeon
             if (buyPrice <= 0)
                 return 0;
             return (double)100 * ((curPrice - buyPrice) / buyPrice) - FEE_RATE;
-        }
-
-
-        DataGridViewRow GetDataFromAccountDataGrid(string itemCode)
-        {
-            foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
-            {
-                if (row.Cells["계좌잔고_종목코드"].Value != null)
-                {
-                    if (row.Cells["계좌잔고_종목코드"].Value.ToString().Contains(itemCode))
-                    {
-                        return row;
-                    }
-                }
-            }
-            return null;
         }
 
         public void OnReceiveTrDataCheckProfitSell(object sender, OnReceivedTrEventArgs e)

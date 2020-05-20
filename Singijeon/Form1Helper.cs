@@ -1,5 +1,6 @@
 ﻿//#define TEST_CONSOLE
 using Singijeon.Core;
+using Singijeon.Item;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,8 +20,10 @@ namespace Singijeon
         //실시간 종목 조회 응답시//
         private void UpdateAccountBalanceDataGridViewRow(string itemCode, long c_lPrice)
         {
-            foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
+            if (balanceItemList.Find(o => (o.itemCode == itemCode)) != null)
             {
+                BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
+                DataGridViewRow row = item.ui_rowItem;
                 if (row.Cells["계좌잔고_종목코드"].Value != null)
                 {
                     if (row.Cells["계좌잔고_종목코드"].Value.ToString().Contains(itemCode))
@@ -29,50 +32,49 @@ namespace Singijeon
 
                         double buyingPrice = double.Parse(row.Cells["계좌잔고_평균단가"].Value.ToString());
                         int balanceCount = int.Parse(row.Cells["계좌잔고_보유수량"].Value.ToString());
-
                         double currentAllPrice = c_lPrice * balanceCount;
 
                         if (buyingPrice != 0)
                         {
-                            row.Cells["계좌잔고_평균단가"].Value = buyingPrice;
+                            //row.Cells["계좌잔고_평균단가"].Value = buyingPrice;
                             row.Cells["계좌잔고_평가금액"].Value = currentAllPrice;
 
                             double sellPrice = buyingPrice; // 평단가 
                             double stockFee = ((double)c_lPrice * 0.01 * FEE_RATE) * (double)balanceCount; //+ ((double)c_lPrice * 0.01 * 0.015 * (double)balanceCount); //+ ((double)buyingPrice * 0.01 * 0.015 * (double)balanceCount);
                             double allSellPrice = (sellPrice * (double)balanceCount) + stockFee;
 
-                            row.Cells["계좌잔고_손익금액"].Value = currentAllPrice - allSellPrice;
+                            row.Cells["계좌잔고_손익금액"].Value = (currentAllPrice - allSellPrice).ToString("F2");
 
                             double profitRate = GetProfitRate((double)c_lPrice, (double)sellPrice);
-                            row.Cells["계좌잔고_손익률"].Value = profitRate;
+                            row.Cells["계좌잔고_손익률"].Value = profitRate.ToString("F2");
                         }
                     }
                 }
             }
         }
-        private void UpdateBalanceDataGridViewRow(string itemCode, long c_lPrice)
-        {
-            foreach (DataGridViewRow row in balanceDataGrid.Rows)
-            {
-                if (row.Cells["잔고_종목코드"].Value != null)
-                {
-                    if (row.Cells["잔고_종목코드"].Value.ToString().Contains(itemCode))
-                    {
-                        row.Cells["잔고_현재가"].Value = c_lPrice;
+        //private void UpdateBalanceDataGridViewRow(string itemCode, long c_lPrice)
+        //{
+        //    foreach (DataGridViewRow row in balanceDataGrid.Rows)
+        //    {
+        //        if (row.Cells["잔고_종목코드"].Value != null)
+        //        {
+        //            if (row.Cells["잔고_종목코드"].Value.ToString().Contains(itemCode))
+        //            {
+        //                row.Cells["잔고_현재가"].Value = c_lPrice;
 
-                        double buyingPrice = double.Parse(row.Cells["잔고_매입단가"].Value.ToString());
+        //                double buyingPrice = double.Parse(row.Cells["잔고_매입단가"].Value.ToString());
 
-                        if (buyingPrice != 0)
-                        {
-                            double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
+        //                if (buyingPrice != 0)
+        //                {
+        //                    double profitRate = GetProfitRate((double)c_lPrice, (double)buyingPrice);
 
-                            row.Cells["잔고_손익률"].Value = profitRate;
-                        }
+        //                    row.Cells["잔고_손익률"].Value = profitRate;
+        //                }
 
-                    }
-                }
-            }
-        }
+        //            }
+        //        }
+        //    }
+        //}
         private void UpdateAutoTradingDataGridViewRow(string itemCode, long c_lPrice)
         {
             foreach (DataGridViewRow row in autoTradingDataGrid.Rows)
@@ -175,29 +177,29 @@ namespace Singijeon
             if (table.ContainsKey("계좌잔고_현재가"))
                 accountBalanceDataGrid["계좌잔고_현재가", rowIndex].Value = table["계좌잔고_현재가"];
         }
-        public void Update_BalanceDataGrid_UI(Hashtable table , int rowIndex)
-        {
-            if(table.ContainsKey("잔고_계좌번호"))
-                balanceDataGrid["잔고_계좌번호", rowIndex].Value = table["잔고_계좌번호"];
-            if (table.ContainsKey("잔고_종목코드"))
-                balanceDataGrid["잔고_종목코드", rowIndex].Value = table["잔고_종목코드"];
-            if (table.ContainsKey("잔고_종목명"))
-                balanceDataGrid["잔고_종목명", rowIndex].Value = table["잔고_종목명"];
-            if (table.ContainsKey("잔고_보유수량"))
-                balanceDataGrid["잔고_보유수량", rowIndex].Value = table["잔고_보유수량"];
-            if (table.ContainsKey("잔고_주문가능수량"))
-                balanceDataGrid["잔고_주문가능수량", rowIndex].Value = table["잔고_주문가능수량"];
-            if (table.ContainsKey("잔고_매입단가"))
-                balanceDataGrid["잔고_매입단가", rowIndex].Value = table["잔고_매입단가"];
-            if (table.ContainsKey("잔고_총매입가"))
-                balanceDataGrid["잔고_총매입가", rowIndex].Value = table["잔고_총매입가"];
-            if (table.ContainsKey("잔고_손익률"))
-                balanceDataGrid["잔고_손익률", rowIndex].Value = table["잔고_손익률"];
-            if (table.ContainsKey("잔고_매매구분"))
-                balanceDataGrid["잔고_매매구분", rowIndex].Value = table["잔고_매매구분"];
-            if (table.ContainsKey("잔고_현재가"))
-                balanceDataGrid["잔고_현재가", rowIndex].Value = table["잔고_현재가"];
-        }
+        //public void Update_BalanceDataGrid_UI(Hashtable table , int rowIndex)
+        //{
+        //    if(table.ContainsKey("잔고_계좌번호"))
+        //        balanceDataGrid["잔고_계좌번호", rowIndex].Value = table["잔고_계좌번호"];
+        //    if (table.ContainsKey("잔고_종목코드"))
+        //        balanceDataGrid["잔고_종목코드", rowIndex].Value = table["잔고_종목코드"];
+        //    if (table.ContainsKey("잔고_종목명"))
+        //        balanceDataGrid["잔고_종목명", rowIndex].Value = table["잔고_종목명"];
+        //    if (table.ContainsKey("잔고_보유수량"))
+        //        balanceDataGrid["잔고_보유수량", rowIndex].Value = table["잔고_보유수량"];
+        //    if (table.ContainsKey("잔고_주문가능수량"))
+        //        balanceDataGrid["잔고_주문가능수량", rowIndex].Value = table["잔고_주문가능수량"];
+        //    if (table.ContainsKey("잔고_매입단가"))
+        //        balanceDataGrid["잔고_매입단가", rowIndex].Value = table["잔고_매입단가"];
+        //    if (table.ContainsKey("잔고_총매입가"))
+        //        balanceDataGrid["잔고_총매입가", rowIndex].Value = table["잔고_총매입가"];
+        //    if (table.ContainsKey("잔고_손익률"))
+        //        balanceDataGrid["잔고_손익률", rowIndex].Value = table["잔고_손익률"];
+        //    if (table.ContainsKey("잔고_매매구분"))
+        //        balanceDataGrid["잔고_매매구분", rowIndex].Value = table["잔고_매매구분"];
+        //    if (table.ContainsKey("잔고_현재가"))
+        //        balanceDataGrid["잔고_현재가", rowIndex].Value = table["잔고_현재가"];
+        //}
 
         public void UpdateBssGridView(Hashtable table, int rowIndex)
         {
