@@ -25,8 +25,6 @@ namespace Singijeon
         private string server = "0";
         public static double FEE_RATE = 1;
 
-        Form2 printForm2;
-
         List<Condition> listCondition = new List<Condition>();
         
         public List<TradingStrategy> tradingStrategyList = new List<TradingStrategy>();
@@ -54,12 +52,13 @@ namespace Singijeon
         List<BalanceSellStrategy> tryingSellList = new List<BalanceSellStrategy>(); //잔고 매도 접수 시도(주문번호 따는 리스트)
 
         Dictionary<string, NotConclusionItem> nonConclusionList = new Dictionary<string, NotConclusionItem>();
-
+        Form2 printForm2 = null;
         Form3 printForm = null;
         Form3 printForm_kosdaq = null;
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
         public Form1()
         {
+           
             InitializeComponent();
 
             coreEngine = CoreEngine.GetInstance();
@@ -67,9 +66,8 @@ namespace Singijeon
             coreEngine.Start();
 
             OpenSecondWindow();
-
-            printForm = new Form3(axKHOpenAPI1);
-            printForm_kosdaq = new Form3(axKHOpenAPI1);
+            //printForm = new Form3(axKHOpenAPI1);
+            //printForm_kosdaq = new Form3(axKHOpenAPI1);
 
             startTimePicker.Value = DateTime.Now;
             startTimePicker.Format = DateTimePickerFormat.Custom;
@@ -156,7 +154,7 @@ namespace Singijeon
                 }
 
                 interestTextBox.AutoCompleteCustomSource = collection;
-                OpenThirdWindow();
+                //OpenThirdWindow();
 
                 //사용자 조건식 불러오기
                 axKHOpenAPI1.GetConditionLoad();
@@ -595,9 +593,6 @@ namespace Singijeon
                 CheckBSSAll(itemCode, c_lPrice);
 
                 UpdateAccountBalanceDataGridViewRow(itemCode, c_lPrice);
-
-                //UpdateBalanceDataGridViewRow(itemCode, c_lPrice);
-
                 UpdateAutoTradingDataGridViewRow(itemCode, c_lPrice);
             }
         }
@@ -1455,7 +1450,16 @@ namespace Singijeon
             coreEngine.SendLogMessage("e.ColumnIndex : " + e.ColumnIndex + " e.RowIndex : " + e.RowIndex);
             if (e.RowIndex < 0)
                 return;
-          
+            if (accountBalanceDataGrid.Columns["계좌잔고_종목코드"].Index == e.ColumnIndex)
+            {
+                string itemCode = accountBalanceDataGrid["계좌잔고_종목코드", e.RowIndex].Value.ToString().Replace("A", "");
+                Form3 chartForm = new Form3(axKHOpenAPI1);
+
+                chartForm.RequestItem(itemCode, delegate (string _itemCode)
+                {
+                    chartForm.Show();
+                }, Form3.CHART_TYPE.MINUTE_5);
+            }
             if (autoTradingDataGrid.Columns["매매진행_취소"].Index == e.ColumnIndex)
             {
                 if (e.ColumnIndex >= 0 && autoTradingDataGrid.Columns.Count >= e.ColumnIndex)
@@ -2159,10 +2163,7 @@ namespace Singijeon
                     BBSItemNameTextbox.Text = itemName;
                    
                 }
-                else
-                {
-                    accountBalanceDataGrid.ClearSelection();
-                }
+             
             }
         }
 

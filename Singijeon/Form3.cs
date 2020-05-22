@@ -35,10 +35,10 @@ namespace Singijeon
         AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
 
         Series maSeries;
-
         Series maSeries_EvelopeDown;
         Series maSeriesShort;
         Series vwmaSeriesShort;
+
         string itemcode;
         const int MA_PERIOD_SHORT = 5;
         const int MA_PERIOD = 20;
@@ -79,30 +79,32 @@ namespace Singijeon
             axKHOpenAPI1.OnReceiveTrData += AxKHOpenAPI_OnReceiveTrData;
             candleChart.AxisViewChanged += Chart_AxisViewChanged;
 
-            newTimer = new TimerJob();
-            newTimer.StartWork(1000 * 60 * 5, delegate () {
-                if (btn.InvokeRequired)
-                {
-                    btn.Invoke(new MethodInvoker(delegate ()
-                    {
-                        btn.PerformClick();
-                    }));
-                }
-                else
-                {
-                    btn.PerformClick();
-                }
+            //newTimer = new TimerJob();
+            //newTimer.StartWork(1000 * 60 * 5, delegate () {
+            //    if (btn.InvokeRequired)
+            //    {
+            //        btn.Invoke(new MethodInvoker(delegate ()
+            //        {
+            //            btn.PerformClick();
+            //        }));
+            //    }
+            //    else
+            //    {
+            //        btn.PerformClick();
+            //    }
           
-            });
+            //});
 
             this.FormClosing += Form_FormClosing;
         }
 
         private void Form_FormClosing(object sender, EventArgs e)
         {
-            newTimer.Stop();
+            //newTimer.Stop();
             axKHOpenAPI1.OnReceiveTrData -= AxKHOpenAPI_OnReceiveTrData;
         }
+
+        
 
         private void Chart_AxisViewChanged(object sender, ViewEventArgs e)
         {
@@ -264,7 +266,7 @@ namespace Singijeon
                 }
 
             });
-            Core.CoreEngine.GetInstance().requestTrDataLoopManager.RequestTrData(requestItemInfoTask);
+            Core.CoreEngine.GetInstance().requestTrDataManager.RequestTrData(requestItemInfoTask);
             KospiInfo info = new KospiInfo();
             UpDownInfoText.Text = info.GetStockKospi();
         }
@@ -285,7 +287,7 @@ namespace Singijeon
                     Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());
                 }
             });
-            Core.CoreEngine.GetInstance().requestTrDataLoopManager.RequestTrData(requestItemInfoTask);
+            Core.CoreEngine.GetInstance().requestTrDataManager.RequestTrData(requestItemInfoTask);
             KospiInfo info = new KospiInfo();
             UpDownInfoText.Text = info.GetStockKosdaq();
         }
@@ -605,11 +607,11 @@ namespace Singijeon
         {
             if(refreshCheck.Checked)
             {
-                newTimer.SetPause(false);
+                //newTimer.SetPause(false);
             }
             else
             {
-                newTimer.SetPause(true);
+                //newTimer.SetPause(true);
             }
         }
     }

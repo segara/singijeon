@@ -58,7 +58,7 @@ namespace Singijeon {
                 {
                     try
                     {
-                        Update();
+                        UpdateUI();
                         Thread.Sleep(1000); //기본 실행 주기
 
                     }
@@ -71,7 +71,7 @@ namespace Singijeon {
             taskWorker.IsBackground = true;
             taskWorker.Start();
         }
-        void Update()
+        void UpdateUI()
         {
             if (martin_curStep_txt.InvokeRequired)
             {

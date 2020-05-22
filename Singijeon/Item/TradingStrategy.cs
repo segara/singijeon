@@ -198,7 +198,7 @@ namespace Singijeon
             {
                 if(item.strategyCheckTime == checkTiming)
                 {
-                    Console.WriteLine(trading_item.itemName + " / " + item.strategyItemName + "/" + inputValue);
+                    //Console.WriteLine(trading_item.itemName + " / " + item.strategyItemName + "/" + inputValue);
                     item.CheckUpdate(trading_item, inputValue);
                 }
                     
@@ -588,7 +588,7 @@ namespace Singijeon
         {
             if (!usingStrategy)
                 return;
-            Console.WriteLine(item.itemName +" "+ TimeSpan.FromTicks((long)(value - d_conditionValue)).TotalSeconds.ToString());
+            //Console.WriteLine(item.itemName +" "+ TimeSpan.FromTicks((long)(value - d_conditionValue)).TotalSeconds.ToString());
             if (value - d_conditionValue > TIME_OVER_TIME && item.usingBuyCancelByTime)
             {
                 if (OnReceivedTrData != null)
@@ -634,7 +634,7 @@ namespace Singijeon
 
         public override bool CheckCondition()
         {
-            Console.WriteLine("check condition : " + usingStrategy);
+            //Console.WriteLine("check condition : " + usingStrategy);
             if (!usingStrategy)
                 return false;
 

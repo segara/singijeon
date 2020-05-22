@@ -15,6 +15,10 @@
         {
             if (disposing && (components != null))
             {
+                maSeries.Dispose();
+                maSeriesShort.Dispose();
+                maSeries_EvelopeDown.Dispose();
+                vwmaSeriesShort.Dispose();
                 components.Dispose();
             }
             base.Dispose(disposing);

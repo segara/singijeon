@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace Singijeon
 {
-    public partial class Form1 : Form
+    public partial class Form1
     {
         //실시간 종목 조회 응답시//
         private void UpdateAccountBalanceDataGridViewRow(string itemCode, long c_lPrice)
@@ -43,7 +43,7 @@ namespace Singijeon
                             double stockFee = ((double)c_lPrice * 0.01 * FEE_RATE) * (double)balanceCount; //+ ((double)c_lPrice * 0.01 * 0.015 * (double)balanceCount); //+ ((double)buyingPrice * 0.01 * 0.015 * (double)balanceCount);
                             double allSellPrice = (sellPrice * (double)balanceCount) + stockFee;
 
-                            row.Cells["계좌잔고_손익금액"].Value = (currentAllPrice - allSellPrice).ToString("F2");
+                            row.Cells["계좌잔고_손익금액"].Value = (currentAllPrice - allSellPrice);
 
                             double profitRate = GetProfitRate((double)c_lPrice, (double)sellPrice);
                             row.Cells["계좌잔고_손익률"].Value = profitRate.ToString("F2");
@@ -218,7 +218,7 @@ namespace Singijeon
         private void UpdateBBSGridView(Hashtable table, int rowIndex)
         {
             if (table.ContainsKey("bbs_종목코드"))
-                 BBSdataGridView["bbs_종목코드", rowIndex].Value = table["bbs_종목코드"];
+                BBSdataGridView["bbs_종목코드", rowIndex].Value = table["bbs_종목코드"];
             if (table.ContainsKey("bbs_종목명"))
                 BBSdataGridView["bbs_종목명", rowIndex].Value = table["bbs_종목명"];
             if (table.ContainsKey("bbs_조건"))
@@ -271,7 +271,7 @@ namespace Singijeon
 
             }
         }
-        
+
         private void UpdateAutoTradingDataGridRowAll(int index, string state, string itemcode, string conditionName, int i_qnt, int i_price)
         {
             autoTradingDataGrid["매매진행_진행상황", index].Value = state;
@@ -284,16 +284,16 @@ namespace Singijeon
             autoTradingDataGrid["매매진행_매수시간", index].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
-     
+
         private void UpdateBuyAutoTradingDataGridState(string orderNum, bool buyComplete = false)
         {
             foreach (TradingStrategy ts in tradingStrategyList)
             {
                 coreEngine.SendLogWarningMessage(ts.buyCondition.Name);
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.buyOrderNum.Equals(orderNum));
-                foreach(var item in ts.tradingItemList)
+                foreach (var item in ts.tradingItemList)
                 {
-                    coreEngine.SendLogWarningMessage(item.itemName + " 요청 주문 넘버 : " + orderNum );
+                    coreEngine.SendLogWarningMessage(item.itemName + " 요청 주문 넘버 : " + orderNum);
                 }
                 if (tradeItem != null)
                 {
@@ -310,7 +310,7 @@ namespace Singijeon
         {
             foreach (TradingStrategy ts in tradingStrategyList)
             {
-                coreEngine.SendLogWarningMessage("ui update"+ts.buyCondition.Name);
+                coreEngine.SendLogWarningMessage("ui update" + ts.buyCondition.Name);
                 List<TradingItem> tradeItemArray = ts.tradingItemList.FindAll(o => o.itemCode.Equals(itemCode));
                 foreach (TradingItem tradeItem in tradeItemArray)
                 {
@@ -357,12 +357,12 @@ namespace Singijeon
                 }
 
                 TradingItem tradeItem = ts.tradingItemList.Find(o => o.buyOrderNum.Equals(orderNum));
-               
+
                 if (tradeItem != null && tradeItem.GetUiConnectRow() != null)
                 {
                     tradeItem.GetUiConnectRow().Cells["매매진행_주문번호"].Value = orderNum;
                     tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
-                  
+
                 }
             }
         }
@@ -380,10 +380,10 @@ namespace Singijeon
                 {
                     coreEngine.SendLogWarningMessage("종목찾기 성공 : " + state);
 
-                   tradeItem.GetUiConnectRow().Cells["매매진행_주문번호"].Value = orderNum;
-                   tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
+                    tradeItem.GetUiConnectRow().Cells["매매진행_주문번호"].Value = orderNum;
+                    tradeItem.GetUiConnectRow().Cells["매매진행_진행상황"].Value = state;
 
-                   break;
+                    break;
                 }
             }
         }
