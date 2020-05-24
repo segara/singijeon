@@ -58,7 +58,7 @@
             this.메뉴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PrintToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.코스피차트ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.KospiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.KosdaqToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -345,6 +345,8 @@
             this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.blockingCheckBox = new System.Windows.Forms.CheckBox();
+            this.DivideSellCountUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label23 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -424,6 +426,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.outstandingDataGrid)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DivideSellCountUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // axKHOpenAPI1
@@ -453,7 +456,7 @@
             this.메뉴ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LogInToolStripMenuItem,
             this.PrintToolStripMenuItem,
-            this.코스피차트ToolStripMenuItem,
+            this.KospiToolStripMenuItem,
             this.KosdaqToolStripMenuItem});
             this.메뉴ToolStripMenuItem.Name = "메뉴ToolStripMenuItem";
             this.메뉴ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
@@ -462,27 +465,29 @@
             // LogInToolStripMenuItem
             // 
             this.LogInToolStripMenuItem.Name = "LogInToolStripMenuItem";
-            this.LogInToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.LogInToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.LogInToolStripMenuItem.Text = "로그인";
             // 
             // PrintToolStripMenuItem
             // 
             this.PrintToolStripMenuItem.Name = "PrintToolStripMenuItem";
-            this.PrintToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.PrintToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.PrintToolStripMenuItem.Text = "출력";
             this.PrintToolStripMenuItem.Click += new System.EventHandler(this.PrintToolStripMenuItem_Click);
             // 
-            // 코스피차트ToolStripMenuItem
+            // KospiToolStripMenuItem
             // 
-            this.코스피차트ToolStripMenuItem.Name = "코스피차트ToolStripMenuItem";
-            this.코스피차트ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.코스피차트ToolStripMenuItem.Text = "코스피차트";
+            this.KospiToolStripMenuItem.Name = "KospiToolStripMenuItem";
+            this.KospiToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.KospiToolStripMenuItem.Text = "코스피차트";
+            this.KospiToolStripMenuItem.Click += new System.EventHandler(this.KospiToolStripMenuItem_Click);
             // 
             // KosdaqToolStripMenuItem
             // 
             this.KosdaqToolStripMenuItem.Name = "KosdaqToolStripMenuItem";
-            this.KosdaqToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.KosdaqToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.KosdaqToolStripMenuItem.Text = "코스닥차트";
+            this.KosdaqToolStripMenuItem.Click += new System.EventHandler(this.KosdaqToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
@@ -491,7 +496,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(1284, 304);
+            this.groupBox1.Size = new System.Drawing.Size(1284, 313);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "전략생성";
@@ -529,7 +534,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 402F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 404F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -539,7 +544,7 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1245, 211);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1245, 215);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // panel7
@@ -572,7 +577,7 @@
             this.panel7.Location = new System.Drawing.Point(367, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(470, 205);
+            this.panel7.Size = new System.Drawing.Size(468, 209);
             this.panel7.TabIndex = 5;
             // 
             // buyCancelTimeCheckBox
@@ -873,7 +878,7 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(356, 205);
+            this.panel1.Size = new System.Drawing.Size(356, 209);
             this.panel1.TabIndex = 0;
             // 
             // label27
@@ -1124,6 +1129,8 @@
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Controls.Add(this.label23);
+            this.panel2.Controls.Add(this.DivideSellCountUpDown);
             this.panel2.Controls.Add(this.divideLossSellLoopCheck);
             this.panel2.Controls.Add(this.divideProfitSellLoopCheck);
             this.panel2.Controls.Add(this.label47);
@@ -1148,16 +1155,16 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(844, 3);
+            this.panel2.Location = new System.Drawing.Point(842, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(397, 205);
+            this.panel2.Size = new System.Drawing.Size(399, 209);
             this.panel2.TabIndex = 4;
             // 
             // divideLossSellLoopCheck
             // 
             this.divideLossSellLoopCheck.AutoSize = true;
-            this.divideLossSellLoopCheck.Location = new System.Drawing.Point(209, 181);
+            this.divideLossSellLoopCheck.Location = new System.Drawing.Point(208, 181);
             this.divideLossSellLoopCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.divideLossSellLoopCheck.Name = "divideLossSellLoopCheck";
             this.divideLossSellLoopCheck.Size = new System.Drawing.Size(72, 16);
@@ -1487,7 +1494,7 @@
             // 
             // AddStratgyBtn
             // 
-            this.AddStratgyBtn.Location = new System.Drawing.Point(1154, 222);
+            this.AddStratgyBtn.Location = new System.Drawing.Point(1154, 224);
             this.AddStratgyBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AddStratgyBtn.Name = "AddStratgyBtn";
             this.AddStratgyBtn.Size = new System.Drawing.Size(90, 26);
@@ -1513,7 +1520,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.10482F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.89518F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 438F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 330F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 331F));
             this.tableLayoutPanel3.Controls.Add(this.panel16, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel17, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel4, 1, 1);
@@ -1535,7 +1542,7 @@
             // 
             this.panel16.Controls.Add(this.balanceSellBtn);
             this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel16.Location = new System.Drawing.Point(237, 196);
+            this.panel16.Location = new System.Drawing.Point(236, 196);
             this.panel16.Margin = new System.Windows.Forms.Padding(0);
             this.panel16.Name = "panel16";
             this.panel16.Size = new System.Drawing.Size(236, 40);
@@ -1557,13 +1564,13 @@
             this.panel17.Location = new System.Drawing.Point(0, 196);
             this.panel17.Margin = new System.Windows.Forms.Padding(0);
             this.panel17.Name = "panel17";
-            this.panel17.Size = new System.Drawing.Size(237, 40);
+            this.panel17.Size = new System.Drawing.Size(236, 40);
             this.panel17.TabIndex = 9;
             // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(473, 196);
+            this.panel4.Location = new System.Drawing.Point(472, 196);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(438, 40);
@@ -1586,7 +1593,7 @@
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(237, 196);
+            this.panel5.Size = new System.Drawing.Size(236, 196);
             this.panel5.TabIndex = 6;
             // 
             // bss_curQnt
@@ -1695,7 +1702,7 @@
             // panel18
             // 
             this.panel18.Controls.Add(this.panel6);
-            this.panel18.Location = new System.Drawing.Point(914, 3);
+            this.panel18.Location = new System.Drawing.Point(913, 3);
             this.panel18.Name = "panel18";
             this.panel18.Size = new System.Drawing.Size(298, 190);
             this.panel18.TabIndex = 11;
@@ -1844,7 +1851,7 @@
             // panel19
             // 
             this.panel19.Controls.Add(this.balanceSellMonitorBtn);
-            this.panel19.Location = new System.Drawing.Point(914, 199);
+            this.panel19.Location = new System.Drawing.Point(913, 199);
             this.panel19.Name = "panel19";
             this.panel19.Size = new System.Drawing.Size(298, 34);
             this.panel19.TabIndex = 12;
@@ -1871,7 +1878,7 @@
             this.panel3.Controls.Add(this.b_takeProfitUpdown);
             this.panel3.Controls.Add(this.b_ProfitSellCheckBox);
             this.panel3.Controls.Add(this.label18);
-            this.panel3.Location = new System.Drawing.Point(240, 2);
+            this.panel3.Location = new System.Drawing.Point(239, 2);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(230, 192);
@@ -1990,7 +1997,7 @@
             // panel21
             // 
             this.panel21.Controls.Add(this.BssDataGridView);
-            this.panel21.Location = new System.Drawing.Point(476, 3);
+            this.panel21.Location = new System.Drawing.Point(475, 3);
             this.panel21.Name = "panel21";
             this.panel21.Size = new System.Drawing.Size(431, 190);
             this.panel21.TabIndex = 13;
@@ -3814,10 +3821,42 @@
             this.blockingCheckBox.Location = new System.Drawing.Point(250, 43);
             this.blockingCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.blockingCheckBox.Name = "blockingCheckBox";
-            this.blockingCheckBox.Size = new System.Drawing.Size(248, 16);
+            this.blockingCheckBox.Size = new System.Drawing.Size(252, 16);
             this.blockingCheckBox.TabIndex = 18;
-            this.blockingCheckBox.Text = "블럭킹:프로그램 이외  외부주문 즉시매도";
+            this.blockingCheckBox.Text = "블럭킹:프로그램 이외  외부주문 즉시 취소";
             this.blockingCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // DivideSellCountUpDown
+            // 
+            this.DivideSellCountUpDown.Location = new System.Drawing.Point(336, 152);
+            this.DivideSellCountUpDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.DivideSellCountUpDown.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.DivideSellCountUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.DivideSellCountUpDown.Name = "DivideSellCountUpDown";
+            this.DivideSellCountUpDown.Size = new System.Drawing.Size(63, 21);
+            this.DivideSellCountUpDown.TabIndex = 27;
+            this.DivideSellCountUpDown.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(338, 136);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(45, 12);
+            this.label23.TabIndex = 36;
+            this.label23.Text = "번 매도";
             // 
             // Form1
             // 
@@ -3932,6 +3971,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.outstandingDataGrid)).EndInit();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DivideSellCountUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4217,7 +4257,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn bss_취소;
         private System.Windows.Forms.DataGridViewTextBoxColumn bss_상태;
         private System.Windows.Forms.CheckBox stopLossAfterBuyMoreCheck;
-        private System.Windows.Forms.ToolStripMenuItem 코스피차트ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem KospiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem KosdaqToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn bbs_종목코드;
         private System.Windows.Forms.DataGridViewTextBoxColumn bbs_주문번호;
@@ -4231,6 +4271,8 @@
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.Button addInterestBtn;
         private System.Windows.Forms.TextBox interestTextBox;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.NumericUpDown DivideSellCountUpDown;
     }
 }
 

@@ -52,8 +52,9 @@ namespace Singijeon
         List<BalanceSellStrategy> tryingSellList = new List<BalanceSellStrategy>(); //잔고 매도 접수 시도(주문번호 따는 리스트)
 
         Dictionary<string, NotConclusionItem> nonConclusionList = new Dictionary<string, NotConclusionItem>();
-        Form2 printForm2 = null;
         Form3 printForm = null;
+        Form2 printForm2 = null;
+        Form3 printForm_kospi = null;
         Form3 printForm_kosdaq = null;
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
         public Form1()
@@ -66,8 +67,7 @@ namespace Singijeon
             coreEngine.Start();
 
             OpenSecondWindow();
-            //printForm = new Form3(axKHOpenAPI1);
-            //printForm_kosdaq = new Form3(axKHOpenAPI1);
+      
 
             startTimePicker.Value = DateTime.Now;
             startTimePicker.Format = DateTimePickerFormat.Custom;
@@ -109,7 +109,7 @@ namespace Singijeon
             MartinGailManager.GetInstance().Init(axKHOpenAPI1, this);
             BlockManager.GetInstance().Init(axKHOpenAPI1, this);
             //LoadSetting();
-           
+            printForm = new Form3(axKHOpenAPI1);
         }
 
         #region EVENT_RECEIVE_FUNCTION
@@ -2222,19 +2222,7 @@ namespace Singijeon
 
         private void OpenThirdWindow()
         {
-            printForm.RequestKospi(delegate (string _itemCode)
-            {
-                printForm.btn.Click -= new System.EventHandler(printForm.ChartRequestBtn_Click);
-                printForm.btn.Click += new System.EventHandler(printForm.KospiChartRequestBtn_Click);
-                printForm.Show();
-            }, Form3.CHART_TYPE.MINUTE_5);
-
-            printForm_kosdaq.RequestKosdap(delegate (string _itemCode)
-            {
-                printForm_kosdaq.btn.Click -= new System.EventHandler(printForm_kosdaq.ChartRequestBtn_Click);
-                printForm_kosdaq.btn.Click += new System.EventHandler(printForm_kosdaq.KosdaqChartRequestBtn_Click);
-                printForm_kosdaq.Show();
-            }, Form3.CHART_TYPE.MINUTE_5);
+           
         }
         #endregion
         public void StartMonitoring(Condition _condition)
@@ -2289,9 +2277,11 @@ namespace Singijeon
             {
                 coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 익절 주문 실행");
                 OnReceiveTrDataCheckProfitSell(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellProfitPercentage);
-                if(e.tradingItem.usingDivideSellProfitLoop == false)
+                e.tradingItem.usingDivideSellProfit = false;
+
+                if (e.tradingItem.usingDivideSellProfitLoop)
                 {
-                    e.tradingItem.usingDivideSellProfit = false;
+                    e.tradingItem.usingDivideSellProfit = true;
                 }
             }
         }
@@ -2304,10 +2294,41 @@ namespace Singijeon
                 if (item.IsProfitSell())
                 {
                     coreEngine.SaveItemLogMessage(item.itemCode, item.itemName + " 이전 익절 주문 실행 내용 확인");
-                    //같은 익절 상태면 아무것도 안함
+                    //같은 익절 상태면 넘김
+                    //단 익절률 이하로 떨어졌을때 걸려있는 주문 취소
+
+                    if(checkValue > 0 && checkValue < item.ts.divideSellProfitPercentage)
+                    {
+                        coreEngine.SaveItemLogMessage(item.itemCode, "익절 확정//익절주문 취소 : " + item.itemName + " 수량 : " + item.curQnt + " 현재 손익률 : "+ checkValue);
+                        int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
+
+                        if (orderResultCancel == 0)
+                        {
+                            AddOrderList(item);
+                            item.SetSellCancelOrder();
+                            coreEngine.SaveItemLogMessage(item.itemCode, "익절 취소 접수");
+                            autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
+                            return;
+                        }
+                    }
+                    if(item.ts.takeProfitRate < checkValue && sellPercentage == 1)
+                    {
+                        //기존익절률 초과시 분할익절 취소하여 기존 익절 부분만 실행
+                        coreEngine.SaveItemLogMessage(item.itemCode, "분할익절주문 취소 : " + item.itemName + " 수량 : " + item.curQnt + " 현재 손익률 : " + checkValue);
+                        int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
+
+                        if (orderResultCancel == 0)
+                        {
+                            AddOrderList(item);
+                            item.SetSellCancelOrder();
+                            coreEngine.SaveItemLogMessage(item.itemCode, "익절 취소 접수");
+                            autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
+                            return;
+                        }
+                    }
                     return;
                 }
-                else
+                else //손절 걸려있을시
                 {
                     coreEngine.SaveItemLogMessage(item.itemCode, "손절주문 취소 : " + item.itemName + " 수량 " + item.curQnt);
                     int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
@@ -2342,7 +2363,7 @@ namespace Singijeon
                 item.ts.account,
                 CONST_NUMBER.SEND_ORDER_SELL,
                 item.itemCode,
-                (orderQnt<=0)? item.curQnt:orderQnt,
+                (orderQnt<=0)? 1:orderQnt,
                 item.sellOrderType == ConstName.ORDER_SIJANGGA ? 0 : (int)item.curPrice,
                 item.sellOrderType,//지정가
                 "" //원주문번호없음
@@ -2372,15 +2393,22 @@ namespace Singijeon
            
             if (e.tradingItem.usingDivideSellLoss)
             {
-                coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행");
+                coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행 / 카운트 :" + e.tradingItem.divideSellCount);
                 OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellLossPercentage, true);
 
+                e.tradingItem.divideSellCount--;
                 e.tradingItem.usingDivideSellLoss = false;
 
                 if (e.tradingItem.usingDivideSellLossLoop)
                 {
                     e.tradingItem.usingDivideSellLoss = true;
-                    //손절 1회 실행
+                }
+
+                if (e.tradingItem.divideSellCount > 0)
+                {
+                    e.tradingItem.usingDivideSellLoss = true;
+                   
+                    coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "남은 분할 손절 주문 횟수 : " + e.tradingItem.divideSellCount);
                 }
             }
         }
@@ -2425,12 +2453,13 @@ namespace Singijeon
 
             if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 return;
+            
             if (!StopLossDivide)
             {
-                if (item.usingStopLossAfterBuyMore)//물타기 후 꺼줌
+                if (item.usingStopLossAfterBuyMore)// 추가 물타기 후 꺼주게 설정
                     return;
             }
-            
+
             item.SetSellOrderType(false);
 
             coreEngine.SaveItemLogMessage(item.itemCode,
@@ -2447,7 +2476,7 @@ namespace Singijeon
                 item.ts.account,
                 CONST_NUMBER.SEND_ORDER_SELL,
                 item.itemCode,
-                (orderQnt <= 0) ? item.curQnt : orderQnt,
+                (orderQnt <= 0) ? 1 : orderQnt,
                 item.sellOrderType == ConstName.ORDER_SIJANGGA ? 0 : (int)item.curPrice,
                 item.sellOrderType,
                 "" //원주문번호없음
@@ -3665,5 +3694,31 @@ namespace Singijeon
             }
         }
 
+        private void KospiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(printForm_kospi == null)
+                printForm_kospi = new Form3(axKHOpenAPI1);
+         
+            printForm_kospi.RequestKospi(delegate (string _itemCode)
+            {
+                printForm_kospi.btn.Click -= new System.EventHandler(printForm_kospi.ChartRequestBtn_Click);
+                printForm_kospi.btn.Click += new System.EventHandler(printForm_kospi.KospiChartRequestBtn_Click);
+                printForm_kospi.Show();
+            }, Form3.CHART_TYPE.MINUTE_5);
+
+          
+        }
+
+        private void KosdaqToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (printForm_kosdaq == null)
+                printForm_kosdaq = new Form3(axKHOpenAPI1);
+            printForm_kosdaq.RequestKosdap(delegate (string _itemCode)
+            {
+                printForm_kosdaq.btn.Click -= new System.EventHandler(printForm_kosdaq.ChartRequestBtn_Click);
+                printForm_kosdaq.btn.Click += new System.EventHandler(printForm_kosdaq.KosdaqChartRequestBtn_Click);
+                printForm_kosdaq.Show();
+            }, Form3.CHART_TYPE.MINUTE_5);
+        }
     }
 }

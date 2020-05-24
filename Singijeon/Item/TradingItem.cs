@@ -82,7 +82,7 @@ namespace Singijeon
         public bool usingDivideSellLossLoop = false;
 
         public bool usingStopLossAfterBuyMore = false;
-
+        public int divideSellCount = 100;
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
         public TradingItem()
@@ -112,7 +112,7 @@ namespace Singijeon
             this.usingDivideSellLossLoop = ts.useDivideSellLossLoop;
             this.usingDivideSellProfitLoop = ts.useDivideSellProfitLoop;
             this.usingStopLossAfterBuyMore = ts.usingStopLossAfterBuyMore;
-
+            this.divideSellCount = ts.divideSellCount;
             this.Uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }

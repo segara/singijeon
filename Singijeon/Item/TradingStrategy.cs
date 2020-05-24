@@ -66,6 +66,8 @@ namespace Singijeon
 
         public bool usingStopLossAfterBuyMore = false;
 
+        public int divideSellCount = 100;
+
         public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
         
         public event EventHandler<OnReceiveStrateyStateResultArgs> OnReceiveCondition; //종목 검색시

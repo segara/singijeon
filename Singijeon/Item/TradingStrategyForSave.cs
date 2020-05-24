@@ -71,6 +71,7 @@ namespace Singijeon
         public bool usingStopLossAfterBuyMore = false;
         //복원하면서 재설정하기 때문에 저장하지 않음
         //public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
+        public int divideSellCount = 100;
 
         public TradingStrategyForSave(BalanceSellStrategy strategy)
         {
