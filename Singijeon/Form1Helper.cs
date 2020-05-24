@@ -468,6 +468,8 @@ namespace Singijeon
                 streamWriter.WriteLine("divideProfitSellLoopCheck" + ";" + divideProfitSellLoopCheck.Checked);
 
                 streamWriter.WriteLine("stopLossAfterBuyMoreCheck" + ";" + stopLossAfterBuyMoreCheck.Checked);
+
+                streamWriter.WriteLine("DivideSellCountUpDown" + ";" + (int)DivideSellCountUpDown.Value);
             }
         }
         public void ClearSetting()
@@ -529,6 +531,8 @@ namespace Singijeon
             divideLossSellLoopCheck.Checked = false;
 
             stopLossAfterBuyMoreCheck.Checked = false;
+
+            DivideSellCountUpDown.Value = 100;
         }
         public void LoadSetting(string settingCondition)
         {
@@ -700,6 +704,9 @@ namespace Singijeon
                                 break;
                             case "stopLossAfterBuyMoreCheck":
                                 stopLossAfterBuyMoreCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "DivideSellCountUpDown":
+                                DivideSellCountUpDown.Value = int.Parse(strringArray[1]);
                                 break;
                         }
                     }
