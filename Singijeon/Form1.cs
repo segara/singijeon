@@ -2062,6 +2062,7 @@ namespace Singijeon
                 ts.useDivideSellLossLoop = divideLossSellLoopCheck.Checked;
                 ts.divideStoplossRate = stopLossRate;
                 ts.divideSellLossPercentage = (stopLossSellPercent * 0.01);
+                ts.divideSellCount = DivideSellCountUpDown.Value;
             }
 
             bool usingDivideSellProfit = DivideSellProfitCheckBox.Checked; //분할매도익절
@@ -2392,6 +2393,7 @@ namespace Singijeon
 
         public void OnReceiveTrDataCheckStopLossDivide(object sender, OnReceivedTrEventArgs e)
         {
+            coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 진입");
             if (e.tradingItem.usingDivideSellLoss)
             {
                 coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행 / 카운트 :" + e.tradingItem.divideSellCount);
