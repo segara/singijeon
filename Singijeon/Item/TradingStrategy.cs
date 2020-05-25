@@ -58,8 +58,8 @@ namespace Singijeon
         public bool useDivideSellLoss = false;
         public double divideTakeProfitRate = 0; //익절률2
         public double divideStoplossRate = 0; //손절률2
-        public double divideSellProfitPercentage = 1; //익절률2 매도 퍼센테지
-        public double divideSellLossPercentage = 1; //손절률2 매도 퍼센테지
+        public double divideSellProfitPercentage = 0; //익절률2 매도 퍼센테지
+        public double divideSellLossPercentage = 0; //손절률2 매도 퍼센테지
 
         public bool useDivideSellProfitLoop = false;
         public bool useDivideSellLossLoop = false;
@@ -198,9 +198,14 @@ namespace Singijeon
         {
             foreach(TradingStrategyADDItem item in tradingStrategyItemList)
             {
+                if(item.strategyItemName == StrategyItemName.STOPLOSS_DIVIDE_SELL)
+                {
+                    TradingStrategyItemWithUpDownValue itemSellDivide = (TradingStrategyItemWithUpDownValue)item;
+                    Console.WriteLine(trading_item.itemName + " / " + item.strategyItemName 
+                        + "/" + item.strategyCheckTime + "/" + inputValue);
+                }
                 if(item.strategyCheckTime == checkTiming)
                 {
-                    //Console.WriteLine(trading_item.itemName + " / " + item.strategyItemName + "/" + inputValue);
                     item.CheckUpdate(trading_item, inputValue);
                 }
                     

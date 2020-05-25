@@ -574,7 +574,10 @@ namespace Singijeon
                         //자동 감시 주문 체크
                         if (tradeItem.state >= TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE
                             && tradeItem.state < TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE)
+                        {
                             tradeItem.ts.CheckUpdateTradingStrategyAddedItem(tradeItem, realProfitRate, CHECK_TIMING.SELL_TIME);
+                        }
+                          
 
                         if (tradeItem.ts.usingRestart && tradeItem.ts.remainItemCount == 0) //restart 처리
                         {
@@ -2311,7 +2314,6 @@ namespace Singijeon
                             return;
                         }
                     }
-                    if(item.ts.takeProfitRate < checkValue && sellPercentage == 1)
                     {
                         //기존익절률 초과시 분할익절 취소하여 기존 익절 부분만 실행
                         coreEngine.SaveItemLogMessage(item.itemCode, "분할익절주문 취소 : " + item.itemName + " 수량 : " + item.curQnt + " 현재 손익률 : " + checkValue);
@@ -2390,7 +2392,6 @@ namespace Singijeon
 
         public void OnReceiveTrDataCheckStopLossDivide(object sender, OnReceivedTrEventArgs e)
         {
-           
             if (e.tradingItem.usingDivideSellLoss)
             {
                 coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행 / 카운트 :" + e.tradingItem.divideSellCount);
