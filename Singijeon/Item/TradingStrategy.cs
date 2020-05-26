@@ -375,6 +375,11 @@ namespace Singijeon
 
         public override void CheckUpdate(TradingItem item, double value)
         {
+            if(strategyItemName == StrategyItemName.STOPLOSS_DIVIDE_SELL)
+            {
+                Console.WriteLine(StrategyItemName.STOPLOSS_DIVIDE_SELL);
+            }
+
             if (!usingStrategy)
                 return;
 
