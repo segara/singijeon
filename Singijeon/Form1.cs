@@ -1147,9 +1147,9 @@ namespace Singijeon
                 {
                     if (balanceItemList.Find(o => (o.itemCode == itemCode)) == null)
                     {
-                        coreEngine.SendLogMessage(itemCode + " 잔고 리스트에 추가");
-                        int rowIndex = accountBalanceDataGrid.Rows.Add();
-                        balanceItemList.Add(new BalanceItem(itemCode, itemName, int.Parse(buyingPrice), int.Parse(balanceQnt), accountBalanceDataGrid.Rows[rowIndex]));
+                        //coreEngine.SendLogMessage(itemCode + " 잔고 리스트에 추가");
+                        //int rowIndex = accountBalanceDataGrid.Rows.Add();
+                        //balanceItemList.Add(new BalanceItem(itemCode, itemName, int.Parse(buyingPrice), int.Parse(balanceQnt), null));
                     }
                     else
                     {
@@ -1193,6 +1193,12 @@ namespace Singijeon
                 if (!hasItem_accountBalanceDataGrid && int.Parse(balanceQnt) > 0)
                 {
                     int rowIndex = accountBalanceDataGrid.Rows.Add();
+                    if (balanceItemList.Find(o => (o.itemCode == itemCode)) == null)
+                    {
+                        //coreEngine.SendLogMessage(itemCode + " 잔고 리스트에 추가");
+                        //int rowIndex = accountBalanceDataGrid.Rows.Add();
+                        balanceItemList.Add(new BalanceItem(itemCode, itemName, int.Parse(buyingPrice), int.Parse(balanceQnt), accountBalanceDataGrid.Rows[rowIndex]));
+                    }
                     int evaluationAmount = int.Parse(buyingPrice) * int.Parse(balanceQnt);
                     int profitAmount = (int.Parse(price) - int.Parse(buyingPrice)) * int.Parse(balanceQnt);
                     Hashtable uiTable = new Hashtable { { "계좌잔고_종목코드", itemCode }, { "계좌잔고_종목명", itemName }, { "계좌잔고_보유수량", balanceQnt }, { "계좌잔고_평균단가", buyingPrice }, { "계좌잔고_손익률", profitRate }, { "계좌잔고_현재가", price }, { "계좌잔고_매입금액", totalBuyingPrice }, { "계좌잔고_평가금액", evaluationAmount }, { "계좌잔고_손익금액", profitAmount } };
