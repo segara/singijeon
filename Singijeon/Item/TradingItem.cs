@@ -161,7 +161,7 @@ namespace Singijeon
 
         public void SetSellCancelOrder()
         {
-          curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE; 
+            curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE; 
         }
 
         public void SetSellCancelOrderComplete()

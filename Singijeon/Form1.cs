@@ -577,7 +577,6 @@ namespace Singijeon
                         {
                             tradeItem.ts.CheckUpdateTradingStrategyAddedItem(tradeItem, realProfitRate, CHECK_TIMING.SELL_TIME);
                         }
-                          
 
                         if (tradeItem.ts.usingRestart && tradeItem.ts.remainItemCount == 0) //restart 처리
                         {
@@ -617,15 +616,15 @@ namespace Singijeon
 
         private void CheckBS_Finish(string itemCode, bool buy, long conclusionQnt, string orderNum)
         {
+            coreEngine.SaveItemLogMessage(itemCode, "CheckBS_Finish");
             List<BalanceStrategy> bsList = balanceStrategyList.FindAll(o => o.itemCode.Equals(itemCode));
 
             foreach (var bs in bsList)
-            {
-                Console.WriteLine("CheckBS_Finish : " + axKHOpenAPI1.GetMasterCodeName(bs.itemCode) + "/" +conclusionQnt+"/"+bs.buyQnt);
-                
-                if(buy && bs.orderNum == orderNum && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_NOT_COMPLETE)
+            { 
+                if (buy && bs.orderNum == orderNum && bs.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_NOT_COMPLETE)
                 {
-                    Console.WriteLine("buy more finish");
+                    coreEngine.SaveItemLogMessage(itemCode, "buy more finish");
+
                     bs.state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_COMPLETE;
                     bs.bUseStrategy = false;
 
@@ -1009,7 +1008,7 @@ namespace Singijeon
 
                             CheckBSS_Sell(ordernum, conclusionPrice); //bss 체크
                             CheckSettle_Sell(ordernum); //청산 체크
-                            CheckBS_Finish(itemCode, false, i_ConclusionQuantity, ordernum);
+                            //CheckBS_Finish(itemCode, false, i_ConclusionQuantity, ordernum);
                         }
                         
                     }
@@ -2068,7 +2067,7 @@ namespace Singijeon
                 ts.useDivideSellLossLoop = divideLossSellLoopCheck.Checked;
                 ts.divideStoplossRate = stopLossRate;
                 ts.divideSellLossPercentage = (stopLossSellPercent * 0.01);
-                ts.divideSellCount = DivideSellCountUpDown.Value;
+                ts.divideSellCount = (int)DivideSellCountUpDown.Value;
             }
 
             bool usingDivideSellProfit = DivideSellProfitCheckBox.Checked; //분할매도익절
@@ -2285,7 +2284,7 @@ namespace Singijeon
         {
             if(e.tradingItem.usingDivideSellProfit)
             {
-                coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 익절 주문 실행");
+                //coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 익절 주문 실행");
                 OnReceiveTrDataCheckProfitSell(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellProfitPercentage);
                 e.tradingItem.usingDivideSellProfit = false;
 
@@ -2297,30 +2296,33 @@ namespace Singijeon
         }
         public void OnReceiveTrDataCheckProfitSell(TradingItem item, double checkValue, double sellPercentage = 1)
         {
-
+            if(item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE)
+            {
+                
+            }
             if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE
                 || item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT)
             {
                 if (item.IsProfitSell())
                 {
-                    coreEngine.SaveItemLogMessage(item.itemCode, item.itemName + " 이전 익절 주문 실행 내용 확인");
+                    //coreEngine.SaveItemLogMessage(item.itemCode, item.itemName + " 이전 익절 주문 실행 내용 확인");
                     //같은 익절 상태면 넘김
                     //단 익절률 이하로 떨어졌을때 걸려있는 주문 취소
 
-                    if(checkValue > 0 && checkValue < item.ts.divideSellProfitPercentage)
-                    {
-                        coreEngine.SaveItemLogMessage(item.itemCode, "익절 확정//익절주문 취소 : " + item.itemName + " 수량 : " + item.curQnt + " 현재 손익률 : "+ checkValue);
-                        int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
-
-                        if (orderResultCancel == 0)
-                        {
-                            AddOrderList(item);
-                            item.SetSellCancelOrder();
-                            coreEngine.SaveItemLogMessage(item.itemCode, "익절 취소 접수");
-                            autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
-                            return;
-                        }
-                    }
+                    //if( 0 < checkValue && checkValue < item.ts.divideSellProfitPercentage && sellPercentage != 1)
+                    //{
+                    //    coreEngine.SaveItemLogMessage(item.itemCode, "익절 확정//익절주문 취소 : " + item.itemName + " 수량 : " + item.curQnt + " 현재 손익률 : "+ checkValue);
+                    //    int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
+                    //    if (orderResultCancel == 0)
+                    //    {
+                    //        AddOrderList(item);
+                    //        item.SetSellCancelOrder();
+                    //        coreEngine.SaveItemLogMessage(item.itemCode, "익절 취소 접수");
+                    //        autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
+                    //        return;
+                    //    }
+                    //}
+                    if (checkValue > item.ts.takeProfitRate && checkValue > item.ts.divideSellProfitPercentage && sellPercentage != 1)
                     {
                         //기존익절률 초과시 분할익절 취소하여 기존 익절 부분만 실행
                         coreEngine.SaveItemLogMessage(item.itemCode, "분할익절주문 취소 : " + item.itemName + " 수량 : " + item.curQnt + " 현재 손익률 : " + checkValue);
@@ -2399,7 +2401,7 @@ namespace Singijeon
 
         public void OnReceiveTrDataCheckStopLossDivide(object sender, OnReceivedTrEventArgs e)
         {
-            coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 진입");
+            //coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 진입");
             if (e.tradingItem.usingDivideSellLoss)
             {
                 coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행 / 카운트 :" + e.tradingItem.divideSellCount);

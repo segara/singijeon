@@ -311,7 +311,7 @@ namespace Singijeon
                 TradingStrategyItemWithUpDownValue divideStopLossStrategy = null;
                 divideStopLossStrategy =
                     new TradingStrategyItemWithUpDownValue(
-                            StrategyItemName.STOPLOSS_SELL,
+                            StrategyItemName.STOPLOSS_DIVIDE_SELL,
                             CHECK_TIMING.SELL_TIME,
                             IS_TRUE_OR_FALE_TYPE.DOWN,
                             saved.divideStoplossRate);
@@ -331,7 +331,7 @@ namespace Singijeon
                 TradingStrategyItemWithUpDownValue divideProfitStrategy = null;
                 divideProfitStrategy =
                     new TradingStrategyItemWithUpDownValue(
-                            StrategyItemName.STOPLOSS_SELL,
+                            StrategyItemName.TAKE_PROFIT_DIVIDE_SELL,
                             CHECK_TIMING.SELL_TIME,
                             IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
                             saved.divideTakeProfitRate);
@@ -339,8 +339,8 @@ namespace Singijeon
                 divideProfitStrategy.OnReceivedTrData += form.OnReceiveTrDataCheckProfitDivide;
       
                 ts.AddTradingStrategyItemList(divideProfitStrategy);
-                ts.divideStoplossRate = saved.divideTakeProfitRate;
-                ts.divideSellLossPercentage = (saved.divideSellProfitPercentage);
+                ts.divideTakeProfitRate = saved.divideTakeProfitRate;
+                ts.divideSellProfitPercentage = (saved.divideSellProfitPercentage);
 
             }
 

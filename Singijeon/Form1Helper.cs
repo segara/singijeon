@@ -24,7 +24,7 @@ namespace Singijeon
             {
                 BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
                 DataGridViewRow row = item.ui_rowItem;
-                if (row.Cells["계좌잔고_종목코드"].Value != null)
+                if (row != null && row.Cells["계좌잔고_종목코드"].Value != null)
                 {
                     if (row.Cells["계좌잔고_종목코드"].Value.ToString().Contains(itemCode))
                     {
