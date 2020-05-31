@@ -56,6 +56,9 @@ namespace Singijeon
 
         public const string AUTO_TRADING_STATE_BUY_CANCEL_ALL = "매수취소완료";
 
+        public const string AUTO_TRADING_STATE_BUYMORE_BEFORE_ORDER = "뭍타기접수";
+        public const string AUTO_TRADING_STATE_BUYMORE_NOT_COMPLETE = "물타기체결대기";
+        
         public const string AUTO_TRADING_STATE_SELL_BEFORE_ORDER = "매도주문접수시도";
         //public const string AUTO_TRADING_STATE_SELL_ORDER_COMPLETE = "매도주문접수완료";
         public const string AUTO_TRADING_STATE_SELL_NOT_COMPLETE = "매도주문완료";

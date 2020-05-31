@@ -570,7 +570,7 @@ namespace Singijeon
                      if (tradeItem.IsCompleteBuying() && tradeItem.IsCompleteSold() == false && tradeItem.buyingPrice != 0) //매도 진행안된것 
                     {
                         double realProfitRate = GetProfitRate((double)c_lPrice, (double)tradeItem.buyingPrice);
-
+                        coreEngine.SaveItemLogMessage(itemCode, "현재가 : " + c_lPrice + " 평단가 : " + tradeItem.buyingPrice + " 손익률 : " + realProfitRate);
                         //자동 감시 주문 체크
                         if (tradeItem.state >= TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE
                             && tradeItem.state < TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE)
@@ -629,6 +629,7 @@ namespace Singijeon
                     bs.bUseStrategy = false;
 
                     List<TradingItem> tradeItemListAll = GetAllTradingItemData(itemCode);
+                    
                     foreach(var item in tradeItemListAll)
                     {
                         if (item.usingStopLossAfterBuyMore)
@@ -2404,10 +2405,10 @@ namespace Singijeon
             //coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 진입");
             if (e.tradingItem.usingDivideSellLoss)
             {
-                coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 주문 실행 / 카운트 :" + e.tradingItem.divideSellCount);
+              
                 OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellLossPercentage, true);
 
-                e.tradingItem.divideSellCount--;
+             
                 e.tradingItem.usingDivideSellLoss = false;
 
                 if (e.tradingItem.usingDivideSellLossLoop)
@@ -2471,6 +2472,12 @@ namespace Singijeon
                     return;
             }
 
+            if (StopLossDivide)
+            {
+                item.divideSellCount--;
+                coreEngine.SaveItemLogMessage(item.itemCode, "분할 손절 주문 실행 / 카운트 :" + item.divideSellCount);
+            }
+              
             item.SetSellOrderType(false);
 
             coreEngine.SaveItemLogMessage(item.itemCode,

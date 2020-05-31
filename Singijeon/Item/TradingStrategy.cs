@@ -198,12 +198,7 @@ namespace Singijeon
         {
             foreach(TradingStrategyADDItem item in tradingStrategyItemList)
             {
-                if(item.strategyItemName == StrategyItemName.STOPLOSS_DIVIDE_SELL)
-                {
-                    TradingStrategyItemWithUpDownValue itemSellDivide = (TradingStrategyItemWithUpDownValue)item;
-                    Console.WriteLine(trading_item.itemName + " / " + item.strategyItemName 
-                        + "/" + item.strategyCheckTime + "/" + inputValue);
-                }
+              
                 if(item.strategyCheckTime == checkTiming)
                 {
                     item.CheckUpdate(trading_item, inputValue);
