@@ -12,7 +12,7 @@ namespace Singijeon.Core
         Thread taskWorker;
         Task task;
         bool play = true;
-        bool pause = true;
+        bool pause = false;
         public void Stop()
         {
             play = false;

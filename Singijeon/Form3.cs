@@ -53,11 +53,13 @@ namespace Singijeon
         const double MA_3_PERCENT = 0.97;
         TimerJob newTimer;
         CHART_TYPE curTypeChart = CHART_TYPE.MINUTE_5;
-        string screenNumber = Form1.GetScreenNum().ToString();
+        string screenNumber = string.Empty;
         public Button btn { get { return ChartRequestBtn; } }
 
         public Form3(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1)
         {
+            screenNumber = Form1.GetScreenNum().ToString();
+
             axKHOpenAPI1 = _axKHOpenAPI1;
             InitializeComponent();
 
@@ -102,6 +104,7 @@ namespace Singijeon
         {
             //newTimer.Stop();
             axKHOpenAPI1.OnReceiveTrData -= AxKHOpenAPI_OnReceiveTrData;
+            
         }
 
         

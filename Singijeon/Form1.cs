@@ -56,6 +56,8 @@ namespace Singijeon
         Form2 printForm2 = null;
         Form3 printForm_kospi = null;
         Form3 printForm_kosdaq = null;
+        TimerJob newTimer;
+        KospiInfo info;
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
         public Form1()
         {
@@ -110,6 +112,31 @@ namespace Singijeon
             BlockManager.GetInstance().Init(axKHOpenAPI1, this);
             //LoadSetting();
             printForm = new Form3(axKHOpenAPI1);
+            info = new KospiInfo();
+            UpdateTimer();
+
+        }
+
+        void UpdateTimer()
+        {
+            newTimer = new TimerJob();
+            newTimer.StartWork(1000 * 30, delegate ()
+            {
+               
+                if (kospiInfo.InvokeRequired)
+                {
+                    kospiInfo.Invoke(new MethodInvoker(delegate ()
+                    {
+                        kospiInfo.Text = info.GetStockKospi();
+                        kosdaqInfo.Text = info.GetStockKosdaq();
+                    }));
+                }
+                else
+                {
+                    kospiInfo.Text = info.GetStockKospi();
+                    kosdaqInfo.Text = info.GetStockKosdaq();
+                }
+            });
         }
 
         #region EVENT_RECEIVE_FUNCTION
@@ -3338,6 +3365,7 @@ namespace Singijeon
                         tradeItem.SetBuyCancelComplete();
                         //ts.tradingItemList.Remove(tradeItem);
                         autoTradingDataGrid["매매진행_진행상황", tradeItem.ui_rowItem.Index].Value = ConstName.AUTO_TRADING_STATE_BUY_CANCEL_ALL;
+                        
                     }
                 }
                 else
@@ -3348,6 +3376,15 @@ namespace Singijeon
                         tradeItem.SetSellCancelOrderComplete();
                         //ts.tradingItemList.Remove(tradeItem);
                         autoTradingDataGrid["매매진행_진행상황", tradeItem.ui_rowItem.Index].Value = ConstName.AUTO_TRADING_STATE_BUY_COMPLETE;
+                        
+                    }
+                }
+                foreach (DataGridViewRow row in outstandingDataGrid.Rows)
+                {
+                    if (row.Cells["미체결_주문번호"].Value != null && row.Cells["미체결_주문번호"].Value.ToString().Equals(orderNum))
+                    {
+                        outstandingDataGrid.Rows.Remove(row);
+                        break;
                     }
                 }
             }
@@ -3715,7 +3752,11 @@ namespace Singijeon
         private void KospiToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(printForm_kospi == null)
+            {
                 printForm_kospi = new Form3(axKHOpenAPI1);
+                printForm_kospi.FormClosed += KospiFormCloseEventArgs;
+            }
+             
          
             printForm_kospi.RequestKospi(delegate (string _itemCode)
             {
@@ -3724,13 +3765,21 @@ namespace Singijeon
                 printForm_kospi.Show();
             }, Form3.CHART_TYPE.MINUTE_5);
 
-          
+        }
+
+        private void KospiFormCloseEventArgs(object sender, FormClosedEventArgs e)
+        {
+            printForm_kospi = null;
         }
 
         private void KosdaqToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (printForm_kosdaq == null)
+            {
                 printForm_kosdaq = new Form3(axKHOpenAPI1);
+                printForm_kosdaq.FormClosed += KosdaqFormCloseEventArgs;
+            }
+               
             printForm_kosdaq.RequestKosdap(delegate (string _itemCode)
             {
                 printForm_kosdaq.btn.Click -= new System.EventHandler(printForm_kosdaq.ChartRequestBtn_Click);
@@ -3738,5 +3787,12 @@ namespace Singijeon
                 printForm_kosdaq.Show();
             }, Form3.CHART_TYPE.MINUTE_5);
         }
+
+        private void KosdaqFormCloseEventArgs(object sender, FormClosedEventArgs e)
+        {
+            printForm_kosdaq = null;
+        }
+
+
     }
 }
