@@ -120,7 +120,7 @@ namespace Singijeon
         void UpdateTimer()
         {
             newTimer = new TimerJob();
-            newTimer.StartWork(1000 * 30, delegate ()
+            newTimer.StartWork(1000 * 10, delegate ()
             {
                
                 if (kospiInfo.InvokeRequired)
@@ -1004,13 +1004,28 @@ namespace Singijeon
                     Hashtable uiOrderTable = new Hashtable { { "주문_주문번호", ordernum }, { "주문_계좌번호", account }, { "주문_시간", time }, { "주문_종목코드", itemCode }, { "주문_종목명", itemName }, { "주문_매매구분", orderType }, { "주문_가격구분", tradingType }, { "주문_주문량", orderQuantity }, { "주문_주문가격", orderPrice } };
                     Update_OrderDataGrid_UI(uiOrderTable, rowIndex);
 
-                    //미체결 처리
-                    
-                    {
+                    //미체결 처리 && 외부매수 매도
+                   
+                    if(orderType != ConstName.RECEIVE_CHEJAN_CANCEL_BUY_ORDER && orderType != ConstName.RECEIVE_CHEJAN_CANCEL_SELL_ORDER)
+                    {                 
                         coreEngine.SendLogWarningMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " 미체결처리");
-                        int index = outstandingDataGrid.Rows.Add();
-                        Hashtable outstandingTable = new Hashtable { { "미체결_주문번호", ordernum }, { "미체결_종목코드", itemCode }, { "미체결_종목명", itemName }, { "미체결_주문수량", orderQuantity }, { "미체결_미체결량", orderQuantity } };
-                        Update_OutStandingDataGrid_UI(outstandingTable, index);
+
+                        bool haveKey = false;
+                        foreach(var key in nonConclusionList.Keys)
+                        {
+                            if(key.Contains(ordernum) || ordernum.Contains(key))
+                            {
+                                haveKey = true;
+                            }
+                        }
+                       
+                        if(haveKey == false)
+                        {
+                            int index = outstandingDataGrid.Rows.Add();
+                            Hashtable outstandingTable = new Hashtable { { "미체결_주문번호", ordernum }, { "미체결_종목코드", itemCode }, { "미체결_종목명", itemName }, { "미체결_주문수량", orderQuantity }, { "미체결_미체결량", orderQuantity } };
+                            Update_OutStandingDataGrid_UI(outstandingTable, index);
+                            nonConclusionList.Add(ordernum, new NotConclusionItem(ordernum, itemCode, orderType, itemName, int.Parse(orderQuantity), int.Parse(orderPrice), int.Parse(orderQuantity)));
+                        }
                     }
 
                 }
@@ -1696,8 +1711,8 @@ namespace Singijeon
 
                     axKHOpenAPI1.SetInputValue("계좌번호", account);
                     axKHOpenAPI1.SetInputValue("체결구분", "1");
-                    axKHOpenAPI1.SetInputValue("매매구분", "2");
-                    axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_REALTIME_NOT_CONCLUSION, "opt10075", 0, "5700");
+                    axKHOpenAPI1.SetInputValue("매매구분", "0"); //0:전체 1:매도 2:매수
+                    axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_REALTIME_NOT_CONCLUSION, "opt10075", 0, GetScreenNum().ToString());
                 }
 
             }
@@ -3379,6 +3394,7 @@ namespace Singijeon
                         
                     }
                 }
+
                 foreach (DataGridViewRow row in outstandingDataGrid.Rows)
                 {
                     if (row.Cells["미체결_주문번호"].Value != null && row.Cells["미체결_주문번호"].Value.ToString().Equals(orderNum))
@@ -3463,6 +3479,7 @@ namespace Singijeon
             if (itemFind != null)
                 tryingOrderList.Remove(item);
         }
+      
         private void Form_FormClosing(object sender, EventArgs e)
         {
             axKHOpenAPI1.OnEventConnect -= API_OnEventConnect; //로그인
