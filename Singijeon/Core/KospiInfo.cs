@@ -61,26 +61,36 @@ namespace Singijeon.Core
         }
         private String GetHtmlString(String url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default);
-            String strHtml = reader.ReadToEnd();
+            try {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default);
+                String strHtml = reader.ReadToEnd();
 
-            //strHtml = Regex.Replace(strHtml, @"<(.|\n)*?>", String.Empty);
-            strHtml = Regex.Replace(strHtml, @"<(.|\n)*?>", String.Empty);
-            strHtml = strHtml.Replace(" ", "").Replace("\t", "").Replace("//-->", "");
-            String[] str = strHtml.Split(new Char[] { '\n' });
-            strHtml = null;
-            foreach (String s in str)
-            {
-                if (s.Trim() != "")
-                    strHtml += s + ":";
+                //strHtml = Regex.Replace(strHtml, @"<(.|\n)*?>", String.Empty);
+                strHtml = Regex.Replace(strHtml, @"<(.|\n)*?>", String.Empty);
+                strHtml = strHtml.Replace(" ", "").Replace("\t", "").Replace("//-->", "");
+                String[] str = strHtml.Split(new Char[] { '\n' });
+                strHtml = null;
+                foreach (String s in str)
+                {
+                    if (s.Trim() != "")
+                        strHtml += s + ":";
+                }
+
+                reader.Close();
+                response.Close();
+
+                return strHtml;
             }
+            catch (Exception exception)
+            {
+                CoreEngine.GetInstance().SendLogErrorMessage(exception.Message);
+                return string.Empty;
+            }
+               
 
-            reader.Close();
-            response.Close();
-
-            return strHtml;
+          
         }
     }
 }
