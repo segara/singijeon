@@ -58,13 +58,13 @@ namespace Singijeon
                         //obj.balanceStrategyList.Remove(this);
                         //DataGridView gridView = ui_rowItem.DataGridView;
                         //gridView.Rows.Remove(ui_rowItem);
-                        Core.CoreEngine.GetInstance().SaveItemLogMessage(itemCode,"ui -> CheckBalanceStrategy 매수주문접수시도");
+                        Core.CoreEngine.GetInstance().SaveItemLogMessage(itemCode,"ui -> bbs 매수주문접수시도");
                      
                         //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                     }
                     else
                     {
-                        Core.CoreEngine.GetInstance().SendLogMessage("bbs 추가주문 요청 실패");
+                        Core.CoreEngine.GetInstance().SaveItemLogMessage(itemCode, "bbs 추가주문 요청 실패");
                     }
                 }
             }

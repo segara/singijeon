@@ -56,6 +56,7 @@ namespace Singijeon
         public int buyingQnt;
         public int sellQnt;
         public int curQnt;
+        public int startSellQnt; //매도 시작시 균등 매도를 위한 보유수량 저장
         public int trailingTickCnt;
         public int outStandingQnt;
 

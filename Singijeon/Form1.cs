@@ -2327,7 +2327,6 @@ namespace Singijeon
         {
             if(e.tradingItem.usingDivideSellProfit)
             {
-                //coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 익절 주문 실행");
                 OnReceiveTrDataCheckProfitSell(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellProfitPercentage);
                 e.tradingItem.usingDivideSellProfit = false;
 
@@ -2404,13 +2403,8 @@ namespace Singijeon
 
             item.SetSellOrderType(true);
 
-            coreEngine.SaveItemLogMessage(item.itemCode,
-               item.itemName + "order 종목익절매도 " + 
-                " 수량: " + item.curQnt+
-                " 주문가: "+item.curPrice+
-                " 주문구분: " +item.sellOrderType
-            );
-            int orderQnt = (int)((double)item.curQnt * sellPercentage);
+            
+            int orderQnt = (int)((double)item.startSellQnt * sellPercentage);
             int orderResult = axKHOpenAPI1.SendOrder(
                 "종목익절매도",
                 GetScreenNum().ToString(),
@@ -2435,7 +2429,12 @@ namespace Singijeon
             {
                 coreEngine.SaveItemLogMessage(item.itemCode, "자동 익절 요청 실패");
             }
-           
+            coreEngine.SaveItemLogMessage(item.itemCode,
+                item.itemName + "order 종목익절매도 " +
+                 " 주문 수량: " + orderQnt +
+                 " 주문가: " + item.curPrice +
+                 " 주문구분: " + item.sellOrderType
+             );
         }
         public void OnReceiveTrDataCheckStopLoss(object sender, OnReceivedTrEventArgs e)
         {
@@ -2522,14 +2521,7 @@ namespace Singijeon
               
             item.SetSellOrderType(false);
 
-            coreEngine.SaveItemLogMessage(item.itemCode,
-               item.itemName + "order 종목손절매도 " +
-               " 수량: " + item.curQnt +
-               " 주문가: " + item.curPrice +
-               " 주문구분: " + item.sellOrderType
-            );
-
-            int orderQnt = (int)((double)item.curQnt * sellPercentage);
+            int orderQnt = (int)((double)item.startSellQnt * sellPercentage);
             int orderResult = axKHOpenAPI1.SendOrder(
                 "종목손절매도",
                 GetScreenNum().ToString(),
@@ -2554,6 +2546,13 @@ namespace Singijeon
             {
                 coreEngine.SaveItemLogMessage(item.itemCode, "자동 손절 요청 실패");
             }
+
+            coreEngine.SaveItemLogMessage(item.itemCode,
+              item.itemName + "order 종목손절매도 " +
+              " 수량: " + orderQnt +
+              " 주문가: " + item.curPrice +
+              " 주문구분: " + item.sellOrderType
+           );
         }
         private void API_OnReceiveTrDataHoga(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
@@ -2946,11 +2945,12 @@ namespace Singijeon
                 return;
 
             coreEngine.SaveItemLogMessage(item.itemCode,
-                item.itemName + "order 추가매수 "
+                item.itemName + "OnReceiveTrDataBuyMore 추가매수 "
             );
 
             int buyQnt = Math.Abs((int)(tsItem.BuyMoney / item.curPrice));
             int curPrice = Math.Abs((int)item.curPrice);
+
             BalanceBuy(account, item.itemCode, curPrice, buyQnt, item.buyOrderType, checkValue);
 
             //int orderResult = axKHOpenAPI1.SendOrder(
@@ -3229,6 +3229,7 @@ namespace Singijeon
                     coreEngine.SendLogWarningMessage("trading uid : " + tradeItem.Uid);
                     tradeItem.buyingPrice = priceUpdate;
                     tradeItem.curQnt = allQnt;
+                    tradeItem.startSellQnt = tradeItem.curQnt;
                 }
                 else
                 {
@@ -3248,7 +3249,7 @@ namespace Singijeon
 
                     int curLastQnt = tradeItem.curQnt;
                     tradeItem.curQnt += addQnt;
-
+                    tradeItem.startSellQnt = tradeItem.curQnt;
                     //long PriceAverage = (long)((float)((curLastQnt * tradeItem.buyingPrice) + (priceUpdate * addQnt)) / tradeItem.curQnt);
                     //coreEngine.SaveItemLogMessage(tradeItem.itemCode, "평단가 : " + PriceAverage);
                     //tradeItem.buyingPrice = PriceAverage;
