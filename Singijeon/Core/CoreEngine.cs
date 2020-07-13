@@ -144,7 +144,6 @@ namespace Singijeon.Core
             OnReceivedUserInfo?.Invoke(this, new OnReceivedUserInfoEventArgs(userInfo));
         }
 
-
         public  void axKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
         {
             if (e.sRQName.Contains(ConstName.RECEIVE_TR_DATA_HOGA))

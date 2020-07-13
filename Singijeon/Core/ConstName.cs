@@ -23,6 +23,7 @@ namespace Singijeon
         public const string RECEIVE_TR_DATA_KOSPI_MINUTE_CHART = "코스피분차트조회";
         public const string RECEIVE_TR_DATA_MINUTE_CHART = "분차트조회";
         public const string RECEIVE_TR_DATA_BUY_INFO = "매수종목정보요청";
+        public const string RECEIVE_TR_DATA_FOR_BUY_MORE = "매수종목정보요청";
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO = "계좌평가현황요청";
         public const string RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2 = "계좌평가현황요청2";
         public const string RECEIVE_TR_DATA_REALTIME_NOT_CONCLUSION = "실시간미체결요청";
