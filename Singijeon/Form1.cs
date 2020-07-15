@@ -2264,7 +2264,7 @@ namespace Singijeon
                             MessageBox.Show("매수가능 갯수 초과");
                             return;
                         }
-                         
+
                         TrailingItem trailingItem = trailingList.Find(o => o.itemCode.Contains(itemCode));
 
                         if (CheckCanBuyItem(itemCode) && trailingItem == null)
