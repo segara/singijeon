@@ -2263,7 +2263,7 @@ namespace Singijeon
                             return;
                         }
 
-                        TrailingItem trailingItem = trailingList.Find(o => o.itemCode.Contains(itemCode));
+                        TrailingItem trailingItem = trailingList.Find(o => (o.itemCode.Contains(itemCode) && o.strategy.buyCondition.Name == ts.buyCondition.Name));
 
                         if (CheckCanBuyItem(itemCode) && trailingItem == null)
                         {
