@@ -1521,9 +1521,9 @@ namespace Singijeon
             coreEngine.SendLogMessage("e.ColumnIndex : " + e.ColumnIndex + " e.RowIndex : " + e.RowIndex);
             if (e.RowIndex < 0)
                 return;
-            if (accountBalanceDataGrid.Columns["계좌잔고_종목코드"].Index == e.ColumnIndex)
+            if (autoTradingDataGrid.Columns["매매진행_종목코드"].Index == e.ColumnIndex)
             {
-                string itemCode = accountBalanceDataGrid["계좌잔고_종목코드", e.RowIndex].Value.ToString().Replace("A", "");
+                string itemCode = autoTradingDataGrid["매매진행_종목코드", e.RowIndex].Value.ToString().Replace("A", "");
                 Form3 chartForm = new Form3(axKHOpenAPI1);
 
                 chartForm.RequestItem(itemCode, delegate (string _itemCode)
@@ -2245,8 +2245,6 @@ namespace Singijeon
             StockItem stockItem = stockItemList.Find(o => o.Name.Equals(itemName));
             string itemCode = stockItem.Code;
             string conditionName = ForceAddStrategyTextBox.Text;
-
-
 
             if (stockItem != null && string.IsNullOrEmpty(conditionName) == false)
             {
@@ -3845,5 +3843,12 @@ namespace Singijeon
             }
             return false;
         }
+
+        private void dummyStrategyAddBtnClick(object sender, EventArgs e)
+        {
+
+        }
+
+       
     }
 }
