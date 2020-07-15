@@ -233,7 +233,6 @@ namespace Singijeon
                 BuyConditionComboBox.Items.Add(condition.Name);
                 M_BuyConditionComboBox.Items.Add(condition.Name);
                 BuyConditionDoubleComboBox.Items.Add(condition.Name);
-
             }
         }
 
@@ -994,6 +993,8 @@ namespace Singijeon
                         }
                         else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_DATA_BUY))
                         {
+                            if (string.IsNullOrEmpty(currentAccount))
+                                return;
                             coreEngine.SaveItemLogMessage(itemCode, " 물타기 스텝 : 주문완료"); //내가 수동으로 사든 프로그램이 사든 물타기로 취급
                             bool findItem = false;
                             foreach (TradingStrategy ts in tradingStrategyList)
@@ -1255,7 +1256,7 @@ namespace Singijeon
                     }
                 }
 
-                if (!hasItem_accountBalanceDataGrid && int.Parse(balanceQnt) > 0)
+                if (!string.IsNullOrEmpty(currentAccount) && !hasItem_accountBalanceDataGrid && int.Parse(balanceQnt) > 0)
                 {
                     int rowIndex = accountBalanceDataGrid.Rows.Add();
                     if (balanceItemList.Find(o => (o.itemCode == itemCode)) == null)
@@ -1268,7 +1269,10 @@ namespace Singijeon
                     int profitAmount = (int.Parse(price) - int.Parse(buyingPrice)) * int.Parse(balanceQnt);
                     Hashtable uiTable = new Hashtable { { "계좌잔고_종목코드", itemCode }, { "계좌잔고_종목명", itemName }, { "계좌잔고_보유수량", balanceQnt }, { "계좌잔고_평균단가", buyingPrice }, { "계좌잔고_손익률", profitRate }, { "계좌잔고_현재가", price }, { "계좌잔고_매입금액", totalBuyingPrice }, { "계좌잔고_평가금액", evaluationAmount }, { "계좌잔고_손익금액", profitAmount } };
                     Update_AccountBalanceDataGrid_UI(uiTable, rowIndex);
-                 }
+
+                    string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명
+                    axKHOpenAPI1.SetRealReg("9001", itemCode+";", fidList, "1");
+                }
             }
         }
 
@@ -1840,6 +1844,10 @@ namespace Singijeon
         }
         private void AddStratgyBtn_Click(object sender, EventArgs e)
         {
+            AddStrategy();
+        }
+        private void AddStrategy()
+        {
             string account = accountComboBox.Text;
 
             if (account.Length == 0)
@@ -1919,7 +1927,7 @@ namespace Singijeon
             itemCount = (int)itemCountUpdown.Value;
 
             List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
-         
+
 
             bool usingBuyRestart = loopBuyCheck.Checked;
 
@@ -1942,7 +1950,7 @@ namespace Singijeon
             if (usingTimeCheck)
             {
                 DateTime startDate =
-                    new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, startTimePicker.Value.Hour, startTimePicker.Value.Minute,0) ;
+                    new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, startTimePicker.Value.Hour, startTimePicker.Value.Minute, 0);
                 DateTime endDate =
                     new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, endTimePicker.Value.Hour, endTimePicker.Value.Minute, 0);
                 TradingStrategyItemBuyTimeCheck timeBuyCheck =
@@ -2020,7 +2028,7 @@ namespace Singijeon
                 ts.percentageBuyValue = tickValue;
             }
 
-            if(useVwmaCheckBox.Checked)
+            if (useVwmaCheckBox.Checked)
             {
                 ts.usingVwma = useVwmaCheckBox.Checked;
                 ts.usingTrailing = true;
@@ -2175,10 +2183,10 @@ namespace Singijeon
 
                 buyMoreStrategy.OnReceivedTrData += this.OnReceiveTrDataBuyMore;
                 ts.AddTradingStrategyItemList(buyMoreStrategy);
-             
+
             }
 
-            bool usingBuyCancleByTime = buyCancelTimeCheckBox.Checked; 
+            bool usingBuyCancleByTime = buyCancelTimeCheckBox.Checked;
 
             if (usingBuyCancleByTime)
             {
@@ -2201,16 +2209,16 @@ namespace Singijeon
 
             StartMonitoring(ts.buyCondition);
 
-            if(usingDoubleCheck)
+            if (usingDoubleCheck)
             {
                 StartMonitoring(ts.doubleCheckCondition);
-                doubleCheckHashTable.Add(ts.doubleCheckCondition.Name ,ts);
+                doubleCheckHashTable.Add(ts.doubleCheckCondition.Name, ts);
             }
 
             SaveSetting(conditionName);
             coreEngine.SendLogMessage("전략이 입력됬습니다 \n 매수조건식 : " + ts.buyCondition.Name + "\n" + " 총투자금 : " + ts.totalInvestment + "\n" + " 종목수 : " + ts.buyItemCount);
-        }
 
+        }
         private void AccountDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             if (accountBalanceDataGrid.SelectedRows.Count > 0)
@@ -2312,8 +2320,6 @@ namespace Singijeon
                 }
             });
             Core.CoreEngine.GetInstance().requestTrDataManager.RequestTrData(requestItemInfoTask);
-
-          
         }
         public void StopMonitoring(Condition _condition)
         {
@@ -2483,7 +2489,6 @@ namespace Singijeon
                 }
             }
         }
-
         public void OnReceiveTrDataCheckStopLoss(TradingItem item, double checkValue, double sellPercentage = 1, bool StopLossDivide = false)
         {
             if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE)
@@ -3846,9 +3851,16 @@ namespace Singijeon
 
         private void dummyStrategyAddBtnClick(object sender, EventArgs e)
         {
+            string conditionName = BuyConditionComboBox.Text;
+            if (string.IsNullOrEmpty(conditionName))
+                return;
 
-        }
-
+            Condition add_condition = new Condition(-1, conditionName + GetScreenNum().ToString());
        
+            BuyConditionComboBox.Items.Add(add_condition.Name);
+            M_BuyConditionComboBox.Items.Add(add_condition.Name);
+            BuyConditionDoubleComboBox.Items.Add(add_condition.Name);
+            listCondition.Add(add_condition);
+        }
     }
 }
