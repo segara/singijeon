@@ -2326,6 +2326,7 @@ namespace Singijeon
             axKHOpenAPI1.SendConditionStop(_condition.ScreenNum, _condition.Name, _condition.Index);
            
         }
+
         public static int GetScreenNum()
         {
             screenNum++;
@@ -2334,6 +2335,12 @@ namespace Singijeon
                 screenNum = 1000;
 
             return screenNum;
+        }
+
+        public static int GetRandom()
+        {
+            var rand = new Random();
+            return rand.Next(100, 999);
         }
 
         public static double GetProfitRate(double curPrice, double buyPrice)
@@ -3855,12 +3862,30 @@ namespace Singijeon
             if (string.IsNullOrEmpty(conditionName))
                 return;
 
-            Condition add_condition = new Condition(-1, conditionName + GetScreenNum().ToString());
+            Condition add_condition = new Condition(-1, conditionName +"_dummy_"+ GetRandom().ToString());
        
             BuyConditionComboBox.Items.Add(add_condition.Name);
             M_BuyConditionComboBox.Items.Add(add_condition.Name);
             BuyConditionDoubleComboBox.Items.Add(add_condition.Name);
             listCondition.Add(add_condition);
+        }
+
+        private void openSettingFile_Click(object sender, EventArgs e)
+        {
+            DialogResult result = openFileDialog1.ShowDialog();
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = openFileDialog1.SafeFileName;
+                try
+                {
+
+                    LoadSettingRead(file);
+                }
+                catch (IOException)
+                {
+                }
+            }
+            Console.WriteLine(result); // <-- For debugging use.
         }
     }
 }

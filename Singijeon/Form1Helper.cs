@@ -539,12 +539,12 @@ namespace Singijeon
 
             DivideSellCountUpDown.Value = 100;
         }
-        public void LoadSetting(string settingCondition)
+        public void LoadSettingRead(string settingCondition)
         {
             ClearSetting();
             try
             {
-                using (StreamReader streamReader = new StreamReader(settingCondition + ".txt"))
+                using (StreamReader streamReader = new StreamReader(settingCondition))
                 {
 
                     while (streamReader.EndOfStream == false)
@@ -721,6 +721,10 @@ namespace Singijeon
             {
                 Console.WriteLine(e);
             }
+        }
+        public void LoadSetting(string settingCondition)
+        {
+            LoadSettingRead(settingCondition + ".txt");
         }
     }
 }
