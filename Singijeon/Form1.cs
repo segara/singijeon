@@ -995,8 +995,11 @@ namespace Singijeon
                         {
                             if (string.IsNullOrEmpty(currentAccount))
                                 return;
+
                             coreEngine.SaveItemLogMessage(itemCode, " 물타기 스텝 : 주문완료"); //내가 수동으로 사든 프로그램이 사든 물타기로 취급
+
                             bool findItem = false;
+
                             foreach (TradingStrategy ts in tradingStrategyList)
                             {
                                 List<TradingItem> itemArray = ts.tradingItemList.FindAll(o => o.itemCode.Equals(itemCode));
@@ -1017,6 +1020,22 @@ namespace Singijeon
                                         }
                                     }
                                 }
+                            }
+                            List<BalanceStrategy> bsList = balanceStrategyList.FindAll(o => (o.itemCode.Equals(itemCode) && o.type == BalanceStrategy.BALANCE_STRATEGY_TYPE.BUY));
+                            if (blockingCheckBox.Checked && bsList == null && findItem == false)
+                            {
+                                coreEngine.SendLogWarningMessage("즉시 취소");
+                                coreEngine.SaveItemLogMessage(itemCode, "즉시 취소");
+                                int orderResult = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, 
+                                                                         GetScreenNum().ToString(), 
+                                                                         currentAccount, 
+                                                                         CONST_NUMBER.SEND_ORDER_CANCEL_BUY, 
+                                                                         itemCode,
+                                                                         i_orderQuantity, 
+                                                                         (int)i_orderPrice,
+                                                                         tradingType,
+                                                                         ordernum);
+                                return;
                             }
                         }
                     }
