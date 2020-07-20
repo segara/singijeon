@@ -347,7 +347,8 @@ namespace Singijeon
             form.tradingStrategyList.Add(ts);
             form.AddStrategyToDataGridView(ts);
 
-            form.StartMonitoring(ts.buyCondition);
+            if(ts.buyCondition.Name.Contains("dummy") == false)
+                form.StartMonitoring(ts.buyCondition);
 
             if (saved.usingDoubleCheck)
             {
