@@ -997,7 +997,7 @@ namespace Singijeon
                                 }
                             }
                             List<BalanceStrategy> bsList = balanceStrategyList.FindAll(o => (o.itemCode.Equals(itemCode) && o.type == BalanceStrategy.BALANCE_STRATEGY_TYPE.BUY));
-                            if (blockingCheckBox.Checked && bsList == null && findItem == false)
+                            if (blockingCheckBox.Checked && bsList.Count == 0 && findItem == false)
                             {
                                 coreEngine.SendLogWarningMessage("즉시 취소");
                                 coreEngine.SaveItemLogMessage(itemCode, "즉시 취소");
