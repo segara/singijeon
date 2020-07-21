@@ -10,29 +10,18 @@ namespace Singijeon.Item
     public class BalanceAllSellStrategy
     {
         public bool usingStrategy = false;
-        public bool usingTakeProfit = false; //익절사용여부
-        public bool usingStoploss = false;   //손절사용여부
-        public double takeProfitRate = 0; //익절률
-        public double stoplossRate = 0; //손절률
+        public double takeProfitRate = 0; //익절수량 %
         public string profitOrderOption; //현재가 or 시장가 등
-        public string stoplossOrderOption; //현재가 or 시장가 등
-
+   
         public BalanceAllSellStrategy(
              string _sellProfitOrderOption,
-             string _sellStopLossOrderOption,
-            bool _usingTakeProfit,
-            double _takeProfitRate,
-            bool _usingStoploss,
-            double _stoplossRate
+            double _takeProfitRate
             )
         {
             this.usingStrategy = true;
-            this.usingTakeProfit = _usingTakeProfit;
+            //this.usingTakeProfit = _usingTakeProfit;
             this.takeProfitRate = _takeProfitRate;
             this.profitOrderOption = _sellProfitOrderOption;
-            this.stoplossOrderOption = _sellStopLossOrderOption;
-            this.usingStoploss = _usingStoploss;
-            this.stoplossRate = _stoplossRate;
         }
 
         public void StartStrategy()

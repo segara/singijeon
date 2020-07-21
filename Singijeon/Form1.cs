@@ -714,15 +714,15 @@ namespace Singijeon
 
                     double profitRate = GetProfitRate((double)c_lPrice, (double)item.buyingPrice);
 
-                    if (bssAll.usingTakeProfit && bssAll.takeProfitRate <= profitRate) //익절
+                    //if (bssAll.takeProfitRate <= profitRate) 
                     {
                         int orderResult = axKHOpenAPI1.SendOrder(
-                                          "잔고익절매도",
+                                          ConstName.SEND_ORDER_SELL,
                                           GetScreenNum().ToString(),
                                           account,
                                           CONST_NUMBER.SEND_ORDER_SELL,
                                           itemCode,
-                                          item.balanceQnt,
+                                          item.ㅗ,
                                           bssAll.profitOrderOption == ConstName.ORDER_SIJANGGA ? 0 : (int)c_lPrice,
                                           bssAll.profitOrderOption,
                                           "" //원주문번호없음
@@ -739,32 +739,7 @@ namespace Singijeon
                             coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 잔고 익절 요청 실패");
                         }
                     }
-                    if (bssAll.usingStoploss && bssAll.stoplossRate > profitRate) //손절
-                    {
-                        int orderResult = axKHOpenAPI1.SendOrder(
-                                             "잔고손절매도",
-                                             GetScreenNum().ToString(),
-                                             account,
-                                             CONST_NUMBER.SEND_ORDER_SELL,
-                                             itemCode,
-                                             item.balanceQnt,
-                                             bssAll.stoplossOrderOption == ConstName.ORDER_SIJANGGA ? 0 : (int)c_lPrice,
-                                             bssAll.stoplossOrderOption,
-                                             "" //원주문번호없음
-                                         );
-                        if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
-                        {
-                            coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 손절 매도주문접수시도");
-                            item.bSell = true;
-                       
-                            coreEngine.SendLogMessage("ui -> 매도주문접수시도");
-                            //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
-                        }
-                        else
-                        {
-                            coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 잔고 손절 요청 실패");
-                        }
-                    }
+                    
                 } 
             }
         }
@@ -3638,7 +3613,7 @@ namespace Singijeon
                 {
                     bssAll.StopStrategy();
                     bssAll = null;
-                    balanceSellMonitorBtn.Text = "감시시작";
+                    balanceSellMonitorBtn.Text = "매도시작";
                 }
             }
             else
@@ -3653,22 +3628,14 @@ namespace Singijeon
                     takeProfitRate = (double)start_takeProfitUpdown.Value;
                 }
 
-                bool usingStopLoss = b_StopLossM_CheckBox.Checked; //손절사용
-                double stopLossRate = 0;
-
-                if (usingStopLoss)
-                {
-                    stopLossRate = (double)start_stopLossUpdown.Value;
-                }
-
-                if ((usingStopLoss && stopLossRate == 0 )|| (usingProfitCheckBox && takeProfitRate == 0))
+                if ((usingProfitCheckBox && takeProfitRate == 0))
                 {
                     MessageBox.Show("설정값을 확인해주세요");
                     return;
                 }
 
-                bssAll = new BalanceAllSellStrategy(orderType, orderType, usingProfitCheckBox, takeProfitRate, usingStopLoss, stopLossRate);
-                balanceSellMonitorBtn.Text = "감시중";
+                bssAll = new BalanceAllSellStrategy(orderType, usingProfitCheckBox, takeProfitRate);
+                balanceSellMonitorBtn.Text = "매도중";
             }
         }
 

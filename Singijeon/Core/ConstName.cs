@@ -18,6 +18,7 @@ namespace Singijeon
         public const string RECEIVE_REAL_CONDITION_DELETE = "D";
         public const string SEND_ORDER_ALL_SELL = "청산매도주문";
         public const string SEND_ORDER_BUY = "편입종목매수";
+        public const string SEND_ORDER_SELL = "편입종목매도";
         public const string RECEIVE_TR_DATA_HOGA = "주식호가요청";
         public const string RECEIVE_TR_DATA_TICK_CHART = "틱차트조회";
         public const string RECEIVE_TR_DATA_KOSPI_MINUTE_CHART = "코스피분차트조회";
