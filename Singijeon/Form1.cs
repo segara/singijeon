@@ -716,7 +716,7 @@ namespace Singijeon
                         continue;
                     if (!item.bSell)
                         continue;
-                    double profitRate   = GetProfitRate((double)c_lPrice, (double)item.buyingPrice);
+                    double profitRate = GetProfitRate((double)c_lPrice, (double)item.buyingPrice);
                     int sellQnt = GetBssSellQnt(c_lPrice);
 
                     int orderResult = axKHOpenAPI1.SendOrder(
@@ -735,14 +735,13 @@ namespace Singijeon
                         coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 익절 매도주문접수시도");
                         coreEngine.SendLogMessage("ui -> 매도주문접수시도");
                         item.bSell = false;
+                        BssAllGridViewUpdate(itemCode, item.balanceQnt, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                         //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                     }
                     else
                     {
                         coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 잔고 익절 요청 실패");
                     }
-
-
                 } 
             }
         }
@@ -1421,11 +1420,47 @@ namespace Singijeon
                     }
                 }
             }
-
             //bssall
-
         }
 
+        private void CheckBSS_AllSell(string ordernum, string conclusionPrice)
+        {
+            //보유잔고 매도
+            BalanceSellStrategy bss = GetTryingSellListByOrder(ordernum);
+            if (bss != null)
+            {
+                RefreshBSS_Complete(bss.itemCode, bss.orderNum, bss.sellQnt.ToString());
+                bss.bUseStrategy = false;
+
+                BalanceItem item = balanceItemList.Find(o => (o.itemCode == bss.itemCode));
+                if (item == null)
+                {
+                    coreEngine.SendLogErrorMessage("wrong idx : " + bss.itemCode);
+                    return;
+                }
+
+                int iQnt = item.balanceQnt;
+                item.balanceQnt = iQnt - (int)bss.sellQnt;
+
+                if (item.balanceQnt < 0)
+                    coreEngine.SendLogErrorMessage("count wrong");
+
+                foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
+                {
+                    if (row.Cells["계좌잔고_종목코드"].Value != null && row.Cells["계좌잔고_종목코드"].Value.ToString().Replace("A", "").Contains(bss.itemCode))
+                    {
+                        if (item.balanceQnt > 0)
+                        {
+                            row.Cells["계좌잔고_보유수량"].Value = item.balanceQnt;
+                        }
+                        else
+                        {
+                            accountBalanceDataGrid.Rows.Remove(row);
+                        }
+                    }
+                }
+            }
+        }
         private void API_OnReceiveTrCondition(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrConditionEvent e)
         {
 
@@ -3636,8 +3671,25 @@ namespace Singijeon
                 {
                     continue;
                 }
-                bssAllGridView.Rows.Add(axKHOpenAPI1.GetMasterCodeName(item.itemCode));
+
+                int rowIndex =  bssAllGridView.Rows.Add(axKHOpenAPI1.GetMasterCodeName(item.itemCode));
+
+                DataGridViewRow new_row = bssAllGridView.Rows[rowIndex];
+                new_row.Cells["bssAll_상태"].Value = "준비";
+                new_row.Cells["bssAll_수량"].Value = item.balanceQnt;
                 balanceSelectedItemList.Add(item);
+            }
+        }
+
+        private void BssAllGridViewUpdate(string itemCode, int qnt, string state)
+        {
+            for(int i = 0; i < bssAllGridView.Rows.Count;++i)
+            {
+                if(bssAllGridView.Rows[i].Cells["bssAll_종목명"].Value.ToString() == axKHOpenAPI1.GetMasterCodeName(itemCode))
+                {
+                    bssAllGridView.Rows[i].Cells["bssAll_상태"].Value = state;
+                    bssAllGridView.Rows[i].Cells["bssAll_수량"].Value = qnt;
+                }
             }
         }
 
