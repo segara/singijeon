@@ -3626,7 +3626,7 @@ namespace Singijeon
 
         private void bssItemLoadBtn_Click(object sender, EventArgs e)
         {
-            bssAllListBox.Items.Clear();
+            bssAllGridView.Rows.Clear();
             balanceSelectedItemList.Clear();
             foreach (var item in balanceItemList)
             {
@@ -3636,22 +3636,24 @@ namespace Singijeon
                 {
                     continue;
                 }
-                bssAllListBox.Items.Add(axKHOpenAPI1.GetMasterCodeName(item.itemCode));
+                bssAllGridView.Rows.Add(axKHOpenAPI1.GetMasterCodeName(item.itemCode));
                 balanceSelectedItemList.Add(item);
             }
         }
 
         private void deleteBssList_Click(object sender, EventArgs e)
         {
-            if (bssAllListBox.SelectedItem != null)
+            if (bssAllGridView.SelectedRows != null)
             {
-                string selectItem = bssAllListBox.SelectedItem.ToString();
-
-                BalanceItem item = balanceSelectedItemList.Find(o => (o.itemName == selectItem));
-                if(item!=null)
+                foreach(var itemRow in bssAllGridView.SelectedRows)
                 {
-                    balanceSelectedItemList.Remove(item);
-                    bssAllListBox.Items.Remove(bssAllListBox.SelectedItem);
+                    
+                    BalanceItem item = balanceSelectedItemList.Find(o => (o.itemName == ((DataGridViewRow)itemRow).Cells["bssAll_종목명"].Value.ToString()));
+                    if (item != null)
+                    {
+                        balanceSelectedItemList.Remove(item);
+                        bssAllGridView.Rows.Remove((DataGridViewRow)itemRow);
+                    }
                 }
             }
         }
