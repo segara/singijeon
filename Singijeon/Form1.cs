@@ -694,7 +694,18 @@ namespace Singijeon
                 }        
             }
         }
-
+        private int GetBssSellQnt(long c_lPrice)
+        {
+            if(c_lPrice < 10000)
+            {
+                return 10000 / (int)c_lPrice;
+            }
+            else
+            {
+                return 1;
+            }
+            return 1;
+        }
         private void CheckBSSAll (string itemCode, long c_lPrice)
         {
             if(bssAll != null && bssAll.usingStrategy)
@@ -703,43 +714,35 @@ namespace Singijeon
                 {
                     if (item.itemCode.Contains(itemCode.Replace("A","")) == false)
                         continue;
-
-                    if (item.bSell)
+                    if (!item.bSell)
                         continue;
+                    double profitRate   = GetProfitRate((double)c_lPrice, (double)item.buyingPrice);
+                    int sellQnt = GetBssSellQnt(c_lPrice);
 
-                    List<TradingItem> tradeItemListAll = GetAllTradingItemData(itemCode);
-
-                    if(tradeItemListAll.Count > 0)
-                        continue;
-
-                    double profitRate = GetProfitRate((double)c_lPrice, (double)item.buyingPrice);
-
-                    //if (bssAll.takeProfitRate <= profitRate) 
+                    int orderResult = axKHOpenAPI1.SendOrder(
+                                      ConstName.SEND_ORDER_SELL,
+                                      GetScreenNum().ToString(),
+                                      account,
+                                      CONST_NUMBER.SEND_ORDER_SELL,
+                                      itemCode,
+                                      sellQnt,
+                                      bssAll.profitOrderOption == ConstName.ORDER_SIJANGGA ? 0 : (int)c_lPrice,
+                                      bssAll.profitOrderOption,
+                                      "" //원주문번호없음
+                                  );
+                    if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
                     {
-                        //int orderResult = axKHOpenAPI1.SendOrder(
-                        //                  ConstName.SEND_ORDER_SELL,
-                        //                  GetScreenNum().ToString(),
-                        //                  account,
-                        //                  CONST_NUMBER.SEND_ORDER_SELL,
-                        //                  itemCode,
-                        //                  item.ㅗ,
-                        //                  bssAll.profitOrderOption == ConstName.ORDER_SIJANGGA ? 0 : (int)c_lPrice,
-                        //                  bssAll.profitOrderOption,
-                        //                  "" //원주문번호없음
-                        //              );
-                        //if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
-                        //{
-                        //    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 익절 매도주문접수시도");
-                        //    item.bSell = true;         
-                        //    coreEngine.SendLogMessage("ui -> 매도주문접수시도");
-                        //    //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
-                        //}
-                        //else
-                        //{
-                        //    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 잔고 익절 요청 실패");
-                        //}
+                        coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 익절 매도주문접수시도");
+                        coreEngine.SendLogMessage("ui -> 매도주문접수시도");
+                        item.bSell = false;
+                        //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                     }
-                    
+                    else
+                    {
+                        coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 잔고 익절 요청 실패");
+                    }
+
+
                 } 
             }
         }
@@ -1301,6 +1304,12 @@ namespace Singijeon
                     }
                 }
             }
+
+            BalanceItem item = balanceSelectedItemList.Find(o => (o.itemName == itemCode));
+            if(item!=null)
+            {
+                item.orderNum = ordernum;
+            }
         }
 
         private void RefreshBBS(string itemCode, string ordernum, string orderQuantity)
@@ -1411,20 +1420,10 @@ namespace Singijeon
                         }
                     }
                 }
-                
-                //foreach (DataGridViewRow row in BssDataGridView.Rows)
-                //{
-                //    if (row.Cells["bss_종목코드"].Value != null
-                //        && row.Cells["bss_종목코드"].Value.ToString().Contains(bss.itemCode)
-                //        && row.Cells["bss_매도량"].Value != null
-                //        && row.Cells["bss_매도량"].Value.ToString().Equals(bss.sellQnt.ToString())
-                //        )
-                //    {
-                //        BssDataGridView.Rows.Remove(row);
-                //        break;
-                //    }
-                //}
             }
+
+            //bssall
+
         }
 
         private void API_OnReceiveTrCondition(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrConditionEvent e)
@@ -3620,21 +3619,7 @@ namespace Singijeon
             {
                 string orderType = (bssM_JijungRadio.Checked) ? ConstName.ORDER_JIJUNGGA : ConstName.ORDER_SIJANGGA;
 
-                bool usingProfitCheckBox = b_ProfitM_SellCheckBox.Checked; //익절사용
-                double takeProfitRate = 0;
-
-                if (usingProfitCheckBox)
-                {
-                    takeProfitRate = (double)start_takeProfitUpdown.Value;
-                }
-
-                if ((usingProfitCheckBox && takeProfitRate == 0))
-                {
-                    MessageBox.Show("설정값을 확인해주세요");
-                    return;
-                }
-
-                bssAll = new BalanceAllSellStrategy(orderType, takeProfitRate);
+                bssAll = new BalanceAllSellStrategy(orderType);
                 balanceSellMonitorBtn.Text = "매도중";
             }
         }

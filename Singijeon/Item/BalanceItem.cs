@@ -11,10 +11,11 @@ namespace Singijeon.Item
     {
         public string itemCode;
         public string itemName;
-        public bool bSell = false;
+        public bool bSell = true;
         public int buyingPrice;
         public int curPrice;
         public int balanceQnt;
+        public string orderNum = string.Empty;
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
         public BalanceItem(string _itemCode, string _itemName, int _buyingPrice, int _balanceQnt, DataGridViewRow ui_item)
@@ -23,7 +24,7 @@ namespace Singijeon.Item
             this.itemName = _itemName;
             this.buyingPrice = _buyingPrice;
             this.balanceQnt = _balanceQnt;
-            this.bSell = false;
+            this.bSell = true;
             this.ui_rowItem = ui_item;
         }
     }
