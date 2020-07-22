@@ -716,28 +716,28 @@ namespace Singijeon
 
                     //if (bssAll.takeProfitRate <= profitRate) 
                     {
-                        int orderResult = axKHOpenAPI1.SendOrder(
-                                          ConstName.SEND_ORDER_SELL,
-                                          GetScreenNum().ToString(),
-                                          account,
-                                          CONST_NUMBER.SEND_ORDER_SELL,
-                                          itemCode,
-                                          item.ㅗ,
-                                          bssAll.profitOrderOption == ConstName.ORDER_SIJANGGA ? 0 : (int)c_lPrice,
-                                          bssAll.profitOrderOption,
-                                          "" //원주문번호없음
-                                      );
-                        if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
-                        {
-                            coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 익절 매도주문접수시도");
-                            item.bSell = true;         
-                            coreEngine.SendLogMessage("ui -> 매도주문접수시도");
-                            //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
-                        }
-                        else
-                        {
-                            coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 잔고 익절 요청 실패");
-                        }
+                        //int orderResult = axKHOpenAPI1.SendOrder(
+                        //                  ConstName.SEND_ORDER_SELL,
+                        //                  GetScreenNum().ToString(),
+                        //                  account,
+                        //                  CONST_NUMBER.SEND_ORDER_SELL,
+                        //                  itemCode,
+                        //                  item.ㅗ,
+                        //                  bssAll.profitOrderOption == ConstName.ORDER_SIJANGGA ? 0 : (int)c_lPrice,
+                        //                  bssAll.profitOrderOption,
+                        //                  "" //원주문번호없음
+                        //              );
+                        //if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
+                        //{
+                        //    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 익절 매도주문접수시도");
+                        //    item.bSell = true;         
+                        //    coreEngine.SendLogMessage("ui -> 매도주문접수시도");
+                        //    //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
+                        //}
+                        //else
+                        //{
+                        //    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 잔고 익절 요청 실패");
+                        //}
                     }
                     
                 } 
@@ -3634,7 +3634,7 @@ namespace Singijeon
                     return;
                 }
 
-                bssAll = new BalanceAllSellStrategy(orderType, usingProfitCheckBox, takeProfitRate);
+                bssAll = new BalanceAllSellStrategy(orderType, takeProfitRate);
                 balanceSellMonitorBtn.Text = "매도중";
             }
         }
