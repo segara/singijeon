@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\KospiInfo.cs" />
+    <Compile Include="Core\ObjectCopier.cs" />
     <Compile Include="Core\RequestTrDataLoopManager.cs" />
     <Compile Include="Core\Timer.cs" />
     <Compile Include="Favorite\FavoriteBuyMgr.cs" />

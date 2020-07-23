@@ -735,8 +735,8 @@ namespace Singijeon
                         coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemCode) + " bss 익절 매도주문접수시도");
                         coreEngine.SendLogMessage("ui -> 매도주문접수시도");
                         item.bSell = false;
-                        BssAllGridViewUpdate(itemCode, item.balanceQnt, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
-                        //UpdateAutoTradingDataGridRowSellStrategy(itemCode, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
+                        
+                        BssAllGridViewUpdate(itemCode, item.balanceQnt, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER, item.ui_rowItem);
                     }
                     else
                     {
@@ -935,6 +935,7 @@ namespace Singijeon
 
                         //보유 아이템 매매인지
                         RefreshBSS(itemCode, ordernum, orderQuantity);
+                        RefreshBSSAll(itemCode, ordernum, orderQuantity);
                         RefreshBBS(itemCode, ordernum, orderQuantity);
                         RefreshSettlement(itemCode, ordernum, orderQuantity);
 
@@ -1067,6 +1068,7 @@ namespace Singijeon
                             //printForm2.AddProfit((int.Parse(conclusionPrice) - i_averagePrice) * i_unitConclusionQuantity);
 
                             CheckBSS_Sell(ordernum, conclusionPrice); //bss 체크
+                            CheckBSS_AllSell(ordernum, conclusionPrice, int.Parse(outstanding), i_ConclusionQuantity); //bss all 체크
                             CheckSettle_Sell(ordernum); //청산 체크
                             //CheckBS_Finish(itemCode, false, i_ConclusionQuantity, ordernum);
                         }
@@ -1303,14 +1305,16 @@ namespace Singijeon
                     }
                 }
             }
-
-            BalanceItem item = balanceSelectedItemList.Find(o => (o.itemName == itemCode));
-            if(item!=null)
+        }
+        private void RefreshBSSAll(string itemCode, string ordernum, string orderQuantity)
+        {
+            BalanceItem item = balanceSelectedItemList.Find(o => (o.itemCode == itemCode));
+            if (item != null)
             {
                 item.orderNum = ordernum;
+                BssAllGridViewUpdate(item.itemCode, item.balanceQnt, ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE, item.ui_rowItem);
             }
         }
-
         private void RefreshBBS(string itemCode, string ordernum, string orderQuantity)
         {
             List<BalanceBuyStrategy> bbsList = GetTryingBuyList(itemCode);
@@ -1420,46 +1424,30 @@ namespace Singijeon
                     }
                 }
             }
-            //bssall
         }
 
-        private void CheckBSS_AllSell(string ordernum, string conclusionPrice)
+        private void CheckBSS_AllSell(string ordernum, string conclusionPrice, int outstanding, int unitConclusionQnt)
         {
-            //보유잔고 매도
-            BalanceSellStrategy bss = GetTryingSellListByOrder(ordernum);
-            if (bss != null)
-            {
-                RefreshBSS_Complete(bss.itemCode, bss.orderNum, bss.sellQnt.ToString());
-                bss.bUseStrategy = false;
+            if (outstanding > 0)
+                return;
 
-                BalanceItem item = balanceItemList.Find(o => (o.itemCode == bss.itemCode));
+                BalanceItem item = balanceSelectedItemList.Find(o => (o.orderNum == ordernum));
                 if (item == null)
                 {
-                    coreEngine.SendLogErrorMessage("wrong idx : " + bss.itemCode);
                     return;
                 }
 
                 int iQnt = item.balanceQnt;
-                item.balanceQnt = iQnt - (int)bss.sellQnt;
+                item.balanceQnt = iQnt - unitConclusionQnt;
 
                 if (item.balanceQnt < 0)
-                    coreEngine.SendLogErrorMessage("count wrong");
-
-                foreach (DataGridViewRow row in accountBalanceDataGrid.Rows)
                 {
-                    if (row.Cells["계좌잔고_종목코드"].Value != null && row.Cells["계좌잔고_종목코드"].Value.ToString().Replace("A", "").Contains(bss.itemCode))
-                    {
-                        if (item.balanceQnt > 0)
-                        {
-                            row.Cells["계좌잔고_보유수량"].Value = item.balanceQnt;
-                        }
-                        else
-                        {
-                            accountBalanceDataGrid.Rows.Remove(row);
-                        }
-                    }
+                    coreEngine.SendLogErrorMessage("count wrong");
                 }
-            }
+                item.bSell = true;
+                BssAllGridViewUpdate(item.itemCode, item.balanceQnt, ConstName.AUTO_TRADING_STATE_SELL_COMPLETE, item.ui_rowItem);
+                
+            
         }
         private void API_OnReceiveTrCondition(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrConditionEvent e)
         {
@@ -3677,20 +3665,22 @@ namespace Singijeon
                 DataGridViewRow new_row = bssAllGridView.Rows[rowIndex];
                 new_row.Cells["bssAll_상태"].Value = "준비";
                 new_row.Cells["bssAll_수량"].Value = item.balanceQnt;
-                balanceSelectedItemList.Add(item);
+
+                BalanceItem itemClone = (BalanceItem)item.Clone();
+                itemClone.ui_rowItem = new_row;
+                balanceSelectedItemList.Add(itemClone);
             }
         }
 
-        private void BssAllGridViewUpdate(string itemCode, int qnt, string state)
+        private void BssAllGridViewUpdate(string itemCode, int qnt, string state, DataGridViewRow ui_row)
         {
-            for(int i = 0; i < bssAllGridView.Rows.Count;++i)
-            {
-                if(bssAllGridView.Rows[i].Cells["bssAll_종목명"].Value.ToString() == axKHOpenAPI1.GetMasterCodeName(itemCode))
+         
+                if(ui_row.Cells["bssAll_종목명"].Value.ToString() == axKHOpenAPI1.GetMasterCodeName(itemCode))
                 {
-                    bssAllGridView.Rows[i].Cells["bssAll_상태"].Value = state;
-                    bssAllGridView.Rows[i].Cells["bssAll_수량"].Value = qnt;
+                    ui_row.Cells["bssAll_상태"].Value = state;
+                    ui_row.Cells["bssAll_수량"].Value = qnt;
                 }
-            }
+            
         }
 
         private void deleteBssList_Click(object sender, EventArgs e)

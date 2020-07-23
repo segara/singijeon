@@ -7,16 +7,24 @@ using System.Windows.Forms;
 
 namespace Singijeon.Item
 {
-    public class BalanceItem
+
+    public class BalanceItem : ICloneable
     {
+     
         public string itemCode;
+ 
         public string itemName;
+    
         public bool bSell = true;
+
         public int buyingPrice;
+
         public int curPrice;
+
         public int balanceQnt;
+
         public string orderNum = string.Empty;
-        [NonSerialized]
+
         public DataGridViewRow ui_rowItem;
         public BalanceItem(string _itemCode, string _itemName, int _buyingPrice, int _balanceQnt, DataGridViewRow ui_item)
         {
@@ -27,5 +35,11 @@ namespace Singijeon.Item
             this.bSell = true;
             this.ui_rowItem = ui_item;
         }
+
+        public object Clone()
+        {
+            return new BalanceItem(this.itemCode, this.itemName, this.buyingPrice,this.balanceQnt, null);
+        }
+
     }
 }
