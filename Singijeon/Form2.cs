@@ -387,6 +387,30 @@ namespace Singijeon {
             axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_ACCOUNT_INFO_FORM2, "OPW00004", 0, Form1.GetScreenNum().ToString());
 
         }
+
+        private void winLosePecentageUpdown_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateProfitCalculate();
+        }
+        private void LossPercentUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateProfitCalculate();
+        }
+        private void needWinProfitUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateProfitCalculate();
+        }
+        private void UpdateProfitCalculate()
+        {
+            if (winLosePecentageUpdown.Value == 0)
+                return;
+            double profitLossRate = (double)(100 - winLosePecentageUpdown.Value) / (double)winLosePecentageUpdown.Value;
+            winLosePercentageTxt.Text = string.Format("{0:0.00} ", profitLossRate);
+            double minProfitRate = (double)LossPercentUpDown.Value * profitLossRate;
+            ResultWinPointTxt.Text = string.Format("{0:0.00} ", minProfitRate);
+            double resultProfitRate = (double)needWinProfitUpDown.Value + minProfitRate;
+            resultFinalTxt.Text = string.Format("{0:0.00} ", resultProfitRate);
+        }
     }
     public enum LOG_TYPE
     {
