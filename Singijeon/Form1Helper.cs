@@ -472,7 +472,7 @@ namespace Singijeon
 
                 streamWriter.WriteLine("divideLossSellLoopCheck" + ";" + divideLossSellLoopCheck.Checked);
                 streamWriter.WriteLine("divideProfitSellLoopCheck" + ";" + divideProfitSellLoopCheck.Checked);
-
+                streamWriter.WriteLine("takeProfitAfterBuyMoreCheck" + ";" + takeProfitAfterBuyMoreCheck.Checked);
                 streamWriter.WriteLine("stopLossAfterBuyMoreCheck" + ";" + stopLossAfterBuyMoreCheck.Checked);
                 streamWriter.WriteLine("DivideSellCountUpDownProfit" + ";" + (int)DivideSellCountUpDownProfit.Value);
                 streamWriter.WriteLine("DivideSellCountUpDown" + ";" + (int)DivideSellCountUpDown.Value);
@@ -503,7 +503,7 @@ namespace Singijeon
             gapTrailTimeUpdown.Value = gapTrailTimeUpdown.Minimum;
             gapTrailCostUpdown.Value = gapTrailCostUpdown.Minimum;
 
-            BuyMorePercentUpdown.Value = BuyMorePercentUpdown.Minimum;
+            BuyMorePercentUpdown.Value = BuyMorePercentUpdown.Maximum;
             BuyMorePercentUpdownProfit.Value = BuyMorePercentUpdownProfit.Minimum;
 
             TimeUseCheck.Checked = false;
@@ -718,6 +718,9 @@ namespace Singijeon
                                 break;
                             case "stopLossAfterBuyMoreCheck":
                                 stopLossAfterBuyMoreCheck.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "takeProfitAfterBuyMoreCheck":
+                                takeProfitAfterBuyMoreCheck.Checked = bool.Parse(strringArray[1]);
                                 break;
                             case "DivideSellCountUpDown":
                                 DivideSellCountUpDown.Value = int.Parse(strringArray[1]);
