@@ -455,8 +455,9 @@ namespace Singijeon
                 streamWriter.WriteLine("BuyConditionDoubleComboBox" + ";" + BuyConditionDoubleComboBox.SelectedItem);
                 streamWriter.WriteLine("TrailingSellCheckBox" + ";" + TrailingSellCheckBox.Checked);
 
-                streamWriter.WriteLine("BuyMoreCheckBox1" + ";" + BuyMoreCheckBox1.Checked);
+                streamWriter.WriteLine("BuyMoreCheckBox1" + ";" + BuyMoreCheckBox.Checked);
                 streamWriter.WriteLine("BuyMorePercentUpdown" + ";" + (double)BuyMorePercentUpdown.Value);
+                streamWriter.WriteLine("BuyMorePercentUpdownProfit" + ";" + (double)BuyMorePercentUpdownProfit.Value);
                 streamWriter.WriteLine("BuyMoreValueUpdown" + ";" + (int)BuyMoreValueUpdown.Value);
 
                 streamWriter.WriteLine("buyCancelTimeCheckBox" + ";" + buyCancelTimeCheckBox.Checked);
@@ -473,7 +474,7 @@ namespace Singijeon
                 streamWriter.WriteLine("divideProfitSellLoopCheck" + ";" + divideProfitSellLoopCheck.Checked);
 
                 streamWriter.WriteLine("stopLossAfterBuyMoreCheck" + ";" + stopLossAfterBuyMoreCheck.Checked);
-
+                streamWriter.WriteLine("DivideSellCountUpDownProfit" + ";" + (int)DivideSellCountUpDownProfit.Value);
                 streamWriter.WriteLine("DivideSellCountUpDown" + ";" + (int)DivideSellCountUpDown.Value);
             }
         }
@@ -502,6 +503,9 @@ namespace Singijeon
             gapTrailTimeUpdown.Value = gapTrailTimeUpdown.Minimum;
             gapTrailCostUpdown.Value = gapTrailCostUpdown.Minimum;
 
+            BuyMorePercentUpdown.Value = BuyMorePercentUpdown.Minimum;
+            BuyMorePercentUpdownProfit.Value = BuyMorePercentUpdownProfit.Minimum;
+
             TimeUseCheck.Checked = false;
             startTimePicker.Value = DateTime.Now;
             endTimePicker.Value = DateTime.Now;
@@ -521,7 +525,7 @@ namespace Singijeon
 
             TrailingSellCheckBox.Checked = false;
 
-            BuyMoreCheckBox1.Checked = false;
+            BuyMoreCheckBox.Checked = false;
             buyCancelTimeCheckBox.Checked = false;
 
             DivideSellLossCheckBox.Checked = false;
@@ -535,9 +539,11 @@ namespace Singijeon
             divideProfitSellLoopCheck.Checked = false;
             divideLossSellLoopCheck.Checked = false;
 
+            takeProfitAfterBuyMoreCheck.Checked = false;
             stopLossAfterBuyMoreCheck.Checked = false;
 
             DivideSellCountUpDown.Value = 100;
+            DivideSellCountUpDownProfit.Value = 100;
         }
         public void LoadSettingRead(string settingCondition)
         {
@@ -672,10 +678,13 @@ namespace Singijeon
                                 TrailingSellCheckBox.Checked = bool.Parse(strringArray[1]);
                                 break;
                             case "BuyMoreCheckBox1":
-                                BuyMoreCheckBox1.Checked = bool.Parse(strringArray[1]);
+                                BuyMoreCheckBox.Checked = bool.Parse(strringArray[1]);
                                 break;
                             case "BuyMorePercentUpdown":
                                 BuyMorePercentUpdown.Value = (decimal)(double.Parse(strringArray[1]));
+                                break;
+                            case "BuyMorePercentUpdownProfit":
+                                BuyMorePercentUpdownProfit.Value = (decimal)(double.Parse(strringArray[1]));
                                 break;
                             case "BuyMoreValueUpdown":
                                 BuyMoreValueUpdown.Value = (decimal)(double.Parse(strringArray[1]));
@@ -712,6 +721,9 @@ namespace Singijeon
                                 break;
                             case "DivideSellCountUpDown":
                                 DivideSellCountUpDown.Value = int.Parse(strringArray[1]);
+                                break;
+                            case "DivideSellCountUpDownProfit":
+                                DivideSellCountUpDownProfit.Value = int.Parse(strringArray[1]);
                                 break;
                         }
                     }

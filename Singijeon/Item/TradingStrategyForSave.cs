@@ -48,7 +48,8 @@ namespace Singijeon
         public DateTime endDate = DateTime.Now;
 
         public bool usingBuyMore = false;
-        public double buyMoreRate = 0;
+        public double buyMoreRateLoss = 0;
+        public double buyMoreRateProfit = 0;
         public int buyMoreMoney = 0;
 
         public bool usingDoubleCheck = false;
@@ -68,10 +69,13 @@ namespace Singijeon
 
         public bool useDivideSellProfitLoop = false;
         public bool useDivideSellLossLoop = false;
+
+        public bool usingTakeProfitAfterBuyMore = false;
         public bool usingStopLossAfterBuyMore = false;
         //복원하면서 재설정하기 때문에 저장하지 않음
         //public List<TradingStrategyADDItem> tradingStrategyItemList = new List<TradingStrategyADDItem>();
         public int divideSellCount = 100;
+        public int divideSellCountProfit = 100;
 
         public TradingStrategyForSave(BalanceSellStrategy strategy)
         {

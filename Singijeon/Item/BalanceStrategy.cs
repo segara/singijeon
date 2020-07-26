@@ -26,10 +26,17 @@ namespace Singijeon.Item
         public long sellQnt;
         public long buyQnt;
         public bool isSold = false;
+        public TradingItem tradingItem;
 
         virtual public void CheckBalanceStrategy(object sender, string itemCode, long c_lPrice, Action func)
         {
 
         }
+
+        public void SetTradingItem(TradingItem _tradingItem)
+        {
+            tradingItem = _tradingItem;
+        }
+
     }
 }

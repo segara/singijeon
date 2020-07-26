@@ -13,7 +13,7 @@ namespace Singijeon
         public bool isBuy = false;
         public string orderOption; //현재가 or 시장가 등
         public DataGridViewRow ui_rowItem;
-
+   
         public BalanceBuyStrategy
         (
             string _account,
@@ -30,7 +30,7 @@ namespace Singijeon
             this.orderOption = _orderOption;
             this.type = BALANCE_STRATEGY_TYPE.BUY;
         }
-
+      
         override public void CheckBalanceStrategy(object sender, string itemCode, long c_lPrice, Action func)
         {
             if (buyingPrice != 0)

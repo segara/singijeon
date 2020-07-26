@@ -56,9 +56,10 @@ namespace Singijeon
         public bool usingDivideSellProfitLoop = false;
         public bool usingDivideSellLoss = false;
         public bool usingDivideSellLossLoop = false;
-
+        public bool usingTakeProfitAfterBuyMore = false;
         public bool usingStopLossAfterBuyMore = false;
         public int divideSellCount = 100;
+        public int divideSellCountProfit = 100;
         public TradingItemForSave()
         {
 

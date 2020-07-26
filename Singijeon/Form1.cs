@@ -673,13 +673,14 @@ namespace Singijeon
 
                     bs.state = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUYMORE_COMPLETE;
                     bs.bUseStrategy = false;
-
-                    List<TradingItem> tradeItemListAll = GetAllTradingItemData(itemCode);
                     
+                    List<TradingItem> tradeItemListAll = GetAllTradingItemData(itemCode);
                     foreach(var item in tradeItemListAll)
                     {
-                        if (item.usingStopLossAfterBuyMore)
+                        if (bs.tradingItem != null && bs.tradingItem == item && item.usingStopLossAfterBuyMore)
                             item.usingStopLossAfterBuyMore = false;
+                        if (bs.tradingItem != null && bs.tradingItem == item && item.usingTakeProfitAfterBuyMore)
+                            item.usingTakeProfitAfterBuyMore = false;
                     }
 
                     BalanceBuyStrategy bbsStrategy = (BalanceBuyStrategy)bs;
@@ -974,6 +975,7 @@ namespace Singijeon
                             if (string.IsNullOrEmpty(currentAccount))
                                 return;
 
+                            coreEngine.SaveLogMessage(" 물타기 스텝 : 주문완료");
                             coreEngine.SaveItemLogMessage(itemCode, " 물타기 스텝 : 주문완료"); //내가 수동으로 사든 프로그램이 사든 물타기로 취급
 
                             bool findItem = false;
@@ -2075,6 +2077,7 @@ namespace Singijeon
             }
 
             bool usingProfitCheckBox = profitSellCheckBox.Checked; //익절사용
+            bool usingTakeProfitAfterBuyMore = takeProfitAfterBuyMoreCheck.Checked;
             bool usingTrailingStopSell = TrailingSellCheckBox.Checked;
 
             if (usingProfitCheckBox && !usingTrailingStopSell)
@@ -2091,9 +2094,10 @@ namespace Singijeon
                 takeProfitStrategy.OnReceivedTrData += this.OnReceiveTrDataCheckProfitSell;
                 ts.AddTradingStrategyItemList(takeProfitStrategy);
                 ts.takeProfitRate = takeProfitRate;
+                ts.usingTakeProfitAfterBuyMore = usingTakeProfitAfterBuyMore;
             }
 
-            if (usingTrailingStopSell && usingProfitCheckBox)
+            if (usingProfitCheckBox && usingTrailingStopSell)
             {
                 double takeProfitRate = 0;
                 TradingStrategyItemWithTrailingStopValue takeProfitStrategy = null;
@@ -2107,7 +2111,7 @@ namespace Singijeon
                 takeProfitStrategy.OnReceivedTrData += this.OnReceiveTrDataCheckProfitSell;
                 ts.AddTradingStrategyItemList(takeProfitStrategy);
                 ts.takeProfitRate = takeProfitRate;
-                //ts.sellProfitOrderOption = ConstName.ORDER_SIJANGGA;
+                ts.usingTakeProfitAfterBuyMore = usingTakeProfitAfterBuyMore;
             }
 
             bool usingStopLoss = minusSellCheckBox.Checked; //손절사용
@@ -2179,27 +2183,44 @@ namespace Singijeon
                 ts.useDivideSellProfitLoop = divideProfitSellLoopCheck.Checked;
                 ts.divideTakeProfitRate = profitRate;
                 ts.divideSellProfitPercentage = (profitSellPercent * 0.01);
+                ts.divideSellCountProfit = (int)DivideSellCountUpDownProfit.Value;
             }
 
-            bool usingBuyMore = BuyMoreCheckBox1.Checked; //물타기
+            bool usingBuyMore = BuyMoreCheckBox.Checked; //물타기
 
             if (usingBuyMore)
             {
                 ts.usingBuyMore = true;
-                ts.buyMoreRate = (double)BuyMorePercentUpdown.Value;
+                //물타기
+                ts.buyMoreRateLoss = (double)BuyMorePercentUpdown.Value;
                 ts.buyMoreMoney = (int)BuyMoreValueUpdown.Value;
                 TradingStrategyItemBuyingDivide buyMoreStrategy =
                     new TradingStrategyItemBuyingDivide(
-                            StrategyItemName.BUY_MORE,
+                            StrategyItemName.BUY_MORE_LOSS,
                             CHECK_TIMING.SELL_TIME,
                             IS_TRUE_OR_FALE_TYPE.DOWN,
-                             ts.buyMoreRate,
+                             ts.buyMoreRateLoss,
                              ts.buyMoreMoney
                              );
 
                 buyMoreStrategy.OnReceivedTrData += this.OnReceiveTrDataBuyMore;
                 ts.AddTradingStrategyItemList(buyMoreStrategy);
 
+                //불타기
+                ts.buyMoreRateProfit = (double)BuyMorePercentUpdownProfit.Value;
+                ts.buyMoreMoney = (int)BuyMoreValueUpdown.Value;
+                TradingStrategyItemBuyingDivide buyMoreStrategyProfit =
+                    new TradingStrategyItemBuyingDivide(
+                            StrategyItemName.BUY_MORE_PROFIT,
+                            CHECK_TIMING.SELL_TIME,
+                            IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
+                             ts.buyMoreRateProfit,
+                             ts.buyMoreMoney
+                             );
+
+               
+                buyMoreStrategyProfit.OnReceivedTrData += this.OnReceiveTrDataBuyMore;
+                ts.AddTradingStrategyItemList(buyMoreStrategyProfit);
             }
 
             bool usingBuyCancleByTime = buyCancelTimeCheckBox.Checked;
@@ -2381,6 +2402,11 @@ namespace Singijeon
                 {
                     e.tradingItem.usingDivideSellProfit = true;
                 }
+                if (e.tradingItem.divideSellCountProfit > 0)
+                {
+                    e.tradingItem.usingDivideSellProfit = true;
+                    coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "남은 분할 익절 주문 횟수 : " + e.tradingItem.divideSellCountProfit);
+                }
             }
         }
         public void OnReceiveTrDataCheckProfitSell(TradingItem item, double checkValue, double sellPercentage = 1)
@@ -2448,9 +2474,22 @@ namespace Singijeon
             if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 return;
 
+            if (sellPercentage == 1)
+            {
+                if (item.usingTakeProfitAfterBuyMore)// 추가 불타기 후 꺼주게 설정
+                    return;
+            }
+            else
+            {
+                if (item.divideSellCountProfit == 0 && item.usingTakeProfitAfterBuyMore)
+                    return;
+
+                item.divideSellCountProfit--;
+                coreEngine.SaveItemLogMessage(item.itemCode, "분할 익절 주문 실행 / 카운트 :" + item.divideSellCountProfit);
+            }
+
             item.SetSellOrderType(true);
 
-            
             int orderQnt = (int)((double)item.startSellQnt * sellPercentage);
             int orderResult = axKHOpenAPI1.SendOrder(
                 "종목익절매도",
@@ -2493,21 +2532,16 @@ namespace Singijeon
             //coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "분할 손절 진입");
             if (e.tradingItem.usingDivideSellLoss)
             {
-              
                 OnReceiveTrDataCheckStopLoss(e.tradingItem, e.checkNum, e.tradingItem.ts.divideSellLossPercentage, true);
-
-             
                 e.tradingItem.usingDivideSellLoss = false;
 
                 if (e.tradingItem.usingDivideSellLossLoop)
                 {
                     e.tradingItem.usingDivideSellLoss = true;
                 }
-
                 if (e.tradingItem.divideSellCount > 0)
                 {
                     e.tradingItem.usingDivideSellLoss = true;
-                   
                     coreEngine.SaveItemLogMessage(e.tradingItem.itemCode, "남은 분할 손절 주문 횟수 : " + e.tradingItem.divideSellCount);
                 }
             }
@@ -2558,9 +2592,11 @@ namespace Singijeon
                 if (item.usingStopLossAfterBuyMore)// 추가 물타기 후 꺼주게 설정
                     return;
             }
-
-            if (StopLossDivide)
+            else
             {
+                if (item.divideSellCount == 0 && item.usingStopLossAfterBuyMore)
+                    return;
+
                 item.divideSellCount--;
                 coreEngine.SaveItemLogMessage(item.itemCode, "분할 손절 주문 실행 / 카운트 :" + item.divideSellCount);
             }
@@ -2994,6 +3030,7 @@ namespace Singijeon
             if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 return;
 
+            coreEngine.SendLogMessage(item.itemName + " OnReceiveTrDataBuyMore 추가매수 ");
             coreEngine.SaveItemLogMessage(item.itemCode,
                 item.itemName + "OnReceiveTrDataBuyMore 추가매수 "
             );
@@ -3001,32 +3038,8 @@ namespace Singijeon
             int buyQnt = Math.Abs((int)(tsItem.BuyMoney / item.curPrice));
             int curPrice = Math.Abs((int)item.curPrice);
 
-            BalanceBuy(account, item.itemCode, curPrice, buyQnt, item.buyOrderType, checkValue);
-
-            //int orderResult = axKHOpenAPI1.SendOrder(
-            //     ConstName.SEND_ORDER_BUY,
-            //    GetScreenNum().ToString(),
-            //    item.ts.account,
-            //    CONST_NUMBER.SEND_ORDER_BUY,
-            //    item.itemCode,
-            //    buyQnt,
-            //    item.buyOrderType == ConstName.ORDER_SIJANGGA ? 0 : (int)item.curPrice,
-            //    item.buyOrderType,
-            //    "" //원주문번호없음
-            //);
-
-            //if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
-            //{
-            //    int rowIndex = BBSdataGridView.Rows.Add();
-               
-            //    Hashtable uiTable = new Hashtable() { { "bbs_종목코드", item.itemCode }, { "bss_종목명", axKHOpenAPI1.GetMasterCodeName(item.itemCode) }, { "bss_매수금", (int)item.curPrice * buyQnt }, { "bbs_매수가", (int)item.curPrice } };
-            //    UpdateBBSGridView(uiTable, rowIndex);
-            //    coreEngine.SaveItemLogMessage(item.itemCode, "추가물타기주문접수시도");
-            //}
-            //else
-            //{
-            //    coreEngine.SaveItemLogMessage(item.itemCode, "추가물타기 매수 요청 실패");
-            //}
+            BalanceBuyStrategy bbs = BalanceBuy(account, item.itemCode, curPrice, buyQnt, item.buyOrderType, checkValue);
+            bbs.SetTradingItem(item);
         }
 
         public void OnReceiveTrDataBuyCancelByTime(object sender, OnReceivedTrBuyCancel e)
@@ -3700,7 +3713,7 @@ namespace Singijeon
             }
         }
 
-        private void BalanceBuy(string accountNum, string itemCode, int buyingPrice, int buyQnt, string OrderType, double buyPercent)
+        private BalanceBuyStrategy BalanceBuy(string accountNum, string itemCode, int buyingPrice, int buyQnt, string OrderType, double buyPercent)
         {
             if (accountNum.Length > 0)
             {
@@ -3716,7 +3729,7 @@ namespace Singijeon
                             buyingPrice,
                             buyQnt,
                             OrderType
-                        );
+                       );
 
                         balanceStrategyList.Add(bs);
 
@@ -3726,6 +3739,7 @@ namespace Singijeon
                         Hashtable uiTable = new Hashtable() { { "bbs_종목코드", itemCode }, { "bbs_종목명", codeName}, { "bbs_매수금", (buyingPrice * buyQnt).ToString() }, { "bbs_조건", buyPercent } };
                         UpdateBBSGridView(uiTable, rowIndex);
                         coreEngine.SaveItemLogMessage(itemCode, "잔고 매수! 전략이 입력됬습니다");
+                        return bs;
                     }
                     else
                     {
@@ -3741,9 +3755,9 @@ namespace Singijeon
             {
                 MessageBox.Show("계좌를 선택해주세요");
             }
+            return null;
         }
 
-       
         private void AddBBSStrategyBtn_Click(object sender, EventArgs e)
         {
             string itemCode = BBSItemCodeTxt.Text;
@@ -3902,5 +3916,11 @@ namespace Singijeon
             }
             Console.WriteLine(result); // <-- For debugging use.
         }
+
+        private void BuyMorePercentUpdownProfit_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

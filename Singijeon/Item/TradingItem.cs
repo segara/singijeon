@@ -44,10 +44,13 @@ namespace Singijeon
 
         public string buyOrderNum = string.Empty;
         public string sellOrderNum = string.Empty;
+
         public string buyCancelOrderNum = string.Empty;
         public string sellCancelOrderNum = string.Empty;
+
         public string buyOrderType = string.Empty;
         public string sellOrderType = string.Empty;
+
         public string itemCode = string.Empty;
         public string itemName = string.Empty;
         public long buyingPrice;
@@ -81,9 +84,10 @@ namespace Singijeon
         public bool usingDivideSellProfitLoop = false;
         public bool usingDivideSellLoss = false;
         public bool usingDivideSellLossLoop = false;
-
+        public bool usingTakeProfitAfterBuyMore = false;
         public bool usingStopLossAfterBuyMore = false;
         public int divideSellCount = 100;
+        public int divideSellCountProfit = 100;
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
         public TradingItem()
@@ -113,7 +117,9 @@ namespace Singijeon
             this.usingDivideSellLossLoop = ts.useDivideSellLossLoop;
             this.usingDivideSellProfitLoop = ts.useDivideSellProfitLoop;
             this.usingStopLossAfterBuyMore = ts.usingStopLossAfterBuyMore;
+            this.usingTakeProfitAfterBuyMore = ts.usingTakeProfitAfterBuyMore;
             this.divideSellCount = ts.divideSellCount;
+            this.divideSellCountProfit = ts.divideSellCountProfit;
             this.Uid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER;
         }

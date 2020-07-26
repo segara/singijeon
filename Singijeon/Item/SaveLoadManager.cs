@@ -278,14 +278,25 @@ namespace Singijeon
              
                 TradingStrategyItemBuyingDivide buyMoreStrategy =
                     new TradingStrategyItemBuyingDivide(
-                            StrategyItemName.BUY_MORE,
+                            StrategyItemName.BUY_MORE_LOSS,
                             CHECK_TIMING.SELL_TIME,
                             IS_TRUE_OR_FALE_TYPE.DOWN,
-                            saved.buyMoreRate,
+                            saved.buyMoreRateLoss,
                             saved.buyMoreMoney);
 
                 buyMoreStrategy.OnReceivedTrData += form.OnReceiveTrDataBuyMore;
                 ts.AddTradingStrategyItemList(buyMoreStrategy);
+
+                TradingStrategyItemBuyingDivide buyMoreStrategyProfit =
+                    new TradingStrategyItemBuyingDivide(
+                            StrategyItemName.BUY_MORE_PROFIT,
+                            CHECK_TIMING.SELL_TIME,
+                            IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
+                            saved.buyMoreRateProfit,
+                            saved.buyMoreMoney);
+
+                buyMoreStrategyProfit.OnReceivedTrData += form.OnReceiveTrDataBuyMore;
+                ts.AddTradingStrategyItemList(buyMoreStrategyProfit);
             }
 
             if (saved.usingBuyCancelByTime)
