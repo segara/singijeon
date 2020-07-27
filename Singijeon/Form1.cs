@@ -2209,8 +2209,8 @@ namespace Singijeon
                 //불타기
                 ts.buyMoreRateProfit = (double)BuyMorePercentUpdownProfit.Value;
                 ts.buyMoreMoney = (int)BuyMoreValueUpdown.Value;
-                TradingStrategyItemBuyingDivide buyMoreStrategyProfit =
-                    new TradingStrategyItemBuyingDivide(
+                TradingStrategyItemProfitBuyingDivide buyMoreStrategyProfit =
+                    new TradingStrategyItemProfitBuyingDivide(
                             StrategyItemName.BUY_MORE_PROFIT,
                             CHECK_TIMING.SELL_TIME,
                             IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
@@ -2219,7 +2219,7 @@ namespace Singijeon
                              );
 
                
-                buyMoreStrategyProfit.OnReceivedTrData += this.OnReceiveTrDataBuyMore;
+                buyMoreStrategyProfit.OnReceivedTrData += this.OnReceiveTrDataBuyMoreProfit;
                 ts.AddTradingStrategyItemList(buyMoreStrategyProfit);
             }
 
@@ -3026,6 +3026,26 @@ namespace Singijeon
             OnReceiveTrDataBuyMore(e.strategyItem, e.tradingItem, e.checkNum);
         }
         public void OnReceiveTrDataBuyMore(TradingStrategyItemBuyingDivide tsItem, TradingItem item, double checkValue)
+        {
+            if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
+                return;
+
+            coreEngine.SendLogMessage(item.itemName + " OnReceiveTrDataBuyMore 추가매수 ");
+            coreEngine.SaveItemLogMessage(item.itemCode,
+                item.itemName + "OnReceiveTrDataBuyMore 추가매수 "
+            );
+
+            int buyQnt = Math.Abs((int)(tsItem.BuyMoney / item.curPrice));
+            int curPrice = Math.Abs((int)item.curPrice);
+
+            BalanceBuyStrategy bbs = BalanceBuy(account, item.itemCode, curPrice, buyQnt, item.buyOrderType, checkValue);
+            bbs.SetTradingItem(item);
+        }
+        public void OnReceiveTrDataBuyMoreProfit(object sender, OnReceivedTrProfitBuyMoreEventArgs e)
+        {
+            OnReceiveTrDataBuyMoreProfit(e.strategyItem, e.tradingItem, e.checkNum);
+        }
+        public void OnReceiveTrDataBuyMoreProfit(TradingStrategyItemProfitBuyingDivide tsItem, TradingItem item, double checkValue)
         {
             if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 return;
