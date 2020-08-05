@@ -19,7 +19,7 @@ namespace Singijeon
         const int MAX_CANDLE = 200;
         const int MA_PERIOD = 20;
         const double MA_4_PERCENT = 0.96;
-        const double MA_3_PERCENT = 0.97;
+        const double MA_5_PERCENT = 0.95;
 
         AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
       
@@ -110,7 +110,7 @@ namespace Singijeon
                         }
                         double priceAverage = priceSum / MA_PERIOD;
                         priceMA_List.Add((long)priceAverage);
-                        priceMA_Envelope_List.Add((long)(priceAverage * MA_4_PERCENT));
+                        priceMA_Envelope_List.Add((long)(priceAverage * MA_5_PERCENT));
                     }
                 }
 

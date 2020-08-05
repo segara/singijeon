@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle131 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle132 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle133 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle134 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle135 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle136 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle137 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle138 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle139 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle140 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle141 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle142 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle143 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle144 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle145 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle146 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle147 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle148 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle149 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle150 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle151 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle152 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle153 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle154 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle155 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle156 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle183 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle184 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle185 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle186 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle187 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle188 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle189 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle190 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle191 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle192 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle193 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle194 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle195 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle196 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle197 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle198 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle199 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle200 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle201 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle202 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle203 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle204 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle205 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle206 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle207 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle208 = new System.Windows.Forms.DataGridViewCellStyle();
             this.axKHOpenAPI1 = new AxKHOpenAPILib.AxKHOpenAPI();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.메뉴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -533,7 +533,6 @@
             // tabPage6
             // 
             this.tabPage6.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.tabPage6.Controls.Add(this.dummyStrategyAddBtn);
             this.tabPage6.Controls.Add(this.tableLayoutPanel1);
             this.tabPage6.Controls.Add(this.AddStratgyBtn);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
@@ -546,7 +545,7 @@
             // 
             // dummyStrategyAddBtn
             // 
-            this.dummyStrategyAddBtn.Location = new System.Drawing.Point(267, 230);
+            this.dummyStrategyAddBtn.Location = new System.Drawing.Point(248, 186);
             this.dummyStrategyAddBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dummyStrategyAddBtn.Name = "dummyStrategyAddBtn";
             this.dummyStrategyAddBtn.Size = new System.Drawing.Size(90, 26);
@@ -616,7 +615,7 @@
             this.useEnvelopeCheckBox.Name = "useEnvelopeCheckBox";
             this.useEnvelopeCheckBox.Size = new System.Drawing.Size(167, 16);
             this.useEnvelopeCheckBox.TabIndex = 28;
-            this.useEnvelopeCheckBox.Text = "envelope4 사용(30틱마다)";
+            this.useEnvelopeCheckBox.Text = "envelope5 사용(30틱마다)";
             this.useEnvelopeCheckBox.UseVisualStyleBackColor = true;
             this.useEnvelopeCheckBox.CheckedChanged += new System.EventHandler(this.UseEnvelopeCheckBox_CheckedChanged);
             // 
@@ -901,6 +900,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.dummyStrategyAddBtn);
             this.panel1.Controls.Add(this.label26);
             this.panel1.Controls.Add(this.BuyMorePercentUpdownProfit);
             this.panel1.Controls.Add(this.openSettingFile);
@@ -952,9 +952,9 @@
             // 
             // openSettingFile
             // 
-            this.openSettingFile.Location = new System.Drawing.Point(260, 184);
+            this.openSettingFile.Location = new System.Drawing.Point(163, 187);
             this.openSettingFile.Name = "openSettingFile";
-            this.openSettingFile.Size = new System.Drawing.Size(75, 23);
+            this.openSettingFile.Size = new System.Drawing.Size(79, 25);
             this.openSettingFile.TabIndex = 18;
             this.openSettingFile.Text = "설정열기";
             this.openSettingFile.UseVisualStyleBackColor = true;
@@ -1885,14 +1885,14 @@
             this.bssAllGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.bssAllGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle131.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle131.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle131.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle131.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle131.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle131.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle131.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.bssAllGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle131;
+            dataGridViewCellStyle183.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle183.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle183.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle183.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle183.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle183.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle183.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.bssAllGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle183;
             this.bssAllGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.bssAllGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.bssAll_종목명,
@@ -1917,9 +1917,9 @@
             // 
             // bssAll_수량
             // 
-            dataGridViewCellStyle132.Format = "N0";
-            dataGridViewCellStyle132.NullValue = null;
-            this.bssAll_수량.DefaultCellStyle = dataGridViewCellStyle132;
+            dataGridViewCellStyle184.Format = "N0";
+            dataGridViewCellStyle184.NullValue = null;
+            this.bssAll_수량.DefaultCellStyle = dataGridViewCellStyle184;
             this.bssAll_수량.HeaderText = "수량";
             this.bssAll_수량.MinimumWidth = 10;
             this.bssAll_수량.Name = "bssAll_수량";
@@ -2156,14 +2156,14 @@
             this.BssDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BssDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle133.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle133.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle133.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle133.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle133.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle133.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle133.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.BssDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle133;
+            dataGridViewCellStyle185.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle185.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle185.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle185.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle185.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle185.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle185.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.BssDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle185;
             this.BssDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.BssDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.bss_종목코드,
@@ -2206,9 +2206,9 @@
             // 
             // bss_설정손익률
             // 
-            dataGridViewCellStyle134.Format = "N2";
-            dataGridViewCellStyle134.NullValue = null;
-            this.bss_설정손익률.DefaultCellStyle = dataGridViewCellStyle134;
+            dataGridViewCellStyle186.Format = "N2";
+            dataGridViewCellStyle186.NullValue = null;
+            this.bss_설정손익률.DefaultCellStyle = dataGridViewCellStyle186;
             this.bss_설정손익률.HeaderText = "손익률";
             this.bss_설정손익률.MinimumWidth = 10;
             this.bss_설정손익률.Name = "bss_설정손익률";
@@ -2216,9 +2216,9 @@
             // 
             // bss_매도량
             // 
-            dataGridViewCellStyle135.Format = "N0";
-            dataGridViewCellStyle135.NullValue = null;
-            this.bss_매도량.DefaultCellStyle = dataGridViewCellStyle135;
+            dataGridViewCellStyle187.Format = "N0";
+            dataGridViewCellStyle187.NullValue = null;
+            this.bss_매도량.DefaultCellStyle = dataGridViewCellStyle187;
             this.bss_매도량.HeaderText = "매도량";
             this.bss_매도량.MinimumWidth = 10;
             this.bss_매도량.Name = "bss_매도량";
@@ -2226,9 +2226,9 @@
             // 
             // bss_취소
             // 
-            dataGridViewCellStyle136.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle136.NullValue = "취소";
-            this.bss_취소.DefaultCellStyle = dataGridViewCellStyle136;
+            dataGridViewCellStyle188.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle188.NullValue = "취소";
+            this.bss_취소.DefaultCellStyle = dataGridViewCellStyle188;
             this.bss_취소.HeaderText = "취소";
             this.bss_취소.MinimumWidth = 10;
             this.bss_취소.Name = "bss_취소";
@@ -2319,14 +2319,14 @@
             this.BBSdataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BBSdataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle137.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle137.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle137.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle137.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle137.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle137.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle137.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.BBSdataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle137;
+            dataGridViewCellStyle189.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle189.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle189.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle189.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle189.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle189.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle189.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.BBSdataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle189;
             this.BBSdataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.BBSdataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.bbs_종목코드,
@@ -2369,9 +2369,9 @@
             // 
             // bbs_조건
             // 
-            dataGridViewCellStyle138.Format = "N2";
-            dataGridViewCellStyle138.NullValue = null;
-            this.bbs_조건.DefaultCellStyle = dataGridViewCellStyle138;
+            dataGridViewCellStyle190.Format = "N2";
+            dataGridViewCellStyle190.NullValue = null;
+            this.bbs_조건.DefaultCellStyle = dataGridViewCellStyle190;
             this.bbs_조건.HeaderText = "조건";
             this.bbs_조건.MinimumWidth = 10;
             this.bbs_조건.Name = "bbs_조건";
@@ -2379,9 +2379,9 @@
             // 
             // bbs_매수금
             // 
-            dataGridViewCellStyle139.Format = "N0";
-            dataGridViewCellStyle139.NullValue = null;
-            this.bbs_매수금.DefaultCellStyle = dataGridViewCellStyle139;
+            dataGridViewCellStyle191.Format = "N0";
+            dataGridViewCellStyle191.NullValue = null;
+            this.bbs_매수금.DefaultCellStyle = dataGridViewCellStyle191;
             this.bbs_매수금.HeaderText = "매수금";
             this.bbs_매수금.MinimumWidth = 10;
             this.bbs_매수금.Name = "bbs_매수금";
@@ -2389,9 +2389,9 @@
             // 
             // bbs_취소
             // 
-            dataGridViewCellStyle140.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle140.NullValue = "취소";
-            this.bbs_취소.DefaultCellStyle = dataGridViewCellStyle140;
+            dataGridViewCellStyle192.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle192.NullValue = "취소";
+            this.bbs_취소.DefaultCellStyle = dataGridViewCellStyle192;
             this.bbs_취소.HeaderText = "취소";
             this.bbs_취소.MinimumWidth = 10;
             this.bbs_취소.Name = "bbs_취소";
@@ -3170,14 +3170,14 @@
             this.autoTradingDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.autoTradingDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle141.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle141.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle141.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle141.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle141.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle141.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle141.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.autoTradingDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle141;
+            dataGridViewCellStyle193.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle193.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle193.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle193.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle193.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle193.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle193.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.autoTradingDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle193;
             this.autoTradingDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.autoTradingDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.매매진행_종목코드,
@@ -3244,9 +3244,9 @@
             // 
             // 매매진행_매수가
             // 
-            dataGridViewCellStyle142.Format = "N0";
-            dataGridViewCellStyle142.NullValue = null;
-            this.매매진행_매수가.DefaultCellStyle = dataGridViewCellStyle142;
+            dataGridViewCellStyle194.Format = "N0";
+            dataGridViewCellStyle194.NullValue = null;
+            this.매매진행_매수가.DefaultCellStyle = dataGridViewCellStyle194;
             this.매매진행_매수가.HeaderText = "매수가";
             this.매매진행_매수가.MinimumWidth = 10;
             this.매매진행_매수가.Name = "매매진행_매수가";
@@ -3261,9 +3261,9 @@
             // 
             // 매매진행_손익률
             // 
-            dataGridViewCellStyle143.Format = "N2";
-            dataGridViewCellStyle143.NullValue = null;
-            this.매매진행_손익률.DefaultCellStyle = dataGridViewCellStyle143;
+            dataGridViewCellStyle195.Format = "N2";
+            dataGridViewCellStyle195.NullValue = null;
+            this.매매진행_손익률.DefaultCellStyle = dataGridViewCellStyle195;
             this.매매진행_손익률.HeaderText = "손익률";
             this.매매진행_손익률.MinimumWidth = 10;
             this.매매진행_손익률.Name = "매매진행_손익률";
@@ -3271,9 +3271,9 @@
             // 
             // 매매진행_매수금
             // 
-            dataGridViewCellStyle144.Format = "N0";
-            dataGridViewCellStyle144.NullValue = null;
-            this.매매진행_매수금.DefaultCellStyle = dataGridViewCellStyle144;
+            dataGridViewCellStyle196.Format = "N0";
+            dataGridViewCellStyle196.NullValue = null;
+            this.매매진행_매수금.DefaultCellStyle = dataGridViewCellStyle196;
             this.매매진행_매수금.HeaderText = "매수금";
             this.매매진행_매수금.MinimumWidth = 10;
             this.매매진행_매수금.Name = "매매진행_매수금";
@@ -3281,9 +3281,9 @@
             // 
             // 매매진행_매수량
             // 
-            dataGridViewCellStyle145.Format = "N0";
-            dataGridViewCellStyle145.NullValue = null;
-            this.매매진행_매수량.DefaultCellStyle = dataGridViewCellStyle145;
+            dataGridViewCellStyle197.Format = "N0";
+            dataGridViewCellStyle197.NullValue = null;
+            this.매매진행_매수량.DefaultCellStyle = dataGridViewCellStyle197;
             this.매매진행_매수량.HeaderText = "매수량";
             this.매매진행_매수량.MinimumWidth = 10;
             this.매매진행_매수량.Name = "매매진행_매수량";
@@ -3291,9 +3291,9 @@
             // 
             // 매매진행_매도량
             // 
-            dataGridViewCellStyle146.Format = "N0";
-            dataGridViewCellStyle146.NullValue = null;
-            this.매매진행_매도량.DefaultCellStyle = dataGridViewCellStyle146;
+            dataGridViewCellStyle198.Format = "N0";
+            dataGridViewCellStyle198.NullValue = null;
+            this.매매진행_매도량.DefaultCellStyle = dataGridViewCellStyle198;
             this.매매진행_매도량.HeaderText = "매도량";
             this.매매진행_매도량.MinimumWidth = 10;
             this.매매진행_매도량.Name = "매매진행_매도량";
@@ -3301,9 +3301,9 @@
             // 
             // 매매진행_매도가
             // 
-            dataGridViewCellStyle147.Format = "N0";
-            dataGridViewCellStyle147.NullValue = null;
-            this.매매진행_매도가.DefaultCellStyle = dataGridViewCellStyle147;
+            dataGridViewCellStyle199.Format = "N0";
+            dataGridViewCellStyle199.NullValue = null;
+            this.매매진행_매도가.DefaultCellStyle = dataGridViewCellStyle199;
             this.매매진행_매도가.HeaderText = "매도가";
             this.매매진행_매도가.MinimumWidth = 10;
             this.매매진행_매도가.Name = "매매진행_매도가";
@@ -3325,9 +3325,9 @@
             // 
             // 매매진행_취소
             // 
-            dataGridViewCellStyle148.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle148.NullValue = "취소";
-            this.매매진행_취소.DefaultCellStyle = dataGridViewCellStyle148;
+            dataGridViewCellStyle200.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle200.NullValue = "취소";
+            this.매매진행_취소.DefaultCellStyle = dataGridViewCellStyle200;
             this.매매진행_취소.HeaderText = "취소";
             this.매매진행_취소.MinimumWidth = 10;
             this.매매진행_취소.Name = "매매진행_취소";
@@ -3430,9 +3430,9 @@
             // 
             // 계좌잔고_보유수량
             // 
-            dataGridViewCellStyle149.Format = "N0";
-            dataGridViewCellStyle149.NullValue = null;
-            this.계좌잔고_보유수량.DefaultCellStyle = dataGridViewCellStyle149;
+            dataGridViewCellStyle201.Format = "N0";
+            dataGridViewCellStyle201.NullValue = null;
+            this.계좌잔고_보유수량.DefaultCellStyle = dataGridViewCellStyle201;
             this.계좌잔고_보유수량.HeaderText = "보유수량";
             this.계좌잔고_보유수량.MinimumWidth = 10;
             this.계좌잔고_보유수량.Name = "계좌잔고_보유수량";
@@ -3453,9 +3453,9 @@
             // 
             // 계좌잔고_평가금액
             // 
-            dataGridViewCellStyle150.Format = "N0";
-            dataGridViewCellStyle150.NullValue = null;
-            this.계좌잔고_평가금액.DefaultCellStyle = dataGridViewCellStyle150;
+            dataGridViewCellStyle202.Format = "N0";
+            dataGridViewCellStyle202.NullValue = null;
+            this.계좌잔고_평가금액.DefaultCellStyle = dataGridViewCellStyle202;
             this.계좌잔고_평가금액.HeaderText = "평가금액";
             this.계좌잔고_평가금액.MinimumWidth = 10;
             this.계좌잔고_평가금액.Name = "계좌잔고_평가금액";
@@ -3463,9 +3463,9 @@
             // 
             // 계좌잔고_매입금액
             // 
-            dataGridViewCellStyle151.Format = "N0";
-            dataGridViewCellStyle151.NullValue = null;
-            this.계좌잔고_매입금액.DefaultCellStyle = dataGridViewCellStyle151;
+            dataGridViewCellStyle203.Format = "N0";
+            dataGridViewCellStyle203.NullValue = null;
+            this.계좌잔고_매입금액.DefaultCellStyle = dataGridViewCellStyle203;
             this.계좌잔고_매입금액.HeaderText = "매입금액";
             this.계좌잔고_매입금액.MinimumWidth = 10;
             this.계좌잔고_매입금액.Name = "계좌잔고_매입금액";
@@ -3473,9 +3473,9 @@
             // 
             // 계좌잔고_손익금액
             // 
-            dataGridViewCellStyle152.Format = "N0";
-            dataGridViewCellStyle152.NullValue = null;
-            this.계좌잔고_손익금액.DefaultCellStyle = dataGridViewCellStyle152;
+            dataGridViewCellStyle204.Format = "N0";
+            dataGridViewCellStyle204.NullValue = null;
+            this.계좌잔고_손익금액.DefaultCellStyle = dataGridViewCellStyle204;
             this.계좌잔고_손익금액.HeaderText = "손익금액";
             this.계좌잔고_손익금액.MinimumWidth = 10;
             this.계좌잔고_손익금액.Name = "계좌잔고_손익금액";
@@ -3483,18 +3483,18 @@
             // 
             // 계좌잔고_청산
             // 
-            dataGridViewCellStyle153.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle153.NullValue = "청산";
-            this.계좌잔고_청산.DefaultCellStyle = dataGridViewCellStyle153;
+            dataGridViewCellStyle205.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle205.NullValue = "청산";
+            this.계좌잔고_청산.DefaultCellStyle = dataGridViewCellStyle205;
             this.계좌잔고_청산.HeaderText = "청산";
             this.계좌잔고_청산.MinimumWidth = 10;
             this.계좌잔고_청산.Name = "계좌잔고_청산";
             // 
             // 계좌잔고_손익률
             // 
-            dataGridViewCellStyle154.Format = "N2";
-            dataGridViewCellStyle154.NullValue = null;
-            this.계좌잔고_손익률.DefaultCellStyle = dataGridViewCellStyle154;
+            dataGridViewCellStyle206.Format = "N2";
+            dataGridViewCellStyle206.NullValue = null;
+            this.계좌잔고_손익률.DefaultCellStyle = dataGridViewCellStyle206;
             this.계좌잔고_손익률.HeaderText = "손익률";
             this.계좌잔고_손익률.MinimumWidth = 10;
             this.계좌잔고_손익률.Name = "계좌잔고_손익률";
@@ -3780,9 +3780,9 @@
             // 
             // 미체결_취소
             // 
-            dataGridViewCellStyle155.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle155.NullValue = "취소";
-            this.미체결_취소.DefaultCellStyle = dataGridViewCellStyle155;
+            dataGridViewCellStyle207.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle207.NullValue = "취소";
+            this.미체결_취소.DefaultCellStyle = dataGridViewCellStyle207;
             this.미체결_취소.HeaderText = "취소";
             this.미체결_취소.MinimumWidth = 10;
             this.미체결_취소.Name = "미체결_취소";
@@ -3951,9 +3951,9 @@
             // 
             // 매매전략_취소
             // 
-            dataGridViewCellStyle156.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle156.NullValue = "취소";
-            this.매매전략_취소.DefaultCellStyle = dataGridViewCellStyle156;
+            dataGridViewCellStyle208.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle208.NullValue = "취소";
+            this.매매전략_취소.DefaultCellStyle = dataGridViewCellStyle208;
             this.매매전략_취소.HeaderText = "취소";
             this.매매전략_취소.MinimumWidth = 10;
             this.매매전략_취소.Name = "매매전략_취소";
