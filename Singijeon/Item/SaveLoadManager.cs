@@ -219,11 +219,11 @@ namespace Singijeon
             ts.percentageBuyValue = saved.percentageBuyValue;
    
             ts.usingVwma = saved.usingVwma;
+            ts.usingEnvelope4 = saved.usingEnvelope4;
             ts.trailTickValue = saved.trailTickValue;
    
             if (saved.usingGapTrailBuy)
             {
-               
                 ts.usingGapTrailBuy = true;
                 ts.gapTrailCostPercentageValue = saved.gapTrailCostPercentageValue;
                 ts.gapTrailBuyTimeValue = saved.gapTrailBuyTimeValue;
@@ -275,7 +275,7 @@ namespace Singijeon
             if (saved.usingBuyMore)
             {
                 ts.usingBuyMore = true;
-             
+                //물타기
                 TradingStrategyItemBuyingDivide buyMoreStrategy =
                     new TradingStrategyItemBuyingDivide(
                             StrategyItemName.BUY_MORE_LOSS,
@@ -286,7 +286,7 @@ namespace Singijeon
 
                 buyMoreStrategy.OnReceivedTrData += form.OnReceiveTrDataBuyMore;
                 ts.AddTradingStrategyItemList(buyMoreStrategy);
-
+                //불타기                 
                 TradingStrategyItemBuyingDivide buyMoreStrategyProfit =
                     new TradingStrategyItemBuyingDivide(
                             StrategyItemName.BUY_MORE_PROFIT,
@@ -332,7 +332,7 @@ namespace Singijeon
                 ts.AddTradingStrategyItemList(divideStopLossStrategy);
                 ts.divideStoplossRate = saved.divideStoplossRate;
                 ts.divideSellLossPercentage = (saved.divideSellLossPercentage);
-
+                ts.divideSellCount = saved.divideSellCount;
             }
 
             if (saved.useDivideSellProfit)
@@ -352,7 +352,7 @@ namespace Singijeon
                 ts.AddTradingStrategyItemList(divideProfitStrategy);
                 ts.divideTakeProfitRate = saved.divideTakeProfitRate;
                 ts.divideSellProfitPercentage = (saved.divideSellProfitPercentage);
-
+                ts.divideSellCountProfit = saved.divideSellCountProfit;
             }
 
             form.tradingStrategyList.Add(ts);

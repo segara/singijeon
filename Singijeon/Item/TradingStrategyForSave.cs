@@ -37,7 +37,9 @@ namespace Singijeon
         public float percentageBuyValue = 0;
 
         public bool usingGapTrailBuy = false;   //갭상승시 매수
-        public bool usingVwma = false;   //갭상승시 매수
+        public bool usingVwma = false;
+        public bool usingEnvelope4 = false;
+
         public float gapTrailCostPercentageValue = 0;
         public float gapTrailBuyPercentageValue = 0.5f;
         public int gapTrailBuyTimeValue = 0;
