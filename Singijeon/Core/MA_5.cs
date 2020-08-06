@@ -58,6 +58,7 @@ namespace Singijeon
                     Core.CoreEngine.GetInstance().SendLogErrorMessage("ERROR : " + result.ToString());
                 }
             });
+            Core.CoreEngine.GetInstance().requestTrDataManager.RequestTrData(requestItemInfoTaskMinute);
         }
 
         public void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
