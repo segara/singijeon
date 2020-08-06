@@ -2883,22 +2883,6 @@ namespace Singijeon
                                             }
                                         });
                                     }
-                                    if (trailingItem.isEnvelopeCheck)
-                                    {
-                                        MA_5.Instance.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
-                                            if(curPrice < envelopePrice)
-                                            {
-                                                TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
-                                                if (findItem != null)
-                                                {
-                                                    StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
-                                                    TrailingToBuy(findItem, _itemCode, (int)stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
-                                                    return;
-                                                }
-                                            }
-                                        });
-                                    }
-
                                 }
 
                                 trailingItem.tickBongInfoMgr.AddPrice(price);
@@ -2910,7 +2894,25 @@ namespace Singijeon
                                 trailingItem.curTickCount = 0;
                             }
 
-                            if(trailingItem.isVwmaCheck)
+                            if (trailingItem.isEnvelopeCheck
+                                      && 60 < (DateTime.Now - trailingItem.envelopeBuyCheckDateTime).TotalSeconds)
+                            {
+                                trailingItem.envelopeBuyCheckDateTime = DateTime.Now;
+                                MA_5.Instance.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
+                                    if (curPrice < envelopePrice)
+                                    {
+                                        TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
+                                        if (findItem != null)
+                                        {
+                                            StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
+                                            TrailingToBuy(findItem, _itemCode, (int)stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
+                                            return;
+                                        }
+                                    }
+                                });
+                            }
+
+                            if (trailingItem.isVwmaCheck)
                             {
                                 continue;
                             }

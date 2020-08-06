@@ -28,6 +28,7 @@ namespace Singijeon
         public DateTime gapTrailBuyCheckDateTime = DateTime.Now;
         public long gapTrailBuyCheckTimeSecond = 0;
         public string buyOrderOption; //주문 호가 옵션
+        public DateTime envelopeBuyCheckDateTime = DateTime.Now;
         //public string sellOrderOption; //주문 호가 옵션
         //public CheckMaUp ma_data_info = null;
 
