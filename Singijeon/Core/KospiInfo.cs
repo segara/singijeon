@@ -16,7 +16,10 @@ namespace Singijeon.Core
             String strURL = "http://vip.mk.co.kr/newst/include/incMainIncludeChart2009.php?hdate1=20100422115311";
 
             String tempStr = GetHtmlString(strURL);
+            
             String[] STock = new String[3];
+            if (string.IsNullOrEmpty(tempStr))
+                return STock;
             String[] SplitStr = tempStr.Split(':');
             int count = 0;
 

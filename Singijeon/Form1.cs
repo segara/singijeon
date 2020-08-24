@@ -72,7 +72,6 @@ namespace Singijeon
             coreEngine.Start();
 
             OpenSecondWindow();
-      
 
             startTimePicker.Value = DateTime.Now;
             startTimePicker.Format = DateTimePickerFormat.Custom;
@@ -113,6 +112,9 @@ namespace Singijeon
             
             MartinGailManager.GetInstance().Init(axKHOpenAPI1, this);
             BlockManager.GetInstance().Init(axKHOpenAPI1, this);
+
+            MA_5.Instance.Init(axKHOpenAPI1);
+
             //LoadSetting();
             printForm = new Form3(axKHOpenAPI1);
             info = new KospiInfo();
@@ -315,7 +317,7 @@ namespace Singijeon
                                             return;
                                         }
 
-                                        if (ts.usingVwma && printForm.vwma_state == Form3.VWMA_CHART_STATE.UP_STAY)
+                                        if (printForm.vwma_state == Form3.VWMA_CHART_STATE.UP_STAY)
                                         {
                                             //골든크로스를 목적으로 미리 up상태인것을 배재한다
                                             coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(_itemCode));
@@ -332,7 +334,6 @@ namespace Singijeon
                                             ts.StrategyConditionReceiveUpdate(_itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
                                             TryBuyItem(ts, _itemCode);
                                         }
-                                        
                                     });
                                 }
                                 else
@@ -362,7 +363,6 @@ namespace Singijeon
         {
             if (ts.usingTickBuy || ts.usingTrailing || ts.usingPercentageBuy)
             {
-
                 //종목의 호가를 알아오고 틱 설정 단위로 산다
                 Task requestItemInfoTask = new Task(() =>
                 {
@@ -2053,6 +2053,13 @@ namespace Singijeon
                 ts.trailTickValue = 30;
             }
 
+            if (useEnvelopeCheckBox.Checked)
+            {
+                ts.usingEnvelope4 = useEnvelopeCheckBox.Checked;
+                ts.usingTrailing = true;
+                ts.trailTickValue = 30;
+            }
+
             bool useGapTrailBuy = useGapTrailBuyCheck.Checked;
             if (useGapTrailBuy)
             {
@@ -2209,17 +2216,15 @@ namespace Singijeon
                 //불타기
                 ts.buyMoreRateProfit = (double)BuyMorePercentUpdownProfit.Value;
                 ts.buyMoreMoney = (int)BuyMoreValueUpdown.Value;
-                TradingStrategyItemBuyingDivide buyMoreStrategyProfit =
-                    new TradingStrategyItemBuyingDivide(
+                TradingStrategyItemProfitBuyingDivide buyMoreStrategyProfit =
+                    new TradingStrategyItemProfitBuyingDivide(
                             StrategyItemName.BUY_MORE_PROFIT,
                             CHECK_TIMING.SELL_TIME,
                             IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME,
                              ts.buyMoreRateProfit,
                              ts.buyMoreMoney
                              );
-
-               
-                buyMoreStrategyProfit.OnReceivedTrData += this.OnReceiveTrDataBuyMore;
+                buyMoreStrategyProfit.OnReceivedTrData += this.OnReceiveTrDataBuyMoreProfit;
                 ts.AddTradingStrategyItemList(buyMoreStrategyProfit);
             }
 
@@ -2865,13 +2870,11 @@ namespace Singijeon
                             {
                                 if (trailingItem.curTickCount == 0)
                                 {
-                                    
                                     if (trailingItem.isVwmaCheck)
                                     {
-
+                                        //주문 후에 trailingItem 은 list에서 remove 되지만
+                                        //빠른속도로 tick이 증가하면 중복으로 호출될 가능성이 있음
                                         printForm.RequestItem(itemCode, delegate (string _itemCode) {
-
-                                            coreEngine.SaveItemLogMessage(_itemCode, printForm.vwma_state.ToString());
 
                                             if (printForm.vwma_state == Form3.VWMA_CHART_STATE.GOLDEN_CROSS || printForm.vwma_state == Form3.VWMA_CHART_STATE.UP_STAY)
                                             {
@@ -2885,7 +2888,6 @@ namespace Singijeon
                                             }
                                         });
                                     }
-                                   
                                 }
 
                                 trailingItem.tickBongInfoMgr.AddPrice(price);
@@ -2897,11 +2899,32 @@ namespace Singijeon
                                 trailingItem.curTickCount = 0;
                             }
 
-                            if(trailingItem.isVwmaCheck)
+                            if (trailingItem.isEnvelopeCheck
+                                      && 60 < (DateTime.Now - trailingItem.envelopeBuyCheckDateTime).TotalSeconds)
+                            {
+                                trailingItem.envelopeBuyCheckDateTime = DateTime.Now;
+                                MA_5.Instance.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
+                                    if (curPrice < envelopePrice)
+                                    {
+                                        TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
+                                        if (findItem != null)
+                                        {
+                                            StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
+                                            TrailingToBuy(findItem, _itemCode, (int)stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
+                                            return;
+                                        }
+                                    }
+                                });
+                            }
+
+                            if (trailingItem.isVwmaCheck)
                             {
                                 continue;
                             }
-
+                            if (trailingItem.isEnvelopeCheck)
+                            {
+                                continue;
+                            }
 
                             if ( CostCheck  && 
                                 trailingItem.settingTickCount > 0 &&
@@ -3031,6 +3054,26 @@ namespace Singijeon
             OnReceiveTrDataBuyMore(e.strategyItem, e.tradingItem, e.checkNum);
         }
         public void OnReceiveTrDataBuyMore(TradingStrategyItemBuyingDivide tsItem, TradingItem item, double checkValue)
+        {
+            if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
+                return;
+
+            coreEngine.SendLogMessage(item.itemName + " OnReceiveTrDataBuyMore 추가매수 ");
+            coreEngine.SaveItemLogMessage(item.itemCode,
+                item.itemName + "OnReceiveTrDataBuyMore 추가매수 "
+            );
+
+            int buyQnt = Math.Abs((int)(tsItem.BuyMoney / item.curPrice));
+            int curPrice = Math.Abs((int)item.curPrice);
+
+            BalanceBuyStrategy bbs = BalanceBuy(account, item.itemCode, curPrice, buyQnt, item.buyOrderType, checkValue);
+            bbs.SetTradingItem(item);
+        }
+        public void OnReceiveTrDataBuyMoreProfit(object sender, OnReceivedTrProfitBuyMoreEventArgs e)
+        {
+            OnReceiveTrDataBuyMoreProfit(e.strategyItem, e.tradingItem, e.checkNum);
+        }
+        public void OnReceiveTrDataBuyMoreProfit(TradingStrategyItemProfitBuyingDivide tsItem, TradingItem item, double checkValue)
         {
             if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
                 return;
@@ -3230,7 +3273,6 @@ namespace Singijeon
                 ts.usingTrailing = true;
                 ts.trailTickValue = 30;
             }
-
 
             double takeProfitRate = (double)M_SellUpdown.Value;
 
@@ -3911,8 +3953,7 @@ namespace Singijeon
             {
                 string file = openFileDialog1.SafeFileName;
                 try
-                {
-
+                { 
                     LoadSettingRead(file);
                 }
                 catch (IOException)
@@ -3922,10 +3963,64 @@ namespace Singijeon
             Console.WriteLine(result); // <-- For debugging use.
         }
 
-        private void BuyMorePercentUpdownProfit_ValueChanged(object sender, EventArgs e)
+        private void UseVwmaCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (this.useVwmaCheckBox.Checked == true)
+            {
+                usingTrailingBuyCheck.Enabled = false;
+                orderPecentageCheckBox.Enabled = false;
+                useEnvelopeCheckBox.Enabled = false;
+            } 
+            else
+            {
+                usingTrailingBuyCheck.Enabled = true;
+                orderPecentageCheckBox.Enabled = true;
+                useEnvelopeCheckBox.Enabled = true;
+            } 
         }
 
+        private void UsingTrailingBuyCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.usingTrailingBuyCheck.Checked == true)
+            {
+                useVwmaCheckBox.Enabled = false;
+                useEnvelopeCheckBox.Enabled = false;
+            }
+            else
+            {
+                useVwmaCheckBox.Enabled = true;
+                useEnvelopeCheckBox.Enabled = true;
+            }
+        }
+
+        private void OrderPecentageCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.orderPecentageCheckBox.Checked == true)
+            {
+                useVwmaCheckBox.Enabled = false;
+                useEnvelopeCheckBox.Enabled = false;
+            }
+            else
+            {
+                useVwmaCheckBox.Enabled = true;
+                useEnvelopeCheckBox.Enabled = true;
+            }
+        }
+
+        private void UseEnvelopeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.useEnvelopeCheckBox.Checked == true)
+            {
+                usingTrailingBuyCheck.Enabled = false;
+                orderPecentageCheckBox.Enabled = false;
+                useVwmaCheckBox.Enabled = false;
+            }
+            else
+            {
+                usingTrailingBuyCheck.Enabled = true;
+                orderPecentageCheckBox.Enabled = true;
+                useVwmaCheckBox.Enabled = true;
+            }
+        }
     }
 }

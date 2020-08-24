@@ -23,10 +23,12 @@ namespace Singijeon
         public long itemInvestment = 0;
         public bool isPercentageCheckBuy = false;  
         public bool isGapTrailBuy = false;   //갭상승시 매수
-        public bool isVwmaCheck = false;   
+        public bool isVwmaCheck = false;
+        public bool isEnvelopeCheck = false;
         public DateTime gapTrailBuyCheckDateTime = DateTime.Now;
         public long gapTrailBuyCheckTimeSecond = 0;
         public string buyOrderOption; //주문 호가 옵션
+        public DateTime envelopeBuyCheckDateTime = DateTime.Now;
         //public string sellOrderOption; //주문 호가 옵션
         //public CheckMaUp ma_data_info = null;
 
@@ -65,6 +67,7 @@ namespace Singijeon
                 gapTrailBuyCheckTimeSecond = inputStrategy.gapTrailBuyTimeValue;
             }
             isVwmaCheck = inputStrategy.usingVwma; 
+            isEnvelopeCheck = inputStrategy.usingEnvelope4;
         }
 
        

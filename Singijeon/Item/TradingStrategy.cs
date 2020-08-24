@@ -33,7 +33,9 @@ namespace Singijeon
         public float percentageBuyValue = 0;
 
         public bool usingGapTrailBuy = false;   //갭상승시 매수
-        public bool usingVwma = false;   //갭상승시 매수
+        public bool usingVwma = false;
+        public bool usingEnvelope4 = false;
+
         public float gapTrailCostPercentageValue = 0;
         public float gapTrailBuyPercentageValue = 0.5f;
         public int gapTrailBuyTimeValue = 0;
@@ -253,6 +255,19 @@ namespace Singijeon
         public TradingItem tradingItem { get; set; }
         public double checkNum { get; set; }
         public OnReceivedTrBuyMoreEventArgs(TradingStrategyItemBuyingDivide tsItem, TradingItem item, double checkValue)
+        {
+            this.strategyItem = tsItem;
+            this.tradingItem = item;
+            this.checkNum = checkValue;
+        }
+    }
+    [Serializable]
+    public class OnReceivedTrProfitBuyMoreEventArgs : EventArgs
+    {
+        public TradingStrategyItemProfitBuyingDivide strategyItem { get; set; }
+        public TradingItem tradingItem { get; set; }
+        public double checkNum { get; set; }
+        public OnReceivedTrProfitBuyMoreEventArgs(TradingStrategyItemProfitBuyingDivide tsItem, TradingItem item, double checkValue)
         {
             this.strategyItem = tsItem;
             this.tradingItem = item;
@@ -513,7 +528,6 @@ namespace Singijeon
     [Serializable]
     public class TradingStrategyItemBuyingDivide : TradingStrategyADDItem
     {
-     
         public IS_TRUE_OR_FALE_TYPE checkType = IS_TRUE_OR_FALE_TYPE.SAME;
 
         private int buyMoney;
@@ -569,7 +583,64 @@ namespace Singijeon
             }
         }
     }
+    [Serializable]
+    public class TradingStrategyItemProfitBuyingDivide : TradingStrategyADDItem
+    {
+        public IS_TRUE_OR_FALE_TYPE checkType = IS_TRUE_OR_FALE_TYPE.SAME;
 
+        private int buyMoney;
+        public int BuyMoney { get { return buyMoney; } set { buyMoney = value; } }
+
+        private double d_conditionValue = 0;
+        public double checkConditionValue { get { return d_conditionValue; } set { d_conditionValue = value; } }
+
+        public event EventHandler<OnReceivedTrProfitBuyMoreEventArgs> OnReceivedTrData;
+
+        public TradingStrategyItemProfitBuyingDivide(string _strategyItemName, CHECK_TIMING _checkTiming, IS_TRUE_OR_FALE_TYPE _checkType, double _conditionValue, int _buyMoney)
+        {
+            usingStrategy = true;
+
+            strategyItemName = _strategyItemName;
+            strategyCheckTime = _checkTiming;
+            checkType = _checkType;
+            d_conditionValue = _conditionValue;
+
+            buyMoney = _buyMoney;
+
+            if (checkType == IS_TRUE_OR_FALE_TYPE.DOWN || checkType == IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME)
+            {
+                d_conditionValue = _conditionValue - Form1.FEE_RATE;
+            }
+            if (checkType == IS_TRUE_OR_FALE_TYPE.UPPER || checkType == IS_TRUE_OR_FALE_TYPE.UPPER_OR_SAME)
+            {
+                d_conditionValue = _conditionValue + Form1.FEE_RATE;
+            }
+        }
+
+        public override void CheckUpdate(TradingItem item, double value)
+        {
+            if (!usingStrategy)
+            {
+                Console.WriteLine("usingStrategy : " + usingStrategy);
+                return;
+            }
+
+            //Console.WriteLine("buyMore : " + item.useBuyMore + " value : " + value + " / d_conditionValue : " + d_conditionValue);
+            if (value >= d_conditionValue && item.useBuyMore)
+            {
+                if (OnReceivedTrData != null)
+                {
+                    Core.CoreEngine.GetInstance().SendLogMessage(item.itemCode + " 추가 물타기 주문");
+                    Core.CoreEngine.GetInstance().SaveItemLogMessage(item.itemCode, " 추가 물타기 주문 : " + value);
+
+                    OnReceivedTrData.Invoke(this, new OnReceivedTrProfitBuyMoreEventArgs(this, item, value));
+
+                    item.useBuyMore = false;
+
+                }
+            }
+        }
+    }
     [Serializable]
     public class TradingStrategyItemCancelByTime : TradingStrategyADDItem
     {
