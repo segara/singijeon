@@ -1073,6 +1073,7 @@ namespace Singijeon
                             CheckBSS_AllSell(ordernum, conclusionPrice, int.Parse(outstanding), i_ConclusionQuantity); //bss all 체크
                             CheckSettle_Sell(ordernum); //청산 체크
                             //CheckBS_Finish(itemCode, false, i_ConclusionQuantity, ordernum);
+                            printForm2.AddProfit((int.Parse(conclusionPrice) - i_averagePrice) * i_unitConclusionQuantity);
                         }
                         
                     }

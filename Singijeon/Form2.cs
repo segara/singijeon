@@ -258,7 +258,6 @@ namespace Singijeon {
             {
                 profit_label.Text = string.Format("{0:n0}", curProfit);
             }
-         
         }
 
         private void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)
@@ -292,10 +291,10 @@ namespace Singijeon {
                 asset_label.Text = string.Format("{0:n0}", l_asset);
                 d2Asset_label.Text = string.Format("{0:n0}", l_d2asset);
                 estimatedAsset_label.Text = string.Format("{0:n0}", l_estimatedAsset);
-                investment_label.Text = string.Format("{0:n0}", l_investment);
-                
+                //investment_label.Text = string.Format("{0:n0}", l_investment);
 
-                profitRate_label.Text = d_profitRate.ToString();
+                //profit_label.Text = l_profit.ToString();
+                //profitRate_label.Text = d_profitRate.ToString();
             }
         }
 
