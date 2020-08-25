@@ -137,7 +137,7 @@ namespace Singijeon
                     }));
                 }
                 else
-                {
+                {   
                     kospiInfo.Text = info.GetStockKospi();
                     kosdaqInfo.Text = info.GetStockKosdaq();
                 }
@@ -2613,7 +2613,11 @@ namespace Singijeon
               
             item.SetSellOrderType(false);
 
-            int orderQnt = (int)((double)item.startSellQnt * sellPercentage);
+            int orderQnt = (int)((double)item.startSellQnt * sellPercentage); //분할매도
+            if (sellPercentage == 1)
+            {
+                orderQnt = item.curQnt; //일반매도
+            }
             int orderResult = axKHOpenAPI1.SendOrder(
                 "종목손절매도",
                 GetScreenNum().ToString(),
