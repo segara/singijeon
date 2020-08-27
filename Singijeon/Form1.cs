@@ -1073,7 +1073,9 @@ namespace Singijeon
                             CheckBSS_AllSell(ordernum, conclusionPrice, int.Parse(outstanding), i_ConclusionQuantity); //bss all 체크
                             CheckSettle_Sell(ordernum); //청산 체크
                             //CheckBS_Finish(itemCode, false, i_ConclusionQuantity, ordernum);
-                            printForm2.AddProfit((int.Parse(conclusionPrice) - i_averagePrice) * i_unitConclusionQuantity);
+
+                            BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
+                            printForm2.AddProfit((int.Parse(conclusionPrice) - item.buyingPrice) * i_unitConclusionQuantity);
                         }
                         
                     }
@@ -1092,8 +1094,8 @@ namespace Singijeon
                                 UpdateTradingStrategySellData(ordernum, i_unitConclusionQuantity, int.Parse(outstanding));
                                 UpdateSellTradingItemOutstand(ordernum, int.Parse(outstanding));
                                 UpdateSellAutoTradingDataGridStatePrice(ordernum, conclusionPrice);
-
-                                printForm2.AddProfit((int.Parse(conclusionPrice) - i_averagePrice) * i_unitConclusionQuantity);
+                                BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
+                                printForm2.AddProfit((int.Parse(conclusionPrice) - item.buyingPrice) * i_unitConclusionQuantity);
                             }
                         }
                     }
