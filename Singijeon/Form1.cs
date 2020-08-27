@@ -616,7 +616,7 @@ namespace Singijeon
                      if (tradeItem.IsCompleteBuying() && tradeItem.IsCompleteSold() == false && tradeItem.buyingPrice != 0) //매도 진행안된것 
                     {
                         double realProfitRate = GetProfitRate((double)c_lPrice, (double)tradeItem.buyingPrice);
-                        coreEngine.SaveItemLogMessage(itemCode, "현재가 : " + c_lPrice + " 평단가 : " + tradeItem.buyingPrice + " 손익률 : " + realProfitRate);
+                        //coreEngine.SaveItemLogMessage(itemCode, "현재가 : " + c_lPrice + " 평단가 : " + tradeItem.buyingPrice + " 손익률 : " + realProfitRate);
                         //자동 감시 주문 체크
                         if (tradeItem.state >= TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE
                             && tradeItem.state < TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_COMPLETE)
@@ -2417,10 +2417,7 @@ namespace Singijeon
         }
         public void OnReceiveTrDataCheckProfitSell(TradingItem item, double checkValue, double sellPercentage = 1)
         {
-            if(item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE)
-            {
-                
-            }
+           
             if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE
                 || item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT)
             {
@@ -2443,27 +2440,30 @@ namespace Singijeon
                     //        return;
                     //    }
                     //}
-                    if (checkValue > item.ts.takeProfitRate && checkValue > item.ts.divideSellProfitPercentage && sellPercentage != 1)
-                    {
-                        //기존익절률 초과시 분할익절 취소하여 기존 익절 부분만 실행
-                        coreEngine.SaveItemLogMessage(item.itemCode, "분할익절주문 취소 : " + item.itemName + " 수량 : " + item.curQnt + " 현재 손익률 : " + checkValue);
-                        int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
 
-                        if (orderResultCancel == 0)
-                        {
-                            AddOrderList(item);
-                            item.SetSellCancelOrder();
-                            coreEngine.SaveItemLogMessage(item.itemCode, "익절 취소 접수");
-                            autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
-                            return;
-                        }
-                    }
+
+                    //if (checkValue > item.ts.takeProfitRate && checkValue > item.ts.divideSellProfitPercentage && sellPercentage != 1)
+                    //{
+                    //    //기존익절률 초과시 분할익절 취소하여 기존 익절 부분만 실행
+                    //    coreEngine.SaveItemLogMessage(item.itemCode, "분할익절주문 취소 : " + item.itemName + " 수량 : " + item.curQnt + " 현재 손익률 : " + checkValue);
+                    //    int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
+
+                    //    if (orderResultCancel == 0)
+                    //    {
+                    //        AddOrderList(item);
+                    //        item.SetSellCancelOrder();
+                    //        coreEngine.SaveItemLogMessage(item.itemCode, "익절 취소 접수");
+                    //        autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
+                    //        return;
+                    //    }
+                    //}
                     return;
                 }
                 else //손절 걸려있을시
                 {
-                    coreEngine.SaveItemLogMessage(item.itemCode, "손절주문 취소 : " + item.itemName + " 수량 " + item.curQnt);
-                    int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
+                    int quantity = ((sellPercentage == 1) ? (item.curQnt) : (int)(item.startSellQnt * sellPercentage));
+                    coreEngine.SaveItemLogMessage(item.itemCode, "손절주문 취소 : " + item.itemName + " 수량 " + quantity);
+                    int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, quantity, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
 
                     if (orderResultCancel == 0)
                     {
@@ -2560,22 +2560,26 @@ namespace Singijeon
         public void OnReceiveTrDataCheckStopLoss(TradingItem item, double checkValue, double sellPercentage = 1, bool StopLossDivide = false)
         {
             if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE)
+            {
+                coreEngine.SaveItemLogMessage(item.itemCode, "현재 손절할수있는 상태가 아닙니다 " + item.state);
                 return;
+            }
 
             if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE
                 || item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE_OUTCOUNT)
             {
                 if (item.IsProfitSell())
                 {
+                    int quantity = ((sellPercentage == 1) ? (item.curQnt) : (int)(item.startSellQnt * sellPercentage));
                     //취소주문(익절주문취소)
                     coreEngine.SaveItemLogMessage(item.itemCode,
                         "익절주문취소 : " + item.itemName
-                         + " 수량 : " + item.curQnt
+                         + " 주문 수량 : " + quantity.ToString()
                          + " 가격 : " + (int)item.sellPrice
                          + " 주문방법 : " + item.sellOrderType
                          + " 주문번호 : " + item.sellOrderNum
                         );
-                    int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.curQnt, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
+                    int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, quantity, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
 
                     if (orderResultCancel == 0)
                     {
