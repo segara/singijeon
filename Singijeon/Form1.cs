@@ -2461,7 +2461,8 @@ namespace Singijeon
                 }
                 else //손절 걸려있을시
                 {
-                    int quantity = ((sellPercentage == 1) ? (item.curQnt) : (int)(item.startSellQnt * sellPercentage));
+                    int quantity = ((sellPercentage == 1) ? (item.curQnt) : (int)(item.startSellQnt * item.ts.divideSellLossPercentage));
+                    quantity = Math.Max(1, quantity);
                     coreEngine.SaveItemLogMessage(item.itemCode, "손절주문 취소 : " + item.itemName + " 수량 " + quantity);
                     int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, quantity, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
 
@@ -2570,7 +2571,8 @@ namespace Singijeon
             {
                 if (item.IsProfitSell())
                 {
-                    int quantity = ((sellPercentage == 1) ? (item.curQnt) : (int)(item.startSellQnt * sellPercentage));
+                    int quantity = ((sellPercentage == 1) ? (item.curQnt) : (int)(item.startSellQnt * item.ts.divideSellProfitPercentage));
+                    quantity = Math.Max(1, quantity);
                     //취소주문(익절주문취소)
                     coreEngine.SaveItemLogMessage(item.itemCode,
                         "익절주문취소 : " + item.itemName
