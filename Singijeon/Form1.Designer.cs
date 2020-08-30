@@ -53,8 +53,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
             this.axKHOpenAPI1 = new AxKHOpenAPILib.AxKHOpenAPI();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.메뉴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -330,12 +330,6 @@
             this.체결_체결가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.outstandingDataGrid = new System.Windows.Forms.DataGridView();
-            this.미체결_주문번호 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.미체결_종목코드 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.미체결_종목명 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.미체결_주문수량 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.미체결_미체결량 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.미체결_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tsDataGridView = new System.Windows.Forms.DataGridView();
             this.매매전략_계좌번호 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -361,6 +355,13 @@
             this.kospiInfo = new System.Windows.Forms.Label();
             this.kosdaqInfo = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.미체결_주문번호 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.미체결_종목코드 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.미체결_종목명 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.미체결_주문수량 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.미체결_미체결량 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.미체결_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.미체결_주문가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -549,7 +550,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 441F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 443F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -590,10 +591,10 @@
             this.panel7.Controls.Add(this.label11);
             this.panel7.Controls.Add(this.usingTickBuyCheck);
             this.panel7.Controls.Add(this.label12);
-            this.panel7.Location = new System.Drawing.Point(351, 3);
+            this.panel7.Location = new System.Drawing.Point(350, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(447, 214);
+            this.panel7.Size = new System.Drawing.Size(446, 214);
             this.panel7.TabIndex = 5;
             // 
             // useEnvelopeCheckBox
@@ -913,7 +914,7 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(340, 214);
+            this.panel1.Size = new System.Drawing.Size(339, 214);
             this.panel1.TabIndex = 0;
             // 
             // dummyStrategyAddBtn
@@ -1237,10 +1238,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(805, 3);
+            this.panel2.Location = new System.Drawing.Point(803, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(436, 214);
+            this.panel2.Size = new System.Drawing.Size(438, 214);
             this.panel2.TabIndex = 4;
             // 
             // label41
@@ -1677,7 +1678,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.10482F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.89518F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 438F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 349F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 350F));
             this.tableLayoutPanel3.Controls.Add(this.panel16, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel17, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel4, 1, 1);
@@ -1702,7 +1703,7 @@
             this.panel16.Location = new System.Drawing.Point(227, 196);
             this.panel16.Margin = new System.Windows.Forms.Padding(0);
             this.panel16.Name = "panel16";
-            this.panel16.Size = new System.Drawing.Size(227, 40);
+            this.panel16.Size = new System.Drawing.Size(226, 40);
             this.panel16.TabIndex = 10;
             // 
             // balanceSellBtn
@@ -1727,7 +1728,7 @@
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(454, 196);
+            this.panel4.Location = new System.Drawing.Point(453, 196);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(438, 40);
@@ -1859,7 +1860,7 @@
             // panel18
             // 
             this.panel18.Controls.Add(this.panel6);
-            this.panel18.Location = new System.Drawing.Point(895, 3);
+            this.panel18.Location = new System.Drawing.Point(894, 3);
             this.panel18.Name = "panel18";
             this.panel18.Size = new System.Drawing.Size(336, 190);
             this.panel18.TabIndex = 11;
@@ -1998,7 +1999,7 @@
             // panel19
             // 
             this.panel19.Controls.Add(this.balanceSellMonitorBtn);
-            this.panel19.Location = new System.Drawing.Point(895, 199);
+            this.panel19.Location = new System.Drawing.Point(894, 199);
             this.panel19.Name = "panel19";
             this.panel19.Size = new System.Drawing.Size(336, 34);
             this.panel19.TabIndex = 12;
@@ -2028,7 +2029,7 @@
             this.panel3.Location = new System.Drawing.Point(230, 2);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(221, 192);
+            this.panel3.Size = new System.Drawing.Size(220, 192);
             this.panel3.TabIndex = 4;
             // 
             // panel13
@@ -2144,7 +2145,7 @@
             // panel21
             // 
             this.panel21.Controls.Add(this.BssDataGridView);
-            this.panel21.Location = new System.Drawing.Point(457, 3);
+            this.panel21.Location = new System.Drawing.Point(456, 3);
             this.panel21.Name = "panel21";
             this.panel21.Size = new System.Drawing.Size(431, 190);
             this.panel21.TabIndex = 13;
@@ -2249,7 +2250,7 @@
             this.잔고추가매수.Controls.Add(this.panel20);
             this.잔고추가매수.Location = new System.Drawing.Point(4, 22);
             this.잔고추가매수.Name = "잔고추가매수";
-            this.잔고추가매수.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.잔고추가매수.Padding = new System.Windows.Forms.Padding(3);
             this.잔고추가매수.Size = new System.Drawing.Size(1254, 256);
             this.잔고추가매수.TabIndex = 5;
             this.잔고추가매수.Text = "잔고추가매수";
@@ -2623,7 +2624,7 @@
             this.tabPage9.Controls.Add(this.panel8);
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage9.Size = new System.Drawing.Size(1254, 256);
             this.tabPage9.TabIndex = 4;
             this.tabPage9.Text = "마틴게일";
@@ -3732,7 +3733,8 @@
             this.미체결_종목명,
             this.미체결_주문수량,
             this.미체결_미체결량,
-            this.미체결_취소});
+            this.미체결_취소,
+            this.미체결_주문가});
             this.outstandingDataGrid.Location = new System.Drawing.Point(1, 3);
             this.outstandingDataGrid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.outstandingDataGrid.Name = "outstandingDataGrid";
@@ -3742,52 +3744,6 @@
             this.outstandingDataGrid.Size = new System.Drawing.Size(1248, 121);
             this.outstandingDataGrid.TabIndex = 0;
             this.outstandingDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.outstandingDataGrid_CellContentClick);
-            // 
-            // 미체결_주문번호
-            // 
-            this.미체결_주문번호.HeaderText = "주문번호";
-            this.미체결_주문번호.MinimumWidth = 6;
-            this.미체결_주문번호.Name = "미체결_주문번호";
-            this.미체결_주문번호.ReadOnly = true;
-            // 
-            // 미체결_종목코드
-            // 
-            this.미체결_종목코드.HeaderText = "종목코드";
-            this.미체결_종목코드.MinimumWidth = 6;
-            this.미체결_종목코드.Name = "미체결_종목코드";
-            this.미체결_종목코드.ReadOnly = true;
-            // 
-            // 미체결_종목명
-            // 
-            this.미체결_종목명.HeaderText = "종목명";
-            this.미체결_종목명.MinimumWidth = 6;
-            this.미체결_종목명.Name = "미체결_종목명";
-            this.미체결_종목명.ReadOnly = true;
-            // 
-            // 미체결_주문수량
-            // 
-            this.미체결_주문수량.HeaderText = "주문수량";
-            this.미체결_주문수량.MinimumWidth = 6;
-            this.미체결_주문수량.Name = "미체결_주문수량";
-            this.미체결_주문수량.ReadOnly = true;
-            // 
-            // 미체결_미체결량
-            // 
-            this.미체결_미체결량.HeaderText = "미체결량";
-            this.미체결_미체결량.MinimumWidth = 6;
-            this.미체결_미체결량.Name = "미체결_미체결량";
-            this.미체결_미체결량.ReadOnly = true;
-            // 
-            // 미체결_취소
-            // 
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle25.NullValue = "취소";
-            this.미체결_취소.DefaultCellStyle = dataGridViewCellStyle25;
-            this.미체결_취소.HeaderText = "취소";
-            this.미체결_취소.MinimumWidth = 10;
-            this.미체결_취소.Name = "미체결_취소";
-            this.미체결_취소.ReadOnly = true;
-            this.미체결_취소.Text = "취소";
             // 
             // groupBox4
             // 
@@ -4013,6 +3969,57 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // 미체결_주문번호
+            // 
+            this.미체결_주문번호.HeaderText = "주문번호";
+            this.미체결_주문번호.MinimumWidth = 6;
+            this.미체결_주문번호.Name = "미체결_주문번호";
+            this.미체결_주문번호.ReadOnly = true;
+            // 
+            // 미체결_종목코드
+            // 
+            this.미체결_종목코드.HeaderText = "종목코드";
+            this.미체결_종목코드.MinimumWidth = 6;
+            this.미체결_종목코드.Name = "미체결_종목코드";
+            this.미체결_종목코드.ReadOnly = true;
+            // 
+            // 미체결_종목명
+            // 
+            this.미체결_종목명.HeaderText = "종목명";
+            this.미체결_종목명.MinimumWidth = 6;
+            this.미체결_종목명.Name = "미체결_종목명";
+            this.미체결_종목명.ReadOnly = true;
+            // 
+            // 미체결_주문수량
+            // 
+            this.미체결_주문수량.HeaderText = "주문수량";
+            this.미체결_주문수량.MinimumWidth = 6;
+            this.미체결_주문수량.Name = "미체결_주문수량";
+            this.미체결_주문수량.ReadOnly = true;
+            // 
+            // 미체결_미체결량
+            // 
+            this.미체결_미체결량.HeaderText = "미체결량";
+            this.미체결_미체결량.MinimumWidth = 6;
+            this.미체결_미체결량.Name = "미체결_미체결량";
+            this.미체결_미체결량.ReadOnly = true;
+            // 
+            // 미체결_취소
+            // 
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle25.NullValue = "취소";
+            this.미체결_취소.DefaultCellStyle = dataGridViewCellStyle25;
+            this.미체결_취소.HeaderText = "취소";
+            this.미체결_취소.MinimumWidth = 10;
+            this.미체결_취소.Name = "미체결_취소";
+            this.미체결_취소.ReadOnly = true;
+            this.미체결_취소.Text = "취소";
+            // 
+            // 미체결_주문가
+            // 
+            this.미체결_주문가.HeaderText = "주문가";
+            this.미체결_주문가.Name = "미체결_주문가";
             // 
             // Form1
             // 
@@ -4315,12 +4322,6 @@
         private System.Windows.Forms.RadioButton stopLossSijangRadio;
         private System.Windows.Forms.Panel panel12;
         private System.Windows.Forms.Panel panel11;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_주문번호;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_종목코드;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_종목명;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_주문수량;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_미체결량;
-        private System.Windows.Forms.DataGridViewButtonColumn 미체결_취소;
         private System.Windows.Forms.CheckBox useVwmaCheckBox;
         private System.Windows.Forms.CheckBox m_useVwmaCheckBox;
         private System.Windows.Forms.Panel panel13;
@@ -4446,6 +4447,13 @@
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.NumericUpDown DivideSellCountUpDownProfit;
         private System.Windows.Forms.CheckBox useEnvelopeCheckBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_주문번호;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_종목코드;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_종목명;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_주문수량;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_미체결량;
+        private System.Windows.Forms.DataGridViewButtonColumn 미체결_취소;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 미체결_주문가;
     }
 }
 

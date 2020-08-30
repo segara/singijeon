@@ -403,14 +403,14 @@ namespace Singijeon
             switch(checkType)
             {
                 case IS_TRUE_OR_FALE_TYPE.DOWN:
-                    if(value < d_conditionValue && value > d_conditionValue - 0.5) //급락의 경우 제외(-0.5더 하락시 제외)
+                    if(value < d_conditionValue )
                     {
                         if (OnReceivedTrData != null)
                             OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));
                     }
                     return;
                 case IS_TRUE_OR_FALE_TYPE.DOWN_OR_SAME:
-                    if (value <= d_conditionValue && value > d_conditionValue - 0.5)//급락의 경우 제외(-0.5더 하락시 제외)
+                    if (value <= d_conditionValue)
                     {
                         if (OnReceivedTrData != null)
                             OnReceivedTrData.Invoke(this, new OnReceivedTrEventArgs(item, value));

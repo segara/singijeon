@@ -266,6 +266,34 @@ namespace Singijeon.Core
             {
                 logMessageItem.Add(itemName, logMessage);
             }
+
+            string filePath = DateTime.Now.ToString("yyyyMMdd_") + itemName + "_log.txt";
+
+            FileInfo fi = new FileInfo(filePath);
+
+            try
+            {
+                if (fi.Exists)
+                {
+                    using (StreamWriter sw = File.AppendText(filePath))
+                    {
+                        sw.WriteLine(logMessage);
+                    }
+                }
+                else
+                {
+                    using (StreamWriter sw = new StreamWriter(filePath))
+                    {
+                        sw.WriteLine(logMessage);
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //SendLogMessage(e.Message);
+            }
         }
 
         public void SaveItemLogMessageAll()
@@ -273,7 +301,6 @@ namespace Singijeon.Core
             foreach (var item in logMessageItem)
             {
                 string filePath = DateTime.Now.ToString("yyyyMMdd_") + item.Key + "_log.txt";
-
 
                 FileInfo fi = new FileInfo(filePath);
 

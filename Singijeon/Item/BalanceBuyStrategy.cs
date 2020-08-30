@@ -76,7 +76,7 @@ namespace Singijeon
             }
         }
 
-        int hogaUnitCalc(bool kospi,int price)
+        public static int hogaUnitCalc(bool kospi,int price)
         {
             int hogaUnit = 1;
             if (price < 1000)

@@ -116,6 +116,8 @@ namespace Singijeon
                 outstandingDataGrid["미체결_주문수량", rowIndex].Value = table["미체결_주문수량"];
             if (table.ContainsKey("미체결_미체결량"))
                 outstandingDataGrid["미체결_미체결량", rowIndex].Value = table["미체결_미체결량"];
+            if (table.ContainsKey("미체결_주문가"))
+                outstandingDataGrid["미체결_주문가", rowIndex].Value = table["미체결_주문가"];
         }
 
         public void Update_OrderDataGrid_UI(Hashtable table, int rowIndex)
