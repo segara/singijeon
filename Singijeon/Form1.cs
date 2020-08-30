@@ -3053,6 +3053,7 @@ namespace Singijeon
 
                                     autoTradingDataGrid["매매진행_현재가", addRow].Value = stockInfo.GetBuyHoga(0);
 
+                                   
                                     coreEngine.SaveItemLogMessage(itemcode,"매수 요청 - " + "종목코드 : " + itemcode + " 주문가 : " + price + " 주문수량 : " + i_qnt + " 매수조건식 : " + trailingItem.strategy.buyCondition.Name);
 
                                     tradingItem.ts.StrategyBuyOrderUpdate(itemcode, price, i_qnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_BEFORE_ORDER);

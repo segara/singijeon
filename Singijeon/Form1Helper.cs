@@ -289,8 +289,9 @@ namespace Singijeon
             autoTradingDataGrid["매매진행_매수량", index].Value = i_qnt;
             autoTradingDataGrid["매매진행_매수가", index].Value = i_price;
             autoTradingDataGrid["매매진행_매수시간", index].Value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        }
 
+            coreEngine.SaveItemLogMessage(itemcode, state);
+        }
 
         private void UpdateBuyAutoTradingDataGridState(string orderNum, bool buyComplete = false)
         {
