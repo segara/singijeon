@@ -2823,9 +2823,9 @@ namespace Singijeon
 
         public void API_OnReceiveMsg(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveMsgEvent e)
         {
-            coreEngine.SendLogMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            coreEngine.SendLogMessage("ScreenNum : " + e.sScrNo + ",사용자구분명 : " + e.sRQName + ", Tr이름: " + e.sTrCode + ", MSG : " + e.sMsg);
-            coreEngine.SendLogMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            coreEngine.SendLogErrorMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            coreEngine.SendLogErrorMessage("ScreenNum : " + e.sScrNo + ",사용자구분명 : " + e.sRQName + ", Tr이름: " + e.sTrCode + ", MSG : " + e.sMsg);
+            coreEngine.SendLogErrorMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
 
         public void API_OnReceiveRealDataHoga(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealDataEvent e)
