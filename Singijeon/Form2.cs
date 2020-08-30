@@ -24,9 +24,12 @@ namespace Singijeon {
         int curErrorIndex   = 0;
         int curMartinIndex = 0;
 
-        long curProfit = 0;
+        public static long curProfit = 0;
         Thread taskWorker;
         delegate void CrossThreadSafetyUpdate(ListBox ctl);
+
+        GlobalSetting setting = new GlobalSetting();
+        GlobalSettingValue gValue = new GlobalSettingValue();
 
         public Form2(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1)
         {
@@ -43,7 +46,9 @@ namespace Singijeon {
             this.FormClosing += Form_FormClosing;
 
             logMessage = coreEngine.logMessage;
-
+            
+            setting.Load();
+            profit_label.Text = string.Format("{0:n0}", curProfit);
             Start();
         }
         private void Form_FormClosing(object sender, EventArgs e)
@@ -191,11 +196,9 @@ namespace Singijeon {
              
                 while (curWarningIndex < warningItem.Count)
                 {
-
                     warningLogListBox.Items.Add(warningItem[curWarningIndex].logTxt);
                     curWarningIndex++;
                 }
-
             }
         }
 
@@ -224,7 +227,6 @@ namespace Singijeon {
                         errorListBox.Items.Add(errorItem[curErrorIndex].logTxt);
                         curErrorIndex++;
                     }
-
                 }));
             }
             else
@@ -236,7 +238,6 @@ namespace Singijeon {
                 }
                 while (curErrorIndex < errorItem.Count)
                 {
-
                     errorListBox.Items.Add(errorItem[curErrorIndex].logTxt);
                     curErrorIndex++;
                 }
@@ -258,6 +259,9 @@ namespace Singijeon {
             {
                 profit_label.Text = string.Format("{0:n0}", curProfit);
             }
+            
+            gValue.trading_profit = curProfit;
+            setting.Save(gValue);
         }
 
         private void AxKHOpenAPI_OnReceiveTrData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveTrDataEvent e)

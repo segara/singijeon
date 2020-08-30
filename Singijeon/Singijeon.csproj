@@ -75,6 +75,7 @@
     <Compile Include="Item\BlockManager.cs" />
     <Compile Include="Item\BuyDevideItem.cs" />
     <Compile Include="Item\CheckMaUp.cs" />
+    <Compile Include="Item\GlobalSetting.cs" />
     <Compile Include="Item\NotConclusionItem.cs" />
     <Compile Include="Item\MartinGailManager.cs" />
     <Compile Include="Item\Condition.cs" />
