@@ -103,6 +103,7 @@ namespace Singijeon
             axKHOpenAPI1.OnReceiveConditionVer += API_OnReceiveConditionVer; //검색 받기
             axKHOpenAPI1.OnReceiveRealCondition += API_OnReceiveRealCondition; //실시간 검색
             axKHOpenAPI1.OnReceiveTrCondition += API_OnReceiveTrCondition; //검색
+            axKHOpenAPI1.OnReceiveMsg += API_OnReceiveMsg;
 
             axKHOpenAPI1.OnReceiveTrData += API_OnReceiveTrData; //정보요청
             axKHOpenAPI1.OnReceiveTrData += API_OnReceiveTrDataHoga; //정보요청(호가)
@@ -554,7 +555,6 @@ namespace Singijeon
             }
             else if (e.sRQName == ConstName.RECEIVE_TR_DATA_REALTIME_NOT_CONCLUSION)
             {
-
                 int count = axKHOpenAPI1.GetRepeatCnt(e.sTrCode, e.sRQName);
 
                 for (int i = 0; i < count; i++)
@@ -823,6 +823,8 @@ namespace Singijeon
                 string conclusionPrice = axKHOpenAPI1.GetChejanData(910);
                 string conclusionQuantity = axKHOpenAPI1.GetChejanData(911);
                 string unitConclusionQuantity = axKHOpenAPI1.GetChejanData(915);
+                string error_code = axKHOpenAPI1.GetChejanData(919);
+                string canOrderQuantity = axKHOpenAPI1.GetChejanData(933);
 
                 int i_ConclusionQuantity = 0;
                 int.TryParse(conclusionQuantity, out i_ConclusionQuantity);
@@ -832,11 +834,13 @@ namespace Singijeon
 
                 string price = axKHOpenAPI1.GetChejanData(10).Trim();
 
-                int i_allQuantity, i_averagePrice = 0;
+                int i_allQuantity, i_averagePrice, i_canOrderQuantity = 0;
                 string allQuantity = axKHOpenAPI1.GetChejanData(930).Trim();
                 int.TryParse(allQuantity, out i_allQuantity);
                 string averagePrice = axKHOpenAPI1.GetChejanData(931).Trim();
                 int.TryParse(averagePrice, out i_averagePrice);
+                int.TryParse(canOrderQuantity, out i_canOrderQuantity);
+
 
                 coreEngine.SaveItemLogMessage(itemCode,"___________접수/체결_____________");
                 coreEngine.SaveItemLogMessage(itemCode, "종목명 : " + axKHOpenAPI1.GetMasterCodeName(itemCode));
@@ -854,6 +858,8 @@ namespace Singijeon
                 coreEngine.SaveItemLogMessage(itemCode, "단위체결량(체결당 체결량) :" + unitConclusionQuantity);
                 coreEngine.SaveItemLogMessage(itemCode, "매입단가 :" + i_averagePrice);
                 coreEngine.SaveItemLogMessage(itemCode, "총보유 수량 :" + i_allQuantity);
+                coreEngine.SaveItemLogMessage(itemCode, "주문가능 수량 :" + i_canOrderQuantity);
+                coreEngine.SaveItemLogMessage(itemCode, "거부사유 :" + error_code);
                 coreEngine.SaveItemLogMessage(itemCode, "________________________________");
 
                 if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_SUBMIT))
@@ -2520,7 +2526,7 @@ namespace Singijeon
             {
                 AddOrderList(item);
                 item.SetSold(true);
-                coreEngine.SaveItemLogMessage(item.itemCode, "ui -> 매도주문접수시도");
+                coreEngine.SaveItemLogMessage(item.itemCode, "ui -> 익절매도주문접수시도");
                 UpdateAutoTradingDataGridRow(item.itemCode, item, item.curPrice, ConstName.AUTO_TRADING_STATE_SELL_BEFORE_ORDER);
                 UpdateAutoTradingDataGridRowWinLose(item.itemCode, item, "win");
                 //printForm2.AddProfit((item.curPrice - item.buyingPrice) * item.curQnt);
@@ -2627,6 +2633,7 @@ namespace Singijeon
             {
                 orderQnt = item.curQnt; //일반매도
             }
+
             int orderResult = axKHOpenAPI1.SendOrder(
                 "종목손절매도",
                 GetScreenNum().ToString(),
@@ -2638,6 +2645,7 @@ namespace Singijeon
                 item.sellOrderType,
                 "" //원주문번호없음
             );
+
             if (orderResult == 0) //요청 성공시 (실거래는 안될 수 있음)
             {
                 AddOrderList(item);

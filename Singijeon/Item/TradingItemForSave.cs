@@ -31,6 +31,7 @@ namespace Singijeon
         public int buyingQnt;
         public int sellQnt;
         public int curQnt;
+        public int curCanOrderQnt;
         public int startSellQnt;
         public int trailingTickCnt;
         public int outStandingQnt;
