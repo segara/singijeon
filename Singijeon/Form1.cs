@@ -860,6 +860,13 @@ namespace Singijeon
 
                 if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_SUBMIT))
                 {
+                    if(int.Parse(outstanding) == 0)
+                    {
+                        //접수인데 미체결량 0 이면 매수 또는 매도 취소신호임
+                        //이때 주문번호는 기존 취소하려던 주문 번호로 들어옴
+                        RemoveOrderList(ordernum);
+                        return; 
+                    }
                     TradingItem CheckItemExist = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)));
                   
                     //주문번호 따오기 위한 부분 
@@ -915,19 +922,21 @@ namespace Singijeon
                         }
                         else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_CANCEL_BUY_ORDER))
                         {
-                            coreEngine.SaveItemLogMessage(itemCode, "!!!!!!!!!매수 취소 요청!!!!!!!!");
+                            coreEngine.SaveItemLogMessage(itemCode, "!!!!!!!!!매수 취소 요청 접수!!!!!!!!");
 
                             TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)));
                             item.buyCancelOrderNum = ordernum;
-                            RemoveOrderList(item); ; //접수리스트에서만 지움
-                            coreEngine.SaveItemLogMessage(itemCode, "매수 취소 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
+                            //RemoveOrderList(item);  //접수리스트에서만 지움
+                            coreEngine.SaveItemLogMessage(itemCode, "매수 취소 요청 - " + "종목코드 : " + itemCode + "취소시킬 주문번호 : " + item.buyOrderNum + " 취소 접수 주문번호 : " + ordernum);
                         }
                         else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_CANCEL_SELL_ORDER))
                         {
+                            coreEngine.SaveItemLogMessage(itemCode, "!!!!!!!!!매도 취소 요청 접수!!!!!!!!");
+
                             TradingItem item = this.tryingOrderList.Find(o => (itemCode.Contains(o.itemCode)));
                             item.sellCancelOrderNum = ordernum;
-                            RemoveOrderList(item); //접수리스트에서만 지움
-                            coreEngine.SaveItemLogMessage(itemCode, "매도 취소 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
+                            //RemoveOrderList(item); //접수리스트에서만 지움
+                            coreEngine.SaveItemLogMessage(itemCode, "매도 취소 요청 - " + "종목코드 : " + itemCode + "취소시킬 주문번호 : " + item.sellOrderNum + " 취소 접수 주문번호 : " + ordernum);
                         }
                     }
                     else //자동매매에 의한 주문이 아닐때
@@ -3526,6 +3535,7 @@ namespace Singijeon
                     TradingItem tradeItem = ts.tradingItemList.Find(o => o.sellCancelOrderNum.Equals(orderNum));
                     if (tradeItem != null)
                     {
+                        coreEngine.SaveItemLogMessage(tradeItem.itemCode, "매도주문 취소완료");
                         tradeItem.SetSellCancelOrderComplete();
                         tradeItem.sellQnt = 0;
                         //ts.tradingItemList.Remove(tradeItem);
@@ -3608,17 +3618,30 @@ namespace Singijeon
         }
         public void AddOrderList(TradingItem item)
         {
+            //동일 종목 들어갈 수 있음
             TradingItem itemFind = tryingOrderList.Find(o => (o.Uid == item.Uid));
             if (itemFind == null)
                 tryingOrderList.Add(item);
         }
+
         public void RemoveOrderList(TradingItem item)
         {
             TradingItem itemFind = tryingOrderList.Find(o => (o.Uid == item.Uid));
             if (itemFind != null)
                 tryingOrderList.Remove(item);
         }
-      
+
+        public void RemoveOrderList(string orderNum)
+        {
+            TradingItem itemFindBuy = tryingOrderList.Find(o => (o.buyOrderNum == orderNum));
+            if (itemFindBuy != null)
+                tryingOrderList.Remove(itemFindBuy);
+
+            TradingItem itemFindSell = tryingOrderList.Find(o => (o.sellOrderNum == orderNum));
+            if (itemFindSell != null)
+                tryingOrderList.Remove(itemFindSell);
+        }
+
         private void Form_FormClosing(object sender, EventArgs e)
         {
             axKHOpenAPI1.OnEventConnect -= API_OnEventConnect; //로그인
