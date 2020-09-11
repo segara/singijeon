@@ -2640,7 +2640,7 @@ namespace Singijeon
                 orderQnt = item.curCanOrderQnt; //일반매도
             }
 
-            double price = (double)item.buyingPrice * (1 - (item.ts.stoplossRate)*0.01);
+            double price = (double)item.buyingPrice * (1 + (item.ts.stoplossRate)*0.01); //stoplossRate : -값
             int tick = BalanceBuyStrategy.hogaUnitCalc(IsKospi(item.itemCode), (int)item.curPrice);
             int minusTick = (int)price % tick;
             int orderPrice = (int)price - minusTick;
