@@ -830,14 +830,6 @@ namespace Singijeon
 
                 string price = axKHOpenAPI1.GetChejanData(10).Trim();
 
-                int i_allQuantity, i_averagePrice, i_canOrderQuantity = 0;
-                string allQuantity = axKHOpenAPI1.GetChejanData(930).Trim();
-                int.TryParse(allQuantity, out i_allQuantity);
-                string averagePrice = axKHOpenAPI1.GetChejanData(931).Trim();
-                int.TryParse(averagePrice, out i_averagePrice);
-                int.TryParse(canOrderQuantity, out i_canOrderQuantity);
-
-
                 coreEngine.SaveItemLogMessage(itemCode,"___________접수/체결_____________");
                 coreEngine.SaveItemLogMessage(itemCode, "종목명 : " + axKHOpenAPI1.GetMasterCodeName(itemCode));
                 coreEngine.SaveItemLogMessage(itemCode, "주문상태 : " + orderState);
@@ -852,9 +844,6 @@ namespace Singijeon
                 coreEngine.SaveItemLogMessage(itemCode, "체결량(누적체결량) :" + conclusionQuantity);
                 coreEngine.SaveItemLogMessage(itemCode, "미체결 수량 :" + outstanding);
                 coreEngine.SaveItemLogMessage(itemCode, "단위체결량(체결당 체결량) :" + unitConclusionQuantity);
-                coreEngine.SaveItemLogMessage(itemCode, "매입단가 :" + i_averagePrice);
-                coreEngine.SaveItemLogMessage(itemCode, "총보유 수량 :" + i_allQuantity);
-                coreEngine.SaveItemLogMessage(itemCode, "주문가능 수량 :" + i_canOrderQuantity);
                 coreEngine.SaveItemLogMessage(itemCode, "거부사유 :" + error_code);
                 coreEngine.SaveItemLogMessage(itemCode, "________________________________");
 
@@ -912,13 +901,17 @@ namespace Singijeon
                             item.sellPrice = long.Parse(orderPrice);
                             item.sellOrderNum = ordernum;
                             item.sellQnt = int.Parse(orderQuantity);
+                            //접수상태로 체결이 안될수도 있기 때문에 일단 주문가능한 수량에서 제외한다.
+                            item.curCanOrderQnt = item.curCanOrderQnt - item.sellQnt; 
+                           
                             item.SetState(TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
 
                             RemoveOrderList(item); //접수리스트에서만 지움
 
                             UpdateSellAutoTradingDataGridStateOnly(ordernum, ConstName.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
                             item.ts.StrategyOnReceiveSellOrderUpdate(item.itemCode, (int)item.buyingPrice, item.buyingQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_NOT_COMPLETE);
-                            coreEngine.SaveItemLogMessage(itemCode, "자동 매도 요청 - " + "종목코드 : " + itemCode + " 주문번호 : " + ordernum);
+                            coreEngine.SaveItemLogMessage(itemCode, "매도 접수 - 주문번호 : " + ordernum);
+                            coreEngine.SaveItemLogMessage(itemCode, "현재수량" + item.curQnt + " 주문수량 : " + item.sellQnt + " 매도가능수량 : " + item.curCanOrderQnt);
                         }
                         else if (orderType.Equals(ConstName.RECEIVE_CHEJAN_CANCEL_BUY_ORDER))
                         {
@@ -1183,6 +1176,7 @@ namespace Singijeon
                             if (item != null)
                             {
                                 coreEngine.SaveItemLogMessage(itemCode, "매입단가 셋팅:" + buyingPrice);
+                             
                                 item.buyingPrice = int.Parse(buyingPrice);
                                 item.curQnt = int.Parse(balanceQnt);
                                 item.curCanOrderQnt = int.Parse(orderAvailableQnt);
@@ -2478,7 +2472,7 @@ namespace Singijeon
                 }
                 else //손절 걸려있을시
                 {
-                    int quantity = ((sellPercentage == 1) ? (item.sellQnt) : (int)(item.startSellQnt * item.ts.divideSellLossPercentage));
+                    int quantity = item.sellQnt;
                     quantity = Math.Max(1, quantity);
                     coreEngine.SaveItemLogMessage(item.itemCode, "손절주문 취소 : " + item.itemName + " 수량 " + quantity);
                     int orderResultCancel = axKHOpenAPI1.SendOrder(ConstName.RECEIVE_TR_DATA_MODIFY, GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, quantity, (int)item.sellPrice, item.sellOrderType, item.sellOrderNum);
@@ -2589,11 +2583,12 @@ namespace Singijeon
             {
                 if (item.IsProfitSell())
                 {
-                    int quantity = ((sellPercentage == 1) ? (item.sellQnt) : (int)(item.startSellQnt * item.ts.divideSellProfitPercentage));
+                    int quantity = item.sellQnt;
                     quantity = Math.Max(1, quantity);
                     //취소주문(익절주문취소)
                     coreEngine.SaveItemLogMessage(item.itemCode,
                         "익절주문취소 : " + item.itemName
+                         + " 이전 주문수량 : " + item.sellQnt
                          + " 주문 수량 : " + quantity.ToString()
                          + " 가격 : " + (int)item.sellPrice
                          + " 주문방법 : " + item.sellOrderType
@@ -2613,8 +2608,9 @@ namespace Singijeon
                 }
                 else
                 {
-                    coreEngine.SaveItemLogMessage(item.itemCode, "기존 손절주문확인 : " + item.itemName + " 수량 " + item.outStandingQnt);
-                    //같은 손절 주문이면 아무것도 안함
+                    //같은 손절 주문일때
+                    coreEngine.SaveItemLogMessage(item.itemCode, "기존 손절 주문 처리중 / 수량 " + item.outStandingQnt);
+                    coreEngine.SaveItemLogMessage(item.itemCode, "현재 손해% : " + checkValue + " / 설정 stoplossRate : " + item.ts.stoplossRate  + " / 설정 divideStoplossRate : " + item.ts.divideStoplossRate);
                     return;
                 }
             }
@@ -2644,7 +2640,9 @@ namespace Singijeon
                 orderQnt = item.curCanOrderQnt; //일반매도
             }
 
-            double price = (double)item.buyingPrice * (1 + (item.ts.stoplossRate)*0.01); //stoplossRate : -값
+            double minusRate = (sellPercentage == 1) ? item.ts.stoplossRate : item.ts.divideStoplossRate;
+            double price = (double)item.buyingPrice * (1 + (minusRate * 0.01)); //minusRate : -값
+
             int tick = BalanceBuyStrategy.hogaUnitCalc(IsKospi(item.itemCode), (int)item.curPrice);
             int minusTick = (int)price % tick;
             int orderPrice = (int)price - minusTick;
@@ -3404,7 +3402,6 @@ namespace Singijeon
                     //coreEngine.SaveItemLogMessage(tradeItem.itemCode, "평단가 : " + PriceAverage);
                     //tradeItem.buyingPrice = PriceAverage;
                     tradeItem.SetCompleteBuying(buyComplete);
-
 
                     if (buyComplete)
                         tradeItem.ts.StrategyOnReceiveBuyChejanUpdate(tradeItem.itemCode, (int)tradeItem.buyingPrice, tradeItem.buyingQnt, TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE);
