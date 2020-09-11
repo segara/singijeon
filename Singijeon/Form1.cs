@@ -1177,14 +1177,18 @@ namespace Singijeon
                 {
                     foreach (TradingStrategy ts in tradingStrategyList)
                     {
-                        TradingItem item = ts.tradingItemList.Find(o => (o.curQnt == int.Parse(balanceQnt)&&(o.itemCode == itemCode)));
-                        if (item != null)
+                        List<TradingItem> items = ts.tradingItemList.FindAll(o => (o.itemCode == itemCode));
+                        foreach(var item in items)
                         {
-                            coreEngine.SaveItemLogMessage(itemCode, "매입단가 셋팅:" + buyingPrice);
-                            item.buyingPrice = int.Parse(buyingPrice);
-                            item.curCanOrderQnt = int.Parse(orderAvailableQnt);
+                            if (item != null)
+                            {
+                                coreEngine.SaveItemLogMessage(itemCode, "매입단가 셋팅:" + buyingPrice);
+                                item.buyingPrice = int.Parse(buyingPrice);
+                                item.curQnt = int.Parse(balanceQnt);
+                                item.curCanOrderQnt = int.Parse(orderAvailableQnt);
+                            }
                         }
-                        else
+                        if(items == null || items.Count == 0)
                         {
                             coreEngine.SaveItemLogMessage(itemCode, "잔고 종목을 찾을수 없습니다");
                         }
@@ -2513,7 +2517,7 @@ namespace Singijeon
             int orderQnt = (int)((double)item.startSellQnt * sellPercentage); //분할매도
             if(sellPercentage == 1)
             {
-                orderQnt = item.curQnt - item.sellQnt; //일반매도 : 미리 주문 걸려있는 수량을 뺌
+                orderQnt = item.curCanOrderQnt; //일반매도
             }
 
             int orderResult = axKHOpenAPI1.SendOrder(
@@ -4074,6 +4078,32 @@ namespace Singijeon
                 usingTrailingBuyCheck.Enabled = true;
                 orderPecentageCheckBox.Enabled = true;
                 useVwmaCheckBox.Enabled = true;
+            }
+        }
+
+        //분할 매도는 구매 당시의 수량에서 분할을 하는 것이므로
+        //익절 분할 매도, 손절 분할 매도에서 동일한 수량으로 매도하도록 강제 셋팅한다
+        //이유는 익절->손절, 손절->익절등의 전환시에 현재 수량이 바뀐상태에서
+        //구매당시의 분할된 값으로 수량을 매도할시 수량이 부족할 수 있기 때문이다 
+        //예) 10% 씩 10번 익절분할매도가 9번된상태에서 50%씩 2번 손절매도를 처음 실행할때 수량이 부족함
+        private void DivideSellPercentProfit_ValueChanged(object sender, EventArgs e)
+        {
+            decimal valuePecent = divideSellPercentLoss.Value = divideSellPercentProfit.Value;
+            if ((float)valuePecent > 0)
+            {
+                float sellCount = 100.0f / (float)valuePecent;
+                DivideSellCountUpDownProfit.Value = (int)sellCount;
+            }
+          
+        }
+
+        private void DivideSellPercentLoss_ValueChanged(object sender, EventArgs e)
+        {
+            decimal valuePecent = divideSellPercentProfit.Value = divideSellPercentLoss.Value;
+            if ((float)valuePecent > 0)
+            {
+                float sellCount = 100.0f / (float)valuePecent;
+                DivideSellCountUpDown.Value = (int)sellCount;
             }
         }
     }
