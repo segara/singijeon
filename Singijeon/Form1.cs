@@ -1086,7 +1086,8 @@ namespace Singijeon
                             //CheckBS_Finish(itemCode, false, i_ConclusionQuantity, ordernum);
 
                             BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
-                            printForm2.AddProfit((int.Parse(conclusionPrice) - item.buyingPrice) * i_unitConclusionQuantity);
+                            if (item != null)
+                                printForm2.AddProfit((int.Parse(conclusionPrice) - item.buyingPrice) * i_unitConclusionQuantity);
                         }
                     }
                     else //일부만 매수/매도 완료
@@ -1105,7 +1106,8 @@ namespace Singijeon
                                 UpdateSellTradingItemOutstand(ordernum, int.Parse(outstanding));
                                 UpdateSellAutoTradingDataGridStatePrice(ordernum, conclusionPrice);
                                 BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
-                                printForm2.AddProfit((int.Parse(conclusionPrice) - item.buyingPrice) * i_unitConclusionQuantity);
+                                if(item != null)
+                                    printForm2.AddProfit((int.Parse(conclusionPrice) - item.buyingPrice) * i_unitConclusionQuantity);
                             }
                         }
                     }
@@ -2571,6 +2573,7 @@ namespace Singijeon
         }
         public void OnReceiveTrDataCheckStopLoss(TradingItem item, double checkValue, double sellPercentage = 1, bool StopLossDivide = false)
         {
+
             if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SELL_CANCEL_NOT_COMPLETE)
             {
                 coreEngine.SaveItemLogMessage(item.itemCode, "현재 손절할수있는 상태가 아닙니다 " + item.state);
@@ -2637,7 +2640,7 @@ namespace Singijeon
                 orderQnt = item.curCanOrderQnt; //일반매도
             }
 
-            double price = (double)item.buyingPrice * (100.0 - item.ts.stoplossRate);
+            double price = (double)item.buyingPrice * (1 - (item.ts.stoplossRate)*0.01);
             int tick = BalanceBuyStrategy.hogaUnitCalc(IsKospi(item.itemCode), (int)item.curPrice);
             int minusTick = (int)price % tick;
             int orderPrice = (int)price - minusTick;
