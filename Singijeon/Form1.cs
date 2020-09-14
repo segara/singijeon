@@ -2509,7 +2509,8 @@ namespace Singijeon
             item.SetSellOrderType(true);
 
             int orderQnt = (int)((double)item.startSellQnt * sellPercentage); //분할매도
-            if(sellPercentage == 1)
+            orderQnt = Math.Min(orderQnt, item.curCanOrderQnt);
+            if (sellPercentage == 1)
             {
                 orderQnt = item.curCanOrderQnt; //일반매도
             }
