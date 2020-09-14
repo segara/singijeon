@@ -2625,9 +2625,12 @@ namespace Singijeon
             }
             else
             {
-                if (item.divideSellCount == 0 && item.usingStopLossAfterBuyMore)
-                    return;
-
+                if (item.divideSellCount == 0)
+                {
+                    if (item.usingStopLossAfterBuyMore)
+                        return;
+                }
+                   
                 item.divideSellCount--;
                 coreEngine.SaveItemLogMessage(item.itemCode, "분할 손절 주문 실행 / 카운트 :" + item.divideSellCount);
             }
@@ -2635,6 +2638,7 @@ namespace Singijeon
             item.SetSellOrderType(false);
 
             int orderQnt = (int)((double)item.startSellQnt * sellPercentage); //분할매도
+            orderQnt = Math.Min(orderQnt, item.curCanOrderQnt);
             if (sellPercentage == 1)
             {
                 orderQnt = item.curCanOrderQnt; //일반매도
@@ -2675,6 +2679,7 @@ namespace Singijeon
 
             coreEngine.SaveItemLogMessage(item.itemCode,
               item.itemName + "order 종목손절매도 " +
+              " 주문가능수량 : " + item.curCanOrderQnt +
               " 수량: " + orderQnt +
               " 주문가: " + orderPrice +
               " 주문구분: " + item.sellOrderType
