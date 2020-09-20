@@ -173,6 +173,7 @@ namespace Singijeon
                 saved.buyItemCount,
                 saved.sellProfitOrderOption,
                 saved.sellStopLossOrderOption,
+                saved.sellDivideStopLossOrderOption,
                 false,
                 saved.usingRestart
              );
@@ -219,7 +220,7 @@ namespace Singijeon
             ts.percentageBuyValue = saved.percentageBuyValue;
    
             ts.usingVwma = saved.usingVwma;
-            ts.usingEnvelope4 = saved.usingEnvelope4;
+            ts.usingEnvelope5 = saved.usingEnvelope4;
             ts.trailTickValue = saved.trailTickValue;
    
             if (saved.usingGapTrailBuy)

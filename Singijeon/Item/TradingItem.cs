@@ -149,6 +149,7 @@ namespace Singijeon
         {
             curState = _state;
         }
+
         public void SetSellOrderType(bool profitSell)
         {
             if(profitSell)

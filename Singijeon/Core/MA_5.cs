@@ -14,12 +14,12 @@ using Singijeon.Core;
 
 namespace Singijeon
 {
-    class MA_5 : SingletonBase<MA_5>
+    class MA_ENVELOPE// : SingletonBase<MA_ENVELOPE>
     {
         const int MAX_CANDLE = 200;
         const int MA_PERIOD = 20;
-        const double MA_4_PERCENT = 0.96;
-        const double MA_5_PERCENT = 0.95;
+
+        double MA_PERCENT = 0.05;
 
         AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
       
@@ -33,11 +33,12 @@ namespace Singijeon
         public delegate void ReceiveAfter(string itemCode, long curPrice, long envelopePrice);
         bool init = false;
 
-        public void Init(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1)
+        public void Init(AxKHOpenAPILib.AxKHOpenAPI _axKHOpenAPI1, double percent)
         {
             axKHOpenAPI1 = _axKHOpenAPI1;
             screenNumber = Form1.GetScreenNum().ToString();
             axKHOpenAPI1.OnReceiveTrData += AxKHOpenAPI_OnReceiveTrData;
+            MA_PERCENT = percent;
             init = true;
         }
 
@@ -111,7 +112,7 @@ namespace Singijeon
                         }
                         double priceAverage = priceSum / MA_PERIOD;
                         priceMA_List.Add((long)priceAverage);
-                        priceMA_Envelope_List.Add((long)(priceAverage * MA_5_PERCENT));
+                        priceMA_Envelope_List.Add((long)(priceAverage * (1.0 - MA_PERCENT)));
                     }
                 }
 

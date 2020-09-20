@@ -59,6 +59,8 @@ namespace Singijeon
         Form2 printForm2 = null;
         Form3 printForm_kospi = null;
         Form3 printForm_kosdaq = null;
+        MA_ENVELOPE ma_5 = null;
+        MA_ENVELOPE ma_7 = null;
         TimerJob newTimer;
         KospiInfo info;
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
@@ -113,7 +115,10 @@ namespace Singijeon
             MartinGailManager.GetInstance().Init(axKHOpenAPI1, this);
             BlockManager.GetInstance().Init(axKHOpenAPI1, this);
 
-            MA_5.Instance.Init(axKHOpenAPI1);
+            ma_5 = new MA_ENVELOPE();
+            ma_5.Init(axKHOpenAPI1, 0.05);
+            ma_7 = new MA_ENVELOPE();
+            ma_7.Init(axKHOpenAPI1, 0.07);
 
             //LoadSetting();
             printForm = new Form3(axKHOpenAPI1);
@@ -1937,6 +1942,16 @@ namespace Singijeon
                 sellStopLossOrderOpt = ConstName.ORDER_JIJUNGGA;
             }
 
+            string divide_sellStopLossOrderOpt = "00";
+            if (divide_stopLossSijangRadio.Checked)
+            {
+                divide_sellStopLossOrderOpt = ConstName.ORDER_SIJANGGA;
+            }
+            else
+            {
+                divide_sellStopLossOrderOpt = ConstName.ORDER_JIJUNGGA;
+            }
+
             string sellProfitOrderOpt = "00";
             if (sellProfitSijangRadio.Checked)
             {
@@ -1970,6 +1985,7 @@ namespace Singijeon
                 itemCount,
                 sellProfitOrderOpt,
                 sellStopLossOrderOpt,
+                divide_sellStopLossOrderOpt,
                 false,
                 usingBuyRestart
                 );
@@ -2067,7 +2083,14 @@ namespace Singijeon
 
             if (useEnvelopeCheckBox.Checked)
             {
-                ts.usingEnvelope4 = useEnvelopeCheckBox.Checked;
+                ts.usingEnvelope5 = useEnvelopeCheckBox.Checked;
+                ts.usingTrailing = true;
+                ts.trailTickValue = 30;
+            }
+
+            if (useEnvelope7CheckBox.Checked)
+            {
+                ts.usingEnvelope7 = useEnvelope7CheckBox.Checked;
                 ts.usingTrailing = true;
                 ts.trailTickValue = 30;
             }
@@ -2640,9 +2663,12 @@ namespace Singijeon
 
             int orderQnt = (int)((double)item.startSellQnt * sellPercentage); //분할매도
             orderQnt = Math.Min(orderQnt, item.curCanOrderQnt);
-            if (sellPercentage == 1)
+            item.sellOrderType = item.ts.sellDivideStopLossOrderOption;
+
+            if (sellPercentage == 1) //일반매도
             {
-                orderQnt = item.curCanOrderQnt; //일반매도
+                orderQnt = item.curCanOrderQnt;
+                item.sellOrderType = item.ts.sellStopLossOrderOption;
             }
 
             double minusRate = (sellPercentage == 1) ? item.ts.stoplossRate : item.ts.divideStoplossRate;
@@ -2943,7 +2969,25 @@ namespace Singijeon
                                       && 60 < (DateTime.Now - trailingItem.envelopeBuyCheckDateTime).TotalSeconds)
                             {
                                 trailingItem.envelopeBuyCheckDateTime = DateTime.Now;
-                                MA_5.Instance.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
+                                ma_5.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
+                                    if (curPrice < envelopePrice)
+                                    {
+                                        TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
+                                        if (findItem != null)
+                                        {
+                                            StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
+                                            TrailingToBuy(findItem, _itemCode, (int)stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
+                                            return;
+                                        }
+                                    }
+                                });
+                            }
+
+                            if (trailingItem.isEnvelope7Check
+                                     && 60 < (DateTime.Now - trailingItem.envelopeBuyCheckDateTime).TotalSeconds)
+                            {
+                                trailingItem.envelopeBuyCheckDateTime = DateTime.Now;
+                                ma_7.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
                                     if (curPrice < envelopePrice)
                                     {
                                         TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
@@ -2961,7 +3005,7 @@ namespace Singijeon
                             {
                                 continue;
                             }
-                            if (trailingItem.isEnvelopeCheck)
+                            if (trailingItem.isEnvelopeCheck || trailingItem.isEnvelope7Check)
                             {
                                 continue;
                             }
@@ -3243,6 +3287,7 @@ namespace Singijeon
                 buyOrderOpt,
                 totalInvestment,
                 1,                                       //매수할 종목 1개
+                ConstName.ORDER_JIJUNGGA,
                 ConstName.ORDER_JIJUNGGA,
                 ConstName.ORDER_JIJUNGGA,
                 false,                                   //재실행 끔

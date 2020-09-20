@@ -25,6 +25,7 @@ namespace Singijeon
         public bool isGapTrailBuy = false;   //갭상승시 매수
         public bool isVwmaCheck = false;
         public bool isEnvelopeCheck = false;
+        public bool isEnvelope7Check = false;
         public DateTime gapTrailBuyCheckDateTime = DateTime.Now;
         public long gapTrailBuyCheckTimeSecond = 0;
         public string buyOrderOption; //주문 호가 옵션
@@ -67,7 +68,8 @@ namespace Singijeon
                 gapTrailBuyCheckTimeSecond = inputStrategy.gapTrailBuyTimeValue;
             }
             isVwmaCheck = inputStrategy.usingVwma; 
-            isEnvelopeCheck = inputStrategy.usingEnvelope4;
+            isEnvelopeCheck = inputStrategy.usingEnvelope5;
+            isEnvelope7Check = inputStrategy.usingEnvelope7;
         }
 
        
