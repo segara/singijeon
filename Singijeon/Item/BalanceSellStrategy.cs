@@ -17,6 +17,7 @@ namespace Singijeon
         public double stoplossRate = 0; //손절률
         public string profitOrderOption; //현재가 or 시장가 등
         public string stoplossOrderOption; //현재가 or 시장가 등
+        public string divideStoplossOrderOption; //현재가 or 시장가 등
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
         //매매 진행 종목 리스트

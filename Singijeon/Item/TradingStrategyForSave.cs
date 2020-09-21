@@ -85,7 +85,7 @@ namespace Singijeon
         {
             sellProfitOrderOption = strategy.profitOrderOption;
             sellStopLossOrderOption = strategy.stoplossOrderOption;
-
+            sellDivideStopLossOrderOption = strategy.divideStoplossOrderOption;
             account = strategy.account;
             takeProfitRate = strategy.takeProfitRate;
             stoplossRate = strategy.stoplossRate;
