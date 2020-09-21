@@ -100,7 +100,7 @@ namespace Singijeon
             this.buyOrderOption = _buyOrderOption;
             this.sellProfitOrderOption = _sellProfitOrderOption;
             this.sellStopLossOrderOption = _sellStopLossOrderOption;
-            this.sellStopLossOrderOption = _sellDivideStopLossOrderOption;
+            this.sellDivideStopLossOrderOption = _sellDivideStopLossOrderOption;
 
             this.totalInvestment = _totalInvestment;
             this.buyItemCount = _buyItemCount;
