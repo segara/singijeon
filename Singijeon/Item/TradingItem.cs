@@ -206,6 +206,7 @@ namespace Singijeon
         public void SetBuyCancelOrder()
         {
             curState = TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_CANCEL_NOT_COMPLETE;
+            this.isBuyCancel = true;
         }
         public void SetBuyCancelComplete ()
         {
