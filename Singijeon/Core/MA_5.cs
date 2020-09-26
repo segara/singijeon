@@ -19,7 +19,7 @@ namespace Singijeon
         const int MAX_CANDLE = 200;
         const int MA_PERIOD = 20;
 
-        double MA_PERCENT = 0.05;
+        public double MA_PERCENT = 0.05;
 
         AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
       

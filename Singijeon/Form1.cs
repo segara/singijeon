@@ -61,6 +61,7 @@ namespace Singijeon
         Form3 printForm_kosdaq = null;
         MA_ENVELOPE ma_5 = null;
         MA_ENVELOPE ma_7 = null;
+        List<MA_ENVELOPE> list_envelopeChecker = new List<MA_ENVELOPE>();
         TimerJob newTimer;
         KospiInfo info;
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
@@ -117,8 +118,11 @@ namespace Singijeon
 
             ma_5 = new MA_ENVELOPE();
             ma_5.Init(axKHOpenAPI1, 0.05);
+            list_envelopeChecker.Add(ma_5);
             ma_7 = new MA_ENVELOPE();
             ma_7.Init(axKHOpenAPI1, 0.07);
+            list_envelopeChecker.Add(ma_5);
+
 
             //LoadSetting();
             printForm = new Form3(axKHOpenAPI1);
@@ -2960,7 +2964,7 @@ namespace Singijeon
                                                 if (findItem != null)
                                                 {
                                                     StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
-                                                    TrailingToBuy(findItem, _itemCode, (int)stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
+                                                    TrailingToBuy(findItem, _itemCode, (int)_stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
                                                     return;
                                                 }
                                             }
@@ -2977,47 +2981,45 @@ namespace Singijeon
                                 trailingItem.curTickCount = 0;
                             }
 
-                            if (trailingItem.isEnvelopeCheck
+                            if (trailingItem.EnvelopeValueList.Count > 0
                                       && 60 < (DateTime.Now - trailingItem.envelopeBuyCheckDateTime).TotalSeconds)
                             {
                                 trailingItem.envelopeBuyCheckDateTime = DateTime.Now;
-                                ma_5.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
-                                    if (curPrice < envelopePrice)
-                                    {
-                                        TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
-                                        if (findItem != null)
-                                        {
-                                            StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
-                                            TrailingToBuy(findItem, _itemCode, (int)stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
-                                            return;
-                                        }
-                                    }
-                                });
-                            }
 
-                            if (trailingItem.isEnvelope7Check
-                                     && 60 < (DateTime.Now - trailingItem.envelopeBuyCheckDateTime).TotalSeconds)
-                            {
-                                trailingItem.envelopeBuyCheckDateTime = DateTime.Now;
-                                ma_7.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
-                                    if (curPrice < envelopePrice)
+                                foreach(var itemEnvelope in list_envelopeChecker)
+                                {
+                                    if (trailingItem.EnvelopeValueList.Contains(itemEnvelope.MA_PERCENT))
                                     {
-                                        TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
-                                        if (findItem != null)
-                                        {
-                                            StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
-                                            TrailingToBuy(findItem, _itemCode, (int)stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
-                                            return;
-                                        }
+                                        itemEnvelope.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
+                                            if (curPrice < envelopePrice)
+                                            {
+                                                TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
+                                                if (findItem != null)
+                                                {
+                                                    StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
+                                                    if((int)_stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue) == 0)
+                                                    {
+                                                        coreEngine.SendLogErrorMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + "호가 찾기 에러");
+                                                    }
+                                                    else
+                                                    {
+                                                        TrailingToBuy(findItem, _itemCode, (int)_stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
+                                                    }
+                                                   
+                                                    return;
+                                                }
+                                            }
+                                        });
                                     }
-                                });
+                                }
                             }
+                           
 
                             if (trailingItem.isVwmaCheck)
                             {
                                 continue;
                             }
-                            if (trailingItem.isEnvelopeCheck || trailingItem.isEnvelope7Check)
+                            if (trailingItem.EnvelopeValueList.Count > 0)
                             {
                                 continue;
                             }
