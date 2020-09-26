@@ -1616,6 +1616,18 @@ namespace Singijeon
                         {
                             if (tradeItem.ui_rowItem == rowItem)
                             {
+                                if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_BEFORE_ORDER))
+                                {
+                                    
+                                    TrailingItem item = trailingList.Find(o => (o.ui_rowAutoTradingItem == rowItem));
+
+                                    if (item != null)
+                                    {
+                                       trailingList.Remove(item);
+                                    }
+                                    coreEngine.SendLogMessage("주문접수 시도 취소");
+                                    tradeItem.SetBuyCancelOrder();
+                                }
                                 if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE) || curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT))
                                 {
                                     //취소주문
