@@ -76,6 +76,10 @@ namespace Singijeon
             {
                 EnvelopeValueList.Add(0.07);
             }
+            if (inputStrategy.usingEnvelope10)
+            {
+                EnvelopeValueList.Add(0.1);
+            }
         }
     }
 }

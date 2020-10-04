@@ -61,6 +61,7 @@ namespace Singijeon
         Form3 printForm_kosdaq = null;
         MA_ENVELOPE ma_5 = null;
         MA_ENVELOPE ma_7 = null;
+        MA_ENVELOPE ma_10 = null;
         List<MA_ENVELOPE> list_envelopeChecker = new List<MA_ENVELOPE>();
         TimerJob newTimer;
         KospiInfo info;
@@ -121,8 +122,10 @@ namespace Singijeon
             list_envelopeChecker.Add(ma_5);
             ma_7 = new MA_ENVELOPE();
             ma_7.Init(axKHOpenAPI1, 0.07);
-            list_envelopeChecker.Add(ma_5);
-
+            list_envelopeChecker.Add(ma_7);
+            ma_10 = new MA_ENVELOPE();
+            ma_10.Init(axKHOpenAPI1, 0.1);
+            list_envelopeChecker.Add(ma_10);
 
             //LoadSetting();
             printForm = new Form3(axKHOpenAPI1);
@@ -2111,6 +2114,13 @@ namespace Singijeon
                 ts.trailTickValue = 30;
             }
 
+            if (useEnvelope10CheckBox.Checked)
+            {
+                ts.usingEnvelope10 = useEnvelope10CheckBox.Checked;
+                ts.usingTrailing = true;
+                ts.trailTickValue = 30;
+            }
+
             bool useGapTrailBuy = useGapTrailBuyCheck.Checked;
             if (useGapTrailBuy)
             {
@@ -4090,12 +4100,16 @@ namespace Singijeon
                 usingTrailingBuyCheck.Enabled = false;
                 orderPecentageCheckBox.Enabled = false;
                 useEnvelopeCheckBox.Enabled = false;
+                useEnvelope7CheckBox.Enabled = false;
+                useEnvelope10CheckBox.Enabled = false;
             } 
             else
             {
                 usingTrailingBuyCheck.Enabled = true;
                 orderPecentageCheckBox.Enabled = true;
                 useEnvelopeCheckBox.Enabled = true;
+                useEnvelope7CheckBox.Enabled = true;
+                useEnvelope10CheckBox.Enabled = true;
             } 
         }
 
@@ -4105,11 +4119,15 @@ namespace Singijeon
             {
                 useVwmaCheckBox.Enabled = false;
                 useEnvelopeCheckBox.Enabled = false;
+                useEnvelope7CheckBox.Enabled = false;
+                useEnvelope10CheckBox.Enabled = false;
             }
             else
             {
                 useVwmaCheckBox.Enabled = true;
                 useEnvelopeCheckBox.Enabled = true;
+                useEnvelope7CheckBox.Enabled = true;
+                useEnvelope10CheckBox.Enabled = true;
             }
         }
 
@@ -4119,11 +4137,15 @@ namespace Singijeon
             {
                 useVwmaCheckBox.Enabled = false;
                 useEnvelopeCheckBox.Enabled = false;
+                useEnvelope7CheckBox.Enabled = false;
+                useEnvelope10CheckBox.Enabled = false;
             }
             else
             {
                 useVwmaCheckBox.Enabled = true;
                 useEnvelopeCheckBox.Enabled = true;
+                useEnvelope7CheckBox.Enabled = true;
+                useEnvelope10CheckBox.Enabled = true;
             }
         }
 
@@ -4131,12 +4153,16 @@ namespace Singijeon
         {
             if (this.useEnvelopeCheckBox.Checked == true)
             {
+                useEnvelope7CheckBox.Enabled = false;
+                useEnvelope10CheckBox.Enabled = false;
                 usingTrailingBuyCheck.Enabled = false;
                 orderPecentageCheckBox.Enabled = false;
                 useVwmaCheckBox.Enabled = false;
             }
             else
             {
+                useEnvelope7CheckBox.Enabled = true;
+                useEnvelope10CheckBox.Enabled = true;
                 usingTrailingBuyCheck.Enabled = true;
                 orderPecentageCheckBox.Enabled = true;
                 useVwmaCheckBox.Enabled = true;
@@ -4166,6 +4192,46 @@ namespace Singijeon
             {
                 float sellCount = 100.0f / (float)valuePecent;
                 DivideSellCountUpDown.Value = (int)sellCount;
+            }
+        }
+
+        private void useEnvelope7CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.useEnvelope7CheckBox.Checked == true)
+            {
+                useEnvelopeCheckBox.Enabled = false;
+                useEnvelope10CheckBox.Enabled = false;
+                usingTrailingBuyCheck.Enabled = false;
+                orderPecentageCheckBox.Enabled = false;
+                useVwmaCheckBox.Enabled = false;
+            }
+            else
+            {
+                useEnvelopeCheckBox.Enabled = true;
+                useEnvelope10CheckBox.Enabled = true;
+                usingTrailingBuyCheck.Enabled = true;
+                orderPecentageCheckBox.Enabled = true;
+                useVwmaCheckBox.Enabled = true;
+            }
+        }
+
+        private void useEnvelope10CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.useEnvelope10CheckBox.Checked == true)
+            {
+                useEnvelopeCheckBox.Enabled = false;
+                useEnvelope7CheckBox.Enabled = false;
+                usingTrailingBuyCheck.Enabled = false;
+                orderPecentageCheckBox.Enabled = false;
+                useVwmaCheckBox.Enabled = false;
+            }
+            else
+            {
+                useEnvelopeCheckBox.Enabled = true;
+                useEnvelope7CheckBox.Enabled = true;
+                usingTrailingBuyCheck.Enabled = true;
+                orderPecentageCheckBox.Enabled = true;
+                useVwmaCheckBox.Enabled = true;
             }
         }
     }
