@@ -1092,7 +1092,15 @@ namespace Singijeon
 
                             BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
                             if (item != null)
-                                printForm2.AddProfit((int.Parse(conclusionPrice) - item.buyingPrice) * i_unitConclusionQuantity);
+                            {
+                                long profit = (int.Parse(conclusionPrice) - item.buyingPrice) * i_unitConclusionQuantity;
+                                printForm2.AddProfit(profit);
+                                if (profit < 0)
+                                {
+                                    //손절완료일때 재구매 전략 확인
+                                    AddItemRebuyStrategy(item.itemCode);
+                                }
+                            }
                         }
                     }
                     else //일부만 매수/매도 완료
@@ -1758,6 +1766,7 @@ namespace Singijeon
             {
                 string conditionName = tsDataGridView["매매전략_매수조건식", e.RowIndex].Value.ToString();
                 ForceAddStrategyTextBox.Text = conditionName;
+                ReBuyStrategyTextBox.Text = conditionName;
             }
         }
 
@@ -4233,6 +4242,55 @@ namespace Singijeon
                 usingTrailingBuyCheck.Enabled = true;
                 orderPecentageCheckBox.Enabled = true;
                 useVwmaCheckBox.Enabled = true;
+            }
+        }
+
+        public void AddItemRebuyStrategy(string itemCode)
+        {
+            if (string.IsNullOrEmpty(CurrentRebuyText.Text) == false)
+            {
+                TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(CurrentRebuyText.Text));
+
+                if (ts != null)
+                {
+                    if (ts.remainItemCount == 0)
+                    {
+                        MessageBox.Show("재구매 매수가능 갯수 초과");
+                        return;
+                    }
+
+                    TrailingItem trailingItem = trailingList.Find(o => (o.itemCode.Contains(itemCode) && o.strategy.buyCondition.Name == ts.buyCondition.Name));
+
+                    if (trailingItem != null)
+                    {
+                        MessageBox.Show("진행중인 종목입니다");
+                        return;
+                    }
+                    if (CheckCanBuyItem(itemCode) && trailingItem == null)
+                    {
+                        ts.remainItemCount--; //남을 매수할 종목수-1
+                        coreEngine.SaveItemLogMessage(itemCode, "구매 시도 종목 추가 검색명 = " + CurrentRebuyText.Text);
+
+                        ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+                        TryBuyItem(ts, itemCode);
+                    }
+                }
+            }
+        }
+
+        private void AddRebuyStrategyBtn_Click(object sender, EventArgs e)
+        {
+            string conditionName = ReBuyStrategyTextBox.Text;
+
+            if (string.IsNullOrEmpty(CurrentRebuyText.Text))
+            {
+                CurrentRebuyText.Text = conditionName;
+                AddRebuyStrategyBtn.Text = "실행중";
+            }
+            else
+            {
+                CurrentRebuyText.Text = string.Empty;
+                AddRebuyStrategyBtn.Text = "감시시작";
             }
         }
     }
