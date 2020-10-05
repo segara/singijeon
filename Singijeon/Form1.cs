@@ -3003,6 +3003,7 @@ namespace Singijeon
                                         itemEnvelope.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
                                             if (curPrice < envelopePrice)
                                             {
+                                                coreEngine.SaveItemLogMessage(itemcode , "구매시도 진입 "+ curPrice + " / " + envelopePrice);
                                                 TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
                                                 if (findItem != null)
                                                 {

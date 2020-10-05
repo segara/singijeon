@@ -220,7 +220,9 @@ namespace Singijeon
             ts.percentageBuyValue = saved.percentageBuyValue;
    
             ts.usingVwma = saved.usingVwma;
-            ts.usingEnvelope5 = saved.usingEnvelope4;
+            ts.usingEnvelope5 = saved.usingEnvelope5;
+            ts.usingEnvelope7 = saved.usingEnvelope7;
+            ts.usingEnvelope10 = saved.usingEnvelope10;
             ts.trailTickValue = saved.trailTickValue;
    
             if (saved.usingGapTrailBuy)
