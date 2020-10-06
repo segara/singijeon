@@ -2143,15 +2143,15 @@ namespace Singijeon
                 //ts.gapTrailBuyPercentageValue  = buyPercentValue * 0.01f;
                 ts.gapTrailBuyTimeValue = buyTime;
 
-                TradingStrategyItemWithUpDownPercentValue trailGapBuy =
-                    new TradingStrategyItemWithUpDownPercentValue(
-                            StrategyItemName.BUY_GAP_CHECK,
-                            CHECK_TIMING.BUY_TIME,
-                            string.Empty,
-                            ts.gapTrailCostPercentageValue);
+                //TradingStrategyItemWithUpDownPercentValue trailGapBuy =
+                //    new TradingStrategyItemWithUpDownPercentValue(
+                //            StrategyItemName.BUY_GAP_CHECK,
+                //            CHECK_TIMING.BUY_TIME,
+                //            string.Empty,
+                //            ts.gapTrailCostPercentageValue);
 
-                trailGapBuy.OnReceivedTrData += this.OnReceiveTrDataCheckGapTrailBuy;
-                ts.AddTradingStrategyItemList(trailGapBuy);
+                //trailGapBuy.OnReceivedTrData += this.OnReceiveTrDataCheckGapTrailBuy;
+                //ts.AddTradingStrategyItemList(trailGapBuy);
             }
 
             bool usingProfitCheckBox = profitSellCheckBox.Checked; //익절사용
@@ -2947,7 +2947,7 @@ namespace Singijeon
                                     coreEngine.SaveItemLogMessage(itemcode," 갭추격매수 조건 확인 /// 현재호가 : " + price + " / 체크 호가 :" + trailingItem.gapTrailBuyCheckPrice + " / 현재 퍼센티지 : " + trailBuyCheckValue + " / 체크 조건 : " + (trailingItem.strategy.gapTrailCostPercentageValue));
                                     //강제 통과 위한 설정
                                     trailingItem.settingTickCount = 0;
-                                    trailingItem.itemInvestment = (long)((float)trailingItem.itemInvestment * trailingItem.strategy.gapTrailBuyPercentageValue);
+                                    trailingItem.itemInvestment = (long)((float)trailingItem.itemInvestment);
                                     trailingItem.buyOrderOption = ConstName.ORDER_SIJANGGA;
                                     trailingItem.isGapTrailBuy = false;
                                     trailingItem.isPercentageCheckBuy = false;
@@ -3231,27 +3231,10 @@ namespace Singijeon
 
         public void OnReceiveTrDataCheckGapTrailBuy(TradingItem item, double checkValue)
         {
-            if (item.state != TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_COMPLETE)
-                return;
-
-            if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE
-                || item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT)
+            if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH)
             {
-                //주문 정정을 한다
-
-                //coreEngine.SendLogWarningMessage("주문 수량 정정 : " + item.itemName + " 수량 " + item.outStandingQnt);
-                //int orderResultCancel = axKHOpenAPI1.SendOrder("종목주문정정", GetScreenNum().ToString(), currentAccount, CONST_NUMBER.SEND_ORDER_CANCEL_SELL, item.itemCode, item.outStandingQnt, (int)item.sellPrice, ConstName.ORDER_JIJUNGGA, item.sellOrderNum);
-                //if (orderResultCancel == 0)
-                //{
-                //    AddOrderList(item);
-                //    coreEngine.SendLogMessage("수량 정정 접수 성공");
-                //    autoTradingDataGrid["매매진행_진행상황", item.GetUiConnectRow().Index].Value = ConstName.AUTO_TRADING_STATE_TAKE_PROFIT_CANCEL;
-                //    return;
-                //}
-            }
-            else if (item.state == TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH)
-            {
-              //검색 -> 트레일링 에서 해당사항 체크 
+                //검색 -> 트레일링 에서 해당사항 체크 
+                Console.WriteLine(item.itemName + "/"+ checkValue.ToString());
             }
         }
 

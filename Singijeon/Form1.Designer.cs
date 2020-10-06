@@ -30,32 +30,32 @@
         {
             System.Windows.Forms.TabPage tabPage9;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle61 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle62 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle63 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle64 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle65 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle66 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle67 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle68 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle69 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle70 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle71 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle72 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle73 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle74 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle75 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle76 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle77 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle78 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel26 = new System.Windows.Forms.Panel();
             this.CurrentRebuyText = new System.Windows.Forms.Label();
             this.label59 = new System.Windows.Forms.Label();
@@ -352,29 +352,29 @@
             this.미체결_주문가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tsDataGridView = new System.Windows.Forms.DataGridView();
-            this.매매전략_계좌번호 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_재실행 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_매수조건식 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_호가적용 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_트레일링 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_시간제한사용 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_시작시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_종료시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_매수가격 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_총투자금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_매수종목수 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_종목별투자금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_익절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_익절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_손절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.blockingCheckBox = new System.Windows.Forms.CheckBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.kospiInfo = new System.Windows.Forms.Label();
             this.kosdaqInfo = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_손절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_익절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_익절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_종목별투자금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_매수종목수 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_총투자금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_매수가격 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_종료시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_시작시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_시간제한사용 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_트레일링 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_호가적용 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_매수조건식 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_재실행 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_계좌번호 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tabPage9 = new System.Windows.Forms.TabPage();
             tabPage9.SuspendLayout();
             this.panel26.SuspendLayout();
@@ -1062,7 +1062,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1294, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1424, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1149,7 +1149,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 459F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 461F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -1192,10 +1192,10 @@
             this.panel7.Controls.Add(this.label11);
             this.panel7.Controls.Add(this.usingTickBuyCheck);
             this.panel7.Controls.Add(this.label12);
-            this.panel7.Location = new System.Drawing.Point(343, 3);
+            this.panel7.Location = new System.Drawing.Point(342, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(437, 214);
+            this.panel7.Size = new System.Drawing.Size(436, 214);
             this.panel7.TabIndex = 5;
             // 
             // useEnvelope10CheckBox
@@ -1349,9 +1349,9 @@
             this.useGapTrailBuyCheck.Location = new System.Drawing.Point(13, 187);
             this.useGapTrailBuyCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.useGapTrailBuyCheck.Name = "useGapTrailBuyCheck";
-            this.useGapTrailBuyCheck.Size = new System.Drawing.Size(168, 16);
+            this.useGapTrailBuyCheck.Size = new System.Drawing.Size(140, 16);
             this.useGapTrailBuyCheck.TabIndex = 19;
-            this.useGapTrailBuyCheck.Text = "갭상승시 분할 시장가 매수";
+            this.useGapTrailBuyCheck.Text = "갭상승시 시장가 매수";
             this.useGapTrailBuyCheck.UseVisualStyleBackColor = true;
             // 
             // orderPercentageUpdown
@@ -1539,12 +1539,12 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(332, 214);
+            this.panel1.Size = new System.Drawing.Size(331, 214);
             this.panel1.TabIndex = 0;
             // 
             // dummyStrategyAddBtn
             // 
-            this.dummyStrategyAddBtn.Location = new System.Drawing.Point(248, 186);
+            this.dummyStrategyAddBtn.Location = new System.Drawing.Point(240, 186);
             this.dummyStrategyAddBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dummyStrategyAddBtn.Name = "dummyStrategyAddBtn";
             this.dummyStrategyAddBtn.Size = new System.Drawing.Size(90, 26);
@@ -1578,7 +1578,7 @@
             // 
             // openSettingFile
             // 
-            this.openSettingFile.Location = new System.Drawing.Point(163, 187);
+            this.openSettingFile.Location = new System.Drawing.Point(155, 187);
             this.openSettingFile.Name = "openSettingFile";
             this.openSettingFile.Size = new System.Drawing.Size(79, 25);
             this.openSettingFile.TabIndex = 18;
@@ -1864,10 +1864,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(787, 3);
+            this.panel2.Location = new System.Drawing.Point(785, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(454, 214);
+            this.panel2.Size = new System.Drawing.Size(456, 214);
             this.panel2.TabIndex = 4;
             // 
             // panel24
@@ -2339,7 +2339,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.10482F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.89518F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 438F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 358F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 359F));
             this.tableLayoutPanel3.Controls.Add(this.panel16, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel17, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel4, 1, 1);
@@ -2361,7 +2361,7 @@
             // 
             this.panel16.Controls.Add(this.balanceSellBtn);
             this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel16.Location = new System.Drawing.Point(223, 196);
+            this.panel16.Location = new System.Drawing.Point(222, 196);
             this.panel16.Margin = new System.Windows.Forms.Padding(0);
             this.panel16.Name = "panel16";
             this.panel16.Size = new System.Drawing.Size(222, 40);
@@ -2369,7 +2369,7 @@
             // 
             // balanceSellBtn
             // 
-            this.balanceSellBtn.Location = new System.Drawing.Point(134, 10);
+            this.balanceSellBtn.Location = new System.Drawing.Point(130, 10);
             this.balanceSellBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.balanceSellBtn.Name = "balanceSellBtn";
             this.balanceSellBtn.Size = new System.Drawing.Size(87, 23);
@@ -2383,13 +2383,13 @@
             this.panel17.Location = new System.Drawing.Point(0, 196);
             this.panel17.Margin = new System.Windows.Forms.Padding(0);
             this.panel17.Name = "panel17";
-            this.panel17.Size = new System.Drawing.Size(223, 40);
+            this.panel17.Size = new System.Drawing.Size(222, 40);
             this.panel17.TabIndex = 9;
             // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(445, 196);
+            this.panel4.Location = new System.Drawing.Point(444, 196);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(438, 40);
@@ -2412,7 +2412,7 @@
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(223, 196);
+            this.panel5.Size = new System.Drawing.Size(222, 196);
             this.panel5.TabIndex = 6;
             // 
             // bss_curQnt
@@ -2521,7 +2521,7 @@
             // panel18
             // 
             this.panel18.Controls.Add(this.panel6);
-            this.panel18.Location = new System.Drawing.Point(886, 3);
+            this.panel18.Location = new System.Drawing.Point(885, 3);
             this.panel18.Name = "panel18";
             this.panel18.Size = new System.Drawing.Size(336, 190);
             this.panel18.TabIndex = 11;
@@ -2547,14 +2547,14 @@
             this.bssAllGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.bssAllGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle53.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle53.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle53.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle53.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle53.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle53.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.bssAllGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle53;
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle27.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.bssAllGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle27;
             this.bssAllGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.bssAllGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.bssAll_종목명,
@@ -2579,9 +2579,9 @@
             // 
             // bssAll_수량
             // 
-            dataGridViewCellStyle54.Format = "N0";
-            dataGridViewCellStyle54.NullValue = null;
-            this.bssAll_수량.DefaultCellStyle = dataGridViewCellStyle54;
+            dataGridViewCellStyle28.Format = "N0";
+            dataGridViewCellStyle28.NullValue = null;
+            this.bssAll_수량.DefaultCellStyle = dataGridViewCellStyle28;
             this.bssAll_수량.HeaderText = "수량";
             this.bssAll_수량.MinimumWidth = 10;
             this.bssAll_수량.Name = "bssAll_수량";
@@ -2660,7 +2660,7 @@
             // panel19
             // 
             this.panel19.Controls.Add(this.balanceSellMonitorBtn);
-            this.panel19.Location = new System.Drawing.Point(886, 199);
+            this.panel19.Location = new System.Drawing.Point(885, 199);
             this.panel19.Name = "panel19";
             this.panel19.Size = new System.Drawing.Size(336, 34);
             this.panel19.TabIndex = 12;
@@ -2687,7 +2687,7 @@
             this.panel3.Controls.Add(this.b_takeProfitUpdown);
             this.panel3.Controls.Add(this.b_ProfitSellCheckBox);
             this.panel3.Controls.Add(this.label18);
-            this.panel3.Location = new System.Drawing.Point(226, 2);
+            this.panel3.Location = new System.Drawing.Point(225, 2);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(216, 192);
@@ -2806,7 +2806,7 @@
             // panel21
             // 
             this.panel21.Controls.Add(this.BssDataGridView);
-            this.panel21.Location = new System.Drawing.Point(448, 3);
+            this.panel21.Location = new System.Drawing.Point(447, 3);
             this.panel21.Name = "panel21";
             this.panel21.Size = new System.Drawing.Size(431, 190);
             this.panel21.TabIndex = 13;
@@ -2818,14 +2818,14 @@
             this.BssDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BssDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle55.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle55.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle55.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle55.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle55.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle55.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle55.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.BssDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle55;
+            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle29.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle29.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle29.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle29.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle29.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.BssDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle29;
             this.BssDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.BssDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.bss_종목코드,
@@ -2868,9 +2868,9 @@
             // 
             // bss_설정손익률
             // 
-            dataGridViewCellStyle56.Format = "N2";
-            dataGridViewCellStyle56.NullValue = null;
-            this.bss_설정손익률.DefaultCellStyle = dataGridViewCellStyle56;
+            dataGridViewCellStyle30.Format = "N2";
+            dataGridViewCellStyle30.NullValue = null;
+            this.bss_설정손익률.DefaultCellStyle = dataGridViewCellStyle30;
             this.bss_설정손익률.HeaderText = "손익률";
             this.bss_설정손익률.MinimumWidth = 10;
             this.bss_설정손익률.Name = "bss_설정손익률";
@@ -2878,9 +2878,9 @@
             // 
             // bss_매도량
             // 
-            dataGridViewCellStyle57.Format = "N0";
-            dataGridViewCellStyle57.NullValue = null;
-            this.bss_매도량.DefaultCellStyle = dataGridViewCellStyle57;
+            dataGridViewCellStyle31.Format = "N0";
+            dataGridViewCellStyle31.NullValue = null;
+            this.bss_매도량.DefaultCellStyle = dataGridViewCellStyle31;
             this.bss_매도량.HeaderText = "매도량";
             this.bss_매도량.MinimumWidth = 10;
             this.bss_매도량.Name = "bss_매도량";
@@ -2888,9 +2888,9 @@
             // 
             // bss_취소
             // 
-            dataGridViewCellStyle58.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle58.NullValue = "취소";
-            this.bss_취소.DefaultCellStyle = dataGridViewCellStyle58;
+            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle32.NullValue = "취소";
+            this.bss_취소.DefaultCellStyle = dataGridViewCellStyle32;
             this.bss_취소.HeaderText = "취소";
             this.bss_취소.MinimumWidth = 10;
             this.bss_취소.Name = "bss_취소";
@@ -2981,14 +2981,14 @@
             this.BBSdataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BBSdataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle59.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle59.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle59.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle59.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle59.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle59.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle59.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.BBSdataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle59;
+            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle33.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.BBSdataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle33;
             this.BBSdataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.BBSdataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.bbs_종목코드,
@@ -3031,9 +3031,9 @@
             // 
             // bbs_조건
             // 
-            dataGridViewCellStyle60.Format = "N2";
-            dataGridViewCellStyle60.NullValue = null;
-            this.bbs_조건.DefaultCellStyle = dataGridViewCellStyle60;
+            dataGridViewCellStyle34.Format = "N2";
+            dataGridViewCellStyle34.NullValue = null;
+            this.bbs_조건.DefaultCellStyle = dataGridViewCellStyle34;
             this.bbs_조건.HeaderText = "조건";
             this.bbs_조건.MinimumWidth = 10;
             this.bbs_조건.Name = "bbs_조건";
@@ -3041,9 +3041,9 @@
             // 
             // bbs_매수금
             // 
-            dataGridViewCellStyle61.Format = "N0";
-            dataGridViewCellStyle61.NullValue = null;
-            this.bbs_매수금.DefaultCellStyle = dataGridViewCellStyle61;
+            dataGridViewCellStyle35.Format = "N0";
+            dataGridViewCellStyle35.NullValue = null;
+            this.bbs_매수금.DefaultCellStyle = dataGridViewCellStyle35;
             this.bbs_매수금.HeaderText = "매수금";
             this.bbs_매수금.MinimumWidth = 10;
             this.bbs_매수금.Name = "bbs_매수금";
@@ -3051,9 +3051,9 @@
             // 
             // bbs_취소
             // 
-            dataGridViewCellStyle62.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle62.NullValue = "취소";
-            this.bbs_취소.DefaultCellStyle = dataGridViewCellStyle62;
+            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle36.NullValue = "취소";
+            this.bbs_취소.DefaultCellStyle = dataGridViewCellStyle36;
             this.bbs_취소.HeaderText = "취소";
             this.bbs_취소.MinimumWidth = 10;
             this.bbs_취소.Name = "bbs_취소";
@@ -3306,7 +3306,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(1284, 1967);
+            this.groupBox2.Size = new System.Drawing.Size(1402, 579);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "매매전략";
@@ -3318,7 +3318,7 @@
             this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox3.Size = new System.Drawing.Size(1272, 250);
+            this.groupBox3.Size = new System.Drawing.Size(1389, 250);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "매매진행상황";
@@ -3330,14 +3330,14 @@
             this.autoTradingDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.autoTradingDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle63.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle63.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle63.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle63.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle63.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle63.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle63.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.autoTradingDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle63;
+            dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle44.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle44.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle44.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle44.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle44.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.autoTradingDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle44;
             this.autoTradingDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.autoTradingDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.매매진행_종목코드,
@@ -3364,7 +3364,7 @@
             this.autoTradingDataGrid.RowTemplate.Height = 27;
             this.autoTradingDataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.autoTradingDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.autoTradingDataGrid.Size = new System.Drawing.Size(1253, 215);
+            this.autoTradingDataGrid.Size = new System.Drawing.Size(1370, 215);
             this.autoTradingDataGrid.TabIndex = 0;
             // 
             // 매매진행_종목코드
@@ -3404,9 +3404,9 @@
             // 
             // 매매진행_매수가
             // 
-            dataGridViewCellStyle64.Format = "N0";
-            dataGridViewCellStyle64.NullValue = null;
-            this.매매진행_매수가.DefaultCellStyle = dataGridViewCellStyle64;
+            dataGridViewCellStyle45.Format = "N0";
+            dataGridViewCellStyle45.NullValue = null;
+            this.매매진행_매수가.DefaultCellStyle = dataGridViewCellStyle45;
             this.매매진행_매수가.HeaderText = "매수가";
             this.매매진행_매수가.MinimumWidth = 10;
             this.매매진행_매수가.Name = "매매진행_매수가";
@@ -3421,9 +3421,9 @@
             // 
             // 매매진행_손익률
             // 
-            dataGridViewCellStyle65.Format = "N2";
-            dataGridViewCellStyle65.NullValue = null;
-            this.매매진행_손익률.DefaultCellStyle = dataGridViewCellStyle65;
+            dataGridViewCellStyle46.Format = "N2";
+            dataGridViewCellStyle46.NullValue = null;
+            this.매매진행_손익률.DefaultCellStyle = dataGridViewCellStyle46;
             this.매매진행_손익률.HeaderText = "손익률";
             this.매매진행_손익률.MinimumWidth = 10;
             this.매매진행_손익률.Name = "매매진행_손익률";
@@ -3431,9 +3431,9 @@
             // 
             // 매매진행_매수금
             // 
-            dataGridViewCellStyle66.Format = "N0";
-            dataGridViewCellStyle66.NullValue = null;
-            this.매매진행_매수금.DefaultCellStyle = dataGridViewCellStyle66;
+            dataGridViewCellStyle47.Format = "N0";
+            dataGridViewCellStyle47.NullValue = null;
+            this.매매진행_매수금.DefaultCellStyle = dataGridViewCellStyle47;
             this.매매진행_매수금.HeaderText = "매수금";
             this.매매진행_매수금.MinimumWidth = 10;
             this.매매진행_매수금.Name = "매매진행_매수금";
@@ -3441,9 +3441,9 @@
             // 
             // 매매진행_매수량
             // 
-            dataGridViewCellStyle67.Format = "N0";
-            dataGridViewCellStyle67.NullValue = null;
-            this.매매진행_매수량.DefaultCellStyle = dataGridViewCellStyle67;
+            dataGridViewCellStyle48.Format = "N0";
+            dataGridViewCellStyle48.NullValue = null;
+            this.매매진행_매수량.DefaultCellStyle = dataGridViewCellStyle48;
             this.매매진행_매수량.HeaderText = "매수량";
             this.매매진행_매수량.MinimumWidth = 10;
             this.매매진행_매수량.Name = "매매진행_매수량";
@@ -3451,9 +3451,9 @@
             // 
             // 매매진행_매도량
             // 
-            dataGridViewCellStyle68.Format = "N0";
-            dataGridViewCellStyle68.NullValue = null;
-            this.매매진행_매도량.DefaultCellStyle = dataGridViewCellStyle68;
+            dataGridViewCellStyle49.Format = "N0";
+            dataGridViewCellStyle49.NullValue = null;
+            this.매매진행_매도량.DefaultCellStyle = dataGridViewCellStyle49;
             this.매매진행_매도량.HeaderText = "매도량";
             this.매매진행_매도량.MinimumWidth = 10;
             this.매매진행_매도량.Name = "매매진행_매도량";
@@ -3461,9 +3461,9 @@
             // 
             // 매매진행_매도가
             // 
-            dataGridViewCellStyle69.Format = "N0";
-            dataGridViewCellStyle69.NullValue = null;
-            this.매매진행_매도가.DefaultCellStyle = dataGridViewCellStyle69;
+            dataGridViewCellStyle50.Format = "N0";
+            dataGridViewCellStyle50.NullValue = null;
+            this.매매진행_매도가.DefaultCellStyle = dataGridViewCellStyle50;
             this.매매진행_매도가.HeaderText = "매도가";
             this.매매진행_매도가.MinimumWidth = 10;
             this.매매진행_매도가.Name = "매매진행_매도가";
@@ -3485,9 +3485,9 @@
             // 
             // 매매진행_취소
             // 
-            dataGridViewCellStyle70.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle70.NullValue = "취소";
-            this.매매진행_취소.DefaultCellStyle = dataGridViewCellStyle70;
+            dataGridViewCellStyle51.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle51.NullValue = "취소";
+            this.매매진행_취소.DefaultCellStyle = dataGridViewCellStyle51;
             this.매매진행_취소.HeaderText = "취소";
             this.매매진행_취소.MinimumWidth = 10;
             this.매매진행_취소.Name = "매매진행_취소";
@@ -3506,11 +3506,11 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.tabControl1);
-            this.groupBox5.Location = new System.Drawing.Point(7, 129);
+            this.groupBox5.Location = new System.Drawing.Point(7, 165);
             this.groupBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox5.Size = new System.Drawing.Size(1272, 196);
+            this.groupBox5.Size = new System.Drawing.Size(1389, 160);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "정보";
@@ -3528,7 +3528,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1261, 171);
+            this.tabControl1.Size = new System.Drawing.Size(1378, 135);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage5
@@ -3538,7 +3538,7 @@
             this.tabPage5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage5.Size = new System.Drawing.Size(1253, 145);
+            this.tabPage5.Size = new System.Drawing.Size(1370, 109);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "기존잔고+매수잔고";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -3571,7 +3571,7 @@
             this.accountBalanceDataGrid.RowHeadersWidth = 82;
             this.accountBalanceDataGrid.RowTemplate.Height = 27;
             this.accountBalanceDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.accountBalanceDataGrid.Size = new System.Drawing.Size(1251, 148);
+            this.accountBalanceDataGrid.Size = new System.Drawing.Size(1368, 112);
             this.accountBalanceDataGrid.TabIndex = 0;
             // 
             // 계좌잔고_종목코드
@@ -3590,9 +3590,9 @@
             // 
             // 계좌잔고_보유수량
             // 
-            dataGridViewCellStyle71.Format = "N0";
-            dataGridViewCellStyle71.NullValue = null;
-            this.계좌잔고_보유수량.DefaultCellStyle = dataGridViewCellStyle71;
+            dataGridViewCellStyle37.Format = "N0";
+            dataGridViewCellStyle37.NullValue = null;
+            this.계좌잔고_보유수량.DefaultCellStyle = dataGridViewCellStyle37;
             this.계좌잔고_보유수량.HeaderText = "보유수량";
             this.계좌잔고_보유수량.MinimumWidth = 10;
             this.계좌잔고_보유수량.Name = "계좌잔고_보유수량";
@@ -3613,9 +3613,9 @@
             // 
             // 계좌잔고_평가금액
             // 
-            dataGridViewCellStyle72.Format = "N0";
-            dataGridViewCellStyle72.NullValue = null;
-            this.계좌잔고_평가금액.DefaultCellStyle = dataGridViewCellStyle72;
+            dataGridViewCellStyle38.Format = "N0";
+            dataGridViewCellStyle38.NullValue = null;
+            this.계좌잔고_평가금액.DefaultCellStyle = dataGridViewCellStyle38;
             this.계좌잔고_평가금액.HeaderText = "평가금액";
             this.계좌잔고_평가금액.MinimumWidth = 10;
             this.계좌잔고_평가금액.Name = "계좌잔고_평가금액";
@@ -3623,9 +3623,9 @@
             // 
             // 계좌잔고_매입금액
             // 
-            dataGridViewCellStyle73.Format = "N0";
-            dataGridViewCellStyle73.NullValue = null;
-            this.계좌잔고_매입금액.DefaultCellStyle = dataGridViewCellStyle73;
+            dataGridViewCellStyle39.Format = "N0";
+            dataGridViewCellStyle39.NullValue = null;
+            this.계좌잔고_매입금액.DefaultCellStyle = dataGridViewCellStyle39;
             this.계좌잔고_매입금액.HeaderText = "매입금액";
             this.계좌잔고_매입금액.MinimumWidth = 10;
             this.계좌잔고_매입금액.Name = "계좌잔고_매입금액";
@@ -3633,9 +3633,9 @@
             // 
             // 계좌잔고_손익금액
             // 
-            dataGridViewCellStyle74.Format = "N0";
-            dataGridViewCellStyle74.NullValue = null;
-            this.계좌잔고_손익금액.DefaultCellStyle = dataGridViewCellStyle74;
+            dataGridViewCellStyle40.Format = "N0";
+            dataGridViewCellStyle40.NullValue = null;
+            this.계좌잔고_손익금액.DefaultCellStyle = dataGridViewCellStyle40;
             this.계좌잔고_손익금액.HeaderText = "손익금액";
             this.계좌잔고_손익금액.MinimumWidth = 10;
             this.계좌잔고_손익금액.Name = "계좌잔고_손익금액";
@@ -3643,18 +3643,18 @@
             // 
             // 계좌잔고_청산
             // 
-            dataGridViewCellStyle75.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle75.NullValue = "청산";
-            this.계좌잔고_청산.DefaultCellStyle = dataGridViewCellStyle75;
+            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle41.NullValue = "청산";
+            this.계좌잔고_청산.DefaultCellStyle = dataGridViewCellStyle41;
             this.계좌잔고_청산.HeaderText = "청산";
             this.계좌잔고_청산.MinimumWidth = 10;
             this.계좌잔고_청산.Name = "계좌잔고_청산";
             // 
             // 계좌잔고_손익률
             // 
-            dataGridViewCellStyle76.Format = "N2";
-            dataGridViewCellStyle76.NullValue = null;
-            this.계좌잔고_손익률.DefaultCellStyle = dataGridViewCellStyle76;
+            dataGridViewCellStyle42.Format = "N2";
+            dataGridViewCellStyle42.NullValue = null;
+            this.계좌잔고_손익률.DefaultCellStyle = dataGridViewCellStyle42;
             this.계좌잔고_손익률.HeaderText = "손익률";
             this.계좌잔고_손익률.MinimumWidth = 10;
             this.계좌잔고_손익률.Name = "계좌잔고_손익률";
@@ -3941,9 +3941,9 @@
             // 
             // 미체결_취소
             // 
-            dataGridViewCellStyle77.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle77.NullValue = "취소";
-            this.미체결_취소.DefaultCellStyle = dataGridViewCellStyle77;
+            dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle52.NullValue = "취소";
+            this.미체결_취소.DefaultCellStyle = dataGridViewCellStyle52;
             this.미체결_취소.HeaderText = "취소";
             this.미체결_취소.MinimumWidth = 10;
             this.미체결_취소.Name = "미체결_취소";
@@ -3962,7 +3962,7 @@
             this.groupBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox4.Size = new System.Drawing.Size(1271, 111);
+            this.groupBox4.Size = new System.Drawing.Size(1389, 143);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "현재전략";
@@ -4002,130 +4002,8 @@
             this.tsDataGridView.RowHeadersWidth = 51;
             this.tsDataGridView.RowTemplate.Height = 27;
             this.tsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tsDataGridView.Size = new System.Drawing.Size(1250, 92);
+            this.tsDataGridView.Size = new System.Drawing.Size(1368, 124);
             this.tsDataGridView.TabIndex = 0;
-            // 
-            // 매매전략_계좌번호
-            // 
-            this.매매전략_계좌번호.HeaderText = "계좌번호";
-            this.매매전략_계좌번호.MinimumWidth = 6;
-            this.매매전략_계좌번호.Name = "매매전략_계좌번호";
-            this.매매전략_계좌번호.ReadOnly = true;
-            // 
-            // 매매전략_재실행
-            // 
-            this.매매전략_재실행.HeaderText = "재실행";
-            this.매매전략_재실행.MinimumWidth = 10;
-            this.매매전략_재실행.Name = "매매전략_재실행";
-            this.매매전략_재실행.ReadOnly = true;
-            // 
-            // 매매전략_매수조건식
-            // 
-            this.매매전략_매수조건식.HeaderText = "조건식";
-            this.매매전략_매수조건식.MinimumWidth = 6;
-            this.매매전략_매수조건식.Name = "매매전략_매수조건식";
-            // 
-            // 매매전략_호가적용
-            // 
-            this.매매전략_호가적용.HeaderText = "추가호가적용";
-            this.매매전략_호가적용.MinimumWidth = 10;
-            this.매매전략_호가적용.Name = "매매전략_호가적용";
-            // 
-            // 매매전략_트레일링
-            // 
-            this.매매전략_트레일링.HeaderText = "트레일링";
-            this.매매전략_트레일링.MinimumWidth = 10;
-            this.매매전략_트레일링.Name = "매매전략_트레일링";
-            this.매매전략_트레일링.ReadOnly = true;
-            // 
-            // 매매전략_시간제한사용
-            // 
-            this.매매전략_시간제한사용.HeaderText = "시간제한사용";
-            this.매매전략_시간제한사용.MinimumWidth = 10;
-            this.매매전략_시간제한사용.Name = "매매전략_시간제한사용";
-            this.매매전략_시간제한사용.ReadOnly = true;
-            // 
-            // 매매전략_시작시간
-            // 
-            this.매매전략_시작시간.HeaderText = "시작시간";
-            this.매매전략_시작시간.MinimumWidth = 10;
-            this.매매전략_시작시간.Name = "매매전략_시작시간";
-            this.매매전략_시작시간.ReadOnly = true;
-            // 
-            // 매매전략_종료시간
-            // 
-            this.매매전략_종료시간.HeaderText = "종료시간";
-            this.매매전략_종료시간.MinimumWidth = 10;
-            this.매매전략_종료시간.Name = "매매전략_종료시간";
-            this.매매전략_종료시간.ReadOnly = true;
-            // 
-            // 매매전략_매수가격
-            // 
-            this.매매전략_매수가격.HeaderText = "매수가격";
-            this.매매전략_매수가격.MinimumWidth = 6;
-            this.매매전략_매수가격.Name = "매매전략_매수가격";
-            this.매매전략_매수가격.ReadOnly = true;
-            // 
-            // 매매전략_총투자금
-            // 
-            this.매매전략_총투자금.HeaderText = "총투자금";
-            this.매매전략_총투자금.MinimumWidth = 6;
-            this.매매전략_총투자금.Name = "매매전략_총투자금";
-            this.매매전략_총투자금.ReadOnly = true;
-            // 
-            // 매매전략_매수종목수
-            // 
-            this.매매전략_매수종목수.HeaderText = "매수종목수";
-            this.매매전략_매수종목수.MinimumWidth = 6;
-            this.매매전략_매수종목수.Name = "매매전략_매수종목수";
-            this.매매전략_매수종목수.ReadOnly = true;
-            // 
-            // 매매전략_종목별투자금
-            // 
-            this.매매전략_종목별투자금.HeaderText = "종목별투자금";
-            this.매매전략_종목별투자금.MinimumWidth = 6;
-            this.매매전략_종목별투자금.Name = "매매전략_종목별투자금";
-            this.매매전략_종목별투자금.ReadOnly = true;
-            // 
-            // 매매전략_익절
-            // 
-            this.매매전략_익절.HeaderText = "익절";
-            this.매매전략_익절.MinimumWidth = 6;
-            this.매매전략_익절.Name = "매매전략_익절";
-            this.매매전략_익절.ReadOnly = true;
-            // 
-            // 매매전략_익절률
-            // 
-            this.매매전략_익절률.HeaderText = "익절률";
-            this.매매전략_익절률.MinimumWidth = 6;
-            this.매매전략_익절률.Name = "매매전략_익절률";
-            this.매매전략_익절률.ReadOnly = true;
-            // 
-            // 매매전략_손절
-            // 
-            this.매매전략_손절.HeaderText = "손절";
-            this.매매전략_손절.MinimumWidth = 6;
-            this.매매전략_손절.Name = "매매전략_손절";
-            this.매매전략_손절.ReadOnly = true;
-            // 
-            // 매매전략_손절률
-            // 
-            this.매매전략_손절률.HeaderText = "손절률";
-            this.매매전략_손절률.MinimumWidth = 6;
-            this.매매전략_손절률.Name = "매매전략_손절률";
-            this.매매전략_손절률.ReadOnly = true;
-            // 
-            // 매매전략_취소
-            // 
-            dataGridViewCellStyle78.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle78.NullValue = "취소";
-            this.매매전략_취소.DefaultCellStyle = dataGridViewCellStyle78;
-            this.매매전략_취소.HeaderText = "취소";
-            this.매매전략_취소.MinimumWidth = 10;
-            this.매매전략_취소.Name = "매매전략_취소";
-            this.매매전략_취소.ReadOnly = true;
-            this.매매전략_취소.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.매매전략_취소.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // blockingCheckBox
             // 
@@ -4180,11 +4058,150 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // 매매전략_취소
+            // 
+            dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle43.NullValue = "취소";
+            this.매매전략_취소.DefaultCellStyle = dataGridViewCellStyle43;
+            this.매매전략_취소.FillWeight = 85.84454F;
+            this.매매전략_취소.HeaderText = "취소";
+            this.매매전략_취소.MinimumWidth = 10;
+            this.매매전략_취소.Name = "매매전략_취소";
+            this.매매전략_취소.ReadOnly = true;
+            this.매매전략_취소.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.매매전략_취소.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // 매매전략_손절률
+            // 
+            this.매매전략_손절률.FillWeight = 86.48527F;
+            this.매매전략_손절률.HeaderText = "손절률";
+            this.매매전략_손절률.MinimumWidth = 6;
+            this.매매전략_손절률.Name = "매매전략_손절률";
+            this.매매전략_손절률.ReadOnly = true;
+            // 
+            // 매매전략_손절
+            // 
+            this.매매전략_손절.FillWeight = 88.39798F;
+            this.매매전략_손절.HeaderText = "손절";
+            this.매매전략_손절.MinimumWidth = 6;
+            this.매매전략_손절.Name = "매매전략_손절";
+            this.매매전략_손절.ReadOnly = true;
+            // 
+            // 매매전략_익절률
+            // 
+            this.매매전략_익절률.FillWeight = 91.74657F;
+            this.매매전략_익절률.HeaderText = "익절률";
+            this.매매전략_익절률.MinimumWidth = 6;
+            this.매매전략_익절률.Name = "매매전략_익절률";
+            this.매매전략_익절률.ReadOnly = true;
+            // 
+            // 매매전략_익절
+            // 
+            this.매매전략_익절.FillWeight = 92.66952F;
+            this.매매전략_익절.HeaderText = "익절";
+            this.매매전략_익절.MinimumWidth = 6;
+            this.매매전략_익절.Name = "매매전략_익절";
+            this.매매전략_익절.ReadOnly = true;
+            // 
+            // 매매전략_종목별투자금
+            // 
+            this.매매전략_종목별투자금.FillWeight = 94.96681F;
+            this.매매전략_종목별투자금.HeaderText = "종목별투자금";
+            this.매매전략_종목별투자금.MinimumWidth = 6;
+            this.매매전략_종목별투자금.Name = "매매전략_종목별투자금";
+            this.매매전략_종목별투자금.ReadOnly = true;
+            // 
+            // 매매전략_매수종목수
+            // 
+            this.매매전략_매수종목수.FillWeight = 98.82545F;
+            this.매매전략_매수종목수.HeaderText = "매수종목수";
+            this.매매전략_매수종목수.MinimumWidth = 6;
+            this.매매전략_매수종목수.Name = "매매전략_매수종목수";
+            this.매매전략_매수종목수.ReadOnly = true;
+            // 
+            // 매매전략_총투자금
+            // 
+            this.매매전략_총투자금.FillWeight = 100.087F;
+            this.매매전략_총투자금.HeaderText = "총투자금";
+            this.매매전략_총투자금.MinimumWidth = 6;
+            this.매매전략_총투자금.Name = "매매전략_총투자금";
+            this.매매전략_총투자금.ReadOnly = true;
+            // 
+            // 매매전략_매수가격
+            // 
+            this.매매전략_매수가격.FillWeight = 104.3432F;
+            this.매매전략_매수가격.HeaderText = "매수가격";
+            this.매매전략_매수가격.MinimumWidth = 6;
+            this.매매전략_매수가격.Name = "매매전략_매수가격";
+            this.매매전략_매수가격.ReadOnly = true;
+            // 
+            // 매매전략_종료시간
+            // 
+            this.매매전략_종료시간.FillWeight = 105.8686F;
+            this.매매전략_종료시간.HeaderText = "종료시간";
+            this.매매전략_종료시간.MinimumWidth = 10;
+            this.매매전략_종료시간.Name = "매매전략_종료시간";
+            this.매매전략_종료시간.ReadOnly = true;
+            // 
+            // 매매전략_시작시간
+            // 
+            this.매매전략_시작시간.FillWeight = 108.9866F;
+            this.매매전략_시작시간.HeaderText = "시작시간";
+            this.매매전략_시작시간.MinimumWidth = 10;
+            this.매매전략_시작시간.Name = "매매전략_시작시간";
+            this.매매전략_시작시간.ReadOnly = true;
+            // 
+            // 매매전략_시간제한사용
+            // 
+            this.매매전략_시간제한사용.FillWeight = 113.9339F;
+            this.매매전략_시간제한사용.HeaderText = "시간제한사용";
+            this.매매전략_시간제한사용.MinimumWidth = 10;
+            this.매매전략_시간제한사용.Name = "매매전략_시간제한사용";
+            this.매매전략_시간제한사용.ReadOnly = true;
+            // 
+            // 매매전략_트레일링
+            // 
+            this.매매전략_트레일링.FillWeight = 115.918F;
+            this.매매전략_트레일링.HeaderText = "트레일링";
+            this.매매전략_트레일링.MinimumWidth = 10;
+            this.매매전략_트레일링.Name = "매매전략_트레일링";
+            this.매매전략_트레일링.ReadOnly = true;
+            // 
+            // 매매전략_호가적용
+            // 
+            this.매매전략_호가적용.FillWeight = 119.6609F;
+            this.매매전략_호가적용.HeaderText = "추가호가적용";
+            this.매매전략_호가적용.MinimumWidth = 10;
+            this.매매전략_호가적용.Name = "매매전략_호가적용";
+            // 
+            // 매매전략_매수조건식
+            // 
+            this.매매전략_매수조건식.FillWeight = 94.46366F;
+            this.매매전략_매수조건식.HeaderText = "조건식";
+            this.매매전략_매수조건식.MinimumWidth = 6;
+            this.매매전략_매수조건식.Name = "매매전략_매수조건식";
+            // 
+            // 매매전략_재실행
+            // 
+            this.매매전략_재실행.FillWeight = 98.28325F;
+            this.매매전략_재실행.HeaderText = "재실행";
+            this.매매전략_재실행.MinimumWidth = 10;
+            this.매매전략_재실행.Name = "매매전략_재실행";
+            this.매매전략_재실행.ReadOnly = true;
+            // 
+            // 매매전략_계좌번호
+            // 
+            this.매매전략_계좌번호.FillWeight = 99.51886F;
+            this.매매전략_계좌번호.HeaderText = "계좌번호";
+            this.매매전략_계좌번호.MinimumWidth = 6;
+            this.매매전략_계좌번호.Name = "매매전략_계좌번호";
+            this.매매전략_계좌번호.ReadOnly = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1294, 972);
+            this.ClientSize = new System.Drawing.Size(1424, 972);
             this.Controls.Add(this.kosdaqInfo);
             this.Controls.Add(this.kospiInfo);
             this.Controls.Add(this.label25);
@@ -4405,23 +4422,6 @@
         private System.Windows.Forms.DateTimePicker endTimePicker;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.NumericUpDown trailingUpDown;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_계좌번호;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_재실행;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_매수조건식;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_호가적용;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_트레일링;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_시간제한사용;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_시작시간;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_종료시간;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_매수가격;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_총투자금;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_매수종목수;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_종목별투자금;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_익절;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_익절률;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_손절;
-        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_손절률;
-        private System.Windows.Forms.DataGridViewButtonColumn 매매전략_취소;
         private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_종목코드;
         private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_주문번호;
         private System.Windows.Forms.DataGridViewTextBoxColumn 매매진행_종목명;
@@ -4630,6 +4630,23 @@
         private System.Windows.Forms.Button AddRebuyStrategyBtn;
         private System.Windows.Forms.TextBox ReBuyStrategyTextBox;
         private System.Windows.Forms.Label label57;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_계좌번호;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_재실행;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_매수조건식;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_호가적용;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_트레일링;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_시간제한사용;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_시작시간;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_종료시간;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_매수가격;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_총투자금;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_매수종목수;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_종목별투자금;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_익절;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_익절률;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_손절;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_손절률;
+        private System.Windows.Forms.DataGridViewButtonColumn 매매전략_취소;
     }
 }
 
