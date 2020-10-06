@@ -97,7 +97,7 @@ namespace Singijeon
                     if (index < buyBiddingEntityArray.Length)
                     {
                         if (buyBiddingEntityArray[index].Hoga > 0)
-                            return buyBiddingEntityArray[index].Hoga;
+                            return Math.Abs(buyBiddingEntityArray[index].Hoga);
                     }
                 }
                 return Math.Abs(buyBiddingEntityArray[index].Hoga);

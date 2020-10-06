@@ -1098,6 +1098,7 @@ namespace Singijeon
                                 if (profit < 0)
                                 {
                                     //손절완료일때 재구매 전략 확인
+                                    coreEngine.SendLogWarningMessage("재구매 실행");
                                     AddItemRebuyStrategy(item.itemCode);
                                 }
                             }
@@ -2363,6 +2364,8 @@ namespace Singijeon
         {
             string itemName = interestTextBox.Text;
             StockItem stockItem = stockItemList.Find(o => o.Name.Equals(itemName));
+            if (stockItem == null)
+                return;
             string itemCode = stockItem.Code;
             string conditionName = ForceAddStrategyTextBox.Text;
 
