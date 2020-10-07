@@ -75,7 +75,9 @@ namespace Singijeon
 
         public void SetSellHoga(int index, long hoga)
         {
-            if(index < sellBiddingEntityArray.Length)
+            if (hoga == 0)
+                Console.WriteLine("SetSellHoga err ");
+            if (index < sellBiddingEntityArray.Length)
             {
                 sellBiddingEntityArray[index].Hoga = hoga;
             }
@@ -89,23 +91,27 @@ namespace Singijeon
         }
         public long GetBuyHoga(int index)
         {
-            if (index < buyBiddingEntityArray.Length)
-            {
-                while(buyBiddingEntityArray[index].Qnt == 0 )
+            
+                while(index < buyBiddingEntityArray.Length  )
                 {
-                    index++;
-                    if (index < buyBiddingEntityArray.Length)
+                    if(buyBiddingEntityArray[index].Qnt == 0)
                     {
-                        if (buyBiddingEntityArray[index].Hoga > 0)
-                            return Math.Abs(buyBiddingEntityArray[index].Hoga);
-                    }
+                        index++;
+                        continue;
+                    }                
+                    if (buyBiddingEntityArray[index].Hoga > 0)
+                        return Math.Abs(buyBiddingEntityArray[index].Hoga);
+                    else
+                        Console.WriteLine("hoga err");
+       
                 }
-                return Math.Abs(buyBiddingEntityArray[index].Hoga);
-            }
+           
             return 0;
         }
         public void SetBuyHoga(int index, long hoga)
         {
+            if(hoga == 0)
+                Console.WriteLine("SetBuyHoga err ");
             if (index < buyBiddingEntityArray.Length)
             {
                 buyBiddingEntityArray[index].Hoga = hoga;

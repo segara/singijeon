@@ -65,6 +65,7 @@ namespace Singijeon
         List<MA_ENVELOPE> list_envelopeChecker = new List<MA_ENVELOPE>();
         TimerJob newTimer;
         KospiInfo info;
+        string rebuyCondition = string.Empty;
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
         public Form1()
         {
@@ -2776,6 +2777,11 @@ namespace Singijeon
                             coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 검색 등장시 호가(트레일링) : " + stockInfo.GetBuyHoga(0));
 
                             int buyPrice = (int)stockInfo.GetBuyHoga(0);
+                            if(buyPrice <= 0)
+                            {
+                                coreEngine.SendLogErrorMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 호가찾기 에러!!!!!!!!!!!!!!!!!!!");
+                                return;
+                            }
                             int i_qnt = (int)(ts.itemInvestment / buyPrice);
 
                             int rowIndex = autoTradingDataGrid.Rows.Add(); //종목포착정보 ui추가
@@ -2925,6 +2931,7 @@ namespace Singijeon
                     if (trailingItem.strategy != null && itemCode.Contains(trailingItem.itemCode) && trailingItem.strategy.usingTrailing) //하락 트레일링 체크
                     {
                         StockWithBiddingEntity stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
+                       
                         //호가정보 아이템
                         if (stockInfo != null)
                         {
@@ -2972,6 +2979,8 @@ namespace Singijeon
 
                             if (trailingItem.curTickCount < trailingItem.settingTickCount)
                             {
+                                if (price <= 0)
+                                    continue;
                                 if (trailingItem.curTickCount == 0)
                                 {
                                     if (trailingItem.isVwmaCheck)
@@ -3036,8 +3045,9 @@ namespace Singijeon
                                     }
                                 }
                             }
-                           
 
+                            if (price <= 0)
+                                continue;
                             if (trailingItem.isVwmaCheck)
                             {
                                 continue;
@@ -4233,9 +4243,9 @@ namespace Singijeon
 
         public void AddItemRebuyStrategy(string itemCode)
         {
-            if (string.IsNullOrEmpty(CurrentRebuyText.Text) == false)
+            if (string.IsNullOrEmpty(rebuyCondition) == false)
             {
-                TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(CurrentRebuyText.Text));
+                TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(rebuyCondition));
 
                 if (ts != null)
                 {
@@ -4271,11 +4281,13 @@ namespace Singijeon
             if (string.IsNullOrEmpty(CurrentRebuyText.Text))
             {
                 CurrentRebuyText.Text = conditionName;
+                rebuyCondition = conditionName;
                 AddRebuyStrategyBtn.Text = "실행중";
             }
             else
             {
                 CurrentRebuyText.Text = string.Empty;
+                rebuyCondition = string.Empty;
                 AddRebuyStrategyBtn.Text = "감시시작";
             }
         }
