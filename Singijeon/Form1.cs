@@ -2779,7 +2779,9 @@ namespace Singijeon
                             int buyPrice = (int)stockInfo.GetBuyHoga(0);
                             if(buyPrice <= 0)
                             {
+                                coreEngine.SendLogErrorMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                 coreEngine.SendLogErrorMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 호가찾기 에러!!!!!!!!!!!!!!!!!!!");
+                                coreEngine.SendLogErrorMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                 return;
                             }
                             int i_qnt = (int)(ts.itemInvestment / buyPrice);
@@ -3031,7 +3033,9 @@ namespace Singijeon
                                                     StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
                                                     if((int)_stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue) == 0)
                                                     {
+                                                        coreEngine.SendLogErrorMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                                         coreEngine.SendLogErrorMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + "호가 찾기 에러");
+                                                        coreEngine.SendLogErrorMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                                     }
                                                     else
                                                     {
