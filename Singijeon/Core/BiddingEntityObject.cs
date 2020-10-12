@@ -99,7 +99,7 @@ namespace Singijeon
                         index++;
                         continue;
                     }                
-                    if (buyBiddingEntityArray[index].Hoga > 0)
+                    if (Math.Abs(buyBiddingEntityArray[index].Hoga) > 0)
                         return Math.Abs(buyBiddingEntityArray[index].Hoga);
                     else
                         Console.WriteLine("hoga err");
