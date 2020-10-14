@@ -29,7 +29,7 @@ namespace Singijeon
         List<long> priceMA_List = new List<long>();
         List<long> priceMA_Envelope_List = new List<long>();
 
-        ReceiveAfter afterEventFunction = null;
+        Dictionary<string,ReceiveAfter> afterEventFunction = new Dictionary<string, ReceiveAfter>();
         public delegate void ReceiveAfter(string itemCode, long curPrice, long envelopePrice);
         bool init = false;
 
@@ -46,7 +46,16 @@ namespace Singijeon
         {
             if (!init)
                 return;
-            afterEventFunction = delFunc;
+
+            if(afterEventFunction.ContainsKey(ItemCode)==false)
+            {
+                afterEventFunction.Add(ItemCode, delFunc);
+            }
+            else
+            {
+                afterEventFunction[ItemCode] = delFunc;
+            }
+            
 
             Task requestItemInfoTaskMinute = new Task(() =>
             {
@@ -117,7 +126,13 @@ namespace Singijeon
                 }
 
                 if (afterEventFunction != null && priceList.Count >  0 && priceMA_Envelope_List.Count > 0)
-                    afterEventFunction.Invoke(itemcode, priceList[0], priceMA_Envelope_List[0]);
+                {
+                    if (afterEventFunction.ContainsKey(itemcode))
+                    {
+                        afterEventFunction[itemcode].Invoke(itemcode, priceList[0], priceMA_Envelope_List[0]);
+                    }
+                }
+                  
             }
         }
     }

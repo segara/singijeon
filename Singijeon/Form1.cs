@@ -2796,7 +2796,6 @@ namespace Singijeon
                             UpdateAutoTradingDataGridRowAll(rowIndex, ConstName.AUTO_TRADING_STATE_SEARCH_AND_CATCH, itemcode, ts.buyCondition.Name, i_qnt, buyPrice);
 
                             trailingList.Add(trailItem);
-
               
                             if (ts.usingPercentageBuy)
                             {
@@ -2996,7 +2995,7 @@ namespace Singijeon
                                                 TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
                                                 if (findItem != null)
                                                 {
-                                                    StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
+                                                    StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(_itemCode);
                                                     TrailingToBuy(findItem, _itemCode, (int)_stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue), _stockInfo);
                                                     return;
                                                 }
@@ -3026,15 +3025,15 @@ namespace Singijeon
                                         itemEnvelope.RequestItem(itemCode, delegate (string _itemCode, long curPrice, long envelopePrice) {
                                             if (curPrice < envelopePrice)
                                             {
-                                                coreEngine.SaveItemLogMessage(itemcode , "구매시도 진입 "+ curPrice + " / " + envelopePrice);
+                                                coreEngine.SaveItemLogMessage(_itemCode, "구매시도 진입 "+ curPrice + " / " + envelopePrice);
                                                 TrailingItem findItem = trailingList.Find(o => (o.itemCode == _itemCode));
                                                 if (findItem != null)
                                                 {
-                                                    StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(itemCode);
+                                                    StockWithBiddingEntity _stockInfo = StockWithBiddingManager.GetInstance().GetItem(_itemCode);
                                                     if((int)_stockInfo.GetBuyHoga(findItem.strategy.tickBuyValue) == 0)
                                                     {
                                                         coreEngine.SendLogErrorMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                                                        coreEngine.SendLogErrorMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + "호가 찾기 에러");
+                                                        coreEngine.SendLogErrorMessage(axKHOpenAPI1.GetMasterCodeName(_itemCode) + "호가 찾기 에러");
                                                         coreEngine.SendLogErrorMessage("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                                     }
                                                     else
