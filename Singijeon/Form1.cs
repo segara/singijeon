@@ -135,7 +135,7 @@ namespace Singijeon
 
         }
 
-        void UpdateTimer()
+        void UpdateTimer() 
         {
             newTimer = new TimerJob();
             newTimer.StartWork(1000 * 10, delegate ()
