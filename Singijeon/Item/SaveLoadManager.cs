@@ -223,6 +223,7 @@ namespace Singijeon
             ts.usingEnvelope5 = saved.usingEnvelope5;
             ts.usingEnvelope7 = saved.usingEnvelope7;
             ts.usingEnvelope10 = saved.usingEnvelope10;
+            ts.usingEnvelope15 = saved.usingEnvelope15;
             ts.trailTickValue = saved.trailTickValue;
    
             if (saved.usingGapTrailBuy)

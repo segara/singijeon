@@ -62,6 +62,8 @@ namespace Singijeon
         MA_ENVELOPE ma_5 = null;
         MA_ENVELOPE ma_7 = null;
         MA_ENVELOPE ma_10 = null;
+        MA_ENVELOPE ma_15 = null;
+        long buyPlusMoney = 0;
         List<MA_ENVELOPE> list_envelopeChecker = new List<MA_ENVELOPE>();
         TimerJob newTimer;
         KospiInfo info;
@@ -127,6 +129,9 @@ namespace Singijeon
             ma_10 = new MA_ENVELOPE();
             ma_10.Init(axKHOpenAPI1, 0.1);
             list_envelopeChecker.Add(ma_10);
+            ma_15 = new MA_ENVELOPE();
+            ma_15.Init(axKHOpenAPI1, 0.15);
+            list_envelopeChecker.Add(ma_15);
 
             //LoadSetting();
             printForm = new Form3(axKHOpenAPI1);
@@ -2132,6 +2137,13 @@ namespace Singijeon
                 ts.trailTickValue = 30;
             }
 
+            if (useEnvelope15CheckBox.Checked)
+            {
+                ts.usingEnvelope15 = useEnvelope15CheckBox.Checked;
+                ts.usingTrailing = true;
+                ts.trailTickValue = 30;
+            }
+
             bool useGapTrailBuy = useGapTrailBuyCheck.Checked;
             if (useGapTrailBuy)
             {
@@ -4111,6 +4123,7 @@ namespace Singijeon
                 useEnvelopeCheckBox.Enabled = false;
                 useEnvelope7CheckBox.Enabled = false;
                 useEnvelope10CheckBox.Enabled = false;
+                useEnvelope15CheckBox.Enabled = false;
             } 
             else
             {
@@ -4119,6 +4132,7 @@ namespace Singijeon
                 useEnvelopeCheckBox.Enabled = true;
                 useEnvelope7CheckBox.Enabled = true;
                 useEnvelope10CheckBox.Enabled = true;
+                useEnvelope15CheckBox.Enabled = true;
             } 
         }
 
@@ -4130,6 +4144,7 @@ namespace Singijeon
                 useEnvelopeCheckBox.Enabled = false;
                 useEnvelope7CheckBox.Enabled = false;
                 useEnvelope10CheckBox.Enabled = false;
+                useEnvelope15CheckBox.Enabled = false;
             }
             else
             {
@@ -4137,6 +4152,7 @@ namespace Singijeon
                 useEnvelopeCheckBox.Enabled = true;
                 useEnvelope7CheckBox.Enabled = true;
                 useEnvelope10CheckBox.Enabled = true;
+                useEnvelope15CheckBox.Enabled = true;
             }
         }
 
@@ -4148,6 +4164,7 @@ namespace Singijeon
                 useEnvelopeCheckBox.Enabled = false;
                 useEnvelope7CheckBox.Enabled = false;
                 useEnvelope10CheckBox.Enabled = false;
+                useEnvelope15CheckBox.Enabled = false;
             }
             else
             {
@@ -4155,6 +4172,7 @@ namespace Singijeon
                 useEnvelopeCheckBox.Enabled = true;
                 useEnvelope7CheckBox.Enabled = true;
                 useEnvelope10CheckBox.Enabled = true;
+                useEnvelope15CheckBox.Enabled = true;
             }
         }
 
@@ -4164,6 +4182,7 @@ namespace Singijeon
             {
                 useEnvelope7CheckBox.Enabled = false;
                 useEnvelope10CheckBox.Enabled = false;
+                useEnvelope15CheckBox.Enabled = false;
                 usingTrailingBuyCheck.Enabled = false;
                 orderPecentageCheckBox.Enabled = false;
                 useVwmaCheckBox.Enabled = false;
@@ -4172,6 +4191,7 @@ namespace Singijeon
             {
                 useEnvelope7CheckBox.Enabled = true;
                 useEnvelope10CheckBox.Enabled = true;
+                useEnvelope15CheckBox.Enabled = true;
                 usingTrailingBuyCheck.Enabled = true;
                 orderPecentageCheckBox.Enabled = true;
                 useVwmaCheckBox.Enabled = true;
@@ -4210,6 +4230,7 @@ namespace Singijeon
             {
                 useEnvelopeCheckBox.Enabled = false;
                 useEnvelope10CheckBox.Enabled = false;
+                useEnvelope15CheckBox.Enabled = false;
                 usingTrailingBuyCheck.Enabled = false;
                 orderPecentageCheckBox.Enabled = false;
                 useVwmaCheckBox.Enabled = false;
@@ -4218,6 +4239,7 @@ namespace Singijeon
             {
                 useEnvelopeCheckBox.Enabled = true;
                 useEnvelope10CheckBox.Enabled = true;
+                useEnvelope15CheckBox.Enabled = true;
                 usingTrailingBuyCheck.Enabled = true;
                 orderPecentageCheckBox.Enabled = true;
                 useVwmaCheckBox.Enabled = true;
@@ -4230,6 +4252,7 @@ namespace Singijeon
             {
                 useEnvelopeCheckBox.Enabled = false;
                 useEnvelope7CheckBox.Enabled = false;
+                useEnvelope15CheckBox.Enabled = false;
                 usingTrailingBuyCheck.Enabled = false;
                 orderPecentageCheckBox.Enabled = false;
                 useVwmaCheckBox.Enabled = false;
@@ -4238,6 +4261,7 @@ namespace Singijeon
             {
                 useEnvelopeCheckBox.Enabled = true;
                 useEnvelope7CheckBox.Enabled = true;
+                useEnvelope15CheckBox.Enabled = true;
                 usingTrailingBuyCheck.Enabled = true;
                 orderPecentageCheckBox.Enabled = true;
                 useVwmaCheckBox.Enabled = true;
@@ -4249,7 +4273,7 @@ namespace Singijeon
             if (string.IsNullOrEmpty(rebuyCondition) == false)
             {
                 TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(rebuyCondition));
-
+                ts.itemInvestment = ts.itemInvestment + buyPlusMoney;
                 if (ts != null)
                 {
                     if (ts.remainItemCount == 0)
@@ -4285,6 +4309,7 @@ namespace Singijeon
             {
                 CurrentRebuyText.Text = conditionName;
                 rebuyCondition = conditionName;
+                buyPlusMoney = (long)ReBuyAddMoney.Value;
                 AddRebuyStrategyBtn.Text = "실행중";
             }
             else
@@ -4292,6 +4317,28 @@ namespace Singijeon
                 CurrentRebuyText.Text = string.Empty;
                 rebuyCondition = string.Empty;
                 AddRebuyStrategyBtn.Text = "감시시작";
+            }
+        }
+
+        private void useEnvelope15CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.useEnvelope15CheckBox.Checked == true)
+            {
+                useEnvelopeCheckBox.Enabled = false;
+                useEnvelope7CheckBox.Enabled = false;
+                useEnvelope10CheckBox.Enabled = false;
+                usingTrailingBuyCheck.Enabled = false;
+                orderPecentageCheckBox.Enabled = false;
+                useVwmaCheckBox.Enabled = false;
+            }
+            else
+            {
+                useEnvelopeCheckBox.Enabled = true;
+                useEnvelope7CheckBox.Enabled = true;
+                useEnvelope10CheckBox.Enabled = true;
+                usingTrailingBuyCheck.Enabled = true;
+                orderPecentageCheckBox.Enabled = true;
+                useVwmaCheckBox.Enabled = true;
             }
         }
     }

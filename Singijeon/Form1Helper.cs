@@ -525,6 +525,7 @@ namespace Singijeon
             useEnvelopeCheckBox.Checked = false;
             useEnvelope7CheckBox.Checked = false;
             useEnvelope10CheckBox.Checked = false;
+            useEnvelope15CheckBox.Checked = false;
             tickMinusValue.Value = tickMinusValue.Minimum;
 
             usingDoubleConditionCheck.Checked = false;
@@ -678,6 +679,9 @@ namespace Singijeon
                                 break;
                             case "useEnvelope10CheckBox":
                                 useEnvelope10CheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "useEnvelope15CheckBox":
+                                useEnvelope15CheckBox.Checked = bool.Parse(strringArray[1]);
                                 break;
                             case "marketPriceRadioBtn":
                                 marketPriceRadioBtn.Checked = bool.Parse(strringArray[1]);

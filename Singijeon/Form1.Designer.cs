@@ -352,29 +352,32 @@
             this.미체결_주문가 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tsDataGridView = new System.Windows.Forms.DataGridView();
+            this.매매전략_계좌번호 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_재실행 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_매수조건식 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_호가적용 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_트레일링 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_시간제한사용 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_시작시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_종료시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_매수가격 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_총투자금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_매수종목수 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_종목별투자금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_익절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_익절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_손절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.blockingCheckBox = new System.Windows.Forms.CheckBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.kospiInfo = new System.Windows.Forms.Label();
             this.kosdaqInfo = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.매매전략_취소 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.매매전략_손절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_손절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_익절률 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_익절 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_종목별투자금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_매수종목수 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_총투자금 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_매수가격 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_종료시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_시작시간 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_시간제한사용 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_트레일링 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_호가적용 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_매수조건식 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_재실행 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.매매전략_계좌번호 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.useEnvelope15CheckBox = new System.Windows.Forms.CheckBox();
+            this.label60 = new System.Windows.Forms.Label();
+            this.ReBuyAddMoney = new System.Windows.Forms.NumericUpDown();
             tabPage9 = new System.Windows.Forms.TabPage();
             tabPage9.SuspendLayout();
             this.panel26.SuspendLayout();
@@ -460,6 +463,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.outstandingDataGrid)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ReBuyAddMoney)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPage9
@@ -470,12 +474,14 @@
             tabPage9.Location = new System.Drawing.Point(4, 22);
             tabPage9.Name = "tabPage9";
             tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            tabPage9.Size = new System.Drawing.Size(1254, 256);
+            tabPage9.Size = new System.Drawing.Size(1368, 256);
             tabPage9.TabIndex = 4;
             tabPage9.Text = "재구매";
             // 
             // panel26
             // 
+            this.panel26.Controls.Add(this.label60);
+            this.panel26.Controls.Add(this.ReBuyAddMoney);
             this.panel26.Controls.Add(this.CurrentRebuyText);
             this.panel26.Controls.Add(this.label59);
             this.panel26.Controls.Add(this.label58);
@@ -484,7 +490,7 @@
             this.panel26.Controls.Add(this.label57);
             this.panel26.Location = new System.Drawing.Point(19, 12);
             this.panel26.Name = "panel26";
-            this.panel26.Size = new System.Drawing.Size(244, 238);
+            this.panel26.Size = new System.Drawing.Size(274, 238);
             this.panel26.TabIndex = 33;
             // 
             // CurrentRebuyText
@@ -554,7 +560,7 @@
             this.panel25.Enabled = false;
             this.panel25.Location = new System.Drawing.Point(495, 19);
             this.panel25.Name = "panel25";
-            this.panel25.Size = new System.Drawing.Size(1088, 244);
+            this.panel25.Size = new System.Drawing.Size(1202, 244);
             this.panel25.TabIndex = 8;
             this.panel25.Visible = false;
             // 
@@ -594,7 +600,7 @@
             this.panel10.Location = new System.Drawing.Point(250, 7);
             this.panel10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(270, 205);
+            this.panel10.Size = new System.Drawing.Size(384, 205);
             this.panel10.TabIndex = 10;
             // 
             // m_useVwmaCheckBox
@@ -821,7 +827,7 @@
             this.panel9.Location = new System.Drawing.Point(554, 7);
             this.panel9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(135, 205);
+            this.panel9.Size = new System.Drawing.Size(249, 205);
             this.panel9.TabIndex = 9;
             // 
             // M_SellUpdownLoss
@@ -900,7 +906,7 @@
             this.panel8.Location = new System.Drawing.Point(16, 7);
             this.panel8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(172, 205);
+            this.panel8.Size = new System.Drawing.Size(286, 205);
             this.panel8.TabIndex = 8;
             // 
             // label48
@@ -1111,7 +1117,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(1284, 313);
+            this.groupBox1.Size = new System.Drawing.Size(1402, 313);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "전략생성";
@@ -1127,7 +1133,7 @@
             this.tabControl2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1262, 282);
+            this.tabControl2.Size = new System.Drawing.Size(1376, 282);
             this.tabControl2.TabIndex = 4;
             // 
             // tabPage6
@@ -1139,7 +1145,7 @@
             this.tabPage6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage6.Size = new System.Drawing.Size(1254, 256);
+            this.tabPage6.Size = new System.Drawing.Size(1368, 256);
             this.tabPage6.TabIndex = 0;
             this.tabPage6.Text = "자동매매";
             // 
@@ -1149,7 +1155,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 461F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 463F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -1159,7 +1165,7 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1245, 220);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1359, 220);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // panel7
@@ -1167,6 +1173,7 @@
             this.panel7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel7.Controls.Add(this.useEnvelope15CheckBox);
             this.panel7.Controls.Add(this.useEnvelope10CheckBox);
             this.panel7.Controls.Add(this.useEnvelope7CheckBox);
             this.panel7.Controls.Add(this.useEnvelopeCheckBox);
@@ -1192,16 +1199,16 @@
             this.panel7.Controls.Add(this.label11);
             this.panel7.Controls.Add(this.usingTickBuyCheck);
             this.panel7.Controls.Add(this.label12);
-            this.panel7.Location = new System.Drawing.Point(342, 3);
+            this.panel7.Location = new System.Drawing.Point(390, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(436, 214);
+            this.panel7.Size = new System.Drawing.Size(500, 214);
             this.panel7.TabIndex = 5;
             // 
             // useEnvelope10CheckBox
             // 
             this.useEnvelope10CheckBox.AutoSize = true;
-            this.useEnvelope10CheckBox.Location = new System.Drawing.Point(269, 67);
+            this.useEnvelope10CheckBox.Location = new System.Drawing.Point(289, 66);
             this.useEnvelope10CheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.useEnvelope10CheckBox.Name = "useEnvelope10CheckBox";
             this.useEnvelope10CheckBox.Size = new System.Drawing.Size(171, 16);
@@ -1213,7 +1220,7 @@
             // useEnvelope7CheckBox
             // 
             this.useEnvelope7CheckBox.AutoSize = true;
-            this.useEnvelope7CheckBox.Location = new System.Drawing.Point(269, 46);
+            this.useEnvelope7CheckBox.Location = new System.Drawing.Point(289, 45);
             this.useEnvelope7CheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.useEnvelope7CheckBox.Name = "useEnvelope7CheckBox";
             this.useEnvelope7CheckBox.Size = new System.Drawing.Size(165, 16);
@@ -1225,7 +1232,7 @@
             // useEnvelopeCheckBox
             // 
             this.useEnvelopeCheckBox.AutoSize = true;
-            this.useEnvelopeCheckBox.Location = new System.Drawing.Point(269, 26);
+            this.useEnvelopeCheckBox.Location = new System.Drawing.Point(289, 25);
             this.useEnvelopeCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.useEnvelopeCheckBox.Name = "useEnvelopeCheckBox";
             this.useEnvelopeCheckBox.Size = new System.Drawing.Size(165, 16);
@@ -1237,7 +1244,7 @@
             // buyCancelTimeCheckBox
             // 
             this.buyCancelTimeCheckBox.AutoSize = true;
-            this.buyCancelTimeCheckBox.Location = new System.Drawing.Point(324, 89);
+            this.buyCancelTimeCheckBox.Location = new System.Drawing.Point(144, 49);
             this.buyCancelTimeCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buyCancelTimeCheckBox.Name = "buyCancelTimeCheckBox";
             this.buyCancelTimeCheckBox.Size = new System.Drawing.Size(112, 16);
@@ -1248,7 +1255,7 @@
             // useVwmaCheckBox
             // 
             this.useVwmaCheckBox.AutoSize = true;
-            this.useVwmaCheckBox.Location = new System.Drawing.Point(269, 6);
+            this.useVwmaCheckBox.Location = new System.Drawing.Point(289, 5);
             this.useVwmaCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.useVwmaCheckBox.Name = "useVwmaCheckBox";
             this.useVwmaCheckBox.Size = new System.Drawing.Size(173, 16);
@@ -1411,9 +1418,9 @@
             // 
             this.endTimePicker.CustomFormat = "";
             this.endTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.endTimePicker.Location = new System.Drawing.Point(210, 85);
+            this.endTimePicker.Location = new System.Drawing.Point(180, 83);
             this.endTimePicker.Name = "endTimePicker";
-            this.endTimePicker.Size = new System.Drawing.Size(104, 21);
+            this.endTimePicker.Size = new System.Drawing.Size(98, 21);
             this.endTimePicker.TabIndex = 15;
             this.endTimePicker.Value = new System.DateTime(2020, 2, 16, 14, 50, 0, 0);
             // 
@@ -1421,9 +1428,9 @@
             // 
             this.startTimePicker.CustomFormat = "HH:mm";
             this.startTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.startTimePicker.Location = new System.Drawing.Point(91, 82);
+            this.startTimePicker.Location = new System.Drawing.Point(82, 82);
             this.startTimePicker.Name = "startTimePicker";
-            this.startTimePicker.Size = new System.Drawing.Size(103, 21);
+            this.startTimePicker.Size = new System.Drawing.Size(92, 21);
             this.startTimePicker.TabIndex = 14;
             this.startTimePicker.Value = new System.DateTime(2020, 2, 16, 9, 0, 0, 0);
             // 
@@ -1539,7 +1546,7 @@
             this.panel1.Location = new System.Drawing.Point(4, 3);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(331, 214);
+            this.panel1.Size = new System.Drawing.Size(379, 214);
             this.panel1.TabIndex = 0;
             // 
             // dummyStrategyAddBtn
@@ -1864,10 +1871,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(785, 3);
+            this.panel2.Location = new System.Drawing.Point(897, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(456, 214);
+            this.panel2.Size = new System.Drawing.Size(458, 214);
             this.panel2.TabIndex = 4;
             // 
             // panel24
@@ -2329,7 +2336,7 @@
             this.tabPage7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage7.Size = new System.Drawing.Size(1254, 256);
+            this.tabPage7.Size = new System.Drawing.Size(1368, 256);
             this.tabPage7.TabIndex = 1;
             this.tabPage7.Text = "잔고매도";
             // 
@@ -2339,7 +2346,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.10482F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.89518F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 438F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 359F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 360F));
             this.tableLayoutPanel3.Controls.Add(this.panel16, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel17, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel4, 1, 1);
@@ -2354,17 +2361,17 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 83.38983F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.61017F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1242, 236);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1322, 236);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // panel16
             // 
             this.panel16.Controls.Add(this.balanceSellBtn);
             this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel16.Location = new System.Drawing.Point(222, 196);
+            this.panel16.Location = new System.Drawing.Point(262, 196);
             this.panel16.Margin = new System.Windows.Forms.Padding(0);
             this.panel16.Name = "panel16";
-            this.panel16.Size = new System.Drawing.Size(222, 40);
+            this.panel16.Size = new System.Drawing.Size(261, 40);
             this.panel16.TabIndex = 10;
             // 
             // balanceSellBtn
@@ -2383,13 +2390,13 @@
             this.panel17.Location = new System.Drawing.Point(0, 196);
             this.panel17.Margin = new System.Windows.Forms.Padding(0);
             this.panel17.Name = "panel17";
-            this.panel17.Size = new System.Drawing.Size(222, 40);
+            this.panel17.Size = new System.Drawing.Size(262, 40);
             this.panel17.TabIndex = 9;
             // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(444, 196);
+            this.panel4.Location = new System.Drawing.Point(523, 196);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(438, 40);
@@ -2412,14 +2419,14 @@
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(222, 196);
+            this.panel5.Size = new System.Drawing.Size(262, 196);
             this.panel5.TabIndex = 6;
             // 
             // bss_curQnt
             // 
             this.bss_curQnt.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.bss_curQnt.AutoSize = true;
-            this.bss_curQnt.Location = new System.Drawing.Point(152, 79);
+            this.bss_curQnt.Location = new System.Drawing.Point(172, 79);
             this.bss_curQnt.Name = "bss_curQnt";
             this.bss_curQnt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.bss_curQnt.Size = new System.Drawing.Size(59, 12);
@@ -2457,7 +2464,7 @@
             // 
             this.b_averagePriceTxt.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.b_averagePriceTxt.AutoSize = true;
-            this.b_averagePriceTxt.Location = new System.Drawing.Point(152, 135);
+            this.b_averagePriceTxt.Location = new System.Drawing.Point(172, 135);
             this.b_averagePriceTxt.Name = "b_averagePriceTxt";
             this.b_averagePriceTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.b_averagePriceTxt.Size = new System.Drawing.Size(59, 12);
@@ -2521,7 +2528,7 @@
             // panel18
             // 
             this.panel18.Controls.Add(this.panel6);
-            this.panel18.Location = new System.Drawing.Point(885, 3);
+            this.panel18.Location = new System.Drawing.Point(964, 3);
             this.panel18.Name = "panel18";
             this.panel18.Size = new System.Drawing.Size(336, 190);
             this.panel18.TabIndex = 11;
@@ -2660,7 +2667,7 @@
             // panel19
             // 
             this.panel19.Controls.Add(this.balanceSellMonitorBtn);
-            this.panel19.Location = new System.Drawing.Point(885, 199);
+            this.panel19.Location = new System.Drawing.Point(964, 199);
             this.panel19.Name = "panel19";
             this.panel19.Size = new System.Drawing.Size(336, 34);
             this.panel19.TabIndex = 12;
@@ -2687,10 +2694,10 @@
             this.panel3.Controls.Add(this.b_takeProfitUpdown);
             this.panel3.Controls.Add(this.b_ProfitSellCheckBox);
             this.panel3.Controls.Add(this.label18);
-            this.panel3.Location = new System.Drawing.Point(225, 2);
+            this.panel3.Location = new System.Drawing.Point(274, 2);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(216, 192);
+            this.panel3.Size = new System.Drawing.Size(236, 192);
             this.panel3.TabIndex = 4;
             // 
             // panel13
@@ -2806,7 +2813,7 @@
             // panel21
             // 
             this.panel21.Controls.Add(this.BssDataGridView);
-            this.panel21.Location = new System.Drawing.Point(447, 3);
+            this.panel21.Location = new System.Drawing.Point(526, 3);
             this.panel21.Name = "panel21";
             this.panel21.Size = new System.Drawing.Size(431, 190);
             this.panel21.TabIndex = 13;
@@ -2912,7 +2919,7 @@
             this.잔고추가매수.Location = new System.Drawing.Point(4, 22);
             this.잔고추가매수.Name = "잔고추가매수";
             this.잔고추가매수.Padding = new System.Windows.Forms.Padding(3);
-            this.잔고추가매수.Size = new System.Drawing.Size(1254, 256);
+            this.잔고추가매수.Size = new System.Drawing.Size(1368, 256);
             this.잔고추가매수.TabIndex = 5;
             this.잔고추가매수.Text = "잔고추가매수";
             this.잔고추가매수.UseVisualStyleBackColor = true;
@@ -2938,7 +2945,7 @@
             this.panel20.Location = new System.Drawing.Point(3, 3);
             this.panel20.Margin = new System.Windows.Forms.Padding(0);
             this.panel20.Name = "panel20";
-            this.panel20.Size = new System.Drawing.Size(1248, 250);
+            this.panel20.Size = new System.Drawing.Size(1362, 250);
             this.panel20.TabIndex = 7;
             // 
             // panel22
@@ -3004,7 +3011,7 @@
             this.BBSdataGridView.RowHeadersVisible = false;
             this.BBSdataGridView.RowHeadersWidth = 82;
             this.BBSdataGridView.RowTemplate.Height = 27;
-            this.BBSdataGridView.Size = new System.Drawing.Size(512, 166);
+            this.BBSdataGridView.Size = new System.Drawing.Size(626, 166);
             this.BBSdataGridView.TabIndex = 27;
             this.BBSdataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.BBSdataGridView_CellContentClick);
             // 
@@ -3223,7 +3230,7 @@
             this.tabPage8.Controls.Add(this.panel23);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(1254, 256);
+            this.tabPage8.Size = new System.Drawing.Size(1368, 256);
             this.tabPage8.TabIndex = 2;
             this.tabPage8.Text = "관심종목";
             // 
@@ -3667,7 +3674,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1253, 145);
+            this.tabPage1.Size = new System.Drawing.Size(1370, 109);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "주문";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -3770,7 +3777,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1253, 145);
+            this.tabPage2.Size = new System.Drawing.Size(1370, 109);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "체결";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -3872,7 +3879,7 @@
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage3.Size = new System.Drawing.Size(1253, 145);
+            this.tabPage3.Size = new System.Drawing.Size(1370, 109);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "미체결";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -4005,6 +4012,145 @@
             this.tsDataGridView.Size = new System.Drawing.Size(1368, 124);
             this.tsDataGridView.TabIndex = 0;
             // 
+            // 매매전략_계좌번호
+            // 
+            this.매매전략_계좌번호.FillWeight = 99.51886F;
+            this.매매전략_계좌번호.HeaderText = "계좌번호";
+            this.매매전략_계좌번호.MinimumWidth = 6;
+            this.매매전략_계좌번호.Name = "매매전략_계좌번호";
+            this.매매전략_계좌번호.ReadOnly = true;
+            // 
+            // 매매전략_재실행
+            // 
+            this.매매전략_재실행.FillWeight = 98.28325F;
+            this.매매전략_재실행.HeaderText = "재실행";
+            this.매매전략_재실행.MinimumWidth = 10;
+            this.매매전략_재실행.Name = "매매전략_재실행";
+            this.매매전략_재실행.ReadOnly = true;
+            // 
+            // 매매전략_매수조건식
+            // 
+            this.매매전략_매수조건식.FillWeight = 94.46366F;
+            this.매매전략_매수조건식.HeaderText = "조건식";
+            this.매매전략_매수조건식.MinimumWidth = 6;
+            this.매매전략_매수조건식.Name = "매매전략_매수조건식";
+            // 
+            // 매매전략_호가적용
+            // 
+            this.매매전략_호가적용.FillWeight = 119.6609F;
+            this.매매전략_호가적용.HeaderText = "추가호가적용";
+            this.매매전략_호가적용.MinimumWidth = 10;
+            this.매매전략_호가적용.Name = "매매전략_호가적용";
+            // 
+            // 매매전략_트레일링
+            // 
+            this.매매전략_트레일링.FillWeight = 115.918F;
+            this.매매전략_트레일링.HeaderText = "트레일링";
+            this.매매전략_트레일링.MinimumWidth = 10;
+            this.매매전략_트레일링.Name = "매매전략_트레일링";
+            this.매매전략_트레일링.ReadOnly = true;
+            // 
+            // 매매전략_시간제한사용
+            // 
+            this.매매전략_시간제한사용.FillWeight = 113.9339F;
+            this.매매전략_시간제한사용.HeaderText = "시간제한사용";
+            this.매매전략_시간제한사용.MinimumWidth = 10;
+            this.매매전략_시간제한사용.Name = "매매전략_시간제한사용";
+            this.매매전략_시간제한사용.ReadOnly = true;
+            // 
+            // 매매전략_시작시간
+            // 
+            this.매매전략_시작시간.FillWeight = 108.9866F;
+            this.매매전략_시작시간.HeaderText = "시작시간";
+            this.매매전략_시작시간.MinimumWidth = 10;
+            this.매매전략_시작시간.Name = "매매전략_시작시간";
+            this.매매전략_시작시간.ReadOnly = true;
+            // 
+            // 매매전략_종료시간
+            // 
+            this.매매전략_종료시간.FillWeight = 105.8686F;
+            this.매매전략_종료시간.HeaderText = "종료시간";
+            this.매매전략_종료시간.MinimumWidth = 10;
+            this.매매전략_종료시간.Name = "매매전략_종료시간";
+            this.매매전략_종료시간.ReadOnly = true;
+            // 
+            // 매매전략_매수가격
+            // 
+            this.매매전략_매수가격.FillWeight = 104.3432F;
+            this.매매전략_매수가격.HeaderText = "매수가격";
+            this.매매전략_매수가격.MinimumWidth = 6;
+            this.매매전략_매수가격.Name = "매매전략_매수가격";
+            this.매매전략_매수가격.ReadOnly = true;
+            // 
+            // 매매전략_총투자금
+            // 
+            this.매매전략_총투자금.FillWeight = 100.087F;
+            this.매매전략_총투자금.HeaderText = "총투자금";
+            this.매매전략_총투자금.MinimumWidth = 6;
+            this.매매전략_총투자금.Name = "매매전략_총투자금";
+            this.매매전략_총투자금.ReadOnly = true;
+            // 
+            // 매매전략_매수종목수
+            // 
+            this.매매전략_매수종목수.FillWeight = 98.82545F;
+            this.매매전략_매수종목수.HeaderText = "매수종목수";
+            this.매매전략_매수종목수.MinimumWidth = 6;
+            this.매매전략_매수종목수.Name = "매매전략_매수종목수";
+            this.매매전략_매수종목수.ReadOnly = true;
+            // 
+            // 매매전략_종목별투자금
+            // 
+            this.매매전략_종목별투자금.FillWeight = 94.96681F;
+            this.매매전략_종목별투자금.HeaderText = "종목별투자금";
+            this.매매전략_종목별투자금.MinimumWidth = 6;
+            this.매매전략_종목별투자금.Name = "매매전략_종목별투자금";
+            this.매매전략_종목별투자금.ReadOnly = true;
+            // 
+            // 매매전략_익절
+            // 
+            this.매매전략_익절.FillWeight = 92.66952F;
+            this.매매전략_익절.HeaderText = "익절";
+            this.매매전략_익절.MinimumWidth = 6;
+            this.매매전략_익절.Name = "매매전략_익절";
+            this.매매전략_익절.ReadOnly = true;
+            // 
+            // 매매전략_익절률
+            // 
+            this.매매전략_익절률.FillWeight = 91.74657F;
+            this.매매전략_익절률.HeaderText = "익절률";
+            this.매매전략_익절률.MinimumWidth = 6;
+            this.매매전략_익절률.Name = "매매전략_익절률";
+            this.매매전략_익절률.ReadOnly = true;
+            // 
+            // 매매전략_손절
+            // 
+            this.매매전략_손절.FillWeight = 88.39798F;
+            this.매매전략_손절.HeaderText = "손절";
+            this.매매전략_손절.MinimumWidth = 6;
+            this.매매전략_손절.Name = "매매전략_손절";
+            this.매매전략_손절.ReadOnly = true;
+            // 
+            // 매매전략_손절률
+            // 
+            this.매매전략_손절률.FillWeight = 86.48527F;
+            this.매매전략_손절률.HeaderText = "손절률";
+            this.매매전략_손절률.MinimumWidth = 6;
+            this.매매전략_손절률.Name = "매매전략_손절률";
+            this.매매전략_손절률.ReadOnly = true;
+            // 
+            // 매매전략_취소
+            // 
+            dataGridViewCellStyle78.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle78.NullValue = "취소";
+            this.매매전략_취소.DefaultCellStyle = dataGridViewCellStyle78;
+            this.매매전략_취소.FillWeight = 85.84454F;
+            this.매매전략_취소.HeaderText = "취소";
+            this.매매전략_취소.MinimumWidth = 10;
+            this.매매전략_취소.Name = "매매전략_취소";
+            this.매매전략_취소.ReadOnly = true;
+            this.매매전략_취소.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.매매전략_취소.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
             // blockingCheckBox
             // 
             this.blockingCheckBox.AutoSize = true;
@@ -4058,144 +4204,45 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // 매매전략_취소
+            // useEnvelope15CheckBox
             // 
-            dataGridViewCellStyle78.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle78.NullValue = "취소";
-            this.매매전략_취소.DefaultCellStyle = dataGridViewCellStyle78;
-            this.매매전략_취소.FillWeight = 85.84454F;
-            this.매매전략_취소.HeaderText = "취소";
-            this.매매전략_취소.MinimumWidth = 10;
-            this.매매전략_취소.Name = "매매전략_취소";
-            this.매매전략_취소.ReadOnly = true;
-            this.매매전략_취소.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.매매전략_취소.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.useEnvelope15CheckBox.AutoSize = true;
+            this.useEnvelope15CheckBox.Location = new System.Drawing.Point(289, 87);
+            this.useEnvelope15CheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.useEnvelope15CheckBox.Name = "useEnvelope15CheckBox";
+            this.useEnvelope15CheckBox.Size = new System.Drawing.Size(171, 16);
+            this.useEnvelope15CheckBox.TabIndex = 31;
+            this.useEnvelope15CheckBox.Text = "envelope15 사용(1분 마다)";
+            this.useEnvelope15CheckBox.UseVisualStyleBackColor = true;
+            this.useEnvelope15CheckBox.CheckedChanged += new System.EventHandler(this.useEnvelope15CheckBox_CheckedChanged);
             // 
-            // 매매전략_손절률
+            // label60
             // 
-            this.매매전략_손절률.FillWeight = 86.48527F;
-            this.매매전략_손절률.HeaderText = "손절률";
-            this.매매전략_손절률.MinimumWidth = 6;
-            this.매매전략_손절률.Name = "매매전략_손절률";
-            this.매매전략_손절률.ReadOnly = true;
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(129, 126);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(113, 12);
+            this.label60.TabIndex = 38;
+            this.label60.Text = "원씩 매수 가격 증가";
             // 
-            // 매매전략_손절
+            // ReBuyAddMoney
             // 
-            this.매매전략_손절.FillWeight = 88.39798F;
-            this.매매전략_손절.HeaderText = "손절";
-            this.매매전략_손절.MinimumWidth = 6;
-            this.매매전략_손절.Name = "매매전략_손절";
-            this.매매전략_손절.ReadOnly = true;
-            // 
-            // 매매전략_익절률
-            // 
-            this.매매전략_익절률.FillWeight = 91.74657F;
-            this.매매전략_익절률.HeaderText = "익절률";
-            this.매매전략_익절률.MinimumWidth = 6;
-            this.매매전략_익절률.Name = "매매전략_익절률";
-            this.매매전략_익절률.ReadOnly = true;
-            // 
-            // 매매전략_익절
-            // 
-            this.매매전략_익절.FillWeight = 92.66952F;
-            this.매매전략_익절.HeaderText = "익절";
-            this.매매전략_익절.MinimumWidth = 6;
-            this.매매전략_익절.Name = "매매전략_익절";
-            this.매매전략_익절.ReadOnly = true;
-            // 
-            // 매매전략_종목별투자금
-            // 
-            this.매매전략_종목별투자금.FillWeight = 94.96681F;
-            this.매매전략_종목별투자금.HeaderText = "종목별투자금";
-            this.매매전략_종목별투자금.MinimumWidth = 6;
-            this.매매전략_종목별투자금.Name = "매매전략_종목별투자금";
-            this.매매전략_종목별투자금.ReadOnly = true;
-            // 
-            // 매매전략_매수종목수
-            // 
-            this.매매전략_매수종목수.FillWeight = 98.82545F;
-            this.매매전략_매수종목수.HeaderText = "매수종목수";
-            this.매매전략_매수종목수.MinimumWidth = 6;
-            this.매매전략_매수종목수.Name = "매매전략_매수종목수";
-            this.매매전략_매수종목수.ReadOnly = true;
-            // 
-            // 매매전략_총투자금
-            // 
-            this.매매전략_총투자금.FillWeight = 100.087F;
-            this.매매전략_총투자금.HeaderText = "총투자금";
-            this.매매전략_총투자금.MinimumWidth = 6;
-            this.매매전략_총투자금.Name = "매매전략_총투자금";
-            this.매매전략_총투자금.ReadOnly = true;
-            // 
-            // 매매전략_매수가격
-            // 
-            this.매매전략_매수가격.FillWeight = 104.3432F;
-            this.매매전략_매수가격.HeaderText = "매수가격";
-            this.매매전략_매수가격.MinimumWidth = 6;
-            this.매매전략_매수가격.Name = "매매전략_매수가격";
-            this.매매전략_매수가격.ReadOnly = true;
-            // 
-            // 매매전략_종료시간
-            // 
-            this.매매전략_종료시간.FillWeight = 105.8686F;
-            this.매매전략_종료시간.HeaderText = "종료시간";
-            this.매매전략_종료시간.MinimumWidth = 10;
-            this.매매전략_종료시간.Name = "매매전략_종료시간";
-            this.매매전략_종료시간.ReadOnly = true;
-            // 
-            // 매매전략_시작시간
-            // 
-            this.매매전략_시작시간.FillWeight = 108.9866F;
-            this.매매전략_시작시간.HeaderText = "시작시간";
-            this.매매전략_시작시간.MinimumWidth = 10;
-            this.매매전략_시작시간.Name = "매매전략_시작시간";
-            this.매매전략_시작시간.ReadOnly = true;
-            // 
-            // 매매전략_시간제한사용
-            // 
-            this.매매전략_시간제한사용.FillWeight = 113.9339F;
-            this.매매전략_시간제한사용.HeaderText = "시간제한사용";
-            this.매매전략_시간제한사용.MinimumWidth = 10;
-            this.매매전략_시간제한사용.Name = "매매전략_시간제한사용";
-            this.매매전략_시간제한사용.ReadOnly = true;
-            // 
-            // 매매전략_트레일링
-            // 
-            this.매매전략_트레일링.FillWeight = 115.918F;
-            this.매매전략_트레일링.HeaderText = "트레일링";
-            this.매매전략_트레일링.MinimumWidth = 10;
-            this.매매전략_트레일링.Name = "매매전략_트레일링";
-            this.매매전략_트레일링.ReadOnly = true;
-            // 
-            // 매매전략_호가적용
-            // 
-            this.매매전략_호가적용.FillWeight = 119.6609F;
-            this.매매전략_호가적용.HeaderText = "추가호가적용";
-            this.매매전략_호가적용.MinimumWidth = 10;
-            this.매매전략_호가적용.Name = "매매전략_호가적용";
-            // 
-            // 매매전략_매수조건식
-            // 
-            this.매매전략_매수조건식.FillWeight = 94.46366F;
-            this.매매전략_매수조건식.HeaderText = "조건식";
-            this.매매전략_매수조건식.MinimumWidth = 6;
-            this.매매전략_매수조건식.Name = "매매전략_매수조건식";
-            // 
-            // 매매전략_재실행
-            // 
-            this.매매전략_재실행.FillWeight = 98.28325F;
-            this.매매전략_재실행.HeaderText = "재실행";
-            this.매매전략_재실행.MinimumWidth = 10;
-            this.매매전략_재실행.Name = "매매전략_재실행";
-            this.매매전략_재실행.ReadOnly = true;
-            // 
-            // 매매전략_계좌번호
-            // 
-            this.매매전략_계좌번호.FillWeight = 99.51886F;
-            this.매매전략_계좌번호.HeaderText = "계좌번호";
-            this.매매전략_계좌번호.MinimumWidth = 6;
-            this.매매전략_계좌번호.Name = "매매전략_계좌번호";
-            this.매매전략_계좌번호.ReadOnly = true;
+            this.ReBuyAddMoney.Increment = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.ReBuyAddMoney.Location = new System.Drawing.Point(18, 124);
+            this.ReBuyAddMoney.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ReBuyAddMoney.Maximum = new decimal(new int[] {
+            99999999,
+            0,
+            0,
+            0});
+            this.ReBuyAddMoney.Name = "ReBuyAddMoney";
+            this.ReBuyAddMoney.Size = new System.Drawing.Size(105, 21);
+            this.ReBuyAddMoney.TabIndex = 37;
+            this.ReBuyAddMoney.ThousandsSeparator = true;
             // 
             // Form1
             // 
@@ -4321,6 +4368,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.outstandingDataGrid)).EndInit();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tsDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ReBuyAddMoney)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4647,6 +4695,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_손절;
         private System.Windows.Forms.DataGridViewTextBoxColumn 매매전략_손절률;
         private System.Windows.Forms.DataGridViewButtonColumn 매매전략_취소;
+        private System.Windows.Forms.CheckBox useEnvelope15CheckBox;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.NumericUpDown ReBuyAddMoney;
     }
 }
 
