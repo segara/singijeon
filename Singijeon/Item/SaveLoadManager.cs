@@ -18,7 +18,8 @@ namespace Singijeon
         private const string LOAD_DATA_FILE_NAME = @"trading_item.dat";
         private const string LOAD_DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
 
-       
+        private const string LOAD_DEFAULT_DATA_FILE_NAME = @"default_trading_item.dat";
+
         Form1 form;
         private AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
         private SaveLoadManager()
@@ -34,11 +35,13 @@ namespace Singijeon
             }
             return instance;
         }
+
         public void SetForm(Form1 _form, AxKHOpenAPILib.AxKHOpenAPI api)
         {
             form = _form;
             axKHOpenAPI1 = api;
         }
+
         public void SerializeTrailing(List<TrailingItem> trailingList)
         {
             List<TrailingPercentageItemForSave> trailingSaveList = new List<TrailingPercentageItemForSave>();
@@ -112,6 +115,34 @@ namespace Singijeon
                 Console.WriteLine(e);
             }
         }
+
+        public void UseCustomDefaultSetting()
+        {
+            List<TradingStrategyForSave> list = null;
+            BinaryFormatter binFmt = new BinaryFormatter();
+            try
+            {
+                using (FileStream rdr = new FileStream(LOAD_DEFAULT_DATA_FILE_NAME, FileMode.Open))
+                {
+                    string account = string.Empty;
+                    list = (List<TradingStrategyForSave>)binFmt.Deserialize(rdr);
+                    foreach (TradingStrategyForSave ts in list)
+                    {
+                        AddStratgy(ts);
+                        account = ts.account;
+                    }
+                    if(string.IsNullOrEmpty(account) == false)
+                    {
+                        form.SetAccountComboBox(account);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
         public List<TradingStrategyForSave> DeserializeStrategy()
         {
             List<TradingStrategyForSave> list = null;
@@ -131,6 +162,7 @@ namespace Singijeon
             {
                 Console.WriteLine(4);
                 Console.WriteLine(e);
+               
             }
             
             return list;
