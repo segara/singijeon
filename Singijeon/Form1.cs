@@ -555,7 +555,7 @@ namespace Singijeon
                     double dProfitRate = GetProfitRate((double)iPrice, dBuyingPrice);
                     int rowIndex = accountBalanceDataGrid.Rows.Add();
 
-                    Hashtable uiTable = new Hashtable() { { "계좌잔고_종목코드", itemCode }, { "계좌잔고_종목명", itemName }, { "계좌잔고_보유수량", lBalanceCnt }, { "계좌잔고_평균단가", dBuyingPrice }, { "계좌잔고_평가금액", lEstimatedAmount }, { "계좌잔고_매입금액", lBuyingAmount }, { "계좌잔고_손익금액", lProfitAmount }, { "계좌잔고_손익률", dProfitRate } };
+                    Hashtable uiTable = new Hashtable() { { "계좌잔고_종목코드", itemCode }, { "계좌잔고_종목명", itemName }, { "계좌잔고_보유수량", (int)lBalanceCnt }, { "계좌잔고_평균단가", dBuyingPrice }, { "계좌잔고_평가금액", lEstimatedAmount }, { "계좌잔고_매입금액", lBuyingAmount }, { "계좌잔고_손익금액", lProfitAmount }, { "계좌잔고_손익률", dProfitRate } };
                     Update_AccountBalanceDataGrid_UI(uiTable, rowIndex);
 
                     if(balanceItemList.Find(o=>(o.itemCode == itemCode)) == null)
@@ -1283,7 +1283,7 @@ namespace Singijeon
 
                         if (int.Parse(balanceQnt) > 0)
                         {
-                            Hashtable uiTable = new Hashtable { { "계좌잔고_보유수량", balanceQnt }, {"계좌잔고_현재가", price },{ "계좌잔고_평균단가", buyingPrice },{ "계좌잔고_평가금액", (int.Parse(balanceQnt) * int.Parse(buyingPrice)) }, { "계좌잔고_매입금액", totalBuyingPrice}, { "계좌잔고_손익률", profitRate } };
+                            Hashtable uiTable = new Hashtable { { "계좌잔고_보유수량", int.Parse(balanceQnt) }, {"계좌잔고_현재가", price },{ "계좌잔고_평균단가", buyingPrice },{ "계좌잔고_평가금액", (int.Parse(balanceQnt) * int.Parse(buyingPrice)) }, { "계좌잔고_매입금액", totalBuyingPrice}, { "계좌잔고_손익률", profitRate } };
                             Update_AccountBalanceDataGrid_UI(uiTable, row.Index);
                         }
                         else
@@ -1306,7 +1306,7 @@ namespace Singijeon
                     }
                     int evaluationAmount = int.Parse(buyingPrice) * int.Parse(balanceQnt);
                     int profitAmount = (int.Parse(price) - int.Parse(buyingPrice)) * int.Parse(balanceQnt);
-                    Hashtable uiTable = new Hashtable { { "계좌잔고_종목코드", itemCode }, { "계좌잔고_종목명", itemName }, { "계좌잔고_보유수량", balanceQnt }, { "계좌잔고_평균단가", buyingPrice }, { "계좌잔고_손익률", profitRate }, { "계좌잔고_현재가", price }, { "계좌잔고_매입금액", totalBuyingPrice }, { "계좌잔고_평가금액", evaluationAmount }, { "계좌잔고_손익금액", profitAmount } };
+                    Hashtable uiTable = new Hashtable { { "계좌잔고_종목코드", itemCode }, { "계좌잔고_종목명", itemName }, { "계좌잔고_보유수량", int.Parse(balanceQnt) }, { "계좌잔고_평균단가", buyingPrice }, { "계좌잔고_손익률", profitRate }, { "계좌잔고_현재가", price }, { "계좌잔고_매입금액", totalBuyingPrice }, { "계좌잔고_평가금액", evaluationAmount }, { "계좌잔고_손익금액", profitAmount } };
                     Update_AccountBalanceDataGrid_UI(uiTable, rowIndex);
 
                     string fidList = "9001;302;10;11;25;12;13"; //9001:종목코드,302:종목명

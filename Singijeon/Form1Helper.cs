@@ -430,6 +430,7 @@ namespace Singijeon
                 streamWriter.WriteLine("useEnvelopeCheckBox" + ";" + useEnvelopeCheckBox.Checked);
                 streamWriter.WriteLine("useEnvelope7CheckBox" + ";" + useEnvelope7CheckBox.Checked);
                 streamWriter.WriteLine("useEnvelope10CheckBox" + ";" + useEnvelope10CheckBox.Checked);
+                streamWriter.WriteLine("useEnvelope15CheckBox" + ";" + useEnvelope15CheckBox.Checked);
                 streamWriter.WriteLine("tickMinusValue" + ";" + (double)tickMinusValue.Value);
 
                 streamWriter.WriteLine("sellProfitSijangRadio" + ";" + sellProfitSijangRadio.Checked);
