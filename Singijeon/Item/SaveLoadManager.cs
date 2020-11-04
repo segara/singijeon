@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
-
+using Singijeon.Item;
 namespace Singijeon
 {
     public class SaveLoadManager
@@ -14,10 +14,10 @@ namespace Singijeon
 
         private const string DATA_FILE_NAME = @"trading_item.dat";
         private const string DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
-
+        private const string DATA_BSS_FILE_NAME = @"balance_sell_item.dat";
         private const string LOAD_DATA_FILE_NAME = @"trading_item.dat";
         private const string LOAD_DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
-
+        private const string LOAD_DATA_BSS_FILE_NAME = @"balance_sell_item.dat";
         private const string LOAD_DEFAULT_DATA_FILE_NAME = @"default_trading_item.dat";
 
         Form1 form;
@@ -68,7 +68,31 @@ namespace Singijeon
                 Console.WriteLine(e);
             }
         }
+        public void SerializeBSS(List<BalanceStrategy> bssList)
+        {
+            List<BalanceStrategy> bssSaveList = new List<BalanceStrategy>();
 
+            foreach (var item in bssList)
+            {
+                if(item.type == BalanceStrategy.BALANCE_STRATEGY_TYPE.SELL)
+                    bssSaveList.Add(item);
+            }
+
+            try
+            {
+                BinaryFormatter binFmt = new BinaryFormatter();
+
+                using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_BSS_FILE_NAME, FileMode.Create))
+                {
+                    binFmt.Serialize(fs, bssSaveList);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(1);
+                Console.WriteLine(e);
+            }
+        }
         public void DeserializeTrailing()
         {
             List<TrailingPercentageItemForSave> trailingSaveList = new List<TrailingPercentageItemForSave>();
@@ -91,6 +115,30 @@ namespace Singijeon
                 Console.WriteLine(e);
             }
         }
+
+        public void DeserializeBSS()
+        {
+            List<BalanceStrategy> saveList = new List<BalanceStrategy>();
+
+            BinaryFormatter binFmt = new BinaryFormatter();
+            try
+            {
+                using (FileStream rdr = new FileStream(DateTime.Now.ToString("MM_dd") + LOAD_DATA_BSS_FILE_NAME, FileMode.Open))
+                {
+                    saveList = (List<BalanceStrategy>)binFmt.Deserialize(rdr);
+                    foreach (var item in saveList)
+                    {
+                        AddTryingSellList(item);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(2);
+                Console.WriteLine(e);
+            }
+        }
+
         public void SerializeStrategy(List<TradingStrategy> tradingStrategyList)
         {
             List<TradingStrategyForSave> list = new List<TradingStrategyForSave>();
@@ -191,7 +239,10 @@ namespace Singijeon
             RequestTrDataManager.GetInstance().RequestTrData(requestItemInfoTask);
 
         }
-
+        private void AddTryingSellList(BalanceStrategy saved)
+        {
+            form.BalanceSell(saved.account, saved.itemCode, saved.buyingPrice, (int)saved.curQnt, (int)saved.sellQnt, saved.profitOrderOption, saved.stoplossOrderOption, saved.takeProfitRate, saved.stoplossRate);
+        }
         private void AddStratgy(TradingStrategyForSave saved)
         {
 

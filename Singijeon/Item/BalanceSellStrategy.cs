@@ -8,16 +8,10 @@ using System.Windows.Forms;
 
 namespace Singijeon
 {
-    //
+    [Serializable]
     public class BalanceSellStrategy : BalanceStrategy
     {
-        public bool usingTakeProfit = false; //익절사용여부
-        public bool usingStoploss = false;   //손절사용여부
-        public double takeProfitRate = 0; //익절률
-        public double stoplossRate = 0; //손절률
-        public string profitOrderOption; //현재가 or 시장가 등
-        public string stoplossOrderOption; //현재가 or 시장가 등
-        public string divideStoplossOrderOption; //현재가 or 시장가 등
+        
         [NonSerialized]
         public DataGridViewRow ui_rowItem;
         //매매 진행 종목 리스트

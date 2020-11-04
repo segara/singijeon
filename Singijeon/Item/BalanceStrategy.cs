@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Singijeon.Item
 {
+    [Serializable]
     public class BalanceStrategy
     {
         public enum BALANCE_STRATEGY_TYPE
@@ -27,6 +28,14 @@ namespace Singijeon.Item
         public long buyQnt;
         public bool isSold = false;
         public TradingItem tradingItem;
+
+        public bool usingTakeProfit = false; //익절사용여부
+        public bool usingStoploss = false;   //손절사용여부
+        public double takeProfitRate = 0; //익절률
+        public double stoplossRate = 0; //손절률
+        public string profitOrderOption; //현재가 or 시장가 등
+        public string stoplossOrderOption; //현재가 or 시장가 등
+        public string divideStoplossOrderOption; //현재가 or 시장가 등
 
         virtual public void CheckBalanceStrategy(object sender, string itemCode, long c_lPrice, Action func)
         {

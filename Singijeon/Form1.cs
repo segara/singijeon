@@ -572,6 +572,7 @@ namespace Singijeon
                 SaveLoadManager.GetInstance().SetForm(this, axKHOpenAPI1);
                 SaveLoadManager.GetInstance().DeserializeStrategy();
                 SaveLoadManager.GetInstance().DeserializeTrailing();
+                SaveLoadManager.GetInstance().DeserializeBSS();
             }
             else if (e.sRQName == ConstName.RECEIVE_TR_DATA_REALTIME_NOT_CONCLUSION)
             {
@@ -1833,9 +1834,9 @@ namespace Singijeon
             axKHOpenAPI1.CommRqData(ConstName.RECEIVE_TR_DATA_REALTIME_NOT_CONCLUSION, "opt10075", 0, GetScreenNum().ToString());
         }
 
-        private void BalanceSell(string accountNum, string itemCode, int buyingPrice, int curQnt, int sellQnt, string takeProfitOrderType, string stopLossOrderType,  double takeProfitRate, double stopLossRate)
+        public void BalanceSell(string accountNum, string itemCode, int buyingPrice, int curQnt, int sellQnt, string takeProfitOrderType, string stopLossOrderType,  double takeProfitRate, double stopLossRate)
         {
-            if (accountNum.Length > 0)
+             if (accountNum.Length > 0)
             {
                 if (itemCode.Length > 0)
                 {
@@ -3780,7 +3781,7 @@ namespace Singijeon
 
             SaveLoadManager.GetInstance().SerializeStrategy(tradingStrategyList);
             SaveLoadManager.GetInstance().SerializeTrailing(trailingList);
-        
+            SaveLoadManager.GetInstance().SerializeBSS(balanceStrategyList);
         }
 
         private void BuyConditionComboBox_SelectedIndexChanged(object sender, EventArgs e)
