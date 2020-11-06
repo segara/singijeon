@@ -15,13 +15,17 @@ namespace Singijeon
         private const string DATA_FILE_NAME = @"trading_item.dat";
         private const string DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
         private const string DATA_BSS_FILE_NAME = @"balance_sell_item.dat";
+        private const string DATA_OPTIONAL_FILE_NAME = @"optional_item";
+
         private const string LOAD_DATA_FILE_NAME = @"trading_item.dat";
         private const string LOAD_DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
         private const string LOAD_DATA_BSS_FILE_NAME = @"balance_sell_item.dat";
         private const string LOAD_DEFAULT_DATA_FILE_NAME = @"default_trading_item.dat";
+        private const string LOAD_DATA_OPTIONAL_FILE_NAME = @"optional_item";
 
         Form1 form;
         private AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
+
         private SaveLoadManager()
         {
 
@@ -46,13 +50,12 @@ namespace Singijeon
         {
             List<TrailingPercentageItemForSave> trailingSaveList = new List<TrailingPercentageItemForSave>();
 
-
             foreach (var item in trailingList)
             {
                 TrailingPercentageItemForSave saveItem = new TrailingPercentageItemForSave(item, item.strategy);
                 trailingSaveList.Add(saveItem);
             }
-
+             
             try
             {
                 BinaryFormatter binFmt = new BinaryFormatter();
@@ -74,7 +77,7 @@ namespace Singijeon
 
             foreach (var item in bssList)
             {
-                if(item.type == BalanceStrategy.BALANCE_STRATEGY_TYPE.SELL)
+                if(item.type == BalanceStrategy.BALANCE_STRATEGY_TYPE.SELL && item.bUseStrategy)
                     bssSaveList.Add(item);
             }
 
@@ -85,12 +88,19 @@ namespace Singijeon
                 using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_BSS_FILE_NAME, FileMode.Create))
                 {
                     binFmt.Serialize(fs, bssSaveList);
-                }
+                } 
             }
             catch (Exception e)
             {
                 Console.WriteLine(1);
                 Console.WriteLine(e);
+            }
+        }
+        public void SaveAppendSetting()
+        {
+            using (StreamWriter streamWriter = new StreamWriter(DATA_OPTIONAL_FILE_NAME + ".txt", false))
+            {
+                streamWriter.WriteLine("RebuyConditionSetting" + ";" + form.rebuyCondition);
             }
         }
         public void DeserializeTrailing()
@@ -170,8 +180,11 @@ namespace Singijeon
             BinaryFormatter binFmt = new BinaryFormatter();
             try
             {
+                Core.CoreEngine.GetInstance().SendLogWarningMessage("UseCustomDefaultSetting : " + Directory.GetCurrentDirectory());
+
                 using (FileStream rdr = new FileStream(LOAD_DEFAULT_DATA_FILE_NAME, FileMode.Open))
                 {
+                    Core.CoreEngine.GetInstance().SendLogWarningMessage(rdr.Name);
                     string account = string.Empty;
                     list = (List<TradingStrategyForSave>)binFmt.Deserialize(rdr);
                     foreach (TradingStrategyForSave ts in list)
@@ -187,6 +200,7 @@ namespace Singijeon
             }
             catch (Exception e)
             {
+                Core.CoreEngine.GetInstance().SendLogErrorMessage(e.Message);
                 Console.WriteLine(e);
             }
         }
@@ -215,7 +229,35 @@ namespace Singijeon
             
             return list;
         }
+        public void LoadAppendSetting()
+        {
+            try
+            {
+                using (StreamReader streamReader = new StreamReader(DATA_OPTIONAL_FILE_NAME + ".txt"))
+                {
 
+                    while (streamReader.EndOfStream == false)
+                    {
+                        string line = streamReader.ReadLine();
+                        string[] strringArray = line.Split(';');
+
+                        switch (strringArray[0])
+                        {
+                            case "RebuyConditionSetting":
+                                if(string.IsNullOrEmpty(strringArray[1])==false)
+                                {
+                                    form.SettingRebuyCondition(strringArray[1], 0);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         private void AddTrailing(TrailingPercentageItemForSave saved)
         {
             Task requestItemInfoTask = new Task(() =>
@@ -441,6 +483,9 @@ namespace Singijeon
                 ts.divideSellProfitPercentage = (saved.divideSellProfitPercentage);
                 ts.divideSellCountProfit = saved.divideSellCountProfit;
             }
+
+            if (form.tradingStrategyList.FindAll(o => (o.buyCondition.Name == ts.buyCondition.Name)).Count > 0)
+                return;
 
             form.tradingStrategyList.Add(ts);
             form.AddStrategyToDataGridView(ts);

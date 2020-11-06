@@ -67,7 +67,7 @@ namespace Singijeon
         List<MA_ENVELOPE> list_envelopeChecker = new List<MA_ENVELOPE>();
         TimerJob newTimer;
         KospiInfo info;
-        string rebuyCondition = string.Empty;
+        public string rebuyCondition = string.Empty;
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
         public Form1()
         {
@@ -573,6 +573,7 @@ namespace Singijeon
                 SaveLoadManager.GetInstance().DeserializeStrategy();
                 SaveLoadManager.GetInstance().DeserializeTrailing();
                 SaveLoadManager.GetInstance().DeserializeBSS();
+                SaveLoadManager.GetInstance().LoadAppendSetting();
             }
             else if (e.sRQName == ConstName.RECEIVE_TR_DATA_REALTIME_NOT_CONCLUSION)
             {
@@ -1541,8 +1542,12 @@ namespace Singijeon
                         {
                             string itemCode = accountBalanceDataGrid["계좌잔고_종목코드", e.RowIndex].Value.ToString().Replace("A", "");
                             int balanceCnt = int.Parse(accountBalanceDataGrid["계좌잔고_보유수량", e.RowIndex].Value.ToString());
-
-                            SellAllClear(itemCode, balanceCnt, ReceiveSellAllClear, e.RowIndex);
+                            DialogResult result = MessageBox.Show("종목을 청산 하시겠습니까?", "청산", MessageBoxButtons.YesNo);
+                            if (result == DialogResult.Yes)
+                            {
+                                SellAllClear(itemCode, balanceCnt, ReceiveSellAllClear, e.RowIndex);
+                            }
+                          
                         }
                     }
                 }
@@ -3048,7 +3053,7 @@ namespace Singijeon
                             }
 
                             if (trailingItem.EnvelopeValueList.Count > 0
-                                      && 60 < (DateTime.Now - trailingItem.envelopeBuyCheckDateTime).TotalSeconds)
+                                      && 30 < (DateTime.Now - trailingItem.envelopeBuyCheckDateTime).TotalSeconds)
                             {
                                 trailingItem.envelopeBuyCheckDateTime = DateTime.Now;
 
@@ -4295,9 +4300,10 @@ namespace Singijeon
             if (string.IsNullOrEmpty(rebuyCondition) == false)
             {
                 TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(rebuyCondition));
-                ts.itemInvestment = ts.itemInvestment + buyPlusMoney;
+               
                 if (ts != null)
                 {
+                    ts.itemInvestment = ts.itemInvestment + buyPlusMoney;
                     if (ts.remainItemCount == 0)
                     {
                         MessageBox.Show("재구매 매수가능 갯수 초과");
@@ -4322,7 +4328,39 @@ namespace Singijeon
                 }
             }
         }
+        public void SettingRebuyCondition(string conditionName, long moneyValue)
+        {
+            if (string.IsNullOrEmpty(conditionName))
+                return;
+            if (tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(conditionName)) == null)
+                return;
+            if (CurrentRebuyText.InvokeRequired)
+            {
+                CurrentRebuyText.Invoke(new MethodInvoker(delegate ()
+                {
+                    CurrentRebuyText.Text = conditionName;
+                }));
+            }
+            else
+            {
+                CurrentRebuyText.Text = conditionName;
+            }
 
+            rebuyCondition = conditionName;
+            buyPlusMoney = (long)ReBuyAddMoney.Value;
+
+            if (AddRebuyStrategyBtn.InvokeRequired)
+            {
+                AddRebuyStrategyBtn.Invoke(new MethodInvoker(delegate ()
+                {
+                    AddRebuyStrategyBtn.Text = "실행중";
+                }));
+            }
+            else
+            {
+                AddRebuyStrategyBtn.Text = "실행중";
+            }
+        }
         private void AddRebuyStrategyBtn_Click(object sender, EventArgs e)
         {
             string conditionName = ReBuyStrategyTextBox.Text;
@@ -4340,6 +4378,7 @@ namespace Singijeon
                 rebuyCondition = string.Empty;
                 AddRebuyStrategyBtn.Text = "감시시작";
             }
+            SaveLoadManager.GetInstance().SaveAppendSetting();
         }
 
         private void useEnvelope15CheckBox_CheckedChanged(object sender, EventArgs e)

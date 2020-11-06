@@ -1183,7 +1183,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.25069F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.74931F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 465F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 467F));
             this.tableLayoutPanel1.Controls.Add(this.panel7, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 0);
@@ -1230,7 +1230,7 @@
             this.panel7.Location = new System.Drawing.Point(389, 3);
             this.panel7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(499, 214);
+            this.panel7.Size = new System.Drawing.Size(497, 214);
             this.panel7.TabIndex = 5;
             // 
             // useEnvelope15CheckBox
@@ -1239,9 +1239,9 @@
             this.useEnvelope15CheckBox.Location = new System.Drawing.Point(289, 87);
             this.useEnvelope15CheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.useEnvelope15CheckBox.Name = "useEnvelope15CheckBox";
-            this.useEnvelope15CheckBox.Size = new System.Drawing.Size(171, 16);
+            this.useEnvelope15CheckBox.Size = new System.Drawing.Size(177, 16);
             this.useEnvelope15CheckBox.TabIndex = 31;
-            this.useEnvelope15CheckBox.Text = "envelope15 사용(1분 마다)";
+            this.useEnvelope15CheckBox.Text = "envelope15 사용(30초 마다)";
             this.useEnvelope15CheckBox.UseVisualStyleBackColor = true;
             this.useEnvelope15CheckBox.CheckedChanged += new System.EventHandler(this.useEnvelope15CheckBox_CheckedChanged);
             // 
@@ -1251,9 +1251,9 @@
             this.useEnvelope10CheckBox.Location = new System.Drawing.Point(289, 66);
             this.useEnvelope10CheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.useEnvelope10CheckBox.Name = "useEnvelope10CheckBox";
-            this.useEnvelope10CheckBox.Size = new System.Drawing.Size(171, 16);
+            this.useEnvelope10CheckBox.Size = new System.Drawing.Size(177, 16);
             this.useEnvelope10CheckBox.TabIndex = 30;
-            this.useEnvelope10CheckBox.Text = "envelope10 사용(1분 마다)";
+            this.useEnvelope10CheckBox.Text = "envelope10 사용(30초 마다)";
             this.useEnvelope10CheckBox.UseVisualStyleBackColor = true;
             this.useEnvelope10CheckBox.CheckedChanged += new System.EventHandler(this.useEnvelope10CheckBox_CheckedChanged);
             // 
@@ -1263,9 +1263,9 @@
             this.useEnvelope7CheckBox.Location = new System.Drawing.Point(289, 45);
             this.useEnvelope7CheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.useEnvelope7CheckBox.Name = "useEnvelope7CheckBox";
-            this.useEnvelope7CheckBox.Size = new System.Drawing.Size(165, 16);
+            this.useEnvelope7CheckBox.Size = new System.Drawing.Size(171, 16);
             this.useEnvelope7CheckBox.TabIndex = 29;
-            this.useEnvelope7CheckBox.Text = "envelope7 사용(1분 마다)";
+            this.useEnvelope7CheckBox.Text = "envelope7 사용(30초 마다)";
             this.useEnvelope7CheckBox.UseVisualStyleBackColor = true;
             this.useEnvelope7CheckBox.CheckedChanged += new System.EventHandler(this.useEnvelope7CheckBox_CheckedChanged);
             // 
@@ -1275,9 +1275,9 @@
             this.useEnvelopeCheckBox.Location = new System.Drawing.Point(289, 25);
             this.useEnvelopeCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.useEnvelopeCheckBox.Name = "useEnvelopeCheckBox";
-            this.useEnvelopeCheckBox.Size = new System.Drawing.Size(165, 16);
+            this.useEnvelopeCheckBox.Size = new System.Drawing.Size(171, 16);
             this.useEnvelopeCheckBox.TabIndex = 28;
-            this.useEnvelopeCheckBox.Text = "envelope5 사용(1분 마다)";
+            this.useEnvelopeCheckBox.Text = "envelope5 사용(30초 마다)";
             this.useEnvelopeCheckBox.UseVisualStyleBackColor = true;
             this.useEnvelopeCheckBox.CheckedChanged += new System.EventHandler(this.UseEnvelopeCheckBox_CheckedChanged);
             // 
@@ -1911,10 +1911,10 @@
             this.panel2.Controls.Add(this.profitSellUpdown);
             this.panel2.Controls.Add(this.profitSellCheckBox);
             this.panel2.Controls.Add(this.label3);
-            this.panel2.Location = new System.Drawing.Point(895, 3);
+            this.panel2.Location = new System.Drawing.Point(893, 3);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(460, 214);
+            this.panel2.Size = new System.Drawing.Size(462, 214);
             this.panel2.TabIndex = 4;
             // 
             // panel24
@@ -2386,7 +2386,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.10482F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.89518F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 438F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 361F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 362F));
             this.tableLayoutPanel3.Controls.Add(this.panel16, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel17, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel4, 1, 1);
@@ -2408,7 +2408,7 @@
             // 
             this.panel16.Controls.Add(this.balanceSellBtn);
             this.panel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel16.Location = new System.Drawing.Point(262, 196);
+            this.panel16.Location = new System.Drawing.Point(261, 196);
             this.panel16.Margin = new System.Windows.Forms.Padding(0);
             this.panel16.Name = "panel16";
             this.panel16.Size = new System.Drawing.Size(260, 40);
@@ -2430,13 +2430,13 @@
             this.panel17.Location = new System.Drawing.Point(0, 196);
             this.panel17.Margin = new System.Windows.Forms.Padding(0);
             this.panel17.Name = "panel17";
-            this.panel17.Size = new System.Drawing.Size(262, 40);
+            this.panel17.Size = new System.Drawing.Size(261, 40);
             this.panel17.TabIndex = 9;
             // 
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(522, 196);
+            this.panel4.Location = new System.Drawing.Point(521, 196);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(438, 40);
@@ -2459,14 +2459,14 @@
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(262, 196);
+            this.panel5.Size = new System.Drawing.Size(261, 196);
             this.panel5.TabIndex = 6;
             // 
             // bss_curQnt
             // 
             this.bss_curQnt.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.bss_curQnt.AutoSize = true;
-            this.bss_curQnt.Location = new System.Drawing.Point(172, 79);
+            this.bss_curQnt.Location = new System.Drawing.Point(171, 79);
             this.bss_curQnt.Name = "bss_curQnt";
             this.bss_curQnt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.bss_curQnt.Size = new System.Drawing.Size(59, 12);
@@ -2504,7 +2504,7 @@
             // 
             this.b_averagePriceTxt.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.b_averagePriceTxt.AutoSize = true;
-            this.b_averagePriceTxt.Location = new System.Drawing.Point(172, 135);
+            this.b_averagePriceTxt.Location = new System.Drawing.Point(171, 135);
             this.b_averagePriceTxt.Name = "b_averagePriceTxt";
             this.b_averagePriceTxt.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.b_averagePriceTxt.Size = new System.Drawing.Size(59, 12);
@@ -2568,7 +2568,7 @@
             // panel18
             // 
             this.panel18.Controls.Add(this.panel6);
-            this.panel18.Location = new System.Drawing.Point(963, 3);
+            this.panel18.Location = new System.Drawing.Point(962, 3);
             this.panel18.Name = "panel18";
             this.panel18.Size = new System.Drawing.Size(336, 190);
             this.panel18.TabIndex = 11;
@@ -2707,7 +2707,7 @@
             // panel19
             // 
             this.panel19.Controls.Add(this.balanceSellMonitorBtn);
-            this.panel19.Location = new System.Drawing.Point(963, 199);
+            this.panel19.Location = new System.Drawing.Point(962, 199);
             this.panel19.Name = "panel19";
             this.panel19.Size = new System.Drawing.Size(336, 34);
             this.panel19.TabIndex = 12;
@@ -2734,7 +2734,7 @@
             this.panel3.Controls.Add(this.b_takeProfitUpdown);
             this.panel3.Controls.Add(this.b_ProfitSellCheckBox);
             this.panel3.Controls.Add(this.label18);
-            this.panel3.Location = new System.Drawing.Point(274, 2);
+            this.panel3.Location = new System.Drawing.Point(273, 2);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(236, 192);
@@ -2853,7 +2853,7 @@
             // panel21
             // 
             this.panel21.Controls.Add(this.BssDataGridView);
-            this.panel21.Location = new System.Drawing.Point(525, 3);
+            this.panel21.Location = new System.Drawing.Point(524, 3);
             this.panel21.Name = "panel21";
             this.panel21.Size = new System.Drawing.Size(431, 190);
             this.panel21.TabIndex = 13;
