@@ -14,7 +14,7 @@ namespace Singijeon
         Queue<Task> requestTaskQueue = new Queue<Task>();
 
         Thread taskWorker;
-        public int REQUEST_DELAY = 610;
+        public int REQUEST_DELAY = 1000;
         //public int REQUEST_DELAY = 3000;
 
         private RequestTrDataManager()
@@ -30,7 +30,7 @@ namespace Singijeon
                             requestTaskQueue.Dequeue().RunSynchronously();
                             Thread.Sleep(REQUEST_DELAY);
                         }
-                        Thread.Sleep(100); //기본 실행 주기
+                        Thread.Sleep(1000); //기본 실행 주기
 
                     }catch(Exception exception)
                     {

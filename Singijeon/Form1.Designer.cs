@@ -4375,7 +4375,7 @@
         }
 
         #endregion
-
+           
         private AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 메뉴ToolStripMenuItem;
