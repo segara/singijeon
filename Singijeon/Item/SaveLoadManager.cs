@@ -100,7 +100,10 @@ namespace Singijeon
         {
             using (StreamWriter streamWriter = new StreamWriter(DATA_OPTIONAL_FILE_NAME + ".txt", false))
             {
-                streamWriter.WriteLine("RebuyConditionSetting" + ";" + form.rebuyCondition);
+                foreach(var item in form.RebuyStrategyList)
+                {
+                    streamWriter.WriteLine("RebuyConditionSetting" + ";" + item);
+                } 
             }
         }
         public void DeserializeTrailing()
@@ -235,7 +238,6 @@ namespace Singijeon
             {
                 using (StreamReader streamReader = new StreamReader(DATA_OPTIONAL_FILE_NAME + ".txt"))
                 {
-
                     while (streamReader.EndOfStream == false)
                     {
                         string line = streamReader.ReadLine();

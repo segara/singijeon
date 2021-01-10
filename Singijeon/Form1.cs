@@ -54,6 +54,11 @@ namespace Singijeon
         List<BalanceBuyStrategy> tryingBuyList = new List<BalanceBuyStrategy>(); //잔고 매수 접수 시도(주문번호 따는 리스트)
         List<BalanceSellStrategy> tryingSellList = new List<BalanceSellStrategy>(); //잔고 매도 접수 시도(주문번호 따는 리스트)
 
+        List<string> rebuyStrategyList = new List<string>(); //재구매 전략 저장 리스트
+        public List<string> RebuyStrategyList { get { return rebuyStrategyList; } }
+
+        Dictionary<string, Queue<String>> rebuyStockStrategy = new Dictionary<string, Queue<String>>(); //종목명-재구매리스트 저장
+
         Dictionary<string, NotConclusionItem> nonConclusionList = new Dictionary<string, NotConclusionItem>();
         Form3 printForm = null;
         Form2 printForm2 = null;
@@ -67,7 +72,7 @@ namespace Singijeon
         List<MA_ENVELOPE> list_envelopeChecker = new List<MA_ENVELOPE>();
         TimerJob newTimer;
         KospiInfo info;
-        public string rebuyCondition = string.Empty;
+        //public string rebuyCondition = string.Empty;
         public AxKHOpenAPILib.AxKHOpenAPI AxKHOpenAPI { get { return axKHOpenAPI1; } }
         public Form1()
         {
@@ -4297,9 +4302,30 @@ namespace Singijeon
 
         public void AddItemRebuyStrategy(string itemCode)
         {
-            if (string.IsNullOrEmpty(rebuyCondition) == false)
+            string getRebuyCondition = string.Empty;
+            if (rebuyStockStrategy.ContainsKey(itemCode) == false)
             {
-                TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(rebuyCondition));
+                rebuyStockStrategy.Add(itemCode, new Queue<string>());
+                Queue<string> rebuyStrategyQueue = rebuyStockStrategy[itemCode];
+               
+                //초기화 부분
+                for (int i = 0; i < rebuyStrategyList.Count; ++i)
+                {
+                    rebuyStrategyQueue.Enqueue(rebuyStrategyList[i]);
+                }
+                getRebuyCondition = rebuyStrategyQueue.Dequeue();
+            }
+            else
+            {
+                Queue<string> rebuyStrategyQueue = rebuyStockStrategy[itemCode];
+                if(rebuyStrategyQueue.Count>0)
+                {
+                    getRebuyCondition = rebuyStrategyQueue.Dequeue();
+                }
+            }
+            if (string.IsNullOrEmpty(getRebuyCondition) == false)
+            {
+                TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(getRebuyCondition));
                
                 if (ts != null)
                 {
@@ -4320,7 +4346,7 @@ namespace Singijeon
                     if (CheckCanBuyItem(itemCode) && trailingItem == null)
                     {
                         ts.remainItemCount--; //남을 매수할 종목수-1
-                        coreEngine.SaveItemLogMessage(itemCode, "구매 시도 종목 추가 검색명 = " + CurrentRebuyText.Text);
+                        coreEngine.SaveItemLogMessage(itemCode, "구매 시도 종목 추가 검색명 = " + getRebuyCondition);
 
                         ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
                         TryBuyItem(ts, itemCode);
@@ -4334,19 +4360,31 @@ namespace Singijeon
                 return;
             if (tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(conditionName)) == null)
                 return;
-            if (CurrentRebuyText.InvokeRequired)
+
+            if (rebuyStrategyList.Contains(conditionName) == false)
             {
-                CurrentRebuyText.Invoke(new MethodInvoker(delegate ()
+                rebuyStrategyList.Add(conditionName);
+            }
+            else
+            {
+                return;
+            }
+
+            if (rebuyStrategyGridView.InvokeRequired)
+            {
+                rebuyStrategyGridView.Invoke(new MethodInvoker(delegate ()
                 {
-                    CurrentRebuyText.Text = conditionName;
+                    int rowIndex = rebuyStrategyGridView.Rows.Add();
+                    rebuyStrategyGridView["전략명", rowIndex].Value = conditionName;
                 }));
             }
             else
             {
-                CurrentRebuyText.Text = conditionName;
+                int rowIndex = rebuyStrategyGridView.Rows.Add();
+                rebuyStrategyGridView["전략명", rowIndex].Value = conditionName;
             }
 
-            rebuyCondition = conditionName;
+            //rebuyCondition = conditionName;
             buyPlusMoney = (long)ReBuyAddMoney.Value;
 
             if (AddRebuyStrategyBtn.InvokeRequired)
@@ -4365,17 +4403,17 @@ namespace Singijeon
         {
             string conditionName = ReBuyStrategyTextBox.Text;
 
-            if (string.IsNullOrEmpty(CurrentRebuyText.Text))
+            if (AddRebuyStrategyBtn.Text == "감시시작")
             {
-                CurrentRebuyText.Text = conditionName;
-                rebuyCondition = conditionName;
+                //CurrentRebuyText.Text = conditionName;
+                //rebuyCondition = conditionName;
                 buyPlusMoney = (long)ReBuyAddMoney.Value;
                 AddRebuyStrategyBtn.Text = "실행중";
             }
             else
             {
-                CurrentRebuyText.Text = string.Empty;
-                rebuyCondition = string.Empty;
+                //CurrentRebuyText.Text = string.Empty;
+                //rebuyCondition = string.Empty;
                 AddRebuyStrategyBtn.Text = "감시시작";
             }
             SaveLoadManager.GetInstance().SaveAppendSetting();
@@ -4403,5 +4441,20 @@ namespace Singijeon
             }
         }
 
+        private void AddRebuyStrategyList_Click(object sender, EventArgs e)
+        {
+            string conditionName = ReBuyStrategyTextBox.Text;
+      
+            if (rebuyStrategyList.Contains(conditionName) == false)
+            {
+                rebuyStrategyList.Add(conditionName);
+            }
+            else
+            {
+                return;
+            }
+            int rowIndex = rebuyStrategyGridView.Rows.Add();
+            rebuyStrategyGridView["전략명", rowIndex].Value = conditionName;
+        }
     }
 }
