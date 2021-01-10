@@ -193,6 +193,7 @@ namespace Singijeon
             bool returnVal = true;
             foreach (TradingStrategyADDItem item in tradingStrategyItemList)
             {
+                Core.CoreEngine.GetInstance().SendLogMessage(item.strategyItemName +":"+ item.strategyCheckTime.ToString());
                 if (item.strategyCheckTime == CHECK_TIMING.BUY_TIME)
                 {
                     bool checkBool = item.CheckCondition();
@@ -360,9 +361,11 @@ namespace Singijeon
 
         public override bool CheckCondition()
         {
+            Core.CoreEngine.GetInstance().SendLogMessage(strategyItemName + ": " + usingStrategy.ToString());
             if (!usingStrategy)
                 return false;
-
+            Core.CoreEngine.GetInstance().SendLogMessage(strategyItemName + " start time : " + d_startTime.ToString());
+            Core.CoreEngine.GetInstance().SendLogMessage(strategyItemName + " end Time : " + d_endTime.ToString());
             if ((d_startTime - DateTime.Now).Ticks < 0 && (d_endTime - DateTime.Now).Ticks > 0)
                 return true;
             return false;

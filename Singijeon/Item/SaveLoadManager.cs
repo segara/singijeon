@@ -326,12 +326,12 @@ namespace Singijeon
                      new TradingStrategyItemBuyTimeCheck(
                              StrategyItemName.BUY_TIME_LIMIT,
                              CHECK_TIMING.BUY_TIME,
-                            saved.startDate,
-                             saved.endDate);
+                             new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, saved.startDate.Hour, saved.startDate.Minute, 0),
+                             new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, saved.endDate.Hour, saved.endDate.Minute, 0));
                 ts.AddTradingStrategyItemList(timeBuyCheck);
                 ts.usingTimeLimit = true;
-                ts.startDate = saved.startDate;
-                ts.endDate = saved.endDate;
+                ts.startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,saved.startDate.Hour,saved.startDate.Minute,0);
+                ts.endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, saved.endDate.Hour, saved.endDate.Minute, 0);
             }
 
             ts.usingTickBuy = saved.usingTickBuy;

@@ -48,10 +48,10 @@ namespace Singijeon
                             double stockFee = ((double)c_lPrice * 0.01 * FEE_RATE) * (double)balanceCount; //+ ((double)c_lPrice * 0.01 * 0.015 * (double)balanceCount); //+ ((double)buyingPrice * 0.01 * 0.015 * (double)balanceCount);
                             double allSellPrice = (sellPrice * (double)balanceCount) + stockFee;
 
-                            row.Cells["계좌잔고_손익금액"].Value = (currentAllPrice - allSellPrice);
+                             row.Cells["계좌잔고_손익금액"].Value = (currentAllPrice - allSellPrice);
 
                             double profitRate = GetProfitRate((double)c_lPrice, (double)sellPrice);
-                            row.Cells["계좌잔고_손익률"].Value = profitRate.ToString("F2");
+                            row.Cells["계좌잔고_손익률"].Value = double.Parse(profitRate.ToString("F2"));
                         }
                     }
                 }
