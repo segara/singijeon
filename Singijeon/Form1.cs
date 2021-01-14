@@ -278,6 +278,7 @@ namespace Singijeon
                 }
 
             }
+            coreEngine.SendLogMessage("returnBuy = " + axKHOpenAPI1.GetMasterCodeName(itemCode) + " : "+returnBuy);
             return returnBuy;
         }
 
@@ -4302,6 +4303,11 @@ namespace Singijeon
 
         public void AddItemRebuyStrategy(string itemCode)
         {
+            coreEngine.SendLogErrorMessage("AddItemRebuyStrategy : "+ AxKHOpenAPI.GetMasterCodeName(itemCode));
+            for (int i = 0; i < rebuyStrategyList.Count; ++i)
+            {
+                coreEngine.SendLogErrorMessage(rebuyStrategyList[i]);
+            }
             string getRebuyCondition = string.Empty;
             if (rebuyStockStrategy.ContainsKey(itemCode) == false)
             {
@@ -4323,6 +4329,7 @@ namespace Singijeon
                     getRebuyCondition = rebuyStrategyQueue.Dequeue();
                 }
             }
+            coreEngine.SendLogErrorMessage("rebuy condition:"+ getRebuyCondition);
             if (string.IsNullOrEmpty(getRebuyCondition) == false)
             {
                 TradingStrategy ts = tradingStrategyList.Find(o => o.buyCondition != null && o.buyCondition.Name.Equals(getRebuyCondition));
@@ -4343,10 +4350,11 @@ namespace Singijeon
                         MessageBox.Show("진행중인 종목입니다");
                         return;
                     }
+                    coreEngine.SendLogErrorMessage(AxKHOpenAPI.GetMasterCodeName(itemCode) + " 재구매 시도 체크");
                     if (CheckCanBuyItem(itemCode) && trailingItem == null)
                     {
                         ts.remainItemCount--; //남을 매수할 종목수-1
-                        coreEngine.SaveItemLogMessage(itemCode, "구매 시도 종목 추가 검색명 = " + getRebuyCondition);
+                        coreEngine.SendLogErrorMessage(AxKHOpenAPI.GetMasterCodeName(itemCode) + " 재구매 시도 종목 추가 검색명 = " + getRebuyCondition);
 
                         ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
                         TryBuyItem(ts, itemCode);

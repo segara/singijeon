@@ -181,6 +181,7 @@ namespace Singijeon
        
         public bool IsCompleteSold()
         {
+            Core.CoreEngine.GetInstance().SendLogMessage("IsCompleteSold = " + itemCode + " : " + this.isCompleteSold);
             return this.isCompleteSold;
         }
         public void SetCompleteSold(bool sold)
@@ -201,6 +202,7 @@ namespace Singijeon
         }
         public bool IsBuyCancel()
         {
+            Core.CoreEngine.GetInstance().SendLogMessage("IsBuyCancel = " + itemCode + " : " + this.isBuyCancel);
             return this.isBuyCancel;
         }
         public void SetBuyCancelOrder()
