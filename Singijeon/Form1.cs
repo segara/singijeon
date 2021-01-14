@@ -1086,7 +1086,7 @@ namespace Singijeon
                 else if (orderState.Equals(ConstName.RECEIVE_CHEJAN_DATA_CONCLUSION))
                 {
                     coreEngine.SaveItemLogMessage(itemCode, "체결 주문당 잔고 : " + outstanding + " / 누적 체결수량 :" + conclusionQuantity + " / 유닛체결수량 : " + i_unitConclusionQuantity);
-
+                    //체결완료이지만 (outstanding == 0) 종목당 잔량이 남아있을수 있다(분할매도 시)
                     if (int.Parse(outstanding) == 0 && string.IsNullOrEmpty(conclusionQuantity) == false)
                     {
                         if (orderType.Contains(ConstName.RECEIVE_CHEJAN_DATA_BUY))
@@ -1115,9 +1115,12 @@ namespace Singijeon
                                 printForm2.AddProfit(profit);
                                 if (profit < 0)
                                 {
-                                    //손절완료일때 재구매 전략 확인
-                                    coreEngine.SendLogWarningMessage("재구매 실행");
-                                    AddItemRebuyStrategy(item.itemCode);
+                                    if(item.balanceQnt == 0)
+                                    {
+                                        //손절완료일때 재구매 전략 확인
+                                        coreEngine.SendLogWarningMessage("재구매 실행");
+                                        AddItemRebuyStrategy(item.itemCode);
+                                    }
                                 }
                             }
                         }
@@ -4324,7 +4327,8 @@ namespace Singijeon
             else
             {
                 Queue<string> rebuyStrategyQueue = rebuyStockStrategy[itemCode];
-                if(rebuyStrategyQueue.Count>0)
+         
+                if (rebuyStrategyQueue.Count>0)
                 {
                     getRebuyCondition = rebuyStrategyQueue.Dequeue();
                 }
