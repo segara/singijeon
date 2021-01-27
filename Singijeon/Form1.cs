@@ -2454,6 +2454,19 @@ namespace Singijeon
                                 }
                             }
                         }
+                        else
+                        {
+                            TrailingItem trailingItem = trailingList.Find(o => (o.itemCode.Contains(itemCode) && o.strategy.buyCondition.Name == ts.buyCondition.Name));
+
+                            if (CheckCanBuyItem(itemCode) && trailingItem == null)
+                            {
+                                ts.remainItemCount--; //남을 매수할 종목수-1
+                                coreEngine.SaveItemLogMessage(itemCode, "구매 시도 종목 추가 검색명 = " + conditionName);
+
+                                ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+                                TryBuyItem(ts, itemCode);
+                            }
+                        }
                     }
                 }
             }
