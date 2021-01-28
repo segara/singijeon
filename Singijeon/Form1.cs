@@ -1661,7 +1661,6 @@ namespace Singijeon
                             {
                                 if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_BEFORE_ORDER))
                                 {
-
                                     TrailingItem item = trailingList.Find(o => (o.ui_rowAutoTradingItem == rowItem));
 
                                     if (item != null)
@@ -1669,8 +1668,20 @@ namespace Singijeon
                                         trailingList.Remove(item);
                                     }
                                     coreEngine.SendLogMessage("주문접수 시도 취소");
+                                    autoTradingDataGrid["매매진행_취소", e.RowIndex].Value = "취소접수시도";
                                     tradeItem.SetBuyCancelOrder();
                                 }
+                                //if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_BEFORE_ORDER))
+                                //{
+                                //    TrailingItem item = trailingList.Find(o => (o.ui_rowAutoTradingItem == rowItem));
+
+                                //    if (item != null)
+                                //    {
+                                //        trailingList.Remove(item);
+                                //    }
+                                //    coreEngine.SendLogMessage("주문접수시 에러(잔고부족등) 취소");
+                                //    tradeItem.SetBuyCancelComplete();
+                                //}
                                 if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE) || curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT))
                                 {
                                     //취소주문
