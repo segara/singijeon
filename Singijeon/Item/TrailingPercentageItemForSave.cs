@@ -26,6 +26,7 @@ namespace Singijeon
         public bool isPercentageCheckBuy = false;
         public bool isGapTrailBuy = false;   //갭상승시 매수
         public bool isVwmaCheck = false;
+        public bool isCheckStockIndex = false;
         public List<double> EnvelopeValueList = new List<double>();
         public DateTime gapTrailBuyCheckDateTime = DateTime.Now;
         public long gapTrailBuyCheckTimeSecond = 0;

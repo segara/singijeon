@@ -431,6 +431,7 @@ namespace Singijeon
                 streamWriter.WriteLine("useEnvelope7CheckBox" + ";" + useEnvelope7CheckBox.Checked);
                 streamWriter.WriteLine("useEnvelope10CheckBox" + ";" + useEnvelope10CheckBox.Checked);
                 streamWriter.WriteLine("useEnvelope15CheckBox" + ";" + useEnvelope15CheckBox.Checked);
+                streamWriter.WriteLine("useCheckStockIndex" + ";" + useCheckStockIndex.Checked);
                 streamWriter.WriteLine("tickMinusValue" + ";" + (double)tickMinusValue.Value);
 
                 streamWriter.WriteLine("sellProfitSijangRadio" + ";" + sellProfitSijangRadio.Checked);
@@ -527,6 +528,7 @@ namespace Singijeon
             useEnvelope7CheckBox.Checked = false;
             useEnvelope10CheckBox.Checked = false;
             useEnvelope15CheckBox.Checked = false;
+            useCheckStockIndex.Checked = false;
             tickMinusValue.Value = tickMinusValue.Minimum;
 
             usingDoubleConditionCheck.Checked = false;
@@ -683,6 +685,9 @@ namespace Singijeon
                                 break;
                             case "useEnvelope15CheckBox":
                                 useEnvelope15CheckBox.Checked = bool.Parse(strringArray[1]);
+                                break;
+                            case "useCheckStockIndex":
+                                useCheckStockIndex.Checked = bool.Parse(strringArray[1]);
                                 break;
                             case "marketPriceRadioBtn":
                                 marketPriceRadioBtn.Checked = bool.Parse(strringArray[1]);

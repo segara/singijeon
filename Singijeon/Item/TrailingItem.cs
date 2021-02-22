@@ -24,6 +24,7 @@ namespace Singijeon
         public bool isPercentageCheckBuy = false;  
         public bool isGapTrailBuy = false;   //갭상승시 매수
         public bool isVwmaCheck = false;
+        public bool isCheckStockIndex = false;
         public List<double> EnvelopeValueList = new List<double>();
       
         public DateTime gapTrailBuyCheckDateTime = DateTime.Now;
@@ -67,8 +68,10 @@ namespace Singijeon
                 gapTrailBuyCheckDateTime = DateTime.Now;
                 gapTrailBuyCheckTimeSecond = inputStrategy.gapTrailBuyTimeValue;
             }
-            isVwmaCheck = inputStrategy.usingVwma; 
-            if(inputStrategy.usingEnvelope5)
+            isVwmaCheck = inputStrategy.usingVwma;
+            isCheckStockIndex = inputStrategy.usingCheckIndex;
+
+            if (inputStrategy.usingEnvelope5)
             {
                 EnvelopeValueList.Add(0.05);
             }

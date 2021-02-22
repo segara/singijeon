@@ -39,6 +39,7 @@ namespace Singijeon
         public bool usingEnvelope7 = false;
         public bool usingEnvelope10 = false;
         public bool usingEnvelope15 = false;
+        public bool usingCheckIndex = false;
 
         public float gapTrailCostPercentageValue = 0;
         public float gapTrailBuyPercentageValue = 0.5f;

@@ -459,7 +459,7 @@ namespace Singijeon
 
                             if (i_price > 0)
                             {
-                                coreEngine.SaveItemLogMessage(itemcode, "종목 매수 시도");
+                                coreEngine.SaveItemLogMessage(itemcode, "종목 일반 매수 시도");
 
                                 if (server.Equals(ConstName.TEST_SERVER))
                                 {
@@ -2180,6 +2180,13 @@ namespace Singijeon
                 ts.trailTickValue = 30;
             }
 
+            if (useCheckStockIndex.Checked)
+            {
+                ts.usingCheckIndex = useCheckStockIndex.Checked;
+                ts.usingTrailing = true;
+                ts.trailTickValue = 30;
+            }
+
             bool useGapTrailBuy = useGapTrailBuyCheck.Checked;
             if (useGapTrailBuy)
             {
@@ -2866,7 +2873,7 @@ namespace Singijeon
                                 if (price > 0)
                                 {
                                     i_qnt = (int)(ts.itemInvestment / price);
-                                    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 종목 매수 시도 : " + axKHOpenAPI1.GetMasterCodeName(itemcode));
+                                    coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 종목 즉시 매수 시도 : " + axKHOpenAPI1.GetMasterCodeName(itemcode));
 
                                     int orderResult =
 
@@ -2884,7 +2891,7 @@ namespace Singijeon
 
                                     if (orderResult == 0)
                                     {
-                                        coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + " 매수주문요청 성공");
+                                        coreEngine.SendLogMessage(axKHOpenAPI1.GetMasterCodeName(itemcode) + "즉시 매수주문요청 성공");
 
                                         TradingItem tradingItem = new TradingItem(ts, itemcode, axKHOpenAPI1.GetMasterCodeName(itemcode), price, i_qnt, false, false, ts.buyOrderOption);
                                         tradingItem.SetBuyState();
@@ -3106,6 +3113,33 @@ namespace Singijeon
                             if (trailingItem.EnvelopeValueList.Count > 0)
                             {
                                 continue;
+                            }
+                            if(trailingItem.isCheckStockIndex)
+                            {
+                                if(IsKospi(trailingItem.itemCode))
+                                {
+                                    string kospi = info.GetStockKospi();
+                                    float f_kospi = 0;
+                                    float.TryParse(kospi, out f_kospi);
+                                    if (f_kospi < 0)
+                                    {
+                                        coreEngine.SaveItemLogMessage(itemcode, "코스피지수 - 스킵");
+                                        return;
+                                    }
+                                       
+                                }
+                                else
+                                {
+                                    string kosdaq = info.GetStockKosdaq();
+                                    float f_kosdaq = 0;
+                                    float.TryParse(kosdaq, out f_kosdaq);
+                                    if (f_kosdaq < 0)
+                                    {
+                                        coreEngine.SaveItemLogMessage(itemcode, "코스닥지수 - 스킵");
+                                        return;
+                                    }
+                                      
+                                }
                             }
 
                             if ( CostCheck  && 
