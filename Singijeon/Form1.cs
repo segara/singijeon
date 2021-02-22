@@ -1007,8 +1007,8 @@ namespace Singijeon
                             if (string.IsNullOrEmpty(currentAccount))
                                 return;
 
-                            coreEngine.SaveLogMessage(" 물타기 스텝 : 주문완료");
-                            coreEngine.SaveItemLogMessage(itemCode, " 물타기 스텝 : 주문완료"); //내가 수동으로 사든 프로그램이 사든 물타기로 취급
+                            //coreEngine.SaveLogMessage("물타기 스텝 : 주문완료");
+                            coreEngine.SaveItemLogMessage(itemCode, "물타기 스텝 : 주문완료"); //내가 수동으로 사든 프로그램이 사든 물타기로 취급
 
                             bool findItem = false;
 
@@ -1108,21 +1108,23 @@ namespace Singijeon
                             CheckSettle_Sell(ordernum); //청산 체크
                             //CheckBS_Finish(itemCode, false, i_ConclusionQuantity, ordernum);
 
-                            BalanceItem item = balanceItemList.Find(o => (o.itemCode == itemCode));
-                            if (item != null)
+                            
+                            foreach (TradingStrategy ts in tradingStrategyList)
                             {
-                                long profit = (int.Parse(conclusionPrice) - item.buyingPrice) * i_unitConclusionQuantity;
-                                printForm2.AddProfit(profit);
-                                if (profit < 0)
+                                TradingItem tradeItem = ts.tradingItemList.Find(o => o.sellOrderNum.Equals(ordernum));
+                                if (tradeItem != null)
                                 {
-                                    if(item.balanceQnt == 0)
+                                    long profit = (int.Parse(conclusionPrice) - tradeItem.buyingPrice) * i_unitConclusionQuantity;
+                                    printForm2.AddProfit(profit);
+
+                                    if (tradeItem.curQnt == 0 && profit < 0)
                                     {
-                                        //손절완료일때 재구매 전략 확인
                                         coreEngine.SendLogWarningMessage("재구매 실행");
-                                        AddItemRebuyStrategy(item.itemCode);
+                                        AddItemRebuyStrategy(tradeItem.itemCode);
                                     }
                                 }
                             }
+                            
                         }
                     }
                     else //일부만 매수/매도 완료
@@ -1659,7 +1661,6 @@ namespace Singijeon
                             {
                                 if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_BEFORE_ORDER))
                                 {
-
                                     TrailingItem item = trailingList.Find(o => (o.ui_rowAutoTradingItem == rowItem));
 
                                     if (item != null)
@@ -1667,8 +1668,20 @@ namespace Singijeon
                                         trailingList.Remove(item);
                                     }
                                     coreEngine.SendLogMessage("주문접수 시도 취소");
+                                    autoTradingDataGrid["매매진행_취소", e.RowIndex].Value = "취소접수시도";
                                     tradeItem.SetBuyCancelOrder();
                                 }
+                                //if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_BEFORE_ORDER))
+                                //{
+                                //    TrailingItem item = trailingList.Find(o => (o.ui_rowAutoTradingItem == rowItem));
+
+                                //    if (item != null)
+                                //    {
+                                //        trailingList.Remove(item);
+                                //    }
+                                //    coreEngine.SendLogMessage("주문접수시 에러(잔고부족등) 취소");
+                                //    tradeItem.SetBuyCancelComplete();
+                                //}
                                 if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE) || curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_NOT_COMPLETE_OUTCOUNT))
                                 {
                                     //취소주문
@@ -2441,18 +2454,37 @@ namespace Singijeon
                             MessageBox.Show("매수가능 갯수 초과");
                             return;
                         }
-
-                        TrailingItem trailingItem = trailingList.Find(o => (o.itemCode.Contains(itemCode) && o.strategy.buyCondition.Name == ts.buyCondition.Name));
-
-                        if (CheckCanBuyItem(itemCode) && trailingItem == null)
+                        TrailingItem trailingItem_check = trailingList.Find(o => (o.itemCode.Contains(itemCode)));
+                        if (trailingItem_check != null)
                         {
-                            ts.remainItemCount--; //남을 매수할 종목수-1
-                            coreEngine.SaveItemLogMessage(itemCode, "구매 시도 종목 추가 검색명 = " + conditionName);
+                            DialogResult result_2 = MessageBox.Show(conditionName + "이미 해당 아이템을 트레일링중인 전략이 있습니다. 강제추가하시겠습니까?", "매매전략 추가", MessageBoxButtons.YesNo);
+                            if (result_2 == DialogResult.Yes)
+                            {
+                                TrailingItem trailingItem = trailingList.Find(o => (o.itemCode.Contains(itemCode) && o.strategy.buyCondition.Name == ts.buyCondition.Name));
 
-                            ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
-                            TryBuyItem(ts, itemCode);
+                                if (CheckCanBuyItem(itemCode) && trailingItem == null)
+                                {
+                                    ts.remainItemCount--; //남을 매수할 종목수-1
+                                    coreEngine.SaveItemLogMessage(itemCode, "구매 시도 종목 추가 검색명 = " + conditionName);
+
+                                    ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+                                    TryBuyItem(ts, itemCode);
+                                }
+                            }
                         }
+                        else
+                        {
+                            TrailingItem trailingItem = trailingList.Find(o => (o.itemCode.Contains(itemCode) && o.strategy.buyCondition.Name == ts.buyCondition.Name));
 
+                            if (CheckCanBuyItem(itemCode) && trailingItem == null)
+                            {
+                                ts.remainItemCount--; //남을 매수할 종목수-1
+                                coreEngine.SaveItemLogMessage(itemCode, "구매 시도 종목 추가 검색명 = " + conditionName);
+
+                                ts.StrategyConditionReceiveUpdate(itemCode, 0, 0, TRADING_ITEM_STATE.AUTO_TRADING_STATE_SEARCH_AND_CATCH);
+                                TryBuyItem(ts, itemCode);
+                            }
+                        }
                     }
                 }
             }
@@ -2926,7 +2958,7 @@ namespace Singijeon
                 }
             }
         }
-
+        //local savedata load 시 호출
         public void SetTrailingItem(TrailingItem trailItem)
         {
             if (autoTradingDataGrid.InvokeRequired)
