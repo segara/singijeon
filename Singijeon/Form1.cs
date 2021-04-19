@@ -154,7 +154,7 @@ namespace Singijeon
             {
                 if (kospiInfo.InvokeRequired)
                 {
-                    kospiInfo.Invoke(new MethodInvoker(delegate ()
+                    kospiInfo.Invoke(new MethodInvoker(delegate () 
                     {
                         kospiInfo.Text = info.GetStockKospi();
                         kosdaqInfo.Text = info.GetStockKosdaq();
@@ -1543,7 +1543,7 @@ namespace Singijeon
                     chartForm.Show();
                 }, Form3.CHART_TYPE.MINUTE_5);
             }
-            if (accountBalanceDataGrid.Columns["계좌잔고_청산"].Index == e.ColumnIndex)
+            else if (accountBalanceDataGrid.Columns["계좌잔고_청산"].Index == e.ColumnIndex)
             {
                 if (e.ColumnIndex >= 0 && accountBalanceDataGrid.Columns.Count >= e.ColumnIndex)
                 {
@@ -1562,6 +1562,10 @@ namespace Singijeon
                         }
                     }
                 }
+            }
+            else
+            {
+                AccountDataGridView_SelectionChanged(sender, e);
             }
         }
         public delegate void SendFinish(string itemCode, int balanceCnt, int rowIndex);
@@ -1671,6 +1675,7 @@ namespace Singijeon
                                     autoTradingDataGrid["매매진행_취소", e.RowIndex].Value = "취소접수시도";
                                     tradeItem.SetBuyCancelOrder();
                                 }
+
                                 //if (curState.Equals(ConstName.AUTO_TRADING_STATE_BUY_BEFORE_ORDER))
                                 //{
                                 //    TrailingItem item = trailingList.Find(o => (o.ui_rowAutoTradingItem == rowItem));
