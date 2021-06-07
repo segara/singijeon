@@ -21,7 +21,7 @@ namespace Singijeon
         private const string LOAD_DATA_TRAIL_FILE_NAME = @"trailing_item.dat";
         private const string LOAD_DATA_BSS_FILE_NAME = @"balance_sell_item.dat";
         private const string LOAD_DEFAULT_DATA_FILE_NAME = @"default_trading_item.dat";
-        private const string LOAD_DATA_OPTIONAL_FILE_NAME = @"optional_item";
+
 
         Form1 form;
         private AxKHOpenAPILib.AxKHOpenAPI axKHOpenAPI1;
@@ -60,7 +60,7 @@ namespace Singijeon
             {
                 BinaryFormatter binFmt = new BinaryFormatter();
 
-                using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_TRAIL_FILE_NAME, FileMode.Create))
+                using (FileStream fs = new FileStream(DateTime.Now.ToString("yyyy_MM_dd") + DATA_TRAIL_FILE_NAME, FileMode.Create))
                 {
                     binFmt.Serialize(fs, trailingSaveList);
                 }
@@ -85,7 +85,7 @@ namespace Singijeon
             {
                 BinaryFormatter binFmt = new BinaryFormatter();
 
-                using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_BSS_FILE_NAME, FileMode.Create))
+                using (FileStream fs = new FileStream(DateTime.Now.ToString("yyyy_MM_dd") + DATA_BSS_FILE_NAME, FileMode.Create))
                 {
                     binFmt.Serialize(fs, bssSaveList);
                 } 
@@ -98,7 +98,9 @@ namespace Singijeon
         }
         public void SaveAppendSetting()
         {
-            using (StreamWriter streamWriter = new StreamWriter(DATA_OPTIONAL_FILE_NAME + ".txt", false))
+            if (!Directory.Exists("Setting"))
+                Directory.CreateDirectory("Setting");
+            using (StreamWriter streamWriter = new StreamWriter("Setting/"+DATA_OPTIONAL_FILE_NAME + ".txt", false))
             {
                 foreach(var item in form.RebuyStrategyList)
                 {
@@ -113,7 +115,7 @@ namespace Singijeon
             BinaryFormatter binFmt = new BinaryFormatter();
             try
             {
-                using (FileStream rdr = new FileStream(DateTime.Now.ToString("MM_dd") + LOAD_DATA_TRAIL_FILE_NAME, FileMode.Open))
+                using (FileStream rdr = new FileStream(DateTime.Now.ToString("yyyy_MM_dd") + LOAD_DATA_TRAIL_FILE_NAME, FileMode.Open))
                 {
                     trailingSaveList = (List<TrailingPercentageItemForSave>)binFmt.Deserialize(rdr);
                     foreach (var item in trailingSaveList)
@@ -136,7 +138,7 @@ namespace Singijeon
             BinaryFormatter binFmt = new BinaryFormatter();
             try
             {
-                using (FileStream rdr = new FileStream(DateTime.Now.ToString("MM_dd") + LOAD_DATA_BSS_FILE_NAME, FileMode.Open))
+                using (FileStream rdr = new FileStream(DateTime.Now.ToString("yyyy_MM_dd") + LOAD_DATA_BSS_FILE_NAME, FileMode.Open))
                 {
                     saveList = (List<BalanceStrategy>)binFmt.Deserialize(rdr);
                     foreach (var item in saveList)
@@ -165,7 +167,7 @@ namespace Singijeon
             {
                 BinaryFormatter binFmt = new BinaryFormatter();
 
-                using (FileStream fs = new FileStream(DateTime.Now.ToString("MM_dd") + DATA_FILE_NAME, FileMode.Create))
+                using (FileStream fs = new FileStream(DateTime.Now.ToString("yyyy_MM_dd") + DATA_FILE_NAME, FileMode.Create))
                 {
                     binFmt.Serialize(fs, list);
                 }
@@ -184,8 +186,9 @@ namespace Singijeon
             try
             {
                 Core.CoreEngine.GetInstance().SendLogWarningMessage("UseCustomDefaultSetting : " + Directory.GetCurrentDirectory());
-
-                using (FileStream rdr = new FileStream(LOAD_DEFAULT_DATA_FILE_NAME, FileMode.Open))
+                if (!Directory.Exists("Setting"))
+                    Directory.CreateDirectory("Setting");
+                using (FileStream rdr = new FileStream("Setting/" + LOAD_DEFAULT_DATA_FILE_NAME, FileMode.Open))
                 {
                     Core.CoreEngine.GetInstance().SendLogWarningMessage(rdr.Name);
                     string account = string.Empty;
@@ -214,7 +217,7 @@ namespace Singijeon
             BinaryFormatter binFmt = new BinaryFormatter();
             try
             {
-                using (FileStream rdr = new FileStream(DateTime.Now.ToString("MM_dd") + LOAD_DATA_FILE_NAME, FileMode.Open))
+                using (FileStream rdr = new FileStream(DateTime.Now.ToString("yyyy_MM_dd") + LOAD_DATA_FILE_NAME, FileMode.Open))
                 {
                     list = (List<TradingStrategyForSave>)binFmt.Deserialize(rdr);
                     foreach (TradingStrategyForSave ts in list)
@@ -236,7 +239,9 @@ namespace Singijeon
         {
             try
             {
-                using (StreamReader streamReader = new StreamReader(DATA_OPTIONAL_FILE_NAME + ".txt"))
+                if (!Directory.Exists("Setting"))
+                    Directory.CreateDirectory("Setting");
+                using (StreamReader streamReader = new StreamReader("Setting/"+DATA_OPTIONAL_FILE_NAME + ".txt"))
                 {
                     while (streamReader.EndOfStream == false)
                     {

@@ -3153,29 +3153,45 @@ namespace Singijeon
                             }
                             if(trailingItem.isCheckStockIndex)
                             {
-                                if(IsKospi(trailingItem.itemCode))
+                                coreEngine.SaveItemLogMessage(itemcode, "지수 확인 후 매매");
+                                if (IsKospi(trailingItem.itemCode))
                                 {
+                                    coreEngine.SaveItemLogMessage(itemcode, "코스피");
                                     string kospi = info.GetStockKospi();
-                                    float f_kospi = 0;
-                                    float.TryParse(kospi, out f_kospi);
-                                    if (f_kospi < 0)
+                                    string[] divideStr = kospi.Split(' ');
+                                    for(int i = 0; i < divideStr.Length; ++i)
                                     {
-                                        coreEngine.SaveItemLogMessage(itemcode, "코스피지수 - 스킵");
-                                        return;
+                                        if (divideStr[i].Contains("-"))
+                                        {
+                                            float f_kospi = 0;
+                                            float.TryParse(divideStr[i].Replace("%",""), out f_kospi);
+                                            if (f_kospi < 0)
+                                            {
+                                                coreEngine.SaveItemLogMessage(itemcode, "코스피 지수 - 스킵");
+                                                return;
+                                            }
+                                        }
                                     }
-                                       
                                 }
                                 else
                                 {
+                                    coreEngine.SaveItemLogMessage(itemcode, "코스닥");
                                     string kosdaq = info.GetStockKosdaq();
-                                    float f_kosdaq = 0;
-                                    float.TryParse(kosdaq, out f_kosdaq);
-                                    if (f_kosdaq < 0)
+                                    string[] divideStr = kosdaq.Split(' ');
+                                    for (int i = 0; i < divideStr.Length; ++i)
                                     {
-                                        coreEngine.SaveItemLogMessage(itemcode, "코스닥지수 - 스킵");
-                                        return;
+                                        if (divideStr[i].Contains("-"))
+                                        {
+                                            float f_kosdaq = 0;
+                                            float.TryParse(divideStr[i].Replace("%", ""), out f_kosdaq);
+                                            if (f_kosdaq < 0)
+                                            {
+                                                coreEngine.SaveItemLogMessage(itemcode, "코스닥 지수 - 스킵");
+                                                return;
+                                            }
+                                        }
                                     }
-                                      
+
                                 }
                             }
 
@@ -4538,6 +4554,11 @@ namespace Singijeon
             }
             int rowIndex = rebuyStrategyGridView.Rows.Add();
             rebuyStrategyGridView["전략명", rowIndex].Value = conditionName;
+        }
+
+        private void UseCheckStockIndex_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
